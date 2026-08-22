@@ -7,7 +7,7 @@
 
 ## 👥 Integrantes
 
-* **Lopez, Agustin (Alfa)
-* **Filippelli, Adrian (Beta)
-* **Fernandez Waisberg, Gabriel (Gamma)
-* **Catanese, Demian (Delta)
+* **Lopez, Agustin (Alfa)**
+* **Filippelli, Adrian (Beta)**
+* **Fernandez Waisberg, Gabriel (Gamma)**
+* **Catanese, Demian (Delta)**
