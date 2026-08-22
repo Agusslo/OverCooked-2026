@@ -32,7 +32,7 @@
 | 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Indefinido | |
 | 13. Rechazar el pedido, para que el usuario lo modifique | mozo | Indefinido | |
 | 14. Confirmar el pedido | mozo | Indefinido | |
-| 15. Acceder a los juegos | cliente registrado o anónimo | Indefinido | |
+| 15. Acceder a los juegos | cliente registrado | Indefinido | |
 | 16. Recepción de los productos correspondientes | cocinero | Indefinido | |
 | 17. Recepción de los productos correspondientes | cantinero | Indefinido | |
 | 18. Realizar las tareas correspondientes | cocinero y cantinero | Indefinido | |
