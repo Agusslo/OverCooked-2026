@@ -5,7 +5,7 @@
 **Docentes:** Maximiliano Neiner, Alejandro Constanzo, Nicolás Ferrero, Augusto Morelli, Octavio Villegas, Alejandro Loredo  
 
 <p align="center">
-  <img width="400" alt="image" src="https://github.com/user-attachments/assets/b80450bd-e7ac-4dbc-82af-2fbe0da2a2c8" />
+  <img src="https://github.com/user-attachments/assets/fa7378d1-1f51-4fec-963c-8ba0b76d38af" alt="Sin_titulo-1" width="300" style="background: transparent; border: none;" />
 </p>
 
 
