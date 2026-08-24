@@ -59,6 +59,8 @@ npm install -g @ionic/cli
 npm install -g @angular/cli@22.1.4
 ```
 
+# 📱 Códigos QR
+
 ### 3. Extensiones recomendadas (VS Code)
 * **Angular Language Service**
 * **Prettier - Code Formatter**
