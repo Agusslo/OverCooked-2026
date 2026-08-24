@@ -1,4 +1,8 @@
-# OVERCOOKED - Trabajo Final Integrador 2026
+# 🍳 OverCooked - Trabajo Final Integrador (TFI) 2026
+
+**Materia:** Trabajo Final Integrador  
+**Institución:** UTN - Facultad Regional Avellaneda (FRA) - Tecnicatura Universitaria en Programación  
+**Docentes:** Maximiliano Neiner, Alejandro Constanzo, Nicolás Ferrero, Augusto Morelli, Octavio Villegas, Alejandro Loredo  
 
 <p align="center">
   <img width="400" alt="image" src="https://github.com/user-attachments/assets/b80450bd-e7ac-4dbc-82af-2fbe0da2a2c8" />
@@ -40,3 +44,8 @@
 | 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo | Indefinido | |
 | 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Indefinido | |
 | 22. Confirmar el pago y liberar mesa | mozo | Indefinido | |
+
+
+
+
+
