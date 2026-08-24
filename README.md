@@ -5,7 +5,11 @@
 **Docentes:** Maximiliano Neiner, Alejandro Constanzo, Nicolás Ferrero, Augusto Morelli, Octavio Villegas, Alejandro Loredo  
 
 <p align="center">
+<<<<<<< HEAD
   <img src="https://github.com/user-attachments/assets/fa7378d1-1f51-4fec-963c-8ba0b76d38af" alt="Sin_titulo-1" width="300" style="background: transparent; border: none;" />
+=======
+  <img src="https://github.com/user-attachments/assets/fa7378d1-1f51-4fec-963c-8ba0b76d38af" alt="Logo" width="300" style="background: transparent; border: none;" />
+>>>>>>> main
 </p>
 
 
@@ -60,5 +64,8 @@ Ejecutar en la terminal de su ejecutor:
 ```bash
 npm install -g @ionic/cli
 npm install -g @angular/cli
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> main

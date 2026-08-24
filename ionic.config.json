@@ -1,0 +1,7 @@
+{
+  "name": "overcooked-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
