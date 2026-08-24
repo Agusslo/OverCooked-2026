@@ -5,7 +5,7 @@
 **Docentes:** Maximiliano Neiner, Alejandro Constanzo, Nicolás Ferrero, Augusto Morelli, Octavio Villegas, Alejandro Loredo  
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/fa7378d1-1f51-4fec-963c-8ba0b76d38af" alt="Sin_titulo-1" width="300" style="background: transparent; border: none;" />
+  <img src="https://github.com/user-attachments/assets/fa7378d1-1f51-4fec-963c-8ba0b76d38af" alt="Logo" width="300" style="background: transparent; border: none;" />
 </p>
 
 
@@ -46,22 +46,21 @@
 | 22. Confirmar el pago y liberar mesa | mozo | Indefinido | |
 
 
-## 🛠️ Requisitos Previos y Herramientas a Instalar
+## ⚙️ Requisitos Previos y Herramientas a Instalar
 
-Para clonar, ejecutar y compilar la aplicación en local y en dispositivos Android, es necesario contar con el siguiente entorno:
-
-### 1. Software Base
-* **[Node.js](https://nodejs.org/)** (Versión LTS recomendada)
-* **[Android Studio](https://developer.android.com/studio)** (con Android SDK y Command-line Tools configurados para compilar APK/Android)*
+### 1. Entorno de Ejecución
+* **Node.js:** v24.19.0
+* **Package Manager:** npm v12.0.2
+* **Git:** >= 2.40.0
 
 ### 2. CLIs Globales
-Ejecutar en la terminal de su ejecutor:
-
 ```bash
 npm install -g @ionic/cli
-npm install -g @angular/cli
-<<<<<<< HEAD
+npm install -g @angular/cli@22.1.4
+```
 
+# 📱 Códigos QR
 
-=======
->>>>>>> main
+### 3. Extensiones recomendadas (VS Code)
+* **Angular Language Service**
+* **Prettier - Code Formatter**
