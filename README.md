@@ -11,10 +11,10 @@
 
 ## 👥 Integrantes
 
-* **López, Agustín (Alfa)**
-* **Filippelli, Adrián (Beta)**
-* **Fernández Waisberg, Gabriel (Gamma)**
-* **Catanese, Demián (Delta)**
+* **López, Agustín (Alfa)**: rama `feature/dev-alfa`
+* **Filippelli, Adrián (Beta)**: rama `feature/dev-beta`
+* **Fernández Waisberg, Gabriel (Gamma)**: rama `feature/dev-gamma`
+* **Catanese, Demián (Delta)**: rama `feature/dev-delta`
 
 
 
