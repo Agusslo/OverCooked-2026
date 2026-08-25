@@ -4,6 +4,7 @@
 *~
 *.sw[mnpcod]
 .tmp
+.md
 *.tmp
 *.tmp.*
 UserInterfaceState.xcuserstate
@@ -56,6 +57,7 @@ yarn-error.log
 # Miscellaneous
 /.angular
 /.angular/cache
+/CLAUDE.md
 .sass-cache/
 /.nx
 /.nx/cache
