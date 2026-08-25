@@ -17,6 +17,11 @@
   <!-- add to homescreen for ios -->
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+  <style>
+    /* Evita un flash blanco antes de que Angular arranque y app-splash pinte. */
+    html, body { background-color: #ee7a4f; }
+  </style>
 </head>
 
 <body>

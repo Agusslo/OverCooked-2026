@@ -1,0 +1,41 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ee7a4f;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+
+  &--out {
+    opacity: 0;
+  }
+
+  &__logo {
+    
+    width: 160px;
+    height: auto;
+    /* logo.png está dibujado en el mismo naranja que este fondo — se recolorea a blanco para que se vea */
+    filter: brightness(0) invert(1);
+    animation: splash-pulse 1.4s ease-in-out infinite;
+  }
+}
+
+.titulo {
+    position: fixed;
+    height: 100px;
+}
+
+@keyframes splash-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.85;
+  }
+}
