@@ -18,7 +18,7 @@ export class QrScannerService {
     try {
       const permiso = await this.solicitarPermisos();
       if (!permiso) {
-        await Haptics.notification({ type: NotificationType.Error }).catch(() => {});
+        await Haptics.notification({ type: NotificationType.Error }).catch(() => { });
         return null;
       }
 
@@ -28,7 +28,7 @@ export class QrScannerService {
       });
 
       if (barcodes.length > 0 && barcodes[0].rawValue) {
-        await Haptics.notification({ type: NotificationType.Success }).catch(() => {});
+        await Haptics.notification({ type: NotificationType.Success }).catch(() => { });
         return barcodes[0].rawValue;
       }
 
