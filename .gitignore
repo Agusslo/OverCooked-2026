@@ -57,6 +57,7 @@ yarn-error.log
 # Miscellaneous
 /.angular
 /.angular/cache
+/CLAUDE.md
 .sass-cache/
 /.nx
 /.nx/cache
