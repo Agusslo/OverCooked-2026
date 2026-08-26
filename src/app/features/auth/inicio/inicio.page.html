@@ -1,0 +1,15 @@
+<ion-content class="ion-padding">
+  <div class="inicio-container" *ngIf="usuario">
+    <ion-avatar>
+      <img [src]="usuario.foto_url" alt="Foto de perfil" />
+    </ion-avatar>
+
+    <h1>Hola, {{ usuario.nombre }} {{ usuario.apellido }}</h1>
+    <p class="perfil">Perfil: {{ usuario.perfil }}</p>
+
+    <ion-button expand="block" color="danger" (click)="cerrarSesion()">
+      <ion-icon name="log-out-outline" slot="start"></ion-icon>
+      Cerrar sesión
+    </ion-button>
+  </div>
+</ion-content>

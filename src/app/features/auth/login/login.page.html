@@ -1,0 +1,57 @@
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <img src="assets/icon/icon.png" alt="Icono de la aplicación" class="logo" />
+
+    <form [formGroup]="form" (ngSubmit)="iniciarSesion()">
+      <ion-item>
+        <ion-input
+          label="Correo electrónico"
+          labelPlacement="floating"
+          type="email"
+          formControlName="email"
+        ></ion-input>
+      </ion-item>
+      <ion-text
+        color="danger"
+        *ngIf="form.controls.email.invalid && form.controls.email.touched"
+      >
+        <p>Ingresá un correo electrónico válido.</p>
+      </ion-text>
+
+      <ion-item>
+        <ion-input
+          label="Contraseña"
+          labelPlacement="floating"
+          type="password"
+          formControlName="clave"
+        ></ion-input>
+      </ion-item>
+      <ion-text
+        color="danger"
+        *ngIf="form.controls.clave.invalid && form.controls.clave.touched"
+      >
+        <p>La contraseña debe tener al menos 6 caracteres.</p>
+      </ion-text>
+
+      <ion-text color="danger" *ngIf="errorLogin()">
+        <p>{{ errorLogin() }}</p>
+      </ion-text>
+
+      <ion-button expand="block" type="submit" [disabled]="cargando()">
+        <ion-spinner name="crescent" *ngIf="cargando()"></ion-spinner>
+        <span *ngIf="!cargando()">Ingresar</span>
+      </ion-button>
+    </form>
+
+    <div class="accesos-rapidos">
+      <p>Acceso rápido</p>
+      <ion-chip
+        *ngFor="let acceso of accesosRapidos"
+        (click)="accederRapido(acceso)"
+      >
+        <ion-icon [name]="acceso.icono"></ion-icon>
+        <ion-label>{{ acceso.perfil }}</ion-label>
+      </ion-chip>
+    </div>
+  </div>
+</ion-content>

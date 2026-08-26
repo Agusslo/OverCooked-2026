@@ -28,10 +28,53 @@
 /**
  * Ionic Dark Mode
  * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
+ * El PDF de la consigna prohíbe explícitamente el modo oscuro
+ * ("NO se admite el 'modo oscuro'"), así que las tres opciones
+ * quedan comentadas a propósito. La app va a usar siempre la
+ * paleta clara de Ionic, sin importar la configuración del
+ * sistema operativo o navegador de quien la abra.
+ *
+ * Para más info: https://ionicframework.com/docs/theming/dark-mode
  */
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
+
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* @import "@ionic/angular/css/palettes/dark.system.css"; */
+
+.camera-box {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.camera-box video {
+  width: 100%;
+  max-height: 360px;
+  border-radius: 12px;
+  background: #000000;
+}
+
+.camera-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.camera-button {
+  flex: 1;
+  height: 42px;
+  border: 1px solid #38bdf8;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.camera-cancel {
+  background: #111827;
+}
+
+.camera-capture {
+  background: #38bdf8;
+}
+
