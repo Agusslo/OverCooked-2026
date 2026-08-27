@@ -4,13 +4,8 @@ import { authGuard } from './core/guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'alta-empleado',
-    pathMatch: 'full',
-  },
-  {
-    path: 'splash',
     loadComponent: () =>
-      import('./features/splash/splash.component').then((m) => m.SplashComponent),
+      import('./features/splash/splash.component').then((m) => m.SplashComponent),pathMatch: 'full',
   },
   {
     path: 'alta-empleado',
@@ -27,7 +22,7 @@ export const routes: Routes = [
   {
     path: 'inicio',
     loadComponent: () =>
-      import('./features/auth/inicio/inicio.page').then((m) => m.InicioPage),
+      import('./features/homes/inicio/inicio.page').then((m) => m.InicioPage),
     canActivate: [authGuard],
   },
 ];

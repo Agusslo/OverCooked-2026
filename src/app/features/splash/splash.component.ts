@@ -1,4 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { Router, RouterLinkActive } from '@angular/router';
 
 const FADE_OUT_DELAY_MS = 1800;
 const REMOVE_DELAY_MS = 2300;
@@ -15,8 +16,11 @@ export class SplashComponent implements OnInit {
   fadingOut = signal(false);
   hidden = signal(false);
 
+  router: Router= inject(Router);
+
   ngOnInit() {
     setTimeout(() => this.fadingOut.set(true), FADE_OUT_DELAY_MS);
-    setTimeout(() => this.hidden.set(true), REMOVE_DELAY_MS);
+    setTimeout(() => this.hidden.set(true), REMOVE_DELAY_MS)
+    this.router.navigateByUrl('/login')
   }
 }
