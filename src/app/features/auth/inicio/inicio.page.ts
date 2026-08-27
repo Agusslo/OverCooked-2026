@@ -1,12 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import {
-  IonContent,
-  IonButton,
-  IonIcon,
-  IonAvatar,
-} from '@ionic/angular';
+import { IonContent, IonButton, IonIcon, IonAvatar, } from '@ionic/angular';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -14,7 +8,7 @@ import { AuthService } from '../../../core/services/auth.service';
   standalone: true,
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
-  imports: [CommonModule, IonContent, IonButton, IonIcon, IonAvatar],
+  imports: [IonContent, IonButton, IonIcon, IonAvatar],
 })
 export class InicioPage {
   private authService = inject(AuthService);
