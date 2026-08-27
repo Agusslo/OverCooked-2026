@@ -18,32 +18,43 @@
 
 
 
+## 👥 Distribución de tareas por integrante
+
+| Integrante | Rama | Funcionalidades asignadas (TFI) | Fecha inicio | Fecha fin |
+| :--- | :--- | :--- | :--- | :--- |
+| **López, Agustín** | `feature/dev-alfa` | 1, ??? | dd/mm/2026 | dd/mm/2026 |
+| **Filippelli, Adrián** | `feature/dev-beta` | ??? | dd/mm/2026 | dd/mm/2026 |
+| **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | ??? | dd/mm/2026 | dd/mm/2026 |
+| **Catanese, Demián** | `feature/dev-delta` | ??? | dd/mm/2026 | dd/mm/2026 |
+
+> Si algún integrante no llega con la funcionalidad comprometida, se reasigna el módulo o se cambia el plazo, y queda registrado acá mismo con la fecha del cambio.
+
 ## 🚀 Roadmap de Entregas
 
-| Funcionalidad | Perfiles | Estado | Fecha - Profe |
-| :--- | :--- | :--- | :--- |
-| 1. Agregar un empleado | dueño o supervisor | Indefinido | |
-| 2. Agregar un nuevo plato | cocinero | Indefinido | |
-| 3. Agregar una nueva bebida | cantinero | Indefinido | |
-| 4. Agregar una nueva mesa | dueño o supervisor | Indefinido | |
-| 5. Crear un cliente registrado | cliente o metre | Indefinido | |
-| 6. Verificar ingreso del cliente registrado | dueño o supervisor | Indefinido | |
-| 7. Rechazar a un cliente registrado | dueño o supervisor | Indefinido | |
-| 8. Aceptar a un cliente registrado | dueño o supervisor | Indefinido | |
-| 9. Ingresar al local | cliente anónimo | Indefinido | |
-| 10. Asignar una mesa a un cliente registrado | metre | Indefinido | |
-| 11. Ver el listado de los productos | cliente registrado o anónimo | Indefinido | |
-| 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Indefinido | |
-| 13. Rechazar el pedido, para que el usuario lo modifique | mozo | Indefinido | |
-| 14. Confirmar el pedido | mozo | Indefinido | |
-| 15. Acceder a los juegos | cliente registrado | Indefinido | |
-| 16. Recepción de los productos correspondientes | cocinero | Indefinido | |
-| 17. Recepción de los productos correspondientes | cantinero | Indefinido | |
-| 18. Realizar las tareas correspondientes | cocinero y cantinero | Indefinido | |
-| 19. Entrega del pedido completo | mozo | Indefinido | |
-| 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo | Indefinido | |
-| 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Indefinido | |
-| 22. Confirmar el pago y liberar mesa | mozo | Indefinido | |
+| Funcionalidad | Perfiles (dentro de la app) | Responsable | Estado | Fecha - Profe |
+| :--- | :--- | :--- | :--- | :--- |
+| 1. Agregar un empleado | dueño o supervisor | López, Agustín | Indefinido | |
+| 2. Agregar un nuevo plato | cocinero | Filippelli, Adrián | Indefinido | |
+| 3. Agregar una nueva bebida | cantinero | Filippelli, Adrián | Indefinido | |
+| 4. Agregar una nueva mesa | dueño o supervisor | Filippelli, Adrián | Indefinido | |
+| 5. Crear un cliente registrado | cliente o metre | López, Agustín | Indefinido | |
+| 6. Verificar ingreso del cliente registrado | dueño o supervisor | López, Agustín | Indefinido | |
+| 7. Rechazar a un cliente registrado | dueño o supervisor | López, Agustín | Indefinido | |
+| 8. Aceptar a un cliente registrado | dueño o supervisor | López, Agustín | Indefinido | |
+| 9. Ingresar al local | cliente anónimo | Filippelli, Adrián | Indefinido | |
+| 10. Asignar una mesa a un cliente registrado | metre | Fernández Waisberg, Gabriel | Indefinido | |
+| 11. Ver el listado de los productos | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
+| 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
+| 13. Rechazar el pedido, para que el usuario lo modifique | mozo | Fernández Waisberg, Gabriel | Indefinido | |
+| 14. Confirmar el pedido | mozo | Fernández Waisberg, Gabriel | Indefinido | |
+| 15. Acceder a los juegos | cliente registrado | Catanese, Demián | Indefinido | |
+| 16. Recepción de los productos correspondientes | cocinero | Catanese, Demián | Indefinido | |
+| 17. Recepción de los productos correspondientes | cantinero | Catanese, Demián | Indefinido | |
+| 18. Realizar las tareas correspondientes | cocinero y cantinero | Catanese, Demián | Indefinido | |
+| 19. Entrega del pedido completo | mozo | Catanese, Demián | Indefinido | |
+| 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo | Catanese, Demián | Indefinido | |
+| 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Catanese, Demián | Indefinido | |
+| 22. Confirmar el pago y liberar mesa | mozo | Catanese, Demián | Indefinido | |
 
 
 ## ⚙️ Requisitos Previos y Herramientas a Instalar
