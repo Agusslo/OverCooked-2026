@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
-
-
-
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -12,12 +10,14 @@ export const routes: Routes = [
   {
     path: 'splash',
     loadComponent: () =>
-      import('./feature/splash/splash.component').then((m) => m.SplashComponent),
+      import('./features/splash/splash.component').then((m) => m.SplashComponent),
   },
   {
     path: 'alta-empleado',
     loadComponent: () =>
       import('./features/admin/alta-empleado/alta-empleado.page').then((m) => m.AltaEmpleadoPage),
+    canActivate: [authGuard],
+    data: { perfiles: ['dueño', 'supervisor'] },
   },
   {
     path: 'login',
@@ -28,6 +28,6 @@ export const routes: Routes = [
     path: 'inicio',
     loadComponent: () =>
       import('./features/auth/inicio/inicio.page').then((m) => m.InicioPage),
+    canActivate: [authGuard],
   },
 ];
-
