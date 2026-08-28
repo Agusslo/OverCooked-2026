@@ -13,12 +13,32 @@ import {
   FormGroup,
   ReactiveFormsModule,
   Validators,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { Camera, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { QrScannerService } from '../../../core/services/qr-scanner';
 import { UsuariosService } from '../../../core/services/usuarios.service';
+
+// Validador cross-field: verifica que los dígitos del DNI
+// coincidan con las posiciones 2–9 del CUIL.
+// Estructura CUIL: XX + DNI(8 dígitos) + dígito verificador = 11 dígitos.
+function cuilMatchDni(form: AbstractControl): ValidationErrors | null {
+  const dni = (form.get('dni')?.value || '') as string;
+  const cuil = (form.get('cuil')?.value || '') as string;
+
+  // Solo validar cuando ambos campos tienen formato correcto
+  if (!dni || !cuil || cuil.length !== 11 || !/^\d{7,8}$/.test(dni)) {
+    return null;
+  }
+
+  const dniPadded = dni.padStart(8, '0');
+  const dniEnCuil = cuil.substring(2, 10);
+
+  return dniEnCuil === dniPadded ? null : { cuilNoMatchDni: true };
+}
 
 @Component({
   selector: 'app-alta-empleado',
@@ -49,29 +69,32 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.empleadoForm = this.fb.group({
-      nombre: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'),
+    this.empleadoForm = this.fb.group(
+      {
+        nombre: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'),
+          ],
         ],
-      ],
-      apellido: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'),
+        apellido: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'),
+          ],
         ],
-      ],
-      dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,8}$')]],
-      cuil: ['', [Validators.required, Validators.pattern('^[0-9]{11}$')]],
-      correo: ['', [Validators.required, Validators.email]],
-      clave: ['', [Validators.required, Validators.minLength(6)]],
-      perfil: ['', [Validators.required]],
-    });
+        dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,8}$')]],
+        cuil: ['', [Validators.required, Validators.pattern('^[0-9]{11}$')]],
+        correo: ['', [Validators.required, Validators.email]],
+        clave: ['', [Validators.required, Validators.minLength(6)]],
+        perfil: ['', [Validators.required]],
+      },
+      { validators: cuilMatchDni },
+    );
   }
 
   ngOnDestroy() {
