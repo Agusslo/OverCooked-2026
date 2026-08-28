@@ -1,31 +1,189 @@
-ion-content {
-  --background: #2b2118;
+@import url('https://fonts.googleapis.com/css2?family=ADLaM+Display:wght@400;500;700&display=swap');
+
+:host {
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+
+  // Paleta extraída directo de la imagen
+  --bg-hero: #ee7a4f;      // franja superior, donde va el logo
+  --bg-panel: #c45030;     // panel inferior redondeado
+  --accent-dark: #a83820;  // texto sobre fondos claros / fondo Registro-Invitado
+  --accent-light: #f9bfa0; // fondo de los inputs / texto sobre fondos oscuros
+  --gold: #f0c060;         // botón Iniciar sesión
+  --white: #ffffff;
 }
 
-.login-container {
+ion-content.login-page {
+  --background: var(--bg-hero);
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  --overflow: hidden;
+  overflow: hidden;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.login-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-hero);
+  overflow: hidden;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.brand {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 35vh;
+  padding: 56px 0 32px;
+}
+
+.brand__logo {
+  width: 230px;
+  height: auto;
+  filter: brightness(0) invert(1);
+  display: block;
+}
+
+.login-card {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--bg-panel);
+  border-radius: 53px 53px 0 0;
+  padding: 30px 24px 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding-top: 32px;
 }
 
-.logo {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-}
-
-form {
+.login-form {
   width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-field {
+  --background: var(--accent-light);
+  --border-radius: 24px;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --min-height: 54px;
+  --highlight-height: 0;
+  border-radius: 24px;
+  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
+  border: #D4603A 2px solid;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.login-field ion-input {
+  --placeholder-color: var(--accent-dark);
+  --color: var(--accent-dark);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: center;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.form-error {
+  width: 100%;
+  margin: -4px 0 0;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.form-error p {
+  margin: 0;
+  color: #fff0f0;
+  font-weight: 600;
+}
+
+.login-submit {
+  --background: var(--gold);
+  --background-activated: #dcab54;
+  --background-hover: #e6b661;
+  --color: var(--accent-dark);
+  --border-radius: 12px;
+  --box-shadow: none;
+  height: 54px;
+  margin-top: 6px;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.secondary-actions {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+  max-width: 600px;
+}
+
+.action-btn {
+  --background: var(--accent-dark);
+  --background-activated: #8f2f1a;
+  --background-hover: #9a341d;
+  --color: var(--accent-light);
+  --border-radius: 12px;
+  --box-shadow: none;
+  height: 48px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
 }
 
 .accesos-rapidos {
   width: 100%;
-  margin-top: 24px;
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
 
-  p {
-    margin-bottom: 8px;
-    font-weight: 600;
+.quick-btn {
+  --background: transparent;
+  --background-activated: rgba(168, 56, 32, 0.15);
+  --background-hover: rgba(168, 56, 32, 0.1);
+  --color: var(--accent-light);
+  --border-color: rgba(168, 56, 32, 0.75);
+  --border-style: solid;
+  --border-width: 1.5px;
+  --border-radius: 14px;
+  --box-shadow: none;
+  width: auto;
+  height: 40px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+
+.quick-chip ion-icon {
+  color: var(--accent-light);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 420px) {
+  .brand {
+    padding: 44px 0 26px;
+  }
+
+  .brand__logo {
+    width: 165px;
+  }
+
+  .login-card {
+    padding: 26px 20px 24px;
   }
 }
