@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=ADLaM+Display:wght@400;500;700&display=swap');
+
+:host {
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+
+  // Nombres y hex tomados literal de la "Guía de Diseño Visual"
+  // (Sección 01, Paleta de Colores). Mismos valores que usa el login.
+  --terracotta: #ee7a4f;   // fondo principal
+  --burnt-orange: #c45030; // superficies secundarias / panel
+  --deep-sienna: #a83820;  // cards / paneles
+  --ember: #8c2e14;        // énfasis profundo
+  --peach: #f5956b;        // superficies claras
+  --blush: #f9bfa0;        // highlights sutiles / fondo de inputs
+  --gold: #f0c060;         // acento / CTA
+  --gold-deep: #d4a040;    // acento hover
+  --cream: #fef5ee;        // texto principal
+  --rust: #d4603a;         // bordes / dividers
+}
+
+ion-content.plato-page {
+  --background: var(--terracotta);
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.plato-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--terracotta);
+}
+
+.brand {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px 28px;
+  text-align: center;
+
+  &__badge {
+    display: inline-block;
+    padding: 4px 16px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--ember);
+    background: var(--gold);
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+
+  &__title {
+    color: var(--cream);
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &__subtitle {
+    color: var(--blush);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 4px;
+  }
+}
+
+.plato-card {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--burnt-orange);
+  border-radius: 53px 53px 0 0;
+  padding: 30px 24px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.plato-form {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.plato-field {
+  --background: var(--blush);
+  --border-radius: 24px;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --min-height: 54px;
+  --highlight-height: 0;
+  border-radius: 24px;
+  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
+  border: var(--rust) 2px solid;
+  overflow: hidden;
+  margin-bottom: 16px;
+
+  &--textarea {
+    --min-height: 90px;
+    padding: 10px 0;
+  }
+
+  ion-input,
+  ion-textarea {
+    --placeholder-color: var(--deep-sienna);
+    --color: var(--deep-sienna);
+    font-size: 0.92rem;
+    font-weight: 700;
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+  }
+}
+
+.form-error {
+  display: block;
+  width: 100%;
+  margin: -10px 0 8px;
+  font-size: 0.78rem;
+
+  p {
+    margin: 0;
+    color: #fff0f0;
+    font-weight: 600;
+  }
+
+  &.text-center {
+    text-align: center;
+  }
+}
+
+.form-success {
+  display: block;
+  width: 100%;
+  margin: 4px 0 8px;
+  font-size: 0.85rem;
+  text-align: center;
+
+  p {
+    margin: 0;
+    color: var(--cream);
+    font-weight: 700;
+  }
+}
+
+// Cámara web (fallback de escritorio)
+.camera-box {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 2px solid var(--rust);
+  margin-bottom: 16px;
+
+  video {
+    width: 100%;
+    display: block;
+    background: #000;
+  }
+
+  .camera-actions {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    background: var(--deep-sienna);
+  }
+
+  .camera-btn {
+    flex: 1;
+    margin: 0;
+    --border-radius: 12px;
+    font-weight: 700;
+
+    &--cancel {
+      --background: var(--ember);
+      --color: var(--blush);
+    }
+
+    &--capture {
+      --background: var(--gold);
+      --color: var(--ember);
+    }
+  }
+}
+
+// Grilla de 3 fotos
+.fotos-titulo {
+  color: var(--cream);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 6px 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fotos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.foto-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.foto-slot-preview {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2.5px solid var(--gold);
+  background: var(--blush);
+  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &.foto-slot-vacio {
+    border-style: dashed;
+    border-color: var(--peach);
+    box-shadow: none;
+    color: var(--deep-sienna);
+    font-size: 1.5rem;
+    font-weight: 900;
+  }
+}
+
+.foto-slot-botones {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+
+  button {
+    flex: 1;
+    padding: 6px 2px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border-radius: 10px;
+    border: none;
+    background: var(--deep-sienna);
+    color: var(--blush);
+    cursor: pointer;
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+
+    &:active {
+      background: var(--ember);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.plato-submit {
+  --background: var(--gold);
+  --background-activated: var(--gold-deep);
+  --background-hover: var(--gold-deep);
+  --color: var(--ember);
+  --border-radius: 12px;
+  --box-shadow: none;
+  height: 54px;
+  margin-top: 12px;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 420px) {
+  .brand {
+    padding: 40px 20px 24px;
+  }
+
+  .plato-card {
+    padding: 26px 20px 32px;
+  }
+}
