@@ -70,6 +70,10 @@ export class LoginPage {
   irRegistro(): void {
     this.router.navigateByUrl('/auth/registro');
   }
+  
+  irAnonimo(): void {
+    this.router.navigateByUrl('/auth/invitado');
+  }
 
   private async intentarLogin(email: string, clave: string): Promise<void> {
     this.errorLogin.set(null);

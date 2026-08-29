@@ -98,7 +98,7 @@ export class RegistroPage {
     this.cargando.set(true);
 
     try {
-      await this.authService.registrarUser(datos);
+      await this.authService.registrarUsuario(datos);
       this.router.navigateByUrl('/auth/login');
     } catch (error) {
       this.errorRegistro.set(

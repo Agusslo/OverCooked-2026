@@ -220,7 +220,7 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
         correo: valores.correo,
         clave: valores.clave,
         perfil: valores.perfil,
-        fotoDataUrl: this.fotoPersonal,
+        fotoDataUrl: this.fotoPersonal
       });
 
       this.mensajeExito = '¡Empleado registrado con éxito!';
