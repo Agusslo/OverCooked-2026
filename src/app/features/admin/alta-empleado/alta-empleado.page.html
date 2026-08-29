@@ -180,6 +180,14 @@
             >CUIL inválido (debe tener exactamente 11 números)</span
           >
           }
+          @if (empleadoForm.hasError('cuilNoMatchDni') &&
+          empleadoForm.get('cuil')?.touched &&
+          empleadoForm.get('dni')?.valid &&
+          empleadoForm.get('cuil')?.valid) {
+          <span class="error-msg"
+            >El CUIL no coincide con el DNI ingresado</span
+          >
+          }
         </div>
 
         <!-- Correo Electrónico -->

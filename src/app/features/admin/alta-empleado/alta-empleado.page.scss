@@ -1,46 +1,31 @@
-:host {
-  display: block;
-  height: 100%;
-  overflow: hidden;
-}
-
 .empleado-page-wrapper {
-  background: #0b0f19;
-  height: 100%;
+  // Fondo pleno naranja cálido (cero modo oscuro, cero blanco plano)
+  background: linear-gradient(160deg, #ea580c 0%, #c2410c 100%);
+  min-height: 100vh;
   width: 100%;
   overflow-y: auto;
-  overflow-x: hidden;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    sans-serif;
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .main-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100%;
+  min-height: 100vh;
   padding: 32px 16px;
   box-sizing: border-box;
 }
 
+// Tarjeta estilo Overcooked: bordes gruesos de madera y sombra 3D arcade
 .card-box {
   width: 100%;
   max-width: 440px;
-  background: rgba(22, 30, 46, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
+  background: #ffffff;
+  border: 3.5px solid #431407;
+  border-radius: 26px;
   padding: 28px 22px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
-  color: #f8fafc;
+  box-shadow: 0 10px 0px #431407, 0 18px 25px rgba(0, 0, 0, 0.25);
+  color: #1e293b;
 }
 
 .header-box {
@@ -49,79 +34,82 @@
 
   .badge-tag {
     display: inline-block;
-    padding: 3px 10px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: #38bdf8;
-    background: rgba(56, 189, 248, 0.12);
-    border: 1px solid rgba(56, 189, 248, 0.3);
+    padding: 4px 14px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    color: #ffffff;
+    background: #ea580c;
+    border: 2px solid #431407;
     border-radius: 20px;
     margin-bottom: 8px;
+    box-shadow: 0 2.5px 0px #431407;
   }
 
   h2 {
-    font-size: 1.7rem;
-    font-weight: 800;
-    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #431407;
     margin: 0;
     letter-spacing: -0.5px;
+    text-transform: uppercase;
   }
 
   p {
-    font-size: 0.85rem;
-    color: #94a3b8;
+    font-size: 0.88rem;
+    color: #64748b;
+    font-weight: 600;
     margin-top: 4px;
   }
 }
 
+// Botones interactivos tipo Arcade / UIverse
 .btn-uiverse {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   width: 100%;
-  border: none;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  font-weight: 700;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  font-weight: 800;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.12s ease;
   outline: none;
+  box-sizing: border-box;
+  text-transform: uppercase;
 
   &:active {
-    transform: scale(0.98);
+    transform: translateY(4px);
   }
 
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.55;
     cursor: not-allowed;
+    transform: none;
   }
 }
 
 .btn-text-content {
   display: inline-block;
-  margin: 0;
-  padding: 0;
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.5px;
-  line-height: 1;
+  letter-spacing: 0.6px;
 }
 
+// Botón Escáner DNI (Azul marino arcade)
 .btn-scan {
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  background: #0284c7;
   color: #ffffff !important;
-  height: 48px;
+  border: 2.5px solid #082f49;
+  box-shadow: 0 5px 0px #082f49;
+  height: 50px;
   margin-bottom: 18px;
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
 
   .btn-text-content {
     color: #ffffff !important;
   }
 
-  &:hover {
-    background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+  &:active {
+    box-shadow: 0 1px 0px #082f49;
   }
 }
 
@@ -136,31 +124,26 @@
   flex-direction: column;
 }
 
+// Cajas de entrada: alto contraste y bordes sólidos
 .custom-input-box {
   display: flex;
   align-items: center;
-  background: #111827;
-  border: 1px solid #374151;
-  border-radius: 12px;
-  padding: 2px 12px;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
+  background: #f8fafc;
+  border: 2px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 2px 14px;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
 
   &:focus-within {
-    border-color: #38bdf8;
-    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
-  }
-
-  &.invalid-field {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+    border-color: #ea580c;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.22);
   }
 
   .field-icon {
     color: #64748b;
     flex-shrink: 0;
-    margin-right: 8px;
+    margin-right: 10px;
   }
 }
 
@@ -170,28 +153,30 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #f8fafc;
-  font-size: 0.92rem;
+  color: #0f172a; // Texto oscuro nítido
+  font-size: 0.95rem;
+  font-weight: 600;
   padding: 12px 0;
   width: 100%;
 
   &::placeholder {
-    color: #64748b;
+    color: #94a3b8;
+    font-weight: 500;
   }
 }
 
 .native-select {
   cursor: pointer;
   option {
-    background-color: #111827;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #0f172a;
   }
 }
 
 .error-msg {
-  color: #f87171;
-  font-size: 0.75rem;
-  font-weight: 500;
+  color: #dc2626;
+  font-size: 0.78rem;
+  font-weight: 700;
   padding-top: 4px;
   padding-left: 6px;
 
@@ -201,21 +186,22 @@
   }
 }
 
+// Sección Foto
 .photo-container {
-  margin: 10px 0 6px 0;
+  margin: 8px 0 4px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   .photo-preview-box {
-    width: 120px;
-    height: 120px;
+    width: 115px;
+    height: 115px;
     border-radius: 50%;
     overflow: hidden;
     margin-bottom: 12px;
-    border: 3px solid #38bdf8;
-    background: #111827;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    border: 3.5px solid #ea580c;
+    background: #f1f5f9;
+    box-shadow: 0 5px 0px #431407;
 
     img {
       width: 100%;
@@ -225,45 +211,49 @@
   }
 
   .btn-photo {
-    background: #111827;
-    border: 1.5px solid #38bdf8;
-    color: #38bdf8 !important;
+    background: #fff7ed;
+    border: 2.5px solid #ea580c;
+    color: #ea580c !important;
+    box-shadow: 0 4px 0px #9a3412;
     height: 48px;
 
     .btn-text-content {
-      color: #38bdf8 !important;
+      color: #ea580c !important;
     }
 
-    &:hover {
-      background: rgba(56, 189, 248, 0.1);
+    &:active {
+      box-shadow: 0 1px 0px #9a3412;
     }
   }
 }
 
+// Botón de Enviar (Verde restaurante con relieve 3D)
 .btn-submit {
-  background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+  background: #16a34a;
   color: #ffffff !important;
+  border: 2.5px solid #14532d;
+  box-shadow: 0 6px 0px #14532d;
   height: 52px;
   margin-top: 10px;
-  box-shadow: 0 4px 18px rgba(225, 29, 72, 0.4);
 
   .btn-text-content {
     color: #ffffff !important;
   }
 
-  &:hover {
-    background: linear-gradient(135deg, #be123c 0%, #9f1239 100%);
+  &:active {
+    box-shadow: 0 1px 0px #14532d;
   }
 }
 
+// Banners de Notificación
 .feedback-banner {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 12px 14px;
   border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: 0.88rem;
+  font-weight: 700;
   margin: 4px 0;
 
   svg {
@@ -271,22 +261,22 @@
   }
 
   &.error {
-    background: rgba(239, 68, 68, 0.15);
-    border: 1px solid #ef4444;
-    color: #fca5a5;
+    background: #fef2f2;
+    border: 2px solid #ef4444;
+    color: #991b1b;
 
     svg {
-      color: #ef4444;
+      color: #dc2626;
     }
   }
 
   &.success {
-    background: rgba(34, 197, 94, 0.15);
-    border: 1px solid #22c55e;
-    color: #86efac;
+    background: #f0fdf4;
+    border: 2px solid #22c55e;
+    color: #166534;
 
     svg {
-      color: #22c55e;
+      color: #16a34a;
     }
   }
 }

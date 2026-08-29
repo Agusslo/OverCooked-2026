@@ -2,6 +2,9 @@
 setlocal enabledelayedexpansion
 chcp 65001 >nul
 
+:: Configurar Git para usar Notepad en lugar de Vim
+git config --global core.editor "notepad"
+
 :: Verificar si es un repositorio Git
 git rev-parse --is-inside-work-tree >nul 2>&1
 if %errorlevel% neq 0 (
@@ -41,7 +44,7 @@ git --no-pager fetch --all --prune >nul 2>&1
 for /L %%k in (1,1,100) do set "RAMA_LIST_%%k="
 if exist "%temp%\git_branches.tmp" del "%temp%\git_branches.tmp"
 
-:: Guardar la lista de ramas limpia usando git branch simple
+:: Guardar la lista de ramas limpia
 git --no-pager branch -a > "%temp%\git_branches.tmp" 2>nul
 
 set COUNT=0
@@ -58,7 +61,7 @@ for /f "usebackq tokens=*" %%B in ("%temp%\git_branches.tmp") do (
         :: Si empieza con remotes/origin/, recortarlo
         if "!RAMA_CLEAN:~0,15!"=="remotes/origin/" set "RAMA_CLEAN=!RAMA_CLEAN:~15!"
         
-        :: Evitar duplicados entre ramas locales y remotas
+        :: Evitar duplicados
         set "EXISTE=0"
         for /L %%k in (1,1,!COUNT!) do (
             if "!RAMA_LIST_%%k!"=="!RAMA_CLEAN!" set "EXISTE=1"
@@ -142,7 +145,7 @@ echo Actualizando información del repositorio...
 git --no-pager fetch origin
 
 echo Intentando hacer merge de origin/%RAMA_ORIGEN%...
-git --no-pager merge origin/%RAMA_ORIGEN%
+git --no-pager merge origin/%RAMA_ORIGEN% --no-edit
 
 if %errorlevel% equ 0 (
     echo.
@@ -188,7 +191,7 @@ git merge --abort >nul 2>&1
 echo [2/3] Guardando cambios locales en el Stash...
 git stash
 echo [3/3] Actualizando con la rama remota...
-git pull origin %RAMA_ORIGEN%
+git pull origin %RAMA_ORIGEN% --no-edit
 echo.
 echo Aplicando tus cambios guardados del stash...
 git stash pop
@@ -285,12 +288,93 @@ echo Enviando cambios a origin/%RAMA_DESTINO%...
 git push origin %RAMA_DESTINO%
 
 if %errorlevel% neq 0 (
-    echo.
-    echo [ERROR] No se pudo hacer push. Es posible que el servidor tenga cambios que no tenés localmente.
+    goto PUSH_REJECTED_MENU
 ) else (
     echo.
     echo [EXITO] Push realizado correctamente.
+    pause
+    goto MENU
 )
+
+:: ======================================================
+:: SUB-MENU: ERROR DE PUSH DIVERGENTE (NON-FAST-FORWARD)
+:: ======================================================
+:PUSH_REJECTED_MENU
+cls
+echo ======================================================
+echo ! ERROR AL HACER PUSH: RECHAZADO POR DIVERGENCIA !
+echo ======================================================
+echo Tu rama local y la remota 'origin/%RAMA_DESTINO%' tienen commits diferentes.
+echo.
+echo ¿Cómo querés resolverlo?
+echo.
+echo 1. Hacer Merge / Pull (Mezclar los cambios remotos con tus commits)
+echo 2. Hacer Rebase (Poner tus commits por encima de la versión remota)
+echo 3. Force Push (--force-with-lease) [SOBRESCRIBE la rama remota con tus cambios]
+echo 4. Crear una rama nueva con tus cambios (Respaldo) y pushear ahí
+echo 5. Volver al menú principal sin hacer nada
+echo ------------------------------------------------------
+set /p OPCION_PUSH="Selecciona una opción (1-5): "
+
+if "%OPCION_PUSH%"=="1" goto PUSH_RESOLVE_MERGE
+if "%OPCION_PUSH%"=="2" goto PUSH_RESOLVE_REBASE
+if "%OPCION_PUSH%"=="3" goto PUSH_RESOLVE_FORCE
+if "%OPCION_PUSH%"=="4" goto PUSH_RESOLVE_NEWBRANCH
+if "%OPCION_PUSH%"=="5" goto MENU
+goto PUSH_REJECTED_MENU
+
+:PUSH_RESOLVE_MERGE
+echo.
+echo Trayendo y mezclando cambios de origin/%RAMA_DESTINO%...
+git pull origin %RAMA_DESTINO% --no-rebase --no-edit
+if %errorlevel% neq 0 (
+    echo.
+    echo [ALERTA] Surgieron conflictos durante el Pull.
+    pause
+    goto CONFLICTO_MENU
+)
+echo Intentando re-enviar cambios...
+git push origin %RAMA_DESTINO%
+pause
+goto MENU
+
+:PUSH_RESOLVE_REBASE
+echo.
+echo Aplicando Rebase sobre origin/%RAMA_DESTINO%...
+git pull origin %RAMA_DESTINO% --rebase
+if %errorlevel% neq 0 (
+    echo.
+    echo [ALERTA] Hubo conflictos en el Rebase. Volviendo al estado anterior...
+    git rebase --abort >nul 2>&1
+    pause
+    goto PUSH_REJECTED_MENU
+)
+echo Rebase exitoso. Enviando cambios...
+git push origin %RAMA_DESTINO%
+pause
+goto MENU
+
+:PUSH_RESOLVE_FORCE
+echo.
+echo [ATENCIÓN] Sobrescribiendo la rama remota origin/%RAMA_DESTINO%...
+git push origin %RAMA_DESTINO% --force-with-lease
+if %errorlevel% neq 0 (
+    echo [ERROR] No se pudo realizar el Force Push.
+) else (
+    echo [EXITO] Rama remota sobrescrita con éxito.
+)
+pause
+goto MENU
+
+:PUSH_RESOLVE_NEWBRANCH
+echo.
+set /p NUEVA_RAMA_NAME="Ingresa el nombre para la nueva rama: "
+if "%NUEVA_RAMA_NAME%"=="" goto PUSH_REJECTED_MENU
+
+echo Creando rama '%NUEVA_RAMA_NAME%' y subiendo a origin...
+git checkout -b %NUEVA_RAMA_NAME%
+git push -u origin %NUEVA_RAMA_NAME%
+echo [EXITO] Tus cambios quedaron a salvo en la rama '%NUEVA_RAMA_NAME%'.
 pause
 goto MENU
 
