@@ -1,31 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=ADLaM+Display:wght@400;500;700&display=swap');
+
+:host {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+
+  // Mismos nombres y hex que la "Guía de Diseño Visual" (Sección 01),
+  // los mismos que usan login.page.scss y alta-plato.page.scss.
+  --terracotta: #ee7a4f;
+  --burnt-orange: #c45030;
+  --deep-sienna: #a83820;
+  --ember: #8c2e14;
+  --peach: #f5956b;
+  --blush: #f9bfa0;
+  --gold: #f0c060;
+  --gold-deep: #d4a040;
+  --cream: #fef5ee;
+  --rust: #d4603a;
+}
+
 .empleado-page-wrapper {
-  // Fondo pleno naranja cálido (cero modo oscuro, cero blanco plano)
-  background: linear-gradient(160deg, #ea580c 0%, #c2410c 100%);
-  min-height: 100vh;
+  // Fondo pleno cálido: cero modo oscuro, cero blanco/negro plano
+  // (requisito excluyente del PDF).
+  background: linear-gradient(160deg, var(--terracotta) 0%, var(--burnt-orange) 100%);
+  height: 100%;
   width: 100%;
   overflow-y: auto;
-  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  font-family: 'ADLaM Display', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .main-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 100%;
   padding: 32px 16px;
   box-sizing: border-box;
 }
 
-// Tarjeta estilo Overcooked: bordes gruesos de madera y sombra 3D arcade
 .card-box {
   width: 100%;
   max-width: 440px;
-  background: #ffffff;
-  border: 3.5px solid #431407;
+  background: var(--burnt-orange);
+  border: 3px solid var(--ember);
   border-radius: 26px;
   padding: 28px 22px;
-  box-shadow: 0 10px 0px #431407, 0 18px 25px rgba(0, 0, 0, 0.25);
-  color: #1e293b;
+  box-shadow: 0 10px 0px var(--ember), 0 18px 25px rgba(0, 0, 0, 0.25);
+  color: var(--cream);
 }
 
 .header-box {
@@ -35,52 +57,47 @@
   .badge-tag {
     display: inline-block;
     padding: 4px 14px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 1.2px;
-    color: #ffffff;
-    background: #ea580c;
-    border: 2px solid #431407;
+    color: var(--ember);
+    background: var(--gold);
     border-radius: 20px;
     margin-bottom: 8px;
-    box-shadow: 0 2.5px 0px #431407;
   }
 
   h2 {
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: #431407;
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--cream);
     margin: 0;
     letter-spacing: -0.5px;
-    text-transform: uppercase;
   }
 
   p {
-    font-size: 0.88rem;
-    color: #64748b;
-    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--blush);
     margin-top: 4px;
   }
 }
 
-// Botones interactivos tipo Arcade / UIverse
 .btn-uiverse {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   width: 100%;
+  border: none;
   border-radius: 14px;
-  font-size: 0.92rem;
-  font-weight: 800;
+  font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.12s ease;
   outline: none;
-  box-sizing: border-box;
   text-transform: uppercase;
 
   &:active {
-    transform: translateY(4px);
+    transform: translateY(3px);
   }
 
   &:disabled {
@@ -92,24 +109,29 @@
 
 .btn-text-content {
   display: inline-block;
-  letter-spacing: 0.6px;
+  margin: 0;
+  padding: 0;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  line-height: 1;
 }
 
-// Botón Escáner DNI (Azul marino arcade)
+// Botón Escáner DNI
 .btn-scan {
-  background: #0284c7;
-  color: #ffffff !important;
-  border: 2.5px solid #082f49;
-  box-shadow: 0 5px 0px #082f49;
-  height: 50px;
+  background: var(--deep-sienna);
+  color: var(--cream) !important;
+  border: 2px solid var(--ember);
+  box-shadow: 0 4px 0px var(--ember);
+  height: 48px;
   margin-bottom: 18px;
 
   .btn-text-content {
-    color: #ffffff !important;
+    color: var(--cream) !important;
   }
 
   &:active {
-    box-shadow: 0 1px 0px #082f49;
+    box-shadow: 0 1px 0px var(--ember);
   }
 }
 
@@ -124,26 +146,29 @@
   flex-direction: column;
 }
 
-// Cajas de entrada: alto contraste y bordes sólidos
 .custom-input-box {
   display: flex;
   align-items: center;
-  background: #f8fafc;
-  border: 2px solid #cbd5e1;
+  background: var(--blush);
+  border: 2px solid var(--rust);
   border-radius: 14px;
   padding: 2px 14px;
-  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 
   &:focus-within {
-    border-color: #ea580c;
-    background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.22);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(240, 192, 96, 0.35);
+  }
+
+  &.invalid-field {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
   }
 
   .field-icon {
-    color: #64748b;
+    color: var(--deep-sienna);
     flex-shrink: 0;
-    margin-right: 10px;
+    margin-right: 8px;
   }
 }
 
@@ -153,11 +178,12 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #0f172a; // Texto oscuro nítido
-  font-size: 0.95rem;
+  color: var(--deep-sienna);
+  font-size: 0.92rem;
   font-weight: 600;
   padding: 12px 0;
   width: 100%;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
 
   &::placeholder {
     color: #94a3b8;
@@ -168,13 +194,13 @@
 .native-select {
   cursor: pointer;
   option {
-    background-color: #ffffff;
-    color: #0f172a;
+    background-color: var(--cream);
+    color: var(--deep-sienna);
   }
 }
 
 .error-msg {
-  color: #dc2626;
+  color: #fff0f0;
   font-size: 0.78rem;
   font-weight: 700;
   padding-top: 4px;
@@ -186,22 +212,21 @@
   }
 }
 
-// Sección Foto
 .photo-container {
-  margin: 8px 0 4px 0;
+  margin: 10px 0 6px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   .photo-preview-box {
-    width: 115px;
-    height: 115px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     overflow: hidden;
     margin-bottom: 12px;
-    border: 3.5px solid #ea580c;
-    background: #f1f5f9;
-    box-shadow: 0 5px 0px #431407;
+    border: 3.5px solid var(--gold);
+    background: var(--blush);
+    box-shadow: 0 5px 0px var(--ember);
 
     img {
       width: 100%;
@@ -211,48 +236,47 @@
   }
 
   .btn-photo {
-    background: #fff7ed;
-    border: 2.5px solid #ea580c;
-    color: #ea580c !important;
-    box-shadow: 0 4px 0px #9a3412;
+    background: var(--blush);
+    border: 2.5px solid var(--deep-sienna);
+    color: var(--deep-sienna) !important;
+    box-shadow: 0 4px 0px var(--ember);
     height: 48px;
 
     .btn-text-content {
-      color: #ea580c !important;
+      color: var(--deep-sienna) !important;
     }
 
     &:active {
-      box-shadow: 0 1px 0px #9a3412;
+      box-shadow: 0 1px 0px var(--ember);
     }
   }
 }
 
-// Botón de Enviar (Verde restaurante con relieve 3D)
 .btn-submit {
-  background: #16a34a;
-  color: #ffffff !important;
-  border: 2.5px solid #14532d;
-  box-shadow: 0 6px 0px #14532d;
+  background: var(--gold);
+  color: var(--ember) !important;
+  border: 2.5px solid var(--ember);
+  box-shadow: 0 6px 0px var(--ember);
   height: 52px;
   margin-top: 10px;
+  text-transform: uppercase;
 
   .btn-text-content {
-    color: #ffffff !important;
+    color: var(--ember) !important;
   }
 
   &:active {
-    box-shadow: 0 1px 0px #14532d;
+    box-shadow: 0 1px 0px var(--ember);
   }
 }
 
-// Banners de Notificación
 .feedback-banner {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 12px 14px;
   border-radius: 12px;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 700;
   margin: 4px 0;
 
