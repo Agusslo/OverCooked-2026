@@ -11,7 +11,7 @@
 
 ## 👥 Integrantes
 
-* **López, Agustín (Alfa)**: rama `feature/dev-alfa`
+* **López, Agustín Nicolás(Alfa)**: rama `feature/dev-alfa`
 * **Filippelli, Adrián (Beta)**: rama `feature/dev-beta`
 * **Fernández Waisberg, Gabriel (Gamma)**: rama `feature/dev-gamma`
 * **Catanese, Demián (Delta)**: rama `feature/dev-delta`
@@ -22,7 +22,7 @@
 
 | Integrante | Rama | Funcionalidades asignadas (TFI) | Fecha inicio | Fecha fin |
 | :--- | :--- | :--- | :--- | :--- |
-| **López, Agustín** | `feature/dev-alfa` | 1, ??? | dd/mm/2026 | dd/mm/2026 |
+| **López, Agustín** | `feature/dev-alfa` | 1, 2, ??? | dd/mm/2026 | dd/mm/2026 |
 | **Filippelli, Adrián** | `feature/dev-beta` | ??? | dd/mm/2026 | dd/mm/2026 |
 | **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | ??? | dd/mm/2026 | dd/mm/2026 |
 | **Catanese, Demián** | `feature/dev-delta` | ??? | dd/mm/2026 | dd/mm/2026 |
