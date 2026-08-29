@@ -27,3 +27,13 @@ export interface Usuario {
   estado: EstadoUsuario;
   created_at: string;
 }
+
+export interface IRegistro {
+  nombre: string;
+  apellido: string;
+  dni: number;
+  cuil: number;
+  email: string;
+  password: string;
+  foto_url: string;
+}

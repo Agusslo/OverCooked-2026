@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SupabaseService } from './supabase.service';
-import { Usuario } from '../models/usuario.model';
+import { IRegistro, Usuario } from '../models/usuario.model';
 
 @Injectable({
   providedIn: 'root',
@@ -49,6 +49,31 @@ export class AuthService {
     }
 
     this.usuarioActualSubject.next(usuario);
+    return usuario;
+  }
+
+  async registrarUser({ nombre, apellido, dni, cuil, email, password, foto_url }: IRegistro): Promise<Usuario> {
+    const { data, error } = await this.supabaseService.getClient().auth.signUp({
+      options: {
+        data: {
+          nombre: nombre,
+          apellido: apellido,
+          dni: dni,
+          cuil: cuil,
+          foto_url: foto_url,
+        }
+      },
+      email: email,
+      password: password,
+    });
+
+    if (error || !data.user) {
+      throw error ?? new Error('No se pudo registrar el usuario.');
+    }
+
+    const usuario = await this.obtenerUsuarioPorId(data.user.id);
+    this.usuarioActualSubject.next(usuario);
+
     return usuario;
   }
 
