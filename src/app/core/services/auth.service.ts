@@ -1,12 +1,15 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SupabaseService } from './supabase.service';
-import { IRegistro, Usuario } from '../models/usuario.model';
+import { IRegistro, IRegistroAnonimo, Usuario } from '../models/usuario.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  router = inject(Router);
+
   private usuarioActualSubject = new BehaviorSubject<Usuario | null>(null);
   usuarioActual$ = this.usuarioActualSubject.asObservable();
 
@@ -52,7 +55,7 @@ export class AuthService {
     return usuario;
   }
 
-  async registrarUser({ nombre, apellido, dni, cuil, email, password, foto_url }: IRegistro): Promise<Usuario> {
+  async registrarUsuario({ nombre, apellido, dni, cuil, email, password, foto_url }: IRegistro) {
     const { data, error } = await this.supabaseService.getClient().auth.signUp({
       options: {
         data: {
@@ -60,7 +63,7 @@ export class AuthService {
           apellido: apellido,
           dni: dni,
           cuil: cuil,
-          foto_url: foto_url,
+          foto_url: foto_url
         }
       },
       email: email,
@@ -70,11 +73,22 @@ export class AuthService {
     if (error || !data.user) {
       throw error ?? new Error('No se pudo registrar el usuario.');
     }
+  }
 
-    const usuario = await this.obtenerUsuarioPorId(data.user.id);
-    this.usuarioActualSubject.next(usuario);
+  async registrarAnonimo({ nombre, apellido, foto_url }: IRegistroAnonimo) {
+    const { data, error } = await this.supabaseService.getClient().auth.signInAnonymously({
+      options: {
+        data: {
+          nombre: nombre,
+          apellido: apellido,
+          foto_url: foto_url
+        }
+      },
+    });
 
-    return usuario;
+    if (error || !data.user) {
+      throw error ?? new Error('No se pudo registrar el usuario.');
+    }
   }
 
   async logout(): Promise<void> {
