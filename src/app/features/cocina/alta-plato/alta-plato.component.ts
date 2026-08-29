@@ -27,8 +27,8 @@ type Fotos = [string | null, string | null, string | null];
 @Component({
   selector: 'app-alta-plato',
   standalone: true,
-  templateUrl: './alta-plato.page.html',
-  styleUrls: ['./alta-plato.page.scss'],
+  templateUrl: './alta-plato.component.html',
+  styleUrls: ['./alta-plato.component.scss'],
   imports: [
     ReactiveFormsModule,
     IonContent,
