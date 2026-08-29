@@ -63,8 +63,12 @@ export class LoginPage {
     await this.intentarLogin(email!, clave!);
   }
 
-  irAAccesosRapidos(): void {
+  irAccesosRapidos(): void {
     this.router.navigateByUrl('/auth/accesos-rapidos');
+  }
+
+  irRegistro(): void {
+    this.router.navigateByUrl('/auth/registro');
   }
 
   private async intentarLogin(email: string, clave: string): Promise<void> {

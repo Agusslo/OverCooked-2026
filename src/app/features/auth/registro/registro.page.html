@@ -99,6 +99,25 @@
           </ion-text>
         }
 
+        <ion-item class="registro-field" lines="none">
+          <ion-input
+            type="password"
+            formControlName="repetirPassword"
+            placeholder="Repetir contraseña"
+            autocomplete="new-password"
+          ></ion-input>
+        </ion-item>
+
+        @if (form.controls.repetirPassword.hasError('required') && form.controls.repetirPassword.touched) {
+          <ion-text class="form-error" color="danger">
+            <p>Repetí tu contraseña.</p>
+          </ion-text>
+        } @else if (form.controls.repetirPassword.hasError('passwordsNoCoinciden') && form.controls.repetirPassword.touched) {
+          <ion-text class="form-error" color="danger">
+            <p>Las contraseñas no coinciden.</p>
+          </ion-text>
+        }
+
         <!-- Falta ver lo de la imagen -->
 
         @if (errorRegistro()) {
