@@ -16,7 +16,7 @@ export interface DatosNuevoEmpleado {
 @Injectable({
   providedIn: 'root',
 })
-export class UsuariosService {
+export class AdminService {
   constructor(private supabaseService: SupabaseService) {}
 
   async crearEmpleado(datos: DatosNuevoEmpleado): Promise<Usuario> {
@@ -77,5 +77,52 @@ export class UsuariosService {
     }
 
     return usuarioCreado as Usuario;
+  }
+
+  // Punto 6/7/8 del PDF: el dueño o supervisor aprueba o
+  // rechaza a un cliente que se registró solo (queda en
+  // 'pendiente' hasta que alguien decida). login() ya bloquea a
+  // cualquiera que no esté en 'aprobado', así que con solo
+  // cambiar el estado acá alcanza para habilitar o no el acceso.
+  async aprobarCliente(usuarioId: string): Promise<void> {
+    const { error } = await this.supabaseService
+      .getClient()
+      .from('usuarios')
+      .update({ estado: 'aprobado' })
+      .eq('id', usuarioId);
+
+    if (error) {
+      throw new Error('No se pudo aprobar al cliente.');
+    }
+  }
+
+  async rechazarCliente(usuarioId: string): Promise<void> {
+    const { error } = await this.supabaseService
+      .getClient()
+      .from('usuarios')
+      .update({ estado: 'rechazado' })
+      .eq('id', usuarioId);
+
+    if (error) {
+      throw new Error('No se pudo rechazar al cliente.');
+    }
+  }
+
+  // Lista de clientes esperando aprobación — la va a necesitar
+  // la pantalla donde el dueño/supervisor los ve y decide
+  // (punto 6 del PDF).
+  async obtenerClientesPendientes(): Promise<Usuario[]> {
+    const { data, error } = await this.supabaseService
+      .getClient()
+      .from('usuarios')
+      .select('*')
+      .eq('perfil', 'cliente')
+      .eq('estado', 'pendiente');
+
+    if (error) {
+      throw new Error('No se pudieron obtener los clientes pendientes.');
+    }
+
+    return (data ?? []) as Usuario[];
   }
 }
