@@ -65,7 +65,12 @@ ion-content.login-page {
   max-width: 600px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
 }
 
 .login-field {
@@ -79,7 +84,7 @@ ion-content.login-page {
   box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
   border: #D4603A 2px solid;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 .login-field ion-input {
@@ -93,9 +98,20 @@ ion-content.login-page {
 
 .form-error {
   width: 100%;
-  margin: -4px 0 0;
+  min-height: 18px;
+  margin: 6px 0 0;
   font-size: 0.8rem;
   text-align: center;
+  line-height: 1.2;
+}
+
+.form-error--placeholder {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.form-error--global {
+  margin-top: 4px;
 }
 
 .form-error p {
