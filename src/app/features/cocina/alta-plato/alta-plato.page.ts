@@ -18,7 +18,7 @@ import {
 import { Camera, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Haptics, NotificationType } from '@capacitor/haptics';
-import { ProductosService } from '../../../core/services/productos';
+import { ProductosService } from '../../../core/services/productos.service';
 
 type IndiceFoto = 0 | 1 | 2;
 // Las 3 fotos, en posiciones fijas: null = todavía no se cargó esa foto.
@@ -27,8 +27,8 @@ type Fotos = [string | null, string | null, string | null];
 @Component({
   selector: 'app-alta-plato',
   standalone: true,
-  templateUrl: './alta-plato.component.html',
-  styleUrls: ['./alta-plato.component.scss'],
+  templateUrl: './alta-plato.page.html',
+  styleUrls: ['./alta-plato.page.scss'],
   imports: [
     ReactiveFormsModule,
     IonContent,
