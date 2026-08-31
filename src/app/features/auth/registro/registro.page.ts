@@ -24,7 +24,15 @@ import { IRegistro } from '../../../core/models/usuario.model';
   standalone: true,
   templateUrl: './registro.page.html',
   styleUrls: ['./registro.page.scss'],
-  imports: [ReactiveFormsModule, IonContent, IonItem, IonInput, IonButton, IonSpinner, IonText],
+  imports: [
+    ReactiveFormsModule,
+    IonContent,
+    IonItem,
+    IonInput,
+    IonButton,
+    IonSpinner,
+    IonText,
+  ],
 })
 export class RegistroPage {
   private fb = inject(FormBuilder);
@@ -35,7 +43,7 @@ export class RegistroPage {
   errorRegistro = signal<string | null>(null);
 
   private passwordsIgualesValidator: ValidatorFn = (
-    group: AbstractControl
+    group: AbstractControl,
   ): ValidationErrors | null => {
     const password = group.get('password');
     const repetirPassword = group.get('repetirPassword');
@@ -45,27 +53,52 @@ export class RegistroPage {
     }
 
     if (repetirPassword.value && password.value !== repetirPassword.value) {
-      repetirPassword.setErrors({ ...repetirPassword.errors, passwordsNoCoinciden: true });
+      repetirPassword.setErrors({
+        ...repetirPassword.errors,
+        passwordsNoCoinciden: true,
+      });
     } else if (repetirPassword.hasError('passwordsNoCoinciden')) {
-      const { passwordsNoCoinciden, ...otrosErrores } = repetirPassword.errors ?? {};
-      repetirPassword.setErrors(Object.keys(otrosErrores).length ? otrosErrores : null);
+      const { passwordsNoCoinciden, ...otrosErrores } =
+        repetirPassword.errors ?? {};
+      repetirPassword.setErrors(
+        Object.keys(otrosErrores).length ? otrosErrores : null,
+      );
     }
 
     return null;
+  };
+
+  // Validador cross-field: verifica que los 8 dígitos del DNI
+  // coincidan con las posiciones 2–9 del CUIL.
+  // Estructura CUIL: XX + DNI(8 dígitos) + dígito verificador = 11 dígitos.
+  private cuilMatchDniValidator: ValidatorFn = (
+    group: AbstractControl,
+  ): ValidationErrors | null => {
+    const dni = (group.get('dni')?.value || '') as string;
+    const cuil = (group.get('cuil')?.value || '') as string;
+
+    if (!dni || !cuil || cuil.length !== 11 || !/^\d{8}$/.test(dni)) {
+      return null;
+    }
+
+    const dniEnCuil = cuil.substring(2, 10);
+    return dniEnCuil === dni ? null : { cuilNoMatchDni: true };
   };
 
   form = this.fb.group(
     {
       nombre: ['', [Validators.required]],
       apellido: ['', [Validators.required]],
-      dni: ['', [Validators.required, Validators.pattern(/^\d{7,8}$/)]],
+      dni: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
       cuil: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       repetirPassword: ['', [Validators.required]],
       foto_url: [''], // Revisar que onda
     },
-    { validators: this.passwordsIgualesValidator }
+    {
+      validators: [this.passwordsIgualesValidator, this.cuilMatchDniValidator],
+    },
   );
 
   async registrarse(): Promise<void> {
@@ -74,7 +107,8 @@ export class RegistroPage {
       return;
     }
 
-    const { nombre, apellido, dni, cuil, email, password, foto_url } = this.form.getRawValue();
+    const { nombre, apellido, dni, cuil, email, password, foto_url } =
+      this.form.getRawValue();
 
     const datos: IRegistro = {
       nombre: nombre!,
@@ -102,7 +136,9 @@ export class RegistroPage {
       this.router.navigateByUrl('/auth/login');
     } catch (error) {
       this.errorRegistro.set(
-        error instanceof Error ? error.message : 'No se pudo completar el registro.'
+        error instanceof Error
+          ? error.message
+          : 'No se pudo completar el registro.',
       );
     } finally {
       this.cargando.set(false);
