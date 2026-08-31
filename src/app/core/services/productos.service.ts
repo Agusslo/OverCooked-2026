@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
-import { Producto, SectorProducto, TipoProducto } from '../models/producto.model';
+import { Producto, TipoProducto, SectorProducto } from '../models/producto.model';
 
 export interface DatosNuevoProducto {
   nombre: string;

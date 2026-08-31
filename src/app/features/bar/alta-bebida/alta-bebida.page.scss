@@ -5,19 +5,19 @@
 
   // Nombres y hex tomados literal de la "Guía de Diseño Visual"
   // (Sección 01, Paleta de Colores). Mismos valores que usa el login.
-  --terracotta: #ee7a4f; // fondo principal
+  --terracotta: #ee7a4f;   // fondo principal
   --burnt-orange: #c45030; // superficies secundarias / panel
-  --deep-sienna: #a83820; // cards / paneles
-  --ember: #8c2e14; // énfasis profundo
-  --peach: #f5956b; // superficies claras
-  --blush: #f9bfa0; // highlights sutiles / fondo de inputs
-  --gold: #f0c060; // acento / CTA
-  --gold-deep: #d4a040; // acento hover
-  --cream: #fef5ee; // texto principal
-  --rust: #d4603a; // bordes / dividers
+  --deep-sienna: #a83820;  // cards / paneles
+  --ember: #8c2e14;        // énfasis profundo
+  --peach: #f5956b;        // superficies claras
+  --blush: #f9bfa0;        // highlights sutiles / fondo de inputs
+  --gold: #f0c060;         // acento / CTA
+  --gold-deep: #d4a040;    // acento hover
+  --cream: #fef5ee;        // texto principal
+  --rust: #d4603a;         // bordes / dividers
 }
 
-ion-content.plato-page {
+ion-content.bebida-page {
   --background: var(--terracotta);
   --padding-top: 0;
   --padding-bottom: 0;
@@ -26,7 +26,7 @@ ion-content.plato-page {
   font-family: 'ADLaM Display', system-ui, sans-serif;
 }
 
-.plato-shell {
+.bebida-shell {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -68,7 +68,7 @@ ion-content.plato-page {
   }
 }
 
-.plato-card {
+.bebida-card {
   flex: 1;
   width: 100%;
   box-sizing: border-box;
@@ -80,7 +80,7 @@ ion-content.plato-page {
   align-items: center;
 }
 
-.plato-form {
+.bebida-form {
   width: 100%;
   max-width: 600px;
   display: flex;
@@ -88,7 +88,7 @@ ion-content.plato-page {
   gap: 4px;
 }
 
-.plato-field {
+.bebida-field {
   --background: var(--blush);
   --border-radius: 24px;
   --padding-start: 20px;
@@ -269,7 +269,7 @@ ion-content.plato-page {
   }
 }
 
-.plato-submit {
+.bebida-submit {
   --background: var(--gold);
   --background-activated: var(--gold-deep);
   --background-hover: var(--gold-deep);
@@ -289,7 +289,7 @@ ion-content.plato-page {
     padding: 40px 20px 24px;
   }
 
-  .plato-card {
+  .bebida-card {
     padding: 26px 20px 32px;
   }
 }

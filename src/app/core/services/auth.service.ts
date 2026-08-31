@@ -55,24 +55,45 @@ export class AuthService {
     return usuario;
   }
 
-  async registrarUsuario({ nombre, apellido, dni, cuil, email, password, foto_url }: IRegistro) {
+  async registrarUsuario({ nombre, apellido, dni, cuil, email, password, foto_url }: IRegistro): Promise<Usuario> {
     const { data, error } = await this.supabaseService.getClient().auth.signUp({
-      options: {
-        data: {
-          nombre: nombre,
-          apellido: apellido,
-          dni: dni,
-          cuil: cuil,
-          foto_url: foto_url
-        }
-      },
-      email: email,
-      password: password,
+      email,
+      password,
     });
 
     if (error || !data.user) {
       throw error ?? new Error('No se pudo registrar el usuario.');
     }
+
+    // El registro público siempre crea un perfil 'cliente', y
+    // arranca en 'pendiente' — coincide con lo que pide el PDF:
+    // un cliente registrado necesita que el dueño o supervisor
+    // lo apruebe antes de poder loguearse (login() ya rechaza a
+    // los que no están en estado 'aprobado').
+    const { data: usuarioCreado, error: errorInsert } = await this.supabaseService
+      .getClient()
+      .from('usuarios')
+      .insert({
+        id: data.user.id,
+        nombre,
+        apellido,
+        dni: String(dni),
+        cuil: String(cuil),
+        email,
+        perfil: 'cliente',
+        foto_url,
+        estado: 'pendiente',
+      })
+      .select()
+      .single();
+
+    if (errorInsert || !usuarioCreado) {
+      throw new Error(
+        errorInsert?.message ?? 'No se pudo guardar el usuario en la base de datos.'
+      );
+    }
+
+    return usuarioCreado as Usuario;
   }
 
   async registrarAnonimo({ nombre, apellido, foto_url }: IRegistroAnonimo) {
