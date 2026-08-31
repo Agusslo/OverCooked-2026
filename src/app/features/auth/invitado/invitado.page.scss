@@ -18,15 +18,19 @@ ion-content.invitado-page {
     --padding-bottom: 0;
     --padding-start: 0;
     --padding-end: 0;
+    --overflow: hidden;
+    overflow: hidden;
     font-family: 'ADLaM Display', system-ui, sans-serif;
 }
 
 .invitado-shell {
-    min-height: 100%;
+    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     background: var(--bg-hero);
     font-family: 'ADLaM Display', system-ui, sans-serif;
+    overflow: hidden;
 }
 
 .brand {
@@ -34,7 +38,11 @@ ion-content.invitado-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 36px 0 20px;
+    padding: 56px 0 32px;
+}
+
+.brand__picker {
+    margin: 0;
 }
 
 .brand__logo {
@@ -50,10 +58,11 @@ ion-content.invitado-page {
     box-sizing: border-box;
     background: var(--bg-panel);
     border-radius: 53px 53px 0 0;
-    padding: 28px 24px 32px;
+    padding: 16px 24px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden;
 }
 
 .invitado-title {
@@ -72,6 +81,7 @@ ion-content.invitado-page {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    
 }
 
 .foto-picker {
@@ -79,12 +89,12 @@ ion-content.invitado-page {
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .foto-picker__circle {
-    width: 96px;
-    height: 96px;
+    width: 220px;
+    height: 220px;
     border-radius: 50%;
     background: var(--accent-light);
     border: #d4603a 2px dashed;
@@ -94,6 +104,7 @@ ion-content.invitado-page {
     justify-content: center;
     overflow: hidden;
     padding: 0;
+    margin-top: 10px;
     cursor: pointer;
 }
 
@@ -160,7 +171,7 @@ ion-content.invitado-page {
     --border-radius: 12px;
     --box-shadow: none;
     height: 52px;
-    margin-top: 8px;
+    margin-top: 10px;
     font-family: 'ADLaM Display', system-ui, sans-serif;
     font-weight: 800;
     letter-spacing: 0.04em;
@@ -186,16 +197,9 @@ ion-content.invitado-page {
     letter-spacing: 0.04em;
 }
 
-@media (max-width: 420px) {
-    .brand {
-        padding: 28px 0 16px;
-    }
+@media (max-width: 380px) {
+.foto-picker__circle {
+    width: 120px;
+    height: 120px;}
 
-    .brand__logo {
-        width: 130px;
-    }
-
-    .invitado-card {
-        padding: 24px 20px 28px;
-    }
 }

@@ -25,6 +25,7 @@ ion-content.login-page {
 
 .login-shell {
     min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     background: var(--bg-hero);
@@ -42,7 +43,7 @@ ion-content.login-page {
 }
 
 .brand__logo {
-    width: 230px;
+    width: 170px;
     height: auto;
     filter: brightness(0) invert(1);
     display: block;
@@ -169,21 +170,17 @@ ion-content.login-page {
 }
 
 
+
+
 .quick-chip ion-icon {
     color: var(--accent-light);
     font-size: 0.9rem;
 }
 
-@media (max-width: 420px) {
-    .brand {
-        padding: 44px 0 26px;
-    }
+@media (min-width: 420px) {
 
     .brand__logo {
-        width: 165px;
+        width: 270px;
     }
 
-    .login-card {
-        padding: 26px 20px 24px;
-    }
 }

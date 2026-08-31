@@ -1,25 +1,33 @@
 <ion-content class="accesos-rapidos-page">
   <div class="accesos-rapidos-shell">
-    <h1 class="accesos-rapidos-titulo">Accesos rápidos</h1>
-    <p class="accesos-rapidos-subtitulo">Elegí un perfil para ingresar con un usuario de prueba.</p>
-
-    <div class="quick-chip-list">
+    <div class="quick-list" role="list">
       @for (acceso of accesosRapidos; track acceso.email) {
-        <ion-chip class="quick-chip" (click)="accederRapido(acceso)" [disabled]="cargando()">
-          <ion-icon [name]="acceso.icono"></ion-icon>
-          <ion-label>{{ acceso.perfil }}</ion-label>
-        </ion-chip>
+        <button
+          type="button"
+          class="quick-item"
+          (click)="accederRapido(acceso)"
+          [disabled]="cargando()"
+          aria-label="Entrar como {{ acceso.perfil }}"
+        >
+          <span class="quick-item__content">
+            <span class="quick-item__label">{{ acceso.perfil.toUpperCase() }}</span>
+            <span class="quick-item__description">{{ acceso.descripcion }}</span>
+          </span>
+          <span class="quick-item__arrow" aria-hidden="true">›</span>
+        </button>
       }
     </div>
 
-    @if (cargando()) {
-      <ion-spinner name="crescent"></ion-spinner>
-    }
+    <div class="quick-status">
+      @if (cargando()) {
+        <ion-spinner name="crescent"></ion-spinner>
+      }
 
-    @if (errorLogin()) {
-      <ion-text class="form-error" color="danger">
-        <p>{{ errorLogin() }}</p>
-      </ion-text>
-    }
+      @if (errorLogin()) {
+        <ion-text class="form-error" color="danger">
+          <p>{{ errorLogin() }}</p>
+        </ion-text>
+      }
+    </div>
   </div>
 </ion-content>
