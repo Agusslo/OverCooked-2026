@@ -1,0 +1,48 @@
+<ion-content class="ion-padding">
+  <h1>Clientes pendientes de aprobación</h1>
+
+  @if (cargando()) {
+    <ion-spinner name="crescent"></ion-spinner>
+  }
+
+  @if (error()) {
+    <ion-text color="danger">
+      <p>{{ error() }}</p>
+    </ion-text>
+  }
+
+  @if (!cargando() && clientes().length === 0) {
+    <p>No hay clientes esperando aprobación.</p>
+  }
+
+  <ion-list>
+    @for (cliente of clientes(); track cliente.id) {
+      <ion-item>
+        <ion-avatar slot="start">
+          <img [src]="cliente.foto_url" alt="Foto de {{ cliente.nombre }}" />
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ cliente.apellido }}, {{ cliente.nombre }}</h2>
+          <p>{{ cliente.email }}</p>
+        </ion-label>
+        <ion-button
+          slot="end"
+          color="success"
+          [disabled]="procesando() === cliente.id"
+          (click)="aprobar(cliente)"
+        >
+          Aceptar
+        </ion-button>
+        <ion-button
+          slot="end"
+          color="danger"
+          fill="outline"
+          [disabled]="procesando() === cliente.id"
+          (click)="rechazar(cliente)"
+        >
+          Rechazar
+        </ion-button>
+      </ion-item>
+    }
+  </ion-list>
+</ion-content>
