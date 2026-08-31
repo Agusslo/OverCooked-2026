@@ -4,21 +4,15 @@ import {
   ViewChild,
   inject,
   signal,
+  CUSTOM_ELEMENTS_SCHEMA,
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import {
-  IonContent,
-  IonItem,
-  IonInput,
-  IonTextarea,
-  IonButton,
-  IonSpinner,
-  IonText,
-} from '@ionic/angular';
 import { Camera, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { ProductosService } from '../../../core/services/productos.service';
+import { RouterLink } from '@angular/router';
 
 type IndiceFoto = 0 | 1 | 2;
 // Las 3 fotos, en posiciones fijas: null = todavía no se cargó esa foto.
@@ -29,16 +23,8 @@ type Fotos = [string | null, string | null, string | null];
   standalone: true,
   templateUrl: './alta-plato.page.html',
   styleUrls: ['./alta-plato.page.scss'],
-  imports: [
-    ReactiveFormsModule,
-    IonContent,
-    IonItem,
-    IonInput,
-    IonTextarea,
-    IonButton,
-    IonSpinner,
-    IonText,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AltaPlatoPage {
   @ViewChild('videoCamara') videoCamara?: ElementRef<HTMLVideoElement>;

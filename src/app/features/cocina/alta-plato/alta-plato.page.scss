@@ -1,295 +1,579 @@
-@import url('https://fonts.googleapis.com/css2?family=ADLaM+Display:wght@400;500;700&display=swap');
+/* =============================================
+   Alta de Plato — Sin scroll, full responsive
+   Sistema de diseño: paleta terracota #ee7a4f
+   Tipografía: ADLaM Display (display) + ADLaM Display (cuerpo)
+   ============================================= */
 
+/* ---------- Variables ---------- */
 :host {
-  font-family: 'ADLaM Display', system-ui, sans-serif;
+  /* Colores */
+  --color-bg:       #ee7a4f;
+  --color-card:     #c45030;
+  --color-header:   #c45030;
+  --color-input:    #a83820;
+  --color-deep:     #8c2e14;
+  --color-gold:     #f0c060;
+  --color-gold-dim: rgba(240, 192, 96, 0.25);
+  --color-rust:     #d4603a;
+  --color-cream:    #fef5ee;
+  --color-peach:    #f9bfa0;
+  --color-error:    #f5956b;
 
-  // Nombres y hex tomados literal de la "Guía de Diseño Visual"
-  // (Sección 01, Paleta de Colores). Mismos valores que usa el login.
-  --terracotta: #ee7a4f;   // fondo principal
-  --burnt-orange: #c45030; // superficies secundarias / panel
-  --deep-sienna: #a83820;  // cards / paneles
-  --ember: #8c2e14;        // énfasis profundo
-  --peach: #f5956b;        // superficies claras
-  --blush: #f9bfa0;        // highlights sutiles / fondo de inputs
-  --gold: #f0c060;         // acento / CTA
-  --gold-deep: #d4a040;    // acento hover
-  --cream: #fef5ee;        // texto principal
-  --rust: #d4603a;         // bordes / dividers
+  /* Radios */
+  --radius-card:  24px;
+  --radius-input: 12px;
+  --radius-btn:   14px;
+
+  /* Fuentes */
+  --font-display: 'ADLaM Display', system-ui, sans-serif;
+  --font-body:    'ADLaM Display', system-ui, sans-serif;
+
+  /*
+    Espaciado fluido atado a dvh y vw:
+    En pantallas cortas se comprimen solos,
+    en pantallas grandes crecen dinámicamente.
+  */
+  --field-py:   clamp(0.42rem, 1.4dvh, 0.85rem);
+  --field-px:   clamp(0.75rem, 2vw,    1rem);
+  --form-gap:   clamp(0.5rem,  2vw, 4rem);
+  --header-v:   clamp(0.85rem, 2.5dvh, 2rem);
+  --header-h:   clamp(1rem,    3vw,    1.75rem);
+  --btn-py:     clamp(0.55rem, 1.8dvh, 0.9rem);
+  --icon-size:  clamp(14px,    2dvh,   18px);
 }
 
-ion-content.plato-page {
-  --background: var(--terracotta);
-  --padding-top: 0;
-  --padding-bottom: 0;
-  --padding-start: 0;
-  --padding-end: 0;
-  font-family: 'ADLaM Display', system-ui, sans-serif;
-}
+/* ---------- Wrapper: ocupa exactamente el viewport ---------- */
 
-.plato-shell {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: var(--terracotta);
-}
-
-.brand {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 48px 24px 28px;
-  text-align: center;
-
-  &__badge {
-    display: inline-block;
-    padding: 4px 16px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    color: var(--ember);
-    background: var(--gold);
-    border-radius: 20px;
-    margin-bottom: 10px;
-  }
-
-  &__title {
-    color: var(--cream);
-    font-size: 1.9rem;
-    font-weight: 700;
-    margin: 0;
-  }
-
-  &__subtitle {
-    color: var(--blush);
-    font-size: 0.85rem;
-    font-weight: 500;
-    margin-top: 4px;
-  }
-}
-
-.plato-card {
-  flex: 1;
-  width: 100%;
-  box-sizing: border-box;
-  background: var(--burnt-orange);
-  border-radius: 53px 53px 0 0;
-  padding: 30px 24px 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.plato-form {
-  width: 100%;
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.plato-field {
-  --background: var(--blush);
-  --border-radius: 24px;
-  --padding-start: 20px;
-  --padding-end: 20px;
-  --min-height: 54px;
-  --highlight-height: 0;
-  border-radius: 24px;
-  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
-  border: var(--rust) 2px solid;
-  overflow: hidden;
-  margin-bottom: 16px;
-
-  &--textarea {
-    --min-height: 90px;
-    padding: 10px 0;
-  }
-
-  ion-input,
-  ion-textarea {
-    --placeholder-color: var(--deep-sienna);
-    --color: var(--deep-sienna);
-    font-size: 0.92rem;
-    font-weight: 700;
-    font-family: 'ADLaM Display', system-ui, sans-serif;
-  }
-}
-
-.form-error {
-  display: block;
-  width: 100%;
-  margin: -10px 0 8px;
-  font-size: 0.78rem;
-
-  p {
-    margin: 0;
-    color: #fff0f0;
-    font-weight: 600;
-  }
-
-  &.text-center {
-    text-align: center;
-  }
-}
-
-.form-success {
-  display: block;
-  width: 100%;
-  margin: 4px 0 8px;
-  font-size: 0.85rem;
-  text-align: center;
-
-  p {
-    margin: 0;
-    color: var(--cream);
-    font-weight: 700;
-  }
-}
-
-// Cámara web (fallback de escritorio)
-.camera-box {
-  width: 100%;
-  border-radius: 20px;
-  overflow: hidden;
-  border: 2px solid var(--rust);
-  margin-bottom: 16px;
-
-  video {
-    width: 100%;
-    display: block;
-    background: #000;
-  }
-
-  .camera-actions {
-    display: flex;
-    gap: 8px;
-    padding: 10px;
-    background: var(--deep-sienna);
-  }
-
-  .camera-btn {
-    flex: 1;
-    margin: 0;
-    --border-radius: 12px;
-    font-weight: 700;
-
-    &--cancel {
-      --background: var(--ember);
-      --color: var(--blush);
-    }
-
-    &--capture {
-      --background: var(--gold);
-      --color: var(--ember);
-    }
-  }
-}
-
-// Grilla de 3 fotos
-.fotos-titulo {
-  color: var(--cream);
-  font-size: 0.82rem;
-  font-weight: 700;
-  text-align: center;
-  margin: 6px 0 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.fotos-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 6px;
-}
-
-.foto-slot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.foto-slot-preview {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 2.5px solid var(--gold);
-  background: var(--blush);
-  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.2);
+.plato-page-wrapper {
+  height: 100dvh;          /* dynamic viewport — respeta barra del navegador */
+  overflow: hidden;        /* cero scroll en la página */
   display: flex;
   align-items: center;
   justify-content: center;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  &.foto-slot-vacio {
-    border-style: dashed;
-    border-color: var(--peach);
-    box-shadow: none;
-    color: var(--deep-sienna);
-    font-size: 1.5rem;
-    font-weight: 900;
-  }
+  background-color: var(--color-bg);
+  font-family: var(--font-body);
+  /* Vignette decorativa en desktop */
+  background-image: radial-gradient(
+    ellipse at 65% 35%,
+    rgba(255, 160, 100, 0.15) 0%,
+    transparent 65%
+  );
 }
 
-.foto-slot-botones {
+/* ---------- Contenedor central ---------- */
+
+.main-container {
+  width: min(100%, 420px);
+  height: 100%;           /* móvil: ocupa todo */
   display: flex;
-  gap: 4px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ---------- Card ---------- */
+
+.card-box {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-
-  button {
-    flex: 1;
-    padding: 6px 2px;
-    font-size: 0.6rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    border-radius: 10px;
-    border: none;
-    background: var(--deep-sienna);
-    color: var(--blush);
-    cursor: pointer;
-    font-family: 'ADLaM Display', system-ui, sans-serif;
-
-    &:active {
-      background: var(--ember);
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  }
+  max-height: 100dvh;
+  overflow: hidden;        /* sin scroll interno */
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow:
+    0 32px 80px rgba(140, 46, 20, 0.55),
+    0 0 0 1px rgba(249, 191, 160, 0.1);
 }
 
-.plato-submit {
-  --background: var(--gold);
-  --background-activated: var(--gold-deep);
-  --background-hover: var(--gold-deep);
-  --color: var(--ember);
-  --border-radius: 12px;
-  --box-shadow: none;
-  height: 54px;
-  margin-top: 12px;
-  font-family: 'ADLaM Display', system-ui, sans-serif;
-  font-weight: 800;
+/* ---------- Header: tamaño fijo y compacto ---------- */
+
+.header-box {
+  flex-shrink: 0;          /* nunca se aplasta */
+  background: var(--color-header);
+  padding: var(--header-v) var(--header-h);
+  position: relative;
+  overflow: hidden;
+}
+
+.header-box::before,
+.header-box::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid var(--color-gold);
+  opacity: 0.1;
+  pointer-events: none;
+}
+.header-box::before { width: 140px; height: 140px; top: -35px; right: -35px; }
+.header-box::after  { width:  84px; height:  84px; top: -14px; right: -14px; }
+
+.btn-back {
+  background: none;
+  border: none;
+  color: var(--color-gold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  margin-bottom: clamp(0.4rem, 1.2dvh, 0.9rem);
+  transition: transform 0.2s ease, color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-back:hover {
+  transform: translateX(-2px);
+  color: var(--color-cream);
+}
+
+.btn-back:active {
+  transform: scale(0.95);
+}
+
+.btn-back svg {
+  width: 20px;
+  height: 20px;
+}
+
+.header-box h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4.5dvh, 2rem);
+  font-weight: 700;
+  color: var(--color-cream);
+  line-height: 1.15;
+  margin: 0 0 0.25rem;
+}
+
+.header-box p {
+  font-size: clamp(0.72rem, 1.8dvh, 0.85rem);
+  color: var(--color-peach);
+  margin: 0;
+}
+
+/* ---------- Cuerpo del formulario: ocupa el espacio restante ---------- */
+
+.form-body {
+  flex: 1;
+  min-height: 0;           /* permite que flex-child se comprima */
+  overflow-y: auto;        /* permite scroll en mobile */
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--form-gap);
+  padding: var(--form-gap) var(--header-h) clamp(0.6rem, 2dvh, 1.5rem);
+  -webkit-overflow-scrolling: touch; /* smooth scroll en iOS */
+}
+
+/* ---------- Botones principales ---------- */
+
+.btn-uiverse {
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: var(--btn-py) 1rem;
+  border-radius: var(--radius-btn);
+  border: none;
+  font-family: var(--font-body);
+  font-size: clamp(0.68rem, 1.8dvh, 0.82rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-uiverse:active:not(:disabled) { transform: scale(0.97); }
+.btn-uiverse:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.btn-photo {
+  background: transparent;
+  color: var(--color-peach);
+  border: 1.5px solid rgba(249, 191, 160, 0.3);
+}
+.btn-photo:hover:not(:disabled) { border-color: var(--color-gold); color: var(--color-gold); }
+
+.btn-submit {
+  flex-shrink: 0;
+  background: var(--color-gold);
+  color: var(--color-deep);
+  border: none;
+  font-size: clamp(0.72rem, 1.9dvh, 0.88rem);
+  padding: var(--btn-py) 1rem;
+  border-radius: var(--radius-btn);
+}
+.btn-submit:hover:not(:disabled) { opacity: 0.92; }
+.btn-submit:disabled {
+  background: var(--color-header);
+  color: var(--color-peach);
+  box-shadow: none;
+  border: 1.5px solid var(--color-gold);
+}
+
+/* ---------- Grupos de campo ---------- */
+
+.input-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.15rem, 0.5dvh, 0.3rem);
+}
+
+/* ---------- Input box ---------- */
+
+.custom-input-box {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: var(--field-py) var(--field-px);
+  background: var(--color-input);
+  border-radius: var(--radius-input);
+  border: 1.5px solid transparent;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.custom-input-box:focus-within {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(240, 192, 96, 0.12);
+}
+.custom-input-box:focus-within .field-icon { color: var(--color-gold); }
+
+.custom-input-box.invalid-field { border-color: var(--color-error); }
+.custom-input-box.invalid-field .field-icon { color: var(--color-error); }
+
+.field-icon {
+  color: var(--color-rust);
+  flex-shrink: 0;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  transition: color 0.18s ease;
+}
+
+/* Escala los SVG dentro de .field-icon */
+.field-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.native-input,
+.native-select {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: max(1rem, clamp(0.75rem, 1.8dvh, 0.875rem)); /* ≥ 16px evita zoom iOS */
+  color: var(--color-cream);
+  caret-color: var(--color-gold);
+  min-width: 0;
+  line-height: 1;
+}
+
+.native-input::placeholder { color: var(--color-rust); }
+
+.native-select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.native-select option          { background: var(--color-deep); color: var(--color-cream); }
+.native-select option:disabled { color: var(--color-rust); }
+
+/* ---------- Error inline ---------- */
+
+.error-msg {
+  font-size: clamp(0.6rem, 1.4dvh, 0.72rem);
+  font-weight: 500;
+  color: var(--color-error);
+  padding-left: 0.2rem;
+}
+.error-msg.text-center { text-align: center; padding-left: 0; }
+
+/* ---------- Sección de fotos ---------- */
+
+.photos-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.photos-title {
+  font-size: clamp(0.8rem, 2dvh, 0.95rem);
+  font-weight: 600;
+  color: var(--color-cream);
+  margin: 0.9rem 0 0.9rem;
+  padding: 0;
+  letter-spacing: 0.02em;
+}
+
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.4rem, 2vw, 0.8rem);
+}
+
+.photo-slot {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: clamp(12px, 3vw, 20px);
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.photo-slot-active {
+  border: 2.5px solid var(--color-gold);
+  background: var(--color-deep);
+}
+
+.photo-slot-empty,
+.photo-slot-preview,
+.photo-slot-camera {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2.5px solid var(--color-gold);
+  border-radius: clamp(12px, 3vw, 20px);
+  background: var(--color-deep);
+  color: var(--color-gold);
+}
+
+.photo-slot-preview {
+  border: none;
+  background: var(--color-input);
+  overflow: hidden;
+}
+
+.photo-slot-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-slot-empty svg {
+  width: clamp(24px, 5vw, 32px);
+  height: clamp(24px, 5vw, 32px);
+  stroke-width: 2.5;
+}
+
+.photo-slot-camera {
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.45rem;
+  padding: 0.35rem;
+  box-sizing: border-box;
+}
+
+.photo-slot-camera video {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #000;
+  display: block;
+}
+
+.camera-actions {
+  display: flex;
+  gap: 0.35rem;
+  width: 100%;
+  margin-top: auto;
+}
+
+.camera-button {
+  flex: 1;
+  padding: clamp(0.42rem, 1.2dvh, 0.6rem);
+  border-radius: 10px;
+  border: none;
+  font-family: var(--font-body);
+  font-size: clamp(0.55rem, 1.3dvh, 0.7rem);
+  font-weight: 700;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
 }
 
-@media (max-width: 420px) {
-  .brand {
-    padding: 40px 20px 24px;
+.camera-button:hover { opacity: 0.88; }
+.camera-cancel  { background: var(--color-header); color: var(--color-peach); border: 1.5px solid rgba(212, 96, 58, 0.4); }
+.camera-capture { background: var(--color-gold);   color: var(--color-deep); }
+
+.photo-slot-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s ease;
+}
+
+.photo-slot-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.photo-slot-btn:disabled {
+  cursor: not-allowed;
+}
+
+/* ---------- Sección de foto ---------- */
+
+.photo-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.camera-box {
+  border-radius: var(--radius-input);
+  overflow: hidden;
+  background: var(--color-deep);
+  border: 1.5px solid var(--color-gold-dim);
+}
+.camera-box video {
+  width: 100%;
+  display: block;
+  max-height: clamp(100px, 25dvh, 220px);
+  object-fit: cover;
+}
+
+.camera-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem 0.75rem;
+}
+
+.camera-button {
+  flex: 1;
+  padding: clamp(0.5rem, 1.5dvh, 0.7rem);
+  border-radius: 10px;
+  border: none;
+  font-family: var(--font-body);
+  font-size: clamp(0.65rem, 1.6dvh, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.camera-button:hover { opacity: 0.88; }
+.camera-cancel  { background: var(--color-header); color: var(--color-peach); border: 1.5px solid rgba(212, 96, 58, 0.4); }
+.camera-capture { background: var(--color-gold);   color: var(--color-deep); }
+
+.photo-preview-box {
+  border-radius: var(--radius-input);
+  overflow: hidden;
+  border: 2px solid var(--color-gold-dim);
+}
+.photo-preview-box img {
+  width: 100%;
+  display: block;
+  max-height: clamp(80px, 20dvh, 180px);
+  object-fit: cover;
+}
+
+/* ---------- Banners de feedback ---------- */
+
+.feedback-banner {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: clamp(0.45rem, 1.4dvh, 0.75rem) 0.85rem;
+  border-radius: var(--radius-input);
+  font-size: clamp(0.65rem, 1.6dvh, 0.8rem);
+  font-weight: 500;
+  line-height: 1.3;
+}
+.feedback-banner.error   { background: rgba(140,46,20,.7); color: var(--color-error); border: 1.5px solid rgba(245,149,107,.3); }
+.feedback-banner.success { background: rgba(140,46,20,.7); color: var(--color-gold);  border: 1.5px solid var(--color-gold-dim); }
+.feedback-banner svg { flex-shrink: 0; }
+
+/* ==============================================
+   BREAKPOINTS
+   Los clamp() ya hacen la mayor parte del trabajo.
+   Aquí solo ajustamos lo que clamp no puede resolver.
+   ============================================== */
+
+/* móvil (< 480px): card a pantalla completa, sin bordes */
+@media (max-width: 479px) {
+  :host {
+    --header-v:   clamp(0.6rem, 2dvh, 1.2rem);
+    --header-h:   clamp(0.75rem, 2.5vw, 1rem);
+    --form-gap:   clamp(0.25rem, 0.8dvh, 0.5rem);
+    --btn-py:     clamp(0.5rem, 1.5dvh, 0.75rem);
+    --field-py:   clamp(0.35rem, 1.2dvh, 0.7rem);
   }
 
-  .plato-card {
-    padding: 26px 20px 32px;
+  .main-container {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    justify-content: flex-start;
+  }
+
+  .card-box {
+    border-radius: 0;
+    box-shadow: none;
+    height: 100dvh;
+    max-height: 100dvh;
+  }
+
+  .form-body {
+    padding: clamp(0.5rem, 1.5dvh, 1rem) clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .header-box h2 {
+    font-size: clamp(1.2rem, 3.5dvh, 1.6rem);
+  }
+
+  .btn-uiverse,
+  .btn-submit {
+    font-size: clamp(0.62rem, 1.6dvh, 0.75rem);
+    padding: clamp(0.5rem, 1.5dvh, 0.7rem) 0.8rem;
+  }
+}
+
+/* tablet (768px+): card flota centrada con sombra */
+@media (min-width: 768px) {
+  .main-container {
+    height: auto;
+    max-height: 96dvh;
+  }
+
+  .card-box {
+    max-height: 96dvh;
+  }
+}
+
+/* desktop (1024px+): hover elevado en la card */
+@media (min-width: 1024px) {
+  .card-box {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .card-box:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 56px 120px rgba(140, 46, 20, 0.65),
+      0 0 0 1px rgba(249, 191, 160, 0.15);
+  }
+  .btn-uiverse:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+}
+
+/* accesibilidad: sin animaciones */
+@media (prefers-reduced-motion: reduce) {
+  .btn-uiverse,
+  .card-box,
+  .custom-input-box {
+    transition: none !important;
+    transform: none !important;
   }
 }
