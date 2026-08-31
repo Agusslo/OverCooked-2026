@@ -1,0 +1,76 @@
+<ion-content class="invitado-page">
+  <div class="invitado-shell">
+    <div class="brand">
+      <div class="foto-picker brand__picker">
+        <button type="button" class="foto-picker__circle" (click)="elegirFoto()">
+          @if (fotoUrl()) {
+            <img [src]="fotoUrl()" alt="Foto de perfil" class="foto-picker__img" />
+          } @else {
+            <span class="foto-picker__icono">+</span>
+          }
+        </button>
+        <span class="foto-picker__label">Foto de perfil</span>
+        <input
+          #inputFoto
+          type="file"
+          accept="image/*"
+          hidden
+          (change)="onFotoSeleccionada($event)"
+        />
+      </div>
+    </div>
+    <div class="invitado-card">
+      <h1 class="invitado-title">Ingresar como invitado</h1>
+
+      <form [formGroup]="form" (ngSubmit)="continuar()" class="invitado-form">
+        <ion-item class="invitado-field" lines="none">
+          <ion-input
+            type="text"
+            formControlName="nombre"
+            placeholder="Nombre"
+            autocomplete="given-name"
+          ></ion-input>
+        </ion-item>
+
+        @if (form.controls.nombre.invalid && form.controls.nombre.touched) {
+          <ion-text class="form-error" color="danger">
+            <p>Ingresá tu nombre.</p>
+          </ion-text>
+        }
+
+        <ion-item class="invitado-field" lines="none">
+          <ion-input
+            type="text"
+            formControlName="apellido"
+            placeholder="Apellido"
+            autocomplete="family-name"
+          ></ion-input>
+        </ion-item>
+
+        @if (form.controls.apellido.invalid && form.controls.apellido.touched) {
+          <ion-text class="form-error" color="danger">
+            <p>Ingresá tu apellido.</p>
+          </ion-text>
+        }
+
+        @if (errorInvitado()) {
+          <ion-text class="form-error" color="danger">
+            <p>{{ errorInvitado() }}</p>
+          </ion-text>
+        }
+
+        <ion-button class="invitado-submit" expand="block" type="submit" [disabled]="cargando()">
+          @if (cargando()) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+            <span>CONTINUAR</span>
+          }
+        </ion-button>
+      </form>
+
+      <div class="secondary-actions">
+        <ion-button class="action-btn" type="button" expand="block" fill="clear" (click)="volverAlLogin()">VOLVER AL LOGIN</ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

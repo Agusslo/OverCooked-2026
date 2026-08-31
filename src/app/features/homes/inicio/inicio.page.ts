@@ -24,6 +24,6 @@ export class InicioPage {
 
   async cerrarSesion(): Promise<void> {
     await this.authService.logout();
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/auth/login');
   }
 }

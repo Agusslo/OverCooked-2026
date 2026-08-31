@@ -11,7 +11,8 @@ export type PerfilUsuario =
   | 'mozo'
   | 'cocinero'
   | 'cantinero'
-  | 'cliente';
+  | 'cliente' 
+  | 'anonimo';
 
 export type EstadoUsuario = 'pendiente' | 'aprobado' | 'rechazado';
 
@@ -26,4 +27,21 @@ export interface Usuario {
   foto_url: string;
   estado: EstadoUsuario;
   created_at: string;
+}
+
+export interface IRegistro {
+  nombre: string;
+  apellido: string;
+  dni: number;
+  cuil: number;
+  email: string;
+  password: string;
+  foto_url: string;
+}
+
+export interface IRegistroAnonimo {
+  nombre: string;
+  apellido: string;
+  foto_url: string;
+  perfil: string;
 }

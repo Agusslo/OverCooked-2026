@@ -1,0 +1,165 @@
+<ion-content class="registro-page">
+  <div class="registro-shell">
+    <div class="brand">
+      <img src="assets/icon/logo.png" alt="OverCooked" class="brand__logo" />
+    </div>
+    <div class="registro-card">
+      <h1 class="registro-title">Crear cuenta</h1>
+
+      <form [formGroup]="form" (ngSubmit)="registrarse()" class="registro-form">
+        <ion-item class="registro-field" lines="none">
+          <ion-input
+            type="text"
+            formControlName="nombre"
+            placeholder="Nombre"
+            autocomplete="given-name"
+          ></ion-input>
+        </ion-item>
+
+        @if (form.controls.nombre.invalid && form.controls.nombre.touched) {
+        <ion-text class="form-error" color="danger">
+          <p>Ingresá tu nombre.</p>
+        </ion-text>
+        }
+
+        <ion-item class="registro-field" lines="none">
+          <ion-input
+            type="text"
+            formControlName="apellido"
+            placeholder="Apellido"
+            autocomplete="family-name"
+          ></ion-input>
+        </ion-item>
+
+        @if (form.controls.apellido.invalid && form.controls.apellido.touched) {
+        <ion-text class="form-error" color="danger">
+          <p>Ingresá tu apellido.</p>
+        </ion-text>
+        }
+
+        <ion-item class="registro-field" lines="none">
+          <ion-input
+            type="tel"
+            formControlName="dni"
+            placeholder="DNI"
+            autocomplete="off"
+            inputmode="numeric"
+            maxlength="8"
+          ></ion-input>
+        </ion-item>
+
+        @if (form.controls.dni.invalid && form.controls.dni.touched) {
+        <ion-text class="form-error" color="danger">
+          <p>Ingresá un DNI válido (8 dígitos numéricos).</p>
+        </ion-text>
+        }
+
+        <ion-item class="registro-field" lines="none">
+          <ion-input
+            type="tel"
+            formControlName="cuil"
+            placeholder="CUIL"
+            autocomplete="off"
+            inputmode="numeric"
+            maxlength="11"
+          ></ion-input>
+        </ion-item>
+
+        @if (form.controls.cuil.invalid && form.controls.cuil.touched) {
+        <ion-text class="form-error" color="danger">
+          <p>Ingresá un CUIL válido (11 dígitos numéricos).</p>
+        </ion-text>
+        } @if (form.hasError('cuilNoMatchDni') && form.controls.cuil.touched &&
+        form.controls.dni.valid && form.controls.cuil.valid) {
+        <ion-text class="form-error" color="danger">
+          <p>El CUIL no coincide con el DNI ingresado.</p>
+        </ion-text>
+        }
+
+        <ion-item class="registro-field" lines="none">
+          <ion-input
+            type="email"
+            formControlName="email"
+            placeholder="Correo electrónico"
+            autocomplete="email"
+          ></ion-input>
+        </ion-item>
+
+        @if (form.controls.email.invalid && form.controls.email.touched) {
+        <ion-text class="form-error" color="danger">
+          <p>Ingresá un correo electrónico válido.</p>
+        </ion-text>
+        }
+
+        <ion-item class="registro-field" lines="none">
+          <ion-input
+            type="password"
+            formControlName="password"
+            placeholder="Contraseña"
+            autocomplete="new-password"
+          ></ion-input>
+        </ion-item>
+
+        @if (form.controls.password.invalid && form.controls.password.touched) {
+        <ion-text class="form-error" color="danger">
+          <p>La contraseña debe tener al menos 6 caracteres.</p>
+        </ion-text>
+        }
+
+        <ion-item class="registro-field" lines="none">
+          <ion-input
+            type="password"
+            formControlName="repetirPassword"
+            placeholder="Repetir contraseña"
+            autocomplete="new-password"
+          ></ion-input>
+        </ion-item>
+
+        @if (form.controls.repetirPassword.hasError('required') &&
+        form.controls.repetirPassword.touched) {
+        <ion-text class="form-error" color="danger">
+          <p>Repetí tu contraseña.</p>
+        </ion-text>
+        } @else if
+        (form.controls.repetirPassword.hasError('passwordsNoCoinciden') &&
+        form.controls.repetirPassword.touched) {
+        <ion-text class="form-error" color="danger">
+          <p>Las contraseñas no coinciden.</p>
+        </ion-text>
+        }
+
+        <!-- Falta ver lo de la imagen -->
+
+        @if (errorRegistro()) {
+        <ion-text class="form-error" color="danger">
+          <p>{{ errorRegistro() }}</p>
+        </ion-text>
+        }
+
+        <ion-button
+          class="registro-submit"
+          expand="block"
+          type="submit"
+          [disabled]="cargando()"
+        >
+          @if (cargando()) {
+          <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+          <span>REGISTRARME</span>
+          }
+        </ion-button>
+      </form>
+
+      <div class="secondary-actions">
+        <ion-button
+          class="action-btn"
+          type="button"
+          expand="block"
+          fill="clear"
+          (click)="volverAlLogin()"
+          >VOLVER AL LOGIN</ion-button
+        >
+      </div>
+    </div>
+  </div>
+</ion-content>

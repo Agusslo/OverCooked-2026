@@ -1,0 +1,33 @@
+<ion-content class="accesos-rapidos-page">
+  <div class="accesos-rapidos-shell">
+    <div class="quick-list" role="list">
+      @for (acceso of accesosRapidos; track acceso.email) {
+        <button
+          type="button"
+          class="quick-item"
+          (click)="accederRapido(acceso)"
+          [disabled]="cargando()"
+          aria-label="Entrar como {{ acceso.perfil }}"
+        >
+          <span class="quick-item__content">
+            <span class="quick-item__label">{{ acceso.perfil.toUpperCase() }}</span>
+            <span class="quick-item__description">{{ acceso.descripcion }}</span>
+          </span>
+          <span class="quick-item__arrow" aria-hidden="true">›</span>
+        </button>
+      }
+    </div>
+
+    <div class="quick-status">
+      @if (cargando()) {
+        <ion-spinner name="crescent"></ion-spinner>
+      }
+
+      @if (errorLogin()) {
+        <ion-text class="form-error" color="danger">
+          <p>{{ errorLogin() }}</p>
+        </ion-text>
+      }
+    </div>
+  </div>
+</ion-content>

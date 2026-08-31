@@ -1,23 +1,15 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { authRoutes } from './features/auth/auth.routes';
+import { adminRoutes } from './features/admin/admin.routes';
+import { cocinaRoutes } from './features/cocina/cocina.routes';
+import { barRoutes } from './features/bar/bar.routes';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'auth/login',
     pathMatch: 'full',
-  },
-  {
-    path: 'alta-empleado',
-    loadComponent: () =>
-      import('./features/admin/alta-empleado/alta-empleado.page').then((m) => m.AltaEmpleadoPage),
-    canActivate: [authGuard],
-    data: { perfiles: ['dueño', 'supervisor'] },
-  },
-  {
-    path: 'login',
-    loadComponent: () =>
-      import('./features/auth/login/login.page').then((m) => m.LoginPage),
   },
   {
     path: 'inicio',
@@ -25,4 +17,8 @@ export const routes: Routes = [
       import('./features/homes/inicio/inicio.page').then((m) => m.InicioPage),
     canActivate: [authGuard],
   },
+  { path: 'auth', children: authRoutes },
+  { path: 'admin', children: adminRoutes },
+  { path: 'cocina', children: cocinaRoutes },
+  { path: 'bar', children: barRoutes },
 ];

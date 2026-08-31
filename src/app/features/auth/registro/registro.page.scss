@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=ADLaM+Display:wght@400;500;700&display=swap');
+
+:host {
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+
+    // Misma paleta que login_page.scss — sistema de diseño único para toda la app
+    --bg-hero: #ee7a4f; // franja superior, donde va el logo
+    --bg-panel: #c45030; // panel inferior redondeado
+    --accent-dark: #a83820; // texto sobre fondos claros / botones secundarios
+    --accent-light: #f9bfa0; // fondo de los inputs / texto sobre fondos oscuros
+    --gold: #f0c060; // botón principal
+    --white: #ffffff;
+}
+
+ion-content.registro-page {
+    --background: var(--bg-hero);
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    --overflow: hidden;
+    overflow: hidden;
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.registro-shell {
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-hero);
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+    overflow: hidden;
+}
+
+.brand {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 36px 0 20px;
+}
+
+.brand__logo {
+    width: 150px;
+    height: auto;
+    filter: brightness(0) invert(1);
+    display: block;
+}
+
+.registro-card {
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--bg-panel);
+    border-radius: 53px 53px 0 0;
+    padding: 18px 24px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+.registro-title {
+    width: 100%;
+    max-width: 600px;
+    color: var(--white);
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 0 20px;
+}
+
+.registro-form {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+}
+
+.registro-field {
+    --background: var(--accent-light);
+    --border-radius: 24px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --min-height: 50px;
+    --highlight-height: 0;
+    border-radius: 24px;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
+    border: #D4603A 2px solid;
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.registro-field ion-input {
+    --placeholder-color: var(--accent-dark);
+    --color: var(--accent-dark);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.form-error {
+    width: 100%;
+    margin: -6px 0 4px;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.form-error p {
+    margin: 0;
+    color: #fff0f0;
+    font-weight: 600;
+}
+
+.registro-submit {
+    --background: var(--gold);
+    --background-activated: #dcab54;
+    --background-hover: #e6b661;
+    --color: var(--accent-dark);
+    --border-radius: 12px;
+    --box-shadow: none;
+    height: 52px;
+    margin-top: 8px;
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.secondary-actions {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 12px;
+}
+
+.action-btn {
+    --background: var(--accent-dark);
+    --background-activated: #8f2f1a;
+    --background-hover: #9a341d;
+    --color: var(--accent-light);
+    --border-radius: 12px;
+    --box-shadow: none;
+    height: 48px;
+    width: 100%;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+@media (max-width: 420px) {
+    .brand {
+        padding: 28px 0 16px;
+    }
+
+    .brand__logo {
+        width: 130px;
+    }
+
+    .registro-card {
+        padding: 24px 20px 28px;
+    }
+}

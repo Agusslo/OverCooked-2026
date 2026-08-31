@@ -1,48 +1,21 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import {
-  IonContent,
-  IonItem,
-  IonInput,
-  IonButton,
-  IonIcon,
-  IonSpinner,
-  IonText,
-  IonChip,
-  IonLabel,
-} from '@ionic/angular';
+import { IonContent, IonItem, IonInput, IonButton, IonSpinner, IonText } from '@ionic/angular';
 import { AuthService } from '../../../core/services/auth.service';
-
-interface AccesoRapido {
-  perfil: string;
-  email: string;
-  icono: string;
-}
 
 // Contraseña compartida por los usuarios de PRUEBA que van a
 // cargar en la base de datos (dueño, supervisor, metre, etc.).
 // Cuando armen ese script de datos iniciales, tiene que usar
 // esta misma contraseña para que los accesos rápidos funcionen.
-const CLAVE_PRUEBA = 'Password123';
+export const CLAVE_PRUEBA = 'Password123';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  imports: [
-    ReactiveFormsModule,
-    IonContent,
-    IonItem,
-    IonInput,
-    IonButton,
-    IonIcon,
-    IonSpinner,
-    IonText,
-    IonChip,
-    IonLabel,
-  ],
+  imports: [ReactiveFormsModule, IonContent, IonItem, IonInput, IonButton, IonSpinner, IonText],
 })
 export class LoginPage {
   // "inject()" es una forma alternativa de pedirle a Angular
@@ -71,20 +44,6 @@ export class LoginPage {
     clave: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  // Esta lista arma los accesos rápidos de forma dinámica (con
-  // *ngFor en el HTML) en vez de escribir un <ion-button> fijo
-  // por cada perfil. Así, si mañana cambian o agregan un perfil
-  // de prueba, alcanza con editar este array.
-  accesosRapidos: AccesoRapido[] = [
-    { perfil: 'Dueño', email: 'dueno@restaurante.com', icono: 'person-circle' },
-    { perfil: 'Supervisor', email: 'supervisor@restaurante.com', icono: 'shield-checkmark' },
-    { perfil: 'Metre', email: 'metre@restaurante.com', icono: 'people' },
-    { perfil: 'Mozo', email: 'mozo@restaurante.com', icono: 'restaurant' },
-    { perfil: 'Cocinero', email: 'cocinero@restaurante.com', icono: 'flame' },
-    { perfil: 'Cantinero', email: 'cantinero@restaurante.com', icono: 'wine' },
-    { perfil: 'Cliente', email: 'cliente@restaurante.com', icono: 'person' },
-  ];
-
   async iniciarSesion(): Promise<void> {
     if (this.form.invalid) {
       // markAllAsTouched() hace que Angular muestre los mensajes
@@ -104,8 +63,16 @@ export class LoginPage {
     await this.intentarLogin(email!, clave!);
   }
 
-  async accederRapido(acceso: AccesoRapido): Promise<void> {
-    await this.intentarLogin(acceso.email, CLAVE_PRUEBA);
+  irAccesosRapidos(): void {
+    this.router.navigateByUrl('/auth/accesos-rapidos');
+  }
+
+  irRegistro(): void {
+    this.router.navigateByUrl('/auth/registro');
+  }
+  
+  irAnonimo(): void {
+    this.router.navigateByUrl('/auth/invitado');
   }
 
   private async intentarLogin(email: string, clave: string): Promise<void> {

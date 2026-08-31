@@ -1,46 +1,38 @@
 <ion-content class="login-page">
-  <div class="login-shell">      
+  <div class="login-shell">
     <div class="brand">
-        <img src="assets/icon/logo.png" alt="OverCooked" class="brand__logo" />
-      </div>
+      <img src="assets/icon/logo.png" alt="OverCooked" class="brand__logo" />
+    </div>
     <div class="login-card">
 
 
       <form [formGroup]="form" (ngSubmit)="iniciarSesion()" class="login-form">
         <ion-item class="login-field" lines="none">
-          <ion-input
-            type="email"
-            formControlName="email"
-            placeholder="Correo electrónico"
-            autocomplete="email"
-          ></ion-input>
+          <ion-input type="email" formControlName="email" placeholder="Correo electrónico"
+            autocomplete="email"></ion-input>
         </ion-item>
 
         @if (form.controls.email.invalid && form.controls.email.touched) {
-          <ion-text class="form-error" color="danger">
-            <p>Ingresá un correo electrónico válido.</p>
-          </ion-text>
+        <ion-text class="form-error" color="danger">
+          <p>Ingresá un correo electrónico válido.</p>
+        </ion-text>
         }
 
         <ion-item class="login-field" lines="none">
-          <ion-input
-            type="password"
-            formControlName="clave"
-            placeholder="Contraseña"
-            autocomplete="current-password"
-          ></ion-input>
+          <ion-input type="password" formControlName="clave" placeholder="Contraseña"
+            autocomplete="current-password"></ion-input>
         </ion-item>
 
         @if (form.controls.clave.invalid && form.controls.clave.touched) {
-          <ion-text class="form-error" color="danger">
-            <p>La contraseña debe tener al menos 6 caracteres.</p>
-          </ion-text>
+        <ion-text class="form-error" color="danger">
+          <p>La contraseña debe tener al menos 6 caracteres.</p>
+        </ion-text>
         }
 
         @if (errorLogin()) {
-          <ion-text class="form-error" color="danger">
-            <p>{{ errorLogin() }}</p>
-          </ion-text>
+        <ion-text class="form-error" color="danger">
+          <p>{{ errorLogin() }}</p>
+        </ion-text>
         }
 
         <ion-button class="login-submit" expand="block" type="submit" [disabled]="cargando()">
@@ -53,21 +45,13 @@
       </form>
 
       <div class="secondary-actions">
-        <ion-button class="action-btn" type="button" expand="block" fill="clear">REGISTRO</ion-button>
-        <ion-button class="action-btn" type="button" expand="block" fill="clear">INVITADO</ion-button>
+        <ion-button class="action-btn" type="button" expand="block" fill="clear" (click)="irRegistro()">REGISTRO</ion-button>
+        <ion-button class="action-btn" type="button" expand="block" fill="clear" (click)="irAnonimo()">INVITADO</ion-button>
       </div>
 
       <div class="accesos-rapidos">
-        <ion-button class="quick-btn" type="button" expand="block" fill="clear">ACCESOS RÁPIDOS</ion-button>
-
-<!--         <div class="quick-chip-list">
-          @for (acceso of accesosRapidos; track acceso.email) {
-            <ion-chip class="quick-chip" (click)="accederRapido(acceso)">
-              <ion-icon [name]="acceso.icono"></ion-icon>
-              <ion-label>{{ acceso.perfil }}</ion-label>
-            </ion-chip>
-          }
-        </div> -->
+        <ion-button class="quick-btn" type="button" expand="block" fill="clear" (click)="irAccesosRapidos()">ACCESOS
+          RÁPIDOS</ion-button>
       </div>
     </div>
   </div>

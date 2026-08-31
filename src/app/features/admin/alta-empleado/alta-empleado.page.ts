@@ -20,7 +20,7 @@ import { Camera, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { QrScannerService } from '../../../core/services/qr-scanner';
-import { UsuariosService } from '../../../core/services/usuarios.service';
+import { AdminService } from '../../../core/services/admin.service';
 
 // Validador cross-field: verifica que los dígitos del DNI
 // coincidan con las posiciones 2–9 del CUIL.
@@ -64,7 +64,7 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private qrScannerService: QrScannerService,
-    private usuariosService: UsuariosService,
+    private adminService: AdminService,
     private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
@@ -212,7 +212,7 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
     const valores = this.empleadoForm.value;
 
     try {
-      await this.usuariosService.crearEmpleado({
+      await this.adminService.crearEmpleado({
         nombre: valores.nombre,
         apellido: valores.apellido,
         dni: valores.dni,
@@ -220,7 +220,7 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
         correo: valores.correo,
         clave: valores.clave,
         perfil: valores.perfil,
-        fotoDataUrl: this.fotoPersonal,
+        fotoDataUrl: this.fotoPersonal
       });
 
       this.mensajeExito = '¡Empleado registrado con éxito!';

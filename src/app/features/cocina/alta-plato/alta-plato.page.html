@@ -1,0 +1,164 @@
+<ion-content class="plato-page">
+  <div class="plato-shell">
+    <div class="brand">
+      <span class="brand__badge">COCINA</span>
+      <h1 class="brand__title">Nuevo Plato</h1>
+      <p class="brand__subtitle">Agregar plato a la carta</p>
+    </div>
+
+    <div class="plato-card">
+      <form
+        [formGroup]="platoForm"
+        (ngSubmit)="guardarPlato()"
+        class="plato-form"
+      >
+        <ion-item class="plato-field" lines="none">
+          <ion-input
+            type="text"
+            formControlName="nombre"
+            placeholder="Nombre del plato"
+          ></ion-input>
+        </ion-item>
+        @if (
+          platoForm.controls.nombre.invalid && platoForm.controls.nombre.touched
+        ) {
+          <ion-text class="form-error" color="danger">
+            <p>Ingresá un nombre (mínimo 2 caracteres).</p>
+          </ion-text>
+        }
+
+        <ion-item class="plato-field plato-field--textarea" lines="none">
+          <ion-textarea
+            formControlName="descripcion"
+            placeholder="Descripción del plato"
+            [autoGrow]="true"
+            rows="3"
+          ></ion-textarea>
+        </ion-item>
+        @if (
+          platoForm.controls.descripcion.invalid &&
+          platoForm.controls.descripcion.touched
+        ) {
+          <ion-text class="form-error" color="danger">
+            <p>La descripción debe tener al menos 10 caracteres.</p>
+          </ion-text>
+        }
+
+        <ion-item class="plato-field" lines="none">
+          <ion-input
+            type="number"
+            formControlName="tiempoElaboracion"
+            placeholder="Tiempo de elaboración (minutos)"
+          ></ion-input>
+        </ion-item>
+        @if (
+          platoForm.controls.tiempoElaboracion.invalid &&
+          platoForm.controls.tiempoElaboracion.touched
+        ) {
+          <ion-text class="form-error" color="danger">
+            <p>Ingresá un tiempo entre 1 y 240 minutos.</p>
+          </ion-text>
+        }
+
+        <ion-item class="plato-field" lines="none">
+          <ion-input
+            type="number"
+            formControlName="precio"
+            placeholder="Precio"
+          ></ion-input>
+        </ion-item>
+        @if (
+          platoForm.controls.precio.invalid && platoForm.controls.precio.touched
+        ) {
+          <ion-text class="form-error" color="danger">
+            <p>Ingresá un precio mayor a 0.</p>
+          </ion-text>
+        }
+
+        <!-- Cámara web: solo aparece mientras se está sacando una foto en el navegador -->
+        @if (camaraActiva()) {
+          <div class="camera-box">
+            <video #videoCamara autoplay playsinline></video>
+            <div class="camera-actions">
+              <ion-button
+                class="camera-btn camera-btn--cancel"
+                type="button"
+                (click)="cancelarCamara()"
+              >
+                Cancelar
+              </ion-button>
+              <ion-button
+                class="camera-btn camera-btn--capture"
+                type="button"
+                (click)="capturarFoto()"
+              >
+                Tomar foto
+              </ion-button>
+            </div>
+          </div>
+        }
+
+        <!-- Las 3 fotos -->
+        <p class="fotos-titulo">Fotos del plato (3 obligatorias)</p>
+        <div class="fotos-grid">
+          @for (foto of fotos(); track $index) {
+            <div class="foto-slot">
+              <div class="foto-slot-preview" [class.foto-slot-vacio]="!foto">
+                @if (foto) {
+                  <img [src]="foto" alt="Foto {{ $index + 1 }}" />
+                } @else {
+                  <span>{{ $index + 1 }}</span>
+                }
+              </div>
+              <div class="foto-slot-botones">
+                <button
+                  type="button"
+                  (click)="tomarFoto($index, 'camara')"
+                  [disabled]="cargando() || camaraActiva()"
+                >
+                  Cámara
+                </button>
+                <button
+                  type="button"
+                  (click)="tomarFoto($index, 'galeria')"
+                  [disabled]="cargando() || camaraActiva()"
+                >
+                  Galería
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+        @if (formIntentado() && !todasLasFotosCargadas()) {
+          <ion-text class="form-error text-center" color="danger">
+            <p>Las 3 fotos son obligatorias.</p>
+          </ion-text>
+        }
+
+        @if (mensajeError()) {
+          <ion-text class="form-error text-center" color="danger">
+            <p>{{ mensajeError() }}</p>
+          </ion-text>
+        }
+        @if (mensajeExito()) {
+          <ion-text class="form-success text-center">
+            <p>{{ mensajeExito() }}</p>
+          </ion-text>
+        }
+
+        <ion-button
+          class="plato-submit"
+          expand="block"
+          type="submit"
+          [disabled]="cargando()"
+        >
+          @if (cargando()) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+            <span>AGREGAR A LA CARTA</span>
+          }
+        </ion-button>
+      </form>
+    </div>
+  </div>
+</ion-content>
