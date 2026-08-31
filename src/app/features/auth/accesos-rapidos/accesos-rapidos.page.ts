@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent, IonChip, IonIcon, IonLabel, IonSpinner, IonText } from '@ionic/angular';
+import { IonContent, IonSpinner, IonText } from '@ionic/angular';
 import { AuthService } from '../../../core/services/auth.service';
 import { AccesoRapido } from '../auth.interfaces';
 import { CLAVE_PRUEBA } from '../login/login.page';
@@ -9,7 +9,7 @@ import { CLAVE_PRUEBA } from '../login/login.page';
   selector: 'app-accesos-rapidos',
   templateUrl: './accesos-rapidos.page.html',
   styleUrls: ['./accesos-rapidos.page.scss'],
-  imports: [IonContent, IonChip, IonIcon, IonLabel, IonSpinner, IonText],
+  imports: [IonContent, IonSpinner, IonText],
 })
 export class AccesosRapidosPage {
   private authService = inject(AuthService);
@@ -19,12 +19,12 @@ export class AccesosRapidosPage {
   errorLogin = signal<string | null>(null);
 
   accesosRapidos: AccesoRapido[] = [
-    { perfil: 'Dueño', email: 'dueno@restaurante.com', icono: 'person-circle' },
-    { perfil: 'Supervisor', email: 'supervisor@restaurante.com', icono: 'shield-checkmark' },
-    { perfil: 'Metre', email: 'metre@restaurante.com', icono: 'people' },
-    { perfil: 'Mozo', email: 'mozo@restaurante.com', icono: 'restaurant' },
-    { perfil: 'Cantinero', email: 'cantinero@restaurante.com', icono: 'wine' },
-    { perfil: 'Cocinero', email: 'cocinero@restaurante.com', icono: 'flame' },
+    { perfil: 'Dueño', email: 'dueno@restaurante.com', icono: 'person-circle', descripcion: 'Gestión del restaurante' },
+    { perfil: 'Supervisor', email: 'supervisor@restaurante.com', icono: 'shield-checkmark', descripcion: 'Control de operaciones' },
+    { perfil: 'Metre', email: 'metre@restaurante.com', icono: 'people', descripcion: 'Recepción y coordinación' },
+    { perfil: 'Mozo', email: 'mozo@restaurante.com', icono: 'restaurant', descripcion: 'Atención al cliente' },
+    { perfil: 'Cantinero', email: 'cantinero@restaurante.com', icono: 'wine', descripcion: 'Bebidas y servicio' },
+    { perfil: 'Cocinero', email: 'cocinero@restaurante.com', icono: 'flame', descripcion: 'Preparación de platos' },
   ];
 
   async accederRapido(acceso: AccesoRapido): Promise<void> {

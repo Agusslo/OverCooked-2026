@@ -6,6 +6,6 @@ export const cocinaRoutes: Routes = [
     path: 'alta-plato',
     loadComponent: () => import('./alta-plato/alta-plato.page').then((m) => m.AltaPlatoPage),
     canActivate: [authGuard],
-    data: { perfiles: ['cocinero'] },
+    data: { perfiles: ['cocinero', 'dueño'] },
   },
 ];

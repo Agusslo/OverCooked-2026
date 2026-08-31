@@ -37,6 +37,10 @@ ion-content.invitado-page {
     padding: 36px 0 20px;
 }
 
+.brand__picker {
+    margin: 0;
+}
+
 .brand__logo {
     width: 150px;
     height: auto;
@@ -72,6 +76,7 @@ ion-content.invitado-page {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    
 }
 
 .foto-picker {
@@ -79,12 +84,12 @@ ion-content.invitado-page {
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .foto-picker__circle {
-    width: 96px;
-    height: 96px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     background: var(--accent-light);
     border: #d4603a 2px dashed;
@@ -94,6 +99,7 @@ ion-content.invitado-page {
     justify-content: center;
     overflow: hidden;
     padding: 0;
+    margin-top: 80px;
     cursor: pointer;
 }
 
@@ -160,7 +166,7 @@ ion-content.invitado-page {
     --border-radius: 12px;
     --box-shadow: none;
     height: 52px;
-    margin-top: 8px;
+    margin-top: 100px;
     font-family: 'ADLaM Display', system-ui, sans-serif;
     font-weight: 800;
     letter-spacing: 0.04em;

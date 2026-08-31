@@ -44,6 +44,22 @@
 
 /* @import "@ionic/angular/css/palettes/dark.system.css"; */
 
+ion-router-outlet .ion-page {
+  animation: page-from-bottom 0.35s ease;
+}
+
+@keyframes page-from-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .camera-box {
   width: 100%;
   margin-bottom: 12px;
