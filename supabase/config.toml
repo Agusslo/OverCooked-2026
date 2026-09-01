@@ -1,0 +1,7 @@
+project_id = "ydpukgjowtmoxbeyhncz"
+
+# El registro dispara este correo antes de que el usuario tenga
+# sesión válida (queda 'pendiente'), así que la function no exige
+# JWT: valida el payload por su cuenta.
+[functions.enviar-mail]
+verify_jwt = false
