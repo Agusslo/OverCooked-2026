@@ -1,12 +1,54 @@
 <ion-content class="registro-page">
   <div class="registro-shell">
     <div class="brand">
+      @if (paso() === 1) {
+      <div class="foto-picker brand__picker">
+        <button type="button" class="foto-picker__circle" (click)="elegirFoto()">
+          @if (fotoUrl()) {
+          <img [src]="fotoUrl()" alt="Foto de perfil" class="foto-picker__img" />
+          } @else {
+          <span class="foto-picker__icono">+</span>
+          }
+        </button>
+        <span class="foto-picker__label">Foto de perfil</span>
+        <input
+          #inputFoto
+          type="file"
+          accept="image/*"
+          hidden
+          (change)="onFotoSeleccionada($event)"
+        />
+      </div>
+      } @else {
       <img src="assets/icon/logo.png" alt="OverCooked" class="brand__logo" />
+      }
     </div>
+
     <div class="registro-card">
-      <h1 class="registro-title">Crear cuenta</h1>
+      <h1 class="registro-title">
+        @if (paso() === 1) { Crear cuenta · Datos personales } @else { Crear
+        cuenta · Credenciales }
+      </h1>
+
+      <div class="registro-pasos" aria-hidden="true">
+        <span class="paso-dot" [class.paso-dot--activo]="paso() === 1"></span>
+        <span class="paso-dot" [class.paso-dot--activo]="paso() === 2"></span>
+      </div>
 
       <form [formGroup]="form" (ngSubmit)="registrarse()" class="registro-form">
+        @if (paso() === 1) {
+        <!-- ===================== PASO 1: DATOS ===================== -->
+        <ion-button
+          class="scan-btn"
+          type="button"
+          expand="block"
+          fill="clear"
+          (click)="escanearDni()"
+          [disabled]="cargando()"
+        >
+          ESCANEAR DNI
+        </ion-button>
+
         <ion-item class="registro-field" lines="none">
           <ion-input
             type="text"
@@ -76,6 +118,28 @@
         </ion-text>
         }
 
+        @if (fotoIntentada() && !fotoUrl()) {
+        <ion-text class="form-error" color="danger">
+          <p>Sacá o elegí una foto de perfil.</p>
+        </ion-text>
+        }
+
+        @if (errorRegistro()) {
+        <ion-text class="form-error" color="danger">
+          <p>{{ errorRegistro() }}</p>
+        </ion-text>
+        }
+
+        <ion-button
+          class="registro-submit"
+          expand="block"
+          type="button"
+          (click)="irACredenciales()"
+        >
+          <span>SIGUIENTE</span>
+        </ion-button>
+        } @else {
+        <!-- ================== PASO 2: CREDENCIALES ================== -->
         <ion-item class="registro-field" lines="none">
           <ion-input
             type="email"
@@ -128,8 +192,6 @@
         </ion-text>
         }
 
-        <!-- Falta ver lo de la imagen -->
-
         @if (errorRegistro()) {
         <ion-text class="form-error" color="danger">
           <p>{{ errorRegistro() }}</p>
@@ -148,6 +210,18 @@
           <span>REGISTRARME</span>
           }
         </ion-button>
+
+        <ion-button
+          class="registro-back"
+          expand="block"
+          type="button"
+          fill="clear"
+          (click)="volverADatos()"
+          [disabled]="cargando()"
+        >
+          <span>ATRÁS</span>
+        </ion-button>
+        }
       </form>
 
       <div class="secondary-actions">

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -16,7 +16,9 @@ import {
   IonSpinner,
   IonText,
 } from '@ionic/angular';
+import { Haptics, NotificationType } from '@capacitor/haptics';
 import { AuthService } from '../../../core/services/auth.service';
+import { QrScannerService } from '../../../core/services/qr-scanner';
 import { IRegistro } from '../../../core/models/usuario.model';
 
 @Component({
@@ -35,12 +37,19 @@ import { IRegistro } from '../../../core/models/usuario.model';
   ],
 })
 export class RegistroPage {
+  @ViewChild('inputFoto') inputFoto?: ElementRef<HTMLInputElement>;
+
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private qrScannerService = inject(QrScannerService);
   private router = inject(Router);
 
+  // Paso 1 = datos personales, paso 2 = credenciales.
+  paso = signal<1 | 2>(1);
   cargando = signal(false);
   errorRegistro = signal<string | null>(null);
+  fotoUrl = signal<string | null>(null);
+  fotoIntentada = signal(false);
 
   private passwordsIgualesValidator: ValidatorFn = (
     group: AbstractControl,
@@ -94,20 +103,89 @@ export class RegistroPage {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       repetirPassword: ['', [Validators.required]],
-      foto_url: [''], // Revisar que onda
     },
     {
       validators: [this.passwordsIgualesValidator, this.cuilMatchDniValidator],
     },
   );
 
-  async registrarse(): Promise<void> {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
+  // Controles que se piden en el paso 1 (datos personales).
+  private readonly camposPaso1 = ['nombre', 'apellido', 'dni', 'cuil'] as const;
+
+  elegirFoto(): void {
+    this.inputFoto?.nativeElement.click();
+  }
+
+  onFotoSeleccionada(evento: Event): void {
+    const archivo = (evento.target as HTMLInputElement).files?.[0];
+    if (!archivo) {
       return;
     }
 
-    const { nombre, apellido, dni, cuil, email, password, foto_url } =
+    const lector = new FileReader();
+    lector.onload = () => this.fotoUrl.set(lector.result as string);
+    lector.readAsDataURL(archivo);
+  }
+
+  async escanearDni(): Promise<void> {
+    this.errorRegistro.set(null);
+    const resultado = await this.qrScannerService.escanear();
+
+    if (resultado && resultado.tipo === 'DNI') {
+      const datos = resultado.valor;
+      this.form.patchValue({
+        apellido: datos.apellidos || '',
+        nombre: datos.nombres || '',
+        dni: datos.dni || '',
+      });
+      await Haptics.notification({ type: NotificationType.Success }).catch(
+        () => {},
+      );
+    } else {
+      this.errorRegistro.set(
+        'No se detectó un formato válido de DNI argentino.',
+      );
+      await Haptics.notification({ type: NotificationType.Error }).catch(
+        () => {},
+      );
+    }
+  }
+
+  // Valida solo los campos del paso 1 (incluida la foto y el
+  // cruce DNI/CUIL) antes de habilitar el paso de credenciales.
+  irACredenciales(): void {
+    this.errorRegistro.set(null);
+    this.fotoIntentada.set(true);
+
+    for (const campo of this.camposPaso1) {
+      this.form.get(campo)?.markAsTouched();
+    }
+
+    const camposInvalidos = this.camposPaso1.some(
+      (campo) => this.form.get(campo)?.invalid,
+    );
+    const cuilNoCoincide = this.form.hasError('cuilNoMatchDni');
+
+    if (camposInvalidos || cuilNoCoincide || !this.fotoUrl()) {
+      return;
+    }
+
+    this.paso.set(2);
+  }
+
+  volverADatos(): void {
+    this.errorRegistro.set(null);
+    this.paso.set(1);
+  }
+
+  async registrarse(): Promise<void> {
+    if (this.form.invalid || !this.fotoUrl()) {
+      this.form.markAllAsTouched();
+      this.fotoIntentada.set(true);
+      return;
+    }
+
+    const { nombre, apellido, dni, cuil, email, password } =
       this.form.getRawValue();
 
     const datos: IRegistro = {
@@ -117,7 +195,7 @@ export class RegistroPage {
       cuil: Number(cuil),
       email: email!,
       password: password!,
-      foto_url: foto_url ?? '', // Revisar que onda
+      foto_url: this.fotoUrl()!,
     };
 
     await this.intentarRegistro(datos);

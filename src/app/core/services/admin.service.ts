@@ -1,6 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { SupabaseService } from './supabase.service';
+import { MailService } from './mail.service';
 import { Usuario, PerfilUsuario } from '../models/usuario.model';
+
+// Datos mínimos que necesita el módulo de clientes pendientes
+// para actualizar el estado y disparar el correo correspondiente.
+export type DatosClienteMail = Pick<Usuario, 'id' | 'nombre' | 'email'>;
 
 export interface DatosNuevoEmpleado {
   nombre: string;
@@ -17,6 +22,8 @@ export interface DatosNuevoEmpleado {
   providedIn: 'root',
 })
 export class AdminService {
+  private mailService = inject(MailService);
+
   constructor(private supabaseService: SupabaseService) {}
 
   async crearEmpleado(datos: DatosNuevoEmpleado): Promise<Usuario> {
@@ -84,27 +91,53 @@ export class AdminService {
   // 'pendiente' hasta que alguien decida). login() ya bloquea a
   // cualquiera que no esté en 'aprobado', así que con solo
   // cambiar el estado acá alcanza para habilitar o no el acceso.
-  async aprobarCliente(usuarioId: string): Promise<void> {
+  async aprobarCliente(cliente: DatosClienteMail): Promise<void> {
     const { error } = await this.supabaseService
       .getClient()
       .from('usuarios')
       .update({ estado: 'aprobado' })
-      .eq('id', usuarioId);
+      .eq('id', cliente.id);
 
     if (error) {
       throw new Error('No se pudo aprobar al cliente.');
     }
+
+    // Punto 8 del PDF: correo automático de aprobación. Si el
+    // envío falla no revertimos el estado — el cliente ya quedó
+    // habilitado y el correo se puede reintentar.
+    try {
+      await this.mailService.enviarClienteAprobado(
+        cliente.email,
+        cliente.nombre,
+      );
+    } catch (error) {
+      console.warn('No se pudo enviar el correo de aprobación:', error);
+    }
   }
 
-  async rechazarCliente(usuarioId: string): Promise<void> {
+  async rechazarCliente(
+    cliente: DatosClienteMail,
+    motivo?: string,
+  ): Promise<void> {
     const { error } = await this.supabaseService
       .getClient()
       .from('usuarios')
       .update({ estado: 'rechazado' })
-      .eq('id', usuarioId);
+      .eq('id', cliente.id);
 
     if (error) {
       throw new Error('No se pudo rechazar al cliente.');
+    }
+
+    // Punto 7 del PDF: correo automático de rechazo.
+    try {
+      await this.mailService.enviarClienteRechazado(
+        cliente.email,
+        cliente.nombre,
+        motivo,
+      );
+    } catch (error) {
+      console.warn('No se pudo enviar el correo de rechazo:', error);
     }
   }
 

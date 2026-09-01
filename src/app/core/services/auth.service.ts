@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SupabaseService } from './supabase.service';
+import { MailService } from './mail.service';
 import { IRegistro, IRegistroAnonimo, Usuario } from '../models/usuario.model';
 import { Router } from '@angular/router';
 
@@ -9,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   router = inject(Router);
+  private mailService = inject(MailService);
 
   private usuarioActualSubject = new BehaviorSubject<Usuario | null>(null);
   usuarioActual$ = this.usuarioActualSubject.asObservable();
@@ -91,6 +93,16 @@ export class AuthService {
       throw new Error(
         errorInsert?.message ?? 'No se pudo guardar el usuario en la base de datos.'
       );
+    }
+
+    // Aviso automático de "registro pendiente de aprobación".
+    // Si el correo falla, no queremos tirar abajo el registro:
+    // el usuario ya quedó creado y el dueño/supervisor lo va a
+    // ver igual en la lista de pendientes.
+    try {
+      await this.mailService.enviarRegistroPendiente(email, nombre);
+    } catch (error) {
+      console.warn('No se pudo enviar el correo de registro pendiente:', error);
     }
 
     return usuarioCreado as Usuario;

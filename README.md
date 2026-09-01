@@ -32,6 +32,8 @@
 | **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | Registro anonimo                | 29/08/2026   | 29/08/2026 |
 | **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de las bebidas             | 30/08/2026   | 30/08/2026 |
 | **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de las mesas             | 31/08/2026   | 31/08/2026 |
+| **Catanese, Demián**            | `feature/dev-delta` | Servicio de Mail              | 01/09/2026   | 01/09/2026 |
+| **Catanese, Demián**            | `feature/dev-delta` | Diseño del Mail               | 01/09/2026   | 01/09/2026 |
 
 > Si algún integrante no llega con la funcionalidad comprometida, se reasigna el módulo o se cambia el plazo, y queda registrado acá mismo con la fecha del cambio.
 
@@ -62,6 +64,47 @@
 | 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Catanese, Demián | Indefinido | |
 | 22. Confirmar el pago y liberar mesa | mozo | Catanese, Demián | Indefinido | |
 
+
+## ✉️ Servicio de correos automáticos
+
+**Responsable:** Catanese, Demián (`feature/dev-delta`)
+
+Envío automático de correos desde una casilla empresarial (requisito excluyente del TFI), sin exponer credenciales en la aplicación.
+
+### Arquitectura
+
+* **Proveedor:** [Resend](https://resend.com) con dominio propio verificado (`overcooked.abrdns.com`, DKIM + SPF).
+* **Backend:** Supabase Edge Function `enviar-mail` (`supabase/functions/enviar-mail/`). Es la única que conoce la `RESEND_API_KEY` (guardada en los *secrets* del proyecto Supabase, nunca en el front). Valida el payload, arma el HTML y llama a la API de Resend.
+* **Frontend:** `MailService` (`src/app/core/services/mail.service.ts`) invoca la función con `supabase.functions.invoke('enviar-mail', ...)`.
+* Un fallo de envío **nunca** aborta la operación de negocio (el estado ya quedó persistido); solo se registra en consola.
+
+### Correos implementados
+
+| Tipo | Se dispara desde | Punto TFI |
+| :--- | :--- | :--- |
+| `registro-pendiente` | `AuthService.registrarUsuario` — al crear un cliente registrado | 5 |
+| `cliente-aprobado` | `AdminService.aprobarCliente` — el dueño/supervisor acepta al cliente | 8 |
+| `cliente-rechazado` | `AdminService.rechazarCliente` — el dueño/supervisor rechaza al cliente | 7 |
+
+### Diseño del Mail
+
+**Responsable:** Catanese, Demián (`feature/dev-delta`)
+
+Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios** (requisito de los puntos 7 y 8), manteniendo un eje de diseño común: logo de OverCooked, tarjeta redondeada centrada, borde-guía lateral y pie de "correo automático".
+
+| Correo | Paleta | Título | Tipografías |
+| :--- | :--- | :--- | :--- |
+| Pendiente | naranja / dorado cálido | 26px | Verdana + Georgia |
+| Aprobado | verde "éxito" | 32px, festivo | Trebuchet MS + Palatino |
+| Rechazado | bordó sobrio | 21px, formal | Courier + Cambria |
+
+### Puesta en marcha
+
+```bash
+npx supabase link --project-ref ydpukgjowtmoxbeyhncz
+npx supabase secrets set RESEND_API_KEY=... "MAIL_FROM=OverCooked <hola@overcooked.abrdns.com>" MAIL_LOGO_URL=...
+npx supabase functions deploy enviar-mail
+```
 
 ## ⚙️ Requisitos Previos y Herramientas a Instalar
 

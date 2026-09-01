@@ -1,0 +1,6 @@
+# Supabase CLI - estado local, se regenera solo
+.branches
+.temp
+
+# Nunca commitear las variables reales de las Edge Functions
+functions/**/.env
