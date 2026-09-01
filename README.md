@@ -20,16 +20,17 @@
 
 ## 👥 Distribución de tareas por integrante
 
-| Integrante | Rama | Funcionalidades asignadas (TFI) | Fecha inicio | Fecha fin |
-| :--- | :--- | :--- | :--- | :--- |
-| **López, Agustín** | `feature/dev-alfa` | Alta de los empleados | 26/08/2026 | 26/08/2026 |
-| **López, Agustín** | `feature/dev-alfa` | Alta de los platos | 29/08/2026 | 29/08/2026 |
-| **Filippelli, Adrián** | `feature/dev-beta` | Base de datos | 23/08/2026 | 29/08/2026 |
-| **Filippelli, Adrián** | `feature/dev-beta` | Login | 24/08/2026 | 24/08/2026 |
-| **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | Registro | 26/08/2026 | 26/08/2026 |
-| **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | Registro anonimo | 29/08/2026 | 29/08/2026 |
-| **Catanese, Demián** | `feature/dev-delta` | Estilos | 23/08/2026 | 24/08/2026 |
-| **Filippelli, Adrián** | `feature/dev-beta` | Acceso rapido | 25/08/2026 | 25/08/2026 |
+| Integrante                      | Rama                | Funcionalidades asignadas (TFI) | Fecha inicio | Fecha fin  |
+| :------------------------------ | :------------------ | :------------------------------ | :----------- | :--------- |
+| **Filippelli, Adrián**          | `feature/dev-beta`  | Base de datos                   | 23/08/2026   | 29/08/2026 |
+| **Catanese, Demián**            | `feature/dev-delta` | Estilos                         | 23/08/2026   | 24/08/2026 |
+| **Filippelli, Adrián**          | `feature/dev-beta`  | Login                           | 24/08/2026   | 24/08/2026 |
+| **Filippelli, Adrián**          | `feature/dev-beta`  | Acceso rapido                   | 25/08/2026   | 25/08/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de los empleados           | 26/08/2026   | 26/08/2026 |
+| **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | Registro                        | 26/08/2026   | 26/08/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de los platos              | 29/08/2026   | 29/08/2026 |
+| **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | Registro anonimo                | 29/08/2026   | 29/08/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de las bebidas             | 30/08/2026   | 30/08/2026 |
 
 > Si algún integrante no llega con la funcionalidad comprometida, se reasigna el módulo o se cambia el plazo, y queda registrado acá mismo con la fecha del cambio.
 
