@@ -31,6 +31,7 @@
 | **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de los platos              | 29/08/2026   | 29/08/2026 |
 | **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | Registro anonimo                | 29/08/2026   | 29/08/2026 |
 | **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de las bebidas             | 30/08/2026   | 30/08/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de las mesas             | 31/08/2026   | 31/08/2026 |
 
 > Si algún integrante no llega con la funcionalidad comprometida, se reasigna el módulo o se cambia el plazo, y queda registrado acá mismo con la fecha del cambio.
 
