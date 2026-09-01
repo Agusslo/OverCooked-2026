@@ -39,13 +39,13 @@ export class MesasService {
   async crearMesa(datos: DatosNuevaMesa): Promise<Mesa> {
     const client = this.supabaseService.getClient();
 
-    // Generamos el id ACÁ, en el teléfono, antes de guardar nada.
-    // Así podemos mandar 'id' y 'qr_code' con el mismo valor en un solo
-    // insert, en vez de crear la mesa y después hacer un segundo viaje
-    // a la base para agregarle el QR.
     const id = crypto.randomUUID();
-
     const foto_url = await this.subirFoto(datos.fotoDataUrl, `mesa-${id}`);
+
+  // El código QR usa el NÚMERO de mesa (formato "MESA_5"), no el id.
+  // Así lo reconoce el QrScannerService que ya está armado para
+  // el escaneo de mesas en los puntos 9-11.
+    const qr_code = `MESA_${datos.numero}`;
 
     const { data: mesaCreada, error } = await client
       .from('mesas')
@@ -54,9 +54,9 @@ export class MesasService {
         numero: datos.numero,
         capacidad: datos.capacidad,
         tipo: datos.tipo,
-        estado: 'libre', // "vacía" en el PDF = 'libre' en la base, por defecto
+        estado: 'libre',
         foto_url,
-        qr_code: id,
+        qr_code,
       })
       .select()
       .single();
@@ -65,8 +65,8 @@ export class MesasService {
       throw new Error(error?.message || 'No se pudo guardar la mesa en la base de datos.');
     }
 
-    return mesaCreada as Mesa;
-  }
+  return mesaCreada as Mesa;
+}
 
   // Mismo mecanismo que ProductosService.subirFoto: convierte el dataUrl
   // (base64) que devuelve la cámara en un archivo real y lo sube a Storage.

@@ -7,6 +7,10 @@ import { Usuario, PerfilUsuario } from '../models/usuario.model';
 // para actualizar el estado y disparar el correo correspondiente.
 export type DatosClienteMail = Pick<Usuario, 'id' | 'nombre' | 'email'>;
 
+//BUCKET para las fotos de los empleados (usuarios con perfil distinto a cliente).
+const BUCKET_USUARIOS = 'usuarios-fotos';
+
+
 export interface DatosNuevoEmpleado {
   nombre: string;
   apellido: string;
@@ -21,6 +25,7 @@ export interface DatosNuevoEmpleado {
 @Injectable({
   providedIn: 'root',
 })
+
 export class AdminService {
   private mailService = inject(MailService);
 
@@ -48,8 +53,8 @@ export class AdminService {
 
     // Apenas tenemos el id del nuevo usuario, restauramos la
     // sesión del admin. De acá en adelante, cualquier operación
-    // (incluyendo el insert de abajo) se hace como el admin, no
-    // como el empleado recién creado.
+    // (incluyendo la subida de la foto y el insert de abajo) se
+    // hace como el admin, no como el empleado recién creado.
     if (sesionAdmin) {
       const { error: errorSesion } = await client.auth.setSession({
         access_token: sesionAdmin.access_token,
@@ -61,6 +66,10 @@ export class AdminService {
       }
     }
 
+    // La foto se sube a Storage (nunca en base64 en la tabla),
+    // mismo mecanismo que ProductosService y MesasService.
+    const foto_url = await this.subirFoto(datos.fotoDataUrl, `empleado-${altaAuth.user.id}`);
+
     const { data: usuarioCreado, error: errorInsert } = await client
       .from('usuarios')
       .insert({
@@ -71,7 +80,7 @@ export class AdminService {
         cuil: datos.cuil,
         email: datos.correo,
         perfil: datos.perfil,
-        foto_url: datos.fotoDataUrl,
+        foto_url,
         estado: 'aprobado',
       })
       .select()
@@ -84,6 +93,28 @@ export class AdminService {
     }
 
     return usuarioCreado as Usuario;
+  }
+
+  // Convierte el dataUrl (base64) que devuelve la cámara en un
+  // archivo real y lo sube al bucket de fotos de usuarios.
+  private async subirFoto(dataUrl: string, nombreArchivo: string): Promise<string> {
+    const client = this.supabaseService.getClient();
+
+    const respuesta = await fetch(dataUrl);
+    const blob = await respuesta.blob();
+    const extension = blob.type.split('/')[1] || 'jpeg';
+    const ruta = `${nombreArchivo}.${extension}`;
+
+    const { error: errorSubida } = await client.storage
+      .from(BUCKET_USUARIOS)
+      .upload(ruta, blob, { contentType: blob.type });
+
+    if (errorSubida) {
+      throw new Error(`No se pudo subir la foto: ${errorSubida.message}`);
+    }
+
+    const { data: urlPublica } = client.storage.from(BUCKET_USUARIOS).getPublicUrl(ruta);
+    return urlPublica.publicUrl;
   }
 
   // Punto 6/7/8 del PDF: el dueño o supervisor aprueba o
