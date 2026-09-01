@@ -9,4 +9,11 @@ export const mesasRoutes: Routes = [
     canActivate: [authGuard],
     data: { perfiles: ['dueño', 'supervisor'] },
   },
+  {
+    path: 'listado-mesas',
+    loadComponent: () =>
+      import('./listado-mesas/listado-mesas.page').then((m) => m.ListadoMesasPage),
+    canActivate: [authGuard],
+    data: { perfiles: ['dueño', 'supervisor'] },
+  },
 ];

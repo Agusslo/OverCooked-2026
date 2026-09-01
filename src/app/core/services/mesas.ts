@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
-import { Mesa, TipoMesa } from '../models/mesa.model';
+import { Mesa, TipoMesa, EstadoMesa} from '../models/mesa.model';
 
 export interface DatosNuevaMesa {
   numero: number;
@@ -88,5 +88,35 @@ export class MesasService {
 
     const { data: urlPublica } = client.storage.from(BUCKET).getPublicUrl(ruta);
     return urlPublica.publicUrl;
+  }
+
+    // Trae todas las mesas para el listado, ordenadas por número.
+  async listarMesas(): Promise<Mesa[]> {
+    const client = this.supabaseService.getClient();
+
+    const { data, error } = await client
+      .from('mesas')
+      .select('*')
+      .order('numero', { ascending: true });
+
+    if (error) {
+      throw new Error('No se pudieron cargar las mesas.');
+    }
+
+    return (data ?? []) as Mesa[];
+  }
+
+  // Cambia SOLO el estado (disponibilidad) de una mesa ya creada.
+  async actualizarEstado(id: string, estado: EstadoMesa): Promise<void> {
+    const client = this.supabaseService.getClient();
+
+    const { error } = await client
+      .from('mesas')
+      .update({ estado })
+      .eq('id', id);
+
+    if (error) {
+      throw new Error('No se pudo actualizar la disponibilidad de la mesa.');
+    }
   }
 }
