@@ -4,6 +4,7 @@ import { authRoutes } from './features/auth/auth.routes';
 import { adminRoutes } from './features/admin/admin.routes';
 import { cocinaRoutes } from './features/cocina/cocina.routes';
 import { barRoutes } from './features/bar/bar.routes';
+import { mesasRoutes } from './features/mesas/mesas.routes';
 
 export const routes: Routes = [
   {
@@ -21,4 +22,5 @@ export const routes: Routes = [
   { path: 'admin', children: adminRoutes },
   { path: 'cocina', children: cocinaRoutes },
   { path: 'bar', children: barRoutes },
+  { path: 'mesas', children: mesasRoutes },
 ];

@@ -1,6 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { SupabaseService } from './supabase.service';
+import { MailService } from './mail.service';
 import { Usuario, PerfilUsuario } from '../models/usuario.model';
+
+// Datos mínimos que necesita el módulo de clientes pendientes
+// para actualizar el estado y disparar el correo correspondiente.
+export type DatosClienteMail = Pick<Usuario, 'id' | 'nombre' | 'email'>;
+
+//BUCKET para las fotos de los empleados (usuarios con perfil distinto a cliente).
+const BUCKET_USUARIOS = 'usuarios-fotos';
+
 
 export interface DatosNuevoEmpleado {
   nombre: string;
@@ -16,7 +25,10 @@ export interface DatosNuevoEmpleado {
 @Injectable({
   providedIn: 'root',
 })
+
 export class AdminService {
+  private mailService = inject(MailService);
+
   constructor(private supabaseService: SupabaseService) {}
 
   async crearEmpleado(datos: DatosNuevoEmpleado): Promise<Usuario> {
@@ -41,8 +53,8 @@ export class AdminService {
 
     // Apenas tenemos el id del nuevo usuario, restauramos la
     // sesión del admin. De acá en adelante, cualquier operación
-    // (incluyendo el insert de abajo) se hace como el admin, no
-    // como el empleado recién creado.
+    // (incluyendo la subida de la foto y el insert de abajo) se
+    // hace como el admin, no como el empleado recién creado.
     if (sesionAdmin) {
       const { error: errorSesion } = await client.auth.setSession({
         access_token: sesionAdmin.access_token,
@@ -54,6 +66,10 @@ export class AdminService {
       }
     }
 
+    // La foto se sube a Storage (nunca en base64 en la tabla),
+    // mismo mecanismo que ProductosService y MesasService.
+    const foto_url = await this.subirFoto(datos.fotoDataUrl, `empleado-${altaAuth.user.id}`);
+
     const { data: usuarioCreado, error: errorInsert } = await client
       .from('usuarios')
       .insert({
@@ -64,7 +80,7 @@ export class AdminService {
         cuil: datos.cuil,
         email: datos.correo,
         perfil: datos.perfil,
-        foto_url: datos.fotoDataUrl,
+        foto_url,
         estado: 'aprobado',
       })
       .select()
@@ -79,32 +95,80 @@ export class AdminService {
     return usuarioCreado as Usuario;
   }
 
+  // Convierte el dataUrl (base64) que devuelve la cámara en un
+  // archivo real y lo sube al bucket de fotos de usuarios.
+  private async subirFoto(dataUrl: string, nombreArchivo: string): Promise<string> {
+    const client = this.supabaseService.getClient();
+
+    const respuesta = await fetch(dataUrl);
+    const blob = await respuesta.blob();
+    const extension = blob.type.split('/')[1] || 'jpeg';
+    const ruta = `${nombreArchivo}.${extension}`;
+
+    const { error: errorSubida } = await client.storage
+      .from(BUCKET_USUARIOS)
+      .upload(ruta, blob, { contentType: blob.type });
+
+    if (errorSubida) {
+      throw new Error(`No se pudo subir la foto: ${errorSubida.message}`);
+    }
+
+    const { data: urlPublica } = client.storage.from(BUCKET_USUARIOS).getPublicUrl(ruta);
+    return urlPublica.publicUrl;
+  }
+
   // Punto 6/7/8 del PDF: el dueño o supervisor aprueba o
   // rechaza a un cliente que se registró solo (queda en
   // 'pendiente' hasta que alguien decida). login() ya bloquea a
   // cualquiera que no esté en 'aprobado', así que con solo
   // cambiar el estado acá alcanza para habilitar o no el acceso.
-  async aprobarCliente(usuarioId: string): Promise<void> {
+  async aprobarCliente(cliente: DatosClienteMail): Promise<void> {
     const { error } = await this.supabaseService
       .getClient()
       .from('usuarios')
       .update({ estado: 'aprobado' })
-      .eq('id', usuarioId);
+      .eq('id', cliente.id);
 
     if (error) {
       throw new Error('No se pudo aprobar al cliente.');
     }
+
+    // Punto 8 del PDF: correo automático de aprobación. Si el
+    // envío falla no revertimos el estado — el cliente ya quedó
+    // habilitado y el correo se puede reintentar.
+    try {
+      await this.mailService.enviarClienteAprobado(
+        cliente.email,
+        cliente.nombre,
+      );
+    } catch (error) {
+      console.warn('No se pudo enviar el correo de aprobación:', error);
+    }
   }
 
-  async rechazarCliente(usuarioId: string): Promise<void> {
+  async rechazarCliente(
+    cliente: DatosClienteMail,
+    motivo?: string,
+  ): Promise<void> {
     const { error } = await this.supabaseService
       .getClient()
       .from('usuarios')
       .update({ estado: 'rechazado' })
-      .eq('id', usuarioId);
+      .eq('id', cliente.id);
 
     if (error) {
       throw new Error('No se pudo rechazar al cliente.');
+    }
+
+    // Punto 7 del PDF: correo automático de rechazo.
+    try {
+      await this.mailService.enviarClienteRechazado(
+        cliente.email,
+        cliente.nombre,
+        motivo,
+      );
+    } catch (error) {
+      console.warn('No se pudo enviar el correo de rechazo:', error);
     }
   }
 

@@ -1,23 +1,22 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SupabaseService } from './supabase.service';
+import { MailService } from './mail.service';
 import { IRegistro, IRegistroAnonimo, Usuario } from '../models/usuario.model';
 import { Router } from '@angular/router';
+
+const BUCKET_USUARIOS = 'usuarios-fotos';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   router = inject(Router);
+  private mailService = inject(MailService);
 
   private usuarioActualSubject = new BehaviorSubject<Usuario | null>(null);
   usuarioActual$ = this.usuarioActualSubject.asObservable();
 
-  // Se resuelve cuando termina el chequeo inicial de sesión (al
-  // arrancar la app). Los guards lo esperan (`await`) antes de
-  // decidir si dejan pasar a una ruta, para no rechazar por error
-  // a alguien que en realidad sí tiene sesión activa pero cuya
-  // consulta a Supabase todavía estaba en curso.
   readonly sesionLista: Promise<void>;
 
   constructor(private supabaseService: SupabaseService) {
@@ -55,7 +54,7 @@ export class AuthService {
     return usuario;
   }
 
-  async registrarUsuario({ nombre, apellido, dni, cuil, email, password, foto_url }: IRegistro): Promise<Usuario> {
+  async registrarUsuario({ nombre, apellido, dni, email, password, foto_url }: IRegistro): Promise<Usuario> {
     const { data, error } = await this.supabaseService.getClient().auth.signUp({
       email,
       password,
@@ -65,11 +64,14 @@ export class AuthService {
       throw error ?? new Error('No se pudo registrar el usuario.');
     }
 
-    // El registro público siempre crea un perfil 'cliente', y
-    // arranca en 'pendiente' — coincide con lo que pide el PDF:
-    // un cliente registrado necesita que el dueño o supervisor
-    // lo apruebe antes de poder loguearse (login() ya rechaza a
-    // los que no están en estado 'aprobado').
+    // La foto se sube a Storage (nunca en base64 en la tabla),
+    // mismo mecanismo que productos, mesas y alta de empleados.
+    const fotoUrlSubida = await this.subirFoto(foto_url, `cliente-${data.user.id}`);
+
+    // El registro público siempre crea un perfil 'cliente', sin
+    // CUIL (el punto 5 del PDF no lo pide, solo DNI), y arranca
+    // en 'pendiente' — login() ya rechaza a los que no estén
+    // en estado 'aprobado'.
     const { data: usuarioCreado, error: errorInsert } = await this.supabaseService
       .getClient()
       .from('usuarios')
@@ -78,10 +80,10 @@ export class AuthService {
         nombre,
         apellido,
         dni: String(dni),
-        cuil: String(cuil),
+        cuil: null,
         email,
         perfil: 'cliente',
-        foto_url,
+        foto_url: fotoUrlSubida,
         estado: 'pendiente',
       })
       .select()
@@ -93,17 +95,19 @@ export class AuthService {
       );
     }
 
+    try {
+      await this.mailService.enviarRegistroPendiente(email, nombre);
+    } catch (error) {
+      console.warn('No se pudo enviar el correo de registro pendiente:', error);
+    }
+
     return usuarioCreado as Usuario;
   }
 
   async registrarAnonimo({ nombre, apellido, foto_url }: IRegistroAnonimo) {
     const { data, error } = await this.supabaseService.getClient().auth.signInAnonymously({
       options: {
-        data: {
-          nombre: nombre,
-          apellido: apellido,
-          foto_url: foto_url
-        }
+        data: { nombre, apellido, foto_url },
       },
     });
 
@@ -130,6 +134,26 @@ export class AuthService {
     }
 
     return data as Usuario;
+  }
+
+  private async subirFoto(dataUrl: string, nombreArchivo: string): Promise<string> {
+    const client = this.supabaseService.getClient();
+
+    const respuesta = await fetch(dataUrl);
+    const blob = await respuesta.blob();
+    const extension = blob.type.split('/')[1] || 'jpeg';
+    const ruta = `${nombreArchivo}.${extension}`;
+
+    const { error: errorSubida } = await client.storage
+      .from(BUCKET_USUARIOS)
+      .upload(ruta, blob, { contentType: blob.type });
+
+    if (errorSubida) {
+      throw new Error(`No se pudo subir la foto: ${errorSubida.message}`);
+    }
+
+    const { data: urlPublica } = client.storage.from(BUCKET_USUARIOS).getPublicUrl(ruta);
+    return urlPublica.publicUrl;
   }
 
   get usuarioActual(): Usuario | null {

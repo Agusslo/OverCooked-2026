@@ -50,7 +50,7 @@ export class ClientesPendientesPage implements OnInit {
   async aprobar(cliente: Usuario): Promise<void> {
     this.procesando.set(cliente.id);
     try {
-      await this.adminService.aprobarCliente(cliente.id);
+      await this.adminService.aprobarCliente(cliente);
       this.quitarDeLista(cliente.id);
     } catch (err) {
       this.error.set(err instanceof Error ? err.message : 'No se pudo aprobar al cliente.');
@@ -62,7 +62,7 @@ export class ClientesPendientesPage implements OnInit {
   async rechazar(cliente: Usuario): Promise<void> {
     this.procesando.set(cliente.id);
     try {
-      await this.adminService.rechazarCliente(cliente.id);
+      await this.adminService.rechazarCliente(cliente);
       this.quitarDeLista(cliente.id);
     } catch (err) {
       this.error.set(err instanceof Error ? err.message : 'No se pudo rechazar al cliente.');
