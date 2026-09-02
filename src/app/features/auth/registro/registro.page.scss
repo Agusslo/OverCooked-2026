@@ -40,10 +40,98 @@ ion-content.registro-page {
 }
 
 .brand__logo {
-    width: 150px;
+    width: 170px;
     height: auto;
     filter: brightness(0) invert(1);
     display: block;
+}
+
+.brand__picker {
+    margin: 0;
+}
+
+.foto-picker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.foto-picker__circle {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    border: #d4603a 2px dashed;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0;
+    cursor: pointer;
+}
+
+.foto-picker__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.foto-picker__icono {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    line-height: 1;
+}
+
+.foto-picker__label {
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.registro-pasos {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 0 0 16px;
+}
+
+.paso-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    opacity: 0.5;
+}
+
+.paso-dot--activo {
+    opacity: 1;
+    background: var(--gold);
+}
+
+.scan-btn {
+    --background: var(--accent-dark);
+    --background-activated: #8f2f1a;
+    --background-hover: #9a341d;
+    --color: var(--accent-light);
+    --border-radius: 12px;
+    --box-shadow: none;
+    height: 46px;
+    margin-bottom: 6px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.registro-back {
+    --color: var(--accent-light);
+    --box-shadow: none;
+    height: 44px;
+    margin-top: 2px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
 }
 
 .registro-card {
@@ -148,7 +236,7 @@ ion-content.registro-page {
     letter-spacing: 0.04em;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 400px) {
     .brand {
         padding: 28px 0 16px;
     }
