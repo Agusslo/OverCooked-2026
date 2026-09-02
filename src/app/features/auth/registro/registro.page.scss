@@ -92,6 +92,42 @@ ion-content.registro-page {
     font-weight: 700;
 }
 
+/* ---- Recuadro de cámara en vivo (fallback web) ---- */
+.camera-box {
+  width: 220px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--accent-dark);
+  border: 2px solid var(--gold);
+  margin: 0 auto;
+}
+.camera-box video {
+  width: 100%;
+  height: 220px;
+  display: block;
+  object-fit: cover;
+}
+
+.camera-actions {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+}
+
+.camera-button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+.camera-cancel { background: var(--bg-panel); color: var(--accent-light); }
+.camera-capture { background: var(--gold); color: var(--accent-dark); }
+
 .registro-pasos {
     display: flex;
     gap: 10px;
