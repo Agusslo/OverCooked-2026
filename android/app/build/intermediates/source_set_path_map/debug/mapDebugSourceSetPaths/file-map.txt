@@ -1,0 +1,71 @@
+io.ionic.starter.app-datastore-release-0 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\05a89d3dc8b5c67fd2491ba4357fe820\transformed\datastore-release\res
+io.ionic.starter.app-core-1.17.0-1 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\11094a199bb7945826b161d8a9c17beb\transformed\core-1.17.0\res
+io.ionic.starter.app-lifecycle-process-2.6.2-2 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\14a3b51da1167f75215e7e32d2231e74\transformed\lifecycle-process-2.6.2\res
+io.ionic.starter.app-annotation-experimental-1.4.1-3 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\1d9ef0194f51a6e0da4e440575587814\transformed\annotation-experimental-1.4.1\res
+io.ionic.starter.app-emoji2-views-helper-1.3.0-4 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\25a881cfd51f0b690442a74b496782fd\transformed\emoji2-views-helper-1.3.0\res
+io.ionic.starter.app-constraintlayout-2.2.0-5 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\2dedc20bd782c3bbee938583d5f01158\transformed\constraintlayout-2.2.0\res
+io.ionic.starter.app-viewpager2-1.0.0-6 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\30e30f664f01f89666d5b5c18f60ced8\transformed\viewpager2-1.0.0\res
+io.ionic.starter.app-datastore-preferences-release-7 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\311c3575769e20e5e56d5dc0a0a79dc1\transformed\datastore-preferences-release\res
+io.ionic.starter.app-camera-view-1.5.2-8 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\34496f90592c01c9ce1f6227a425c6d5\transformed\camera-view-1.5.2\res
+io.ionic.starter.app-emoji2-1.3.0-9 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\353d69426d62513a7e19e841051a3a44\transformed\emoji2-1.3.0\res
+io.ionic.starter.app-drawerlayout-1.1.1-10 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\3af1cae255639fa50a43e4b1644f292a\transformed\drawerlayout-1.1.1\res
+io.ionic.starter.app-savedstate-1.2.1-11 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\3f2ab0b27a59a3dfe1466c241ece8334\transformed\savedstate-1.2.1\res
+io.ionic.starter.app-camera-video-1.5.2-12 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\4531edfdb154f4dda71847e3f47c2911\transformed\camera-video-1.5.2\res
+io.ionic.starter.app-activity-1.11.0-13 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\4ce00e85fb17003296e7add5523825c1\transformed\activity-1.11.0\res
+io.ionic.starter.app-core-splashscreen-1.2.0-14 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\4f5eb2e1ae45a07736e2f6ed862ea36a\transformed\core-splashscreen-1.2.0\res
+io.ionic.starter.app-cardview-1.0.0-15 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\4ff321495b888f15e10721315cd0c628\transformed\cardview-1.0.0\res
+io.ionic.starter.app-play-services-basement-18.4.0-16 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\535e9dd0a65eaa85bd344836d560144e\transformed\play-services-basement-18.4.0\res
+io.ionic.starter.app-core-runtime-2.2.0-17 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\56c299ca5cc1351fb9b11d94695125dc\transformed\core-runtime-2.2.0\res
+io.ionic.starter.app-core-ktx-1.17.0-18 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\6443194ff2cd53b8a19f0de2b31832a0\transformed\core-ktx-1.17.0\res
+io.ionic.starter.app-lifecycle-runtime-ktx-2.6.2-19 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\6583f0d36caeecc03ba4543defa7b1c3\transformed\lifecycle-runtime-ktx-2.6.2\res
+io.ionic.starter.app-camera-core-1.5.2-20 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\6c32f5643a732f95471aca800e4d3a46\transformed\camera-core-1.5.2\res
+io.ionic.starter.app-datastore-preferences-core-release-21 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\6f56b386da98fd76bd907abf5837b86e\transformed\datastore-preferences-core-release\res
+io.ionic.starter.app-startup-runtime-1.1.1-22 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\7179ce4c01b9a0b75718a869351620f5\transformed\startup-runtime-1.1.1\res
+io.ionic.starter.app-fragment-1.8.9-23 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\754c4f1b691d2a1223e4f8f413992fee\transformed\fragment-1.8.9\res
+io.ionic.starter.app-graphics-shapes-release-24 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\817adc5271df8e219d49ddafc1d5b708\transformed\graphics-shapes-release\res
+io.ionic.starter.app-ioncamera-android-1.0.2-25 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\81df885c3329f64fea16f829a86c9a03\transformed\ioncamera-android-1.0.2\res
+io.ionic.starter.app-camera-lifecycle-1.5.2-26 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\81e682a6863c0c08ff14a14390e5d32a\transformed\camera-lifecycle-1.5.2\res
+io.ionic.starter.app-lifecycle-livedata-2.6.2-27 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\8d83e436f29a9ad9858ae8c630f3448b\transformed\lifecycle-livedata-2.6.2\res
+io.ionic.starter.app-core-viewtree-1.0.0-28 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\9275faa7fc56368462609e8a34802ec7\transformed\core-viewtree-1.0.0\res
+io.ionic.starter.app-savedstate-ktx-1.2.1-29 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\92c4e4e9733c7bb3143235d2de140578\transformed\savedstate-ktx-1.2.1\res
+io.ionic.starter.app-camera-camera2-1.5.2-30 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\a166caf6910bb0c66910938c3f396a40\transformed\camera-camera2-1.5.2\res
+io.ionic.starter.app-dynamicanimation-1.1.0-31 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\a2073ef8c71e8642c7cd2ebfc09d21c6\transformed\dynamicanimation-1.1.0\res
+io.ionic.starter.app-lifecycle-viewmodel-2.6.2-32 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\ab32e4c3e2bf096654fd9e14504854dc\transformed\lifecycle-viewmodel-2.6.2\res
+io.ionic.starter.app-lifecycle-viewmodel-ktx-2.6.2-33 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\af4be80c3b5d72e4271858a76c00ae8c\transformed\lifecycle-viewmodel-ktx-2.6.2\res
+io.ionic.starter.app-activity-ktx-1.11.0-34 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\b1b6c7d44bdce8f4e30ff96e9d1948e3\transformed\activity-ktx-1.11.0\res
+io.ionic.starter.app-lifecycle-livedata-core-2.6.2-35 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\b5655c5df44c26433ffde34d45e6b2a4\transformed\lifecycle-livedata-core-2.6.2\res
+io.ionic.starter.app-appcompat-resources-1.7.1-36 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\bee8f78bb28e6cb788edd05c601f4778\transformed\appcompat-resources-1.7.1\res
+io.ionic.starter.app-play-services-base-18.5.0-37 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\c1b0052ae712299163f2612d6db27779\transformed\play-services-base-18.5.0\res
+io.ionic.starter.app-webkit-1.14.0-38 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\c2f70b51baa62bcee94ea5c7e05791a1\transformed\webkit-1.14.0\res
+io.ionic.starter.app-appcompat-1.7.1-39 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\c3f09e8abd8bb01c9314454bd06bb337\transformed\appcompat-1.7.1\res
+io.ionic.starter.app-firebase-common-22.0.1-40 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\cb546919c09df4bb1e2d2127157bcaa2\transformed\firebase-common-22.0.1\res
+io.ionic.starter.app-material-1.13.0-41 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\d30d5b44a30cca3e7686b77f30f8a3cf\transformed\material-1.13.0\res
+io.ionic.starter.app-datastore-core-release-42 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\d69119d46c7440cf0598cfe4478dcec7\transformed\datastore-core-release\res
+io.ionic.starter.app-tracing-1.2.0-43 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\dcfd9b438b7b1dc562c63a5efe9cf4a0\transformed\tracing-1.2.0\res
+io.ionic.starter.app-lifecycle-viewmodel-savedstate-2.6.2-44 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\de2a1b5c01db4d02ef6d13f0f4e2cf96\transformed\lifecycle-viewmodel-savedstate-2.6.2\res
+io.ionic.starter.app-tracing-ktx-1.2.0-45 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\dffce6054333cf26e2704db7f6f08857\transformed\tracing-ktx-1.2.0\res
+io.ionic.starter.app-featurecombinationquery-1.5.2-46 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\e89f4eca8e2efa47bfc3cb0eb62f28ba\transformed\featurecombinationquery-1.5.2\res
+io.ionic.starter.app-lifecycle-runtime-2.6.2-47 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\ebf9360ba611f1d20f2bddac6f1045ca\transformed\lifecycle-runtime-2.6.2\res
+io.ionic.starter.app-coordinatorlayout-1.3.0-48 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\ef97883a45eaa5cc79115d450cce1dbe\transformed\coordinatorlayout-1.3.0\res
+io.ionic.starter.app-recyclerview-1.2.1-49 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\f1bac9250343b6cb2a9c1fb9d686203c\transformed\recyclerview-1.2.1\res
+io.ionic.starter.app-exifinterface-1.4.1-50 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\f65261db25ed36e4711a5e3efc04a79c\transformed\exifinterface-1.4.1\res
+io.ionic.starter.app-profileinstaller-1.4.0-51 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\f95ab50c54d3211c648684c462933e30\transformed\profileinstaller-1.4.0\res
+io.ionic.starter.app-firebase-messaging-25.0.1-52 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\fee7827030cf30b9c64fc7d59fae02bb\transformed\firebase-messaging-25.0.1\res
+io.ionic.starter.app-transition-1.5.0-53 C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\ffc4710ae3de602c2cf7a337da6c8898\transformed\transition-1.5.0\res
+io.ionic.starter.app-pngs-54 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\build\generated\res\pngs\debug
+io.ionic.starter.app-resValues-55 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\build\generated\res\resValues\debug
+io.ionic.starter.app-updated_navigation_xml-56 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\build\generated\updated_navigation_xml\debug
+io.ionic.starter.app-packageDebugResources-57 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+io.ionic.starter.app-packageDebugResources-58 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+io.ionic.starter.app-debug-59 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\build\intermediates\merged_res\debug\mergeDebugResources
+io.ionic.starter.app-debug-60 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\debug\res
+io.ionic.starter.app-main-61 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\res
+io.ionic.starter.app-debug-62 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\capacitor-cordova-android-plugins\build\intermediates\packaged_res\debug\packageDebugResources
+io.ionic.starter.app-debug-63 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor-mlkit\barcode-scanning\android\build\intermediates\packaged_res\debug\packageDebugResources
+io.ionic.starter.app-debug-64 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor\android\capacitor\build\intermediates\packaged_res\debug\packageDebugResources
+io.ionic.starter.app-debug-65 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor\app\android\build\intermediates\packaged_res\debug\packageDebugResources
+io.ionic.starter.app-debug-66 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor\camera\android\build\intermediates\packaged_res\debug\packageDebugResources
+io.ionic.starter.app-debug-67 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor\haptics\android\build\intermediates\packaged_res\debug\packageDebugResources
+io.ionic.starter.app-debug-68 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor\keyboard\android\build\intermediates\packaged_res\debug\packageDebugResources
+io.ionic.starter.app-debug-69 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor\push-notifications\android\build\intermediates\packaged_res\debug\packageDebugResources
+io.ionic.starter.app-debug-70 D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor\status-bar\android\build\intermediates\packaged_res\debug\packageDebugResources

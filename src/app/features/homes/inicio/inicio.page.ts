@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { AuthService } from '../../../core/services/auth.service';
-import { panelPara } from './inicio.model';
+import { panelPara } from '../../../core/models/inicio.model';
 
 @Component({
   selector: 'app-inicio',
