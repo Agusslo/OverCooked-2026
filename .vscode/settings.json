@@ -7,5 +7,11 @@
   "typescript.preferences.autoImportFileExcludePatterns": [
     "@ionic/angular/types/ionic-angular-lazy.d.ts",
     "@ionic/angular/types/ionic-angular-common.d.ts"
-  ]
+  ],
+
+  // Las Edge Functions de Supabase corren en Deno, no en Node. Se habilita el
+  // language server de Deno solo para esa carpeta; el resto del repo (Angular)
+  // sigue con el TS server normal.
+  "deno.enablePaths": ["supabase/functions"],
+  "deno.unstable": true
 }

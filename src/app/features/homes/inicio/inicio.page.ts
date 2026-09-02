@@ -1,14 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { IonContent, IonButton, IonIcon, IonAvatar, } from '@ionic/angular';
+import { Router, RouterLink } from '@angular/router';
+import { IonContent } from '@ionic/angular';
 import { AuthService } from '../../../core/services/auth.service';
+import { panelPara } from '../../../core/models/inicio.model';
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
-  imports: [IonContent, IonButton, IonIcon, IonAvatar],
+  imports: [IonContent, RouterLink],
 })
 export class InicioPage {
   private authService = inject(AuthService);
@@ -20,6 +21,20 @@ export class InicioPage {
   // reciente que haya guardado el servicio.
   get usuario() {
     return this.authService.usuarioActual;
+  }
+
+  // Panel (rol, título y accesos) que corresponde al perfil del
+  // usuario logueado. Si el perfil todavía no tiene panel definido,
+  // devuelve null y el template muestra sólo el encabezado.
+  get panel() {
+    return panelPara(this.usuario?.perfil);
+  }
+
+  // Iniciales para el avatar cuando no hay foto de perfil.
+  get iniciales(): string {
+    const u = this.usuario;
+    if (!u) return '';
+    return `${u.nombre?.[0] ?? ''}${u.apellido?.[0] ?? ''}`.toUpperCase();
   }
 
   async cerrarSesion(): Promise<void> {
