@@ -1,4 +1,12 @@
-import { Component, ElementRef, ViewChild, inject, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  ViewChild,
+  ChangeDetectorRef,
+  OnDestroy,
+  inject,
+  signal,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -16,6 +24,8 @@ import {
   IonSpinner,
   IonText,
 } from '@ionic/angular';
+import { Camera, CameraSource } from '@capacitor/camera';
+import { Capacitor } from '@capacitor/core';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { AuthService } from '../../../core/services/auth.service';
 import { QrScannerService } from '../../../core/services/qr-scanner';
@@ -36,20 +46,24 @@ import { IRegistro } from '../../../core/models/usuario.model';
     IonText,
   ],
 })
-export class RegistroPage {
-  @ViewChild('inputFoto') inputFoto?: ElementRef<HTMLInputElement>;
+export class RegistroPage implements OnDestroy {
+  @ViewChild('videoCamara') videoCamara?: ElementRef<HTMLVideoElement>;
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private qrScannerService = inject(QrScannerService);
   private router = inject(Router);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
-  // Paso 1 = datos personales, paso 2 = credenciales.
   paso = signal<1 | 2>(1);
   cargando = signal(false);
   errorRegistro = signal<string | null>(null);
   fotoUrl = signal<string | null>(null);
   fotoIntentada = signal(false);
+  camaraActiva = signal(false);
+
+  private abriendoCamara = false;
+  private streamCamara?: MediaStream;
 
   private passwordsIgualesValidator: ValidatorFn = (
     group: AbstractControl,
@@ -77,54 +91,21 @@ export class RegistroPage {
     return null;
   };
 
-  // Validador cross-field: verifica que los 8 dígitos del DNI
-  // coincidan con las posiciones 2–9 del CUIL.
-  // Estructura CUIL: XX + DNI(8 dígitos) + dígito verificador = 11 dígitos.
-  private cuilMatchDniValidator: ValidatorFn = (
-    group: AbstractControl,
-  ): ValidationErrors | null => {
-    const dni = (group.get('dni')?.value || '') as string;
-    const cuil = (group.get('cuil')?.value || '') as string;
+  form = this.fb.group({
+    nombre: ['', [Validators.required]],
+    apellido: ['', [Validators.required]],
+    dni: ['', [Validators.required, Validators.pattern(/^\d{7,8}$/)]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    repetirPassword: ['', [Validators.required]],
+  }, {
+    validators: [this.passwordsIgualesValidator],
+  });
 
-    if (!dni || !cuil || cuil.length !== 11 || !/^\d{8}$/.test(dni)) {
-      return null;
-    }
+  private readonly camposPaso1 = ['nombre', 'apellido', 'dni'] as const;
 
-    const dniEnCuil = cuil.substring(2, 10);
-    return dniEnCuil === dni ? null : { cuilNoMatchDni: true };
-  };
-
-  form = this.fb.group(
-    {
-      nombre: ['', [Validators.required]],
-      apellido: ['', [Validators.required]],
-      dni: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
-      cuil: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      repetirPassword: ['', [Validators.required]],
-    },
-    {
-      validators: [this.passwordsIgualesValidator, this.cuilMatchDniValidator],
-    },
-  );
-
-  // Controles que se piden en el paso 1 (datos personales).
-  private readonly camposPaso1 = ['nombre', 'apellido', 'dni', 'cuil'] as const;
-
-  elegirFoto(): void {
-    this.inputFoto?.nativeElement.click();
-  }
-
-  onFotoSeleccionada(evento: Event): void {
-    const archivo = (evento.target as HTMLInputElement).files?.[0];
-    if (!archivo) {
-      return;
-    }
-
-    const lector = new FileReader();
-    lector.onload = () => this.fotoUrl.set(lector.result as string);
-    lector.readAsDataURL(archivo);
+  ngOnDestroy() {
+    this.detenerCamara();
   }
 
   async escanearDni(): Promise<void> {
@@ -138,22 +119,84 @@ export class RegistroPage {
         nombre: datos.nombres || '',
         dni: datos.dni || '',
       });
-      await Haptics.notification({ type: NotificationType.Success }).catch(
-        () => {},
-      );
+      await Haptics.notification({ type: NotificationType.Success }).catch(() => {});
     } else {
-      this.errorRegistro.set(
-        'No se detectó un formato válido de DNI argentino.',
-      );
-      await Haptics.notification({ type: NotificationType.Error }).catch(
-        () => {},
-      );
+      await this.dispararError('No se detectó un formato válido de DNI argentino.');
     }
   }
 
-  // Valida solo los campos del paso 1 (incluida la foto y el
-  // cruce DNI/CUIL) antes de habilitar el paso de credenciales.
-  irACredenciales(): void {
+  async tomarFoto() {
+    try {
+      if (!Capacitor.isNativePlatform()) {
+        await this.abrirCamaraWeb();
+        return;
+      }
+
+      const image = await Camera.getPhoto({
+        quality: 85,
+        allowEditing: false,
+        resultType: 'dataUrl' as any,
+        source: CameraSource.Camera,
+      });
+
+      this.fotoUrl.set(image.dataUrl || null);
+    } catch (error) {
+      console.warn('Captura cancelada:', error);
+    }
+  }
+
+  private async abrirCamaraWeb() {
+    if (this.abriendoCamara || this.camaraActiva()) {
+      return;
+    }
+
+    this.abriendoCamara = true;
+    try {
+      this.streamCamara = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user' },
+        audio: false,
+      });
+      this.camaraActiva.set(true);
+      this.changeDetectorRef.detectChanges();
+
+      const video = this.videoCamara?.nativeElement;
+      if (video) {
+        video.srcObject = this.streamCamara;
+        await video.play();
+      }
+    } catch (error) {
+      console.warn('No se pudo acceder a la cámara:', error);
+      await this.dispararError('No se pudo acceder a la cámara.');
+    } finally {
+      this.abriendoCamara = false;
+    }
+  }
+
+  capturarFoto() {
+    const video = this.videoCamara?.nativeElement;
+    if (!video || !video.videoWidth || !video.videoHeight) {
+      return;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d')?.drawImage(video, 0, 0);
+    this.fotoUrl.set(canvas.toDataURL('image/jpeg', 0.85));
+    this.detenerCamara();
+  }
+
+  cancelarCamara() {
+    this.detenerCamara();
+  }
+
+  private detenerCamara() {
+    this.streamCamara?.getTracks().forEach((track) => track.stop());
+    this.streamCamara = undefined;
+    this.camaraActiva.set(false);
+  }
+
+  async irACredenciales(): Promise<void> {
     this.errorRegistro.set(null);
     this.fotoIntentada.set(true);
 
@@ -164,9 +207,9 @@ export class RegistroPage {
     const camposInvalidos = this.camposPaso1.some(
       (campo) => this.form.get(campo)?.invalid,
     );
-    const cuilNoCoincide = this.form.hasError('cuilNoMatchDni');
 
-    if (camposInvalidos || cuilNoCoincide || !this.fotoUrl()) {
+    if (camposInvalidos || !this.fotoUrl()) {
+      await Haptics.notification({ type: NotificationType.Error }).catch(() => {});
       return;
     }
 
@@ -182,17 +225,16 @@ export class RegistroPage {
     if (this.form.invalid || !this.fotoUrl()) {
       this.form.markAllAsTouched();
       this.fotoIntentada.set(true);
+      await Haptics.notification({ type: NotificationType.Error }).catch(() => {});
       return;
     }
 
-    const { nombre, apellido, dni, cuil, email, password } =
-      this.form.getRawValue();
+    const { nombre, apellido, dni, email, password } = this.form.getRawValue();
 
     const datos: IRegistro = {
       nombre: nombre!,
       apellido: apellido!,
       dni: Number(dni),
-      cuil: Number(cuil),
       email: email!,
       password: password!,
       foto_url: this.fotoUrl()!,
@@ -213,13 +255,18 @@ export class RegistroPage {
       await this.authService.registrarUsuario(datos);
       this.router.navigateByUrl('/auth/login');
     } catch (error) {
-      this.errorRegistro.set(
-        error instanceof Error
-          ? error.message
-          : 'No se pudo completar el registro.',
+      await this.dispararError(
+        error instanceof Error ? error.message : 'No se pudo completar el registro.',
       );
     } finally {
       this.cargando.set(false);
     }
+  }
+
+  private async dispararError(texto: string) {
+    this.errorRegistro.set(texto);
+    try {
+      await Haptics.notification({ type: NotificationType.Error });
+    } catch {}
   }
 }
