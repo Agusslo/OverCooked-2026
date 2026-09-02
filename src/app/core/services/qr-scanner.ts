@@ -50,6 +50,15 @@ export class QrScannerService {
         return null;
       }
 
+      // Aseguramos que el módulo ML de Google para barcode scanning
+      // esté instalado antes de escanear. Si ya está, no hace nada.
+      // Si no, lo descarga (necesita conexión a internet la primera vez).
+      const { available } =
+        await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+      if (!available) {
+        await BarcodeScanner.installGoogleBarcodeScannerModule();
+      }
+
       const { barcodes } = await BarcodeScanner.scan({
         formats: [BarcodeFormat.QrCode, BarcodeFormat.Pdf417],
       });
