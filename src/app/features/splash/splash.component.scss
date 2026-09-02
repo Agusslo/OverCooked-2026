@@ -17,36 +17,53 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* nombres arriba, logo al centro, título abajo */
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    padding: clamp(1.5rem, 6vw, 3rem);
+    box-sizing: border-box;
+    text-align: center;
+    /* respeta notches / barras del sistema en móvil */
+    padding-top: max(clamp(1.5rem, 6vw, 3rem), env(safe-area-inset-top));
+    padding-bottom: max(clamp(1.5rem, 6vw, 3rem), env(safe-area-inset-bottom));
+  }
+
+  &__names {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   &__logo {
-    width: 160px;
+    width: clamp(160px, 32vw, 200px);
     height: auto;
-    margin-top: 100px;
-    padding-bottom: 100px;
+    margin: 0;
     /* logo.png está dibujado en el mismo naranja que este fondo — se recolorea a blanco para que se vea */
     filter: brightness(0) invert(1);
     animation: splash-logo-enter 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   &__title {
-    font-family: "ADLaM Display", system-ui;
+    font-family: "Jomhuria", serif;
     font-weight: 400;
+    font-size: clamp(5rem, 10vw, 6rem);
     font-style: normal;
-    margin: 180px 0 0;
+    margin: 0;
     color: #ffffff;
-    font-size: 48px;
     letter-spacing: 0.08em;
     line-height: 1;
   }
 
-    &__name {
-    font-family: "ADLaM Display", system-ui;
+  &__name {
+    font-family: "Jomhuria", serif;
     font-weight: 400;
     font-style: normal;
     color: #ffffff;
-    font-size: 24px;
-    line-height: 0.5;
+    font-size: clamp(1.75rem, 7vw, 3rem);
+    line-height: 0.9;
+    margin: 0;
   }
 }
 
