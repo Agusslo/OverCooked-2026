@@ -31,45 +31,89 @@ export interface PanelInicio {
   acciones: AccionInicio[];
 }
 
+// Acciones administrativas: las mismas para dueño y supervisor, ya que
+// ambos perfiles tienen los mismos permisos en las rutas (ver
+// admin.routes.ts y mesas.routes.ts: data.perfiles: ['dueño', 'supervisor']).
+const ACCIONES_ADMIN: AccionInicio[] = [
+  {
+    titulo: 'Alta de empleado',
+    detalle: 'Registrar y dar de alta al personal',
+    ruta: '/admin/alta-empleado',
+    icono: 'empleado',
+  },
+  {
+    titulo: 'Clientes pendientes',
+    detalle: 'Aprobar o rechazar nuevos registros',
+    ruta: '/admin/clientes-pendientes',
+    icono: 'cliente',
+  },
+  {
+    titulo: 'Gestión de mesas',
+    detalle: 'Ver el listado y cambiar la disponibilidad',
+    ruta: '/mesas/listado-mesas',
+    icono: 'mesas',
+  },
+  {
+    titulo: 'Alta de mesa',
+    detalle: 'Crear una mesa nueva y su código QR',
+    ruta: '/mesas/alta-mesa',
+    icono: 'mesa-nueva',
+  },
+];
+
 const PANEL_DUENIO: PanelInicio = {
   rol: 'Dueño',
   titulo: 'Panel del restaurante',
   subtitulo: 'Gestión de personal, clientes y mesas',
+  acciones: ACCIONES_ADMIN,
+};
+
+const PANEL_SUPERVISOR: PanelInicio = {
+  rol: 'Supervisor',
+  titulo: 'Panel del restaurante',
+  subtitulo: 'Gestión de personal, clientes y mesas',
+  acciones: ACCIONES_ADMIN,
+};
+
+const PANEL_COCINERO: PanelInicio = {
+  rol: 'Cocinero',
+  titulo: 'Panel de cocina',
+  subtitulo: 'Carta de platos',
   acciones: [
     {
-      titulo: 'Alta de empleado',
-      detalle: 'Registrar y dar de alta al personal',
-      ruta: '/admin/alta-empleado',
-      icono: 'empleado',
+      titulo: 'Nuevo plato',
+      detalle: 'Agregar un plato a la carta',
+      ruta: '/cocina/alta-plato',
+      icono: 'plato',
     },
+  ],
+};
+
+const PANEL_CANTINERO: PanelInicio = {
+  rol: 'Cantinero',
+  titulo: 'Panel de bar',
+  subtitulo: 'Carta de bebidas',
+  acciones: [
     {
-      titulo: 'Clientes pendientes',
-      detalle: 'Aprobar o rechazar nuevos registros',
-      ruta: '/admin/clientes-pendientes',
-      icono: 'cliente',
-    },
-    {
-      titulo: 'Gestión de mesas',
-      detalle: 'Ver el listado y cambiar la disponibilidad',
-      ruta: '/mesas/listado-mesas',
-      icono: 'mesas',
-    },
-    {
-      titulo: 'Alta de mesa',
-      detalle: 'Crear una mesa nueva y su código QR',
-      ruta: '/mesas/alta-mesa',
-      icono: 'mesa-nueva',
+      titulo: 'Nueva bebida',
+      detalle: 'Agregar una bebida a la carta',
+      ruta: '/bar/alta-bebida',
+      icono: 'bebida',
     },
   ],
 };
 
 /*
- * Por ahora sólo está implementado el panel del dueño. Los demás
- * perfiles caen en un panel "vacío" (sólo encabezado + cerrar sesión)
- * hasta que se defina su set de accesos.
+ * Dueño, supervisor, cocinero y cantinero ya tienen accesos definidos.
+ * Mozo, metre y cliente todavía no tienen pantallas propias en la app:
+ * caen en un panel "vacío" (sólo encabezado + cerrar sesión) hasta que
+ * se las implemente.
  */
 export const PANELES_INICIO: Partial<Record<PerfilUsuario, PanelInicio>> = {
   dueño: PANEL_DUENIO,
+  supervisor: PANEL_SUPERVISOR,
+  cocinero: PANEL_COCINERO,
+  cantinero: PANEL_CANTINERO,
 };
 
 export function panelPara(perfil: PerfilUsuario | undefined): PanelInicio | null {

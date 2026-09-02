@@ -1,14 +1,4 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import {
-  IonContent,
-  IonList,
-  IonItem,
-  IonAvatar,
-  IonLabel,
-  IonButton,
-  IonSpinner,
-  IonText,
-} from '@ionic/angular';
 import { AdminService } from '../../../core/services/admin.service';
 import { Usuario } from '../../../core/models/usuario.model';
 
@@ -17,7 +7,6 @@ import { Usuario } from '../../../core/models/usuario.model';
   standalone: true,
   templateUrl: './clientes-pendientes.page.html',
   styleUrls: ['./clientes-pendientes.page.scss'],
-  imports: [IonContent, IonList, IonItem, IonAvatar, IonLabel, IonButton, IonSpinner, IonText],
 })
 export class ClientesPendientesPage implements OnInit {
   private adminService = inject(AdminService);

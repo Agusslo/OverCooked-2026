@@ -179,7 +179,18 @@
 
         @if (errorRegistro()) {
         <ion-text class="form-error" color="danger">
-          <p>{{ errorRegistro() }}</p>
+          
+          @switch (errorRegistro()) {
+            @case ("User already registered") {
+              <p>El usuario ya está registrado</p>
+            }
+            @case ('duplicate key value violates unique constraint "usuarios_dni_key"') {
+              <p>Ya se registró un usuario con ese DNI</p>
+            }
+            @default {
+              <p>Ocurrió un error inesperado. Inténtelo de nuevo.</p>
+            }
+          }
         </ion-text>
         }
 
