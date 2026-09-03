@@ -11,10 +11,10 @@ INJECTED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\andr
 	android:name
 		ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:28:13-62
 manifest
-ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:2:1-41:12
-INJECTED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:2:1-41:12
-INJECTED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:2:1-41:12
-INJECTED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:2:1-41:12
+ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:2:1-49:12
+INJECTED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:2:1-49:12
 MERGED from [:capacitor-mlkit-barcode-scanning] D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor-mlkit\barcode-scanning\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
 MERGED from [:capacitor-app] D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor\app\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
 MERGED from [:capacitor-camera] D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor\camera\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-19:12
@@ -121,8 +121,8 @@ MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\Gabriel\.gradle
 	xmlns:android
 		ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:2:11-69
 application
-ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:4:5-36:19
-INJECTED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:4:5-36:19
+ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:4:5-43:19
+INJECTED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:4:5-43:19
 MERGED from [:capacitor-push-notifications] D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor\push-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-15:19
 MERGED from [:capacitor-push-notifications] D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\node_modules\@capacitor\push-notifications\android\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-15:19
 MERGED from [:capacitor-cordova-android-plugins] D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\capacitor-cordova-android-plugins\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:8:5-9:19
@@ -225,8 +225,14 @@ category#android.intent.category.LAUNCHER
 ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:22:17-77
 	android:name
 		ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:22:27-74
+meta-data#com.google.mlkit.vision.DEPENDENCIES
+ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:40:9-42:42
+	android:value
+		ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:42:13-39
+	android:name
+		ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:41:13-64
 uses-permission#android.permission.INTERNET
-ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:40:5-67
+ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:47:5-67
 MERGED from [com.google.firebase:firebase-installations:18.0.0] C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\df907beae055c1d2434697ac5cd0594d\transformed\firebase-installations-18.0.0\AndroidManifest.xml:8:5-67
 MERGED from [com.google.firebase:firebase-installations:18.0.0] C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\df907beae055c1d2434697ac5cd0594d\transformed\firebase-installations-18.0.0\AndroidManifest.xml:8:5-67
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.2.0] C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\d5d0932ac3ca2fd5a9a9d50c7fd4445d\transformed\play-services-cloud-messaging-17.2.0\AndroidManifest.xml:8:5-67
@@ -234,7 +240,11 @@ MERGED from [com.google.android.gms:play-services-cloud-messaging:17.2.0] C:\Use
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\ea620a6b5afc7c5e432bbec109041d91\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:25:5-67
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.9] C:\Users\Gabriel\.gradle\caches\8.14.3\transforms\ea620a6b5afc7c5e432bbec109041d91\transformed\transport-backend-cct-3.1.9\AndroidManifest.xml:25:5-67
 	android:name
-		ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:40:22-64
+		ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:47:22-64
+uses-permission#android.permission.CAMERA
+ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:48:5-65
+	android:name
+		ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:48:22-62
 meta-data#android.support.FILE_PROVIDER_PATHS
 ADDED from D:\Escritorio\UTN\Trabajo Practico Integrador\OverCooked-2026\android\app\src\main\AndroidManifest.xml:32:13-34:64
 	android:resource
