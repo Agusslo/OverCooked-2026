@@ -1,5 +1,11 @@
 {
 	"appId": "io.ionic.starter",
 	"appName": "OverCooked",
-	"webDir": "www"
+	"webDir": "www",
+	"plugins": {
+		"Keyboard": {
+			"resize": "body",
+			"resizeOnFullScreen": true
+		}
+	}
 }

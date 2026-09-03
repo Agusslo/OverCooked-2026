@@ -16,18 +16,17 @@ ion-content.login-page {
     --padding-bottom: 0;
     --padding-start: 0;
     --padding-end: 0;
-    --overflow: hidden;
-    overflow: hidden;
     font-family: 'ADLaM Display', system-ui, sans-serif;
 }
 
 .login-shell {
-    min-height: 100vh;
-    height: 100vh;
+    // min-height (no height fija): si el contenido no entra —por ej.
+    // con el teclado tapando la mitad de la pantalla— el shell crece y
+    // ion-content lo scrollea, en vez de recortarlo con overflow:hidden.
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     background: var(--bg-hero);
-    overflow: hidden;
     font-family: 'ADLaM Display', system-ui, sans-serif;
 }
 
