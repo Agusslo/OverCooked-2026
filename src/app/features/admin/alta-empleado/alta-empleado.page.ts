@@ -101,6 +101,20 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
     this.detenerCamara();
   }
 
+  sanitizarCampoNumerico(
+    controlName: 'dni' | 'cuil',
+    event: Event,
+    maxLength: number,
+  ): void {
+    const input = event.target as HTMLInputElement;
+    const valor = input.value.replace(/\D/g, '').slice(0, maxLength);
+
+    if (input.value !== valor) {
+      input.value = valor;
+      this.empleadoForm.get(controlName)?.setValue(valor);
+    }
+  }
+
   async escanearDni() {
     this.mensajeError = '';
     const resultado = await this.qrScannerService.escanear();
@@ -220,7 +234,7 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
         correo: valores.correo,
         clave: valores.clave,
         perfil: valores.perfil,
-        fotoDataUrl: this.fotoPersonal
+        fotoDataUrl: this.fotoPersonal,
       });
 
       this.mensajeExito = '¡Empleado registrado con éxito!';

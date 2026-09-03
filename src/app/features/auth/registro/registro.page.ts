@@ -91,21 +91,33 @@ export class RegistroPage implements OnDestroy {
     return null;
   };
 
-  form = this.fb.group({
-    nombre: ['', [Validators.required]],
-    apellido: ['', [Validators.required]],
-    dni: ['', [Validators.required, Validators.pattern(/^\d{7,8}$/)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    repetirPassword: ['', [Validators.required]],
-  }, {
-    validators: [this.passwordsIgualesValidator],
-  });
+  form = this.fb.group(
+    {
+      nombre: ['', [Validators.required]],
+      apellido: ['', [Validators.required]],
+      dni: ['', [Validators.required, Validators.pattern(/^\d{7,8}$/)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      repetirPassword: ['', [Validators.required]],
+    },
+    {
+      validators: [this.passwordsIgualesValidator],
+    },
+  );
 
   private readonly camposPaso1 = ['nombre', 'apellido', 'dni'] as const;
 
   ngOnDestroy() {
     this.detenerCamara();
+  }
+
+  sanitizarDni(event: CustomEvent<{ value?: string | null }>): void {
+    const valor = event.detail?.value ?? '';
+    const dni = valor.replace(/\D/g, '').slice(0, 8);
+
+    if (dni !== valor) {
+      this.form.controls.dni.setValue(dni, { emitEvent: false });
+    }
   }
 
   async escanearDni(): Promise<void> {
@@ -119,9 +131,13 @@ export class RegistroPage implements OnDestroy {
         nombre: datos.nombres || '',
         dni: datos.dni || '',
       });
-      await Haptics.notification({ type: NotificationType.Success }).catch(() => {});
+      await Haptics.notification({ type: NotificationType.Success }).catch(
+        () => {},
+      );
     } else {
-      await this.dispararError('No se detectó un formato válido de DNI argentino.');
+      await this.dispararError(
+        'No se detectó un formato válido de DNI argentino.',
+      );
     }
   }
 
@@ -209,7 +225,9 @@ export class RegistroPage implements OnDestroy {
     );
 
     if (camposInvalidos || !this.fotoUrl()) {
-      await Haptics.notification({ type: NotificationType.Error }).catch(() => {});
+      await Haptics.notification({ type: NotificationType.Error }).catch(
+        () => {},
+      );
       return;
     }
 
@@ -225,7 +243,9 @@ export class RegistroPage implements OnDestroy {
     if (this.form.invalid || !this.fotoUrl()) {
       this.form.markAllAsTouched();
       this.fotoIntentada.set(true);
-      await Haptics.notification({ type: NotificationType.Error }).catch(() => {});
+      await Haptics.notification({ type: NotificationType.Error }).catch(
+        () => {},
+      );
       return;
     }
 
@@ -256,7 +276,9 @@ export class RegistroPage implements OnDestroy {
       this.router.navigateByUrl('/auth/login');
     } catch (error) {
       await this.dispararError(
-        error instanceof Error ? error.message : 'No se pudo completar el registro.',
+        error instanceof Error
+          ? error.message
+          : 'No se pudo completar el registro.',
       );
     } finally {
       this.cargando.set(false);

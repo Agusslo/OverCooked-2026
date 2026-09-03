@@ -189,16 +189,16 @@
 
 .cliente-card {
   display: flex;
-  align-items: center;
-  gap: 0.85rem;
+  flex-direction: column;
+  gap: 0.75rem;
   background: var(--color-input);
   border-radius: var(--radius-item);
-  padding: 0.85rem 1rem;
+  padding: 0.85rem;
   border: 1.5px solid transparent;
   transition: border-color 0.15s ease, transform 0.1s ease;
 
   &:active {
-    transform: scale(0.985);
+    transform: scale(0.99);
   }
 }
 
@@ -207,10 +207,19 @@
   pointer-events: none;
 }
 
+.cliente-card__top {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+/* Antes era un avatarcito de 48px — el PDF pide "buen tamaño" para
+   la foto en el listado (punto 6), así que ahora es un cuadrado
+   grande, bien identificable. */
 .cliente-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+  width: 110px;
+  height: 110px;
+  border-radius: var(--radius-btn);
   flex-shrink: 0;
   overflow: hidden;
   background: var(--color-deep);
@@ -229,54 +238,53 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .cliente-nombre {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--color-cream);
-  line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.25;
+  overflow-wrap: break-word;
 }
 
 .cliente-email {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--color-peach);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-wrap: break-word;
 }
 
 /* ---------- Acciones ---------- */
 
 .cliente-acciones {
   display: flex;
-  gap: 0.5rem;
-  flex-shrink: 0;
+  gap: 0.6rem;
 }
 
 .btn-accion {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
+  flex: 1;
+  height: 42px;
+  border-radius: var(--radius-btn);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
   cursor: pointer;
   transition: opacity 0.15s ease, transform 0.1s ease;
   -webkit-tap-highlight-color: transparent;
 
   svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 
   &:active:not(:disabled) {
-    transform: scale(0.9);
+    transform: scale(0.97);
   }
 
   &:disabled {
