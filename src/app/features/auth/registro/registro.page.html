@@ -7,10 +7,18 @@
         <div class="camera-box">
           <video #videoCamara autoplay playsinline></video>
           <div class="camera-actions">
-            <button type="button" class="camera-button camera-cancel" (click)="cancelarCamara()">
+            <button
+              type="button"
+              class="camera-button camera-cancel"
+              (click)="cancelarCamara()"
+            >
               CANCELAR
             </button>
-            <button type="button" class="camera-button camera-capture" (click)="capturarFoto()">
+            <button
+              type="button"
+              class="camera-button camera-capture"
+              (click)="capturarFoto()"
+            >
               TOMAR FOTO
             </button>
           </div>
@@ -18,7 +26,11 @@
         } @else {
         <button type="button" class="foto-picker__circle" (click)="tomarFoto()">
           @if (fotoUrl()) {
-          <img [src]="fotoUrl()" alt="Foto de perfil" class="foto-picker__img" />
+          <img
+            [src]="fotoUrl()"
+            alt="Foto de perfil"
+            class="foto-picker__img"
+          />
           } @else {
           <span class="foto-picker__icono">+</span>
           }
@@ -95,6 +107,7 @@
             autocomplete="off"
             inputmode="numeric"
             maxlength="8"
+            (ionInput)="sanitizarDni($event)"
           ></ion-input>
         </ion-item>
 
@@ -102,15 +115,11 @@
         <ion-text class="form-error" color="danger">
           <p>Ingresá un DNI válido (7 u 8 dígitos numéricos).</p>
         </ion-text>
-        }
-
-        @if (fotoIntentada() && !fotoUrl()) {
+        } @if (fotoIntentada() && !fotoUrl()) {
         <ion-text class="form-error" color="danger">
           <p>Sacate una foto de perfil con la cámara.</p>
         </ion-text>
-        }
-
-        @if (errorRegistro()) {
+        } @if (errorRegistro()) {
         <ion-text class="form-error" color="danger">
           <p>{{ errorRegistro() }}</p>
         </ion-text>
@@ -175,22 +184,16 @@
         <ion-text class="form-error" color="danger">
           <p>Las contraseñas no coinciden.</p>
         </ion-text>
-        }
-
-        @if (errorRegistro()) {
+        } @if (errorRegistro()) {
         <ion-text class="form-error" color="danger">
-          
-          @switch (errorRegistro()) {
-            @case ("User already registered") {
-              <p>El usuario ya está registrado</p>
-            }
-            @case ('duplicate key value violates unique constraint "usuarios_dni_key"') {
-              <p>Ya se registró un usuario con ese DNI</p>
-            }
-            @default {
-              <p>Ocurrió un error inesperado. Inténtelo de nuevo.</p>
-            }
-          }
+          @switch (errorRegistro()) { @case ("User already registered") {
+          <p>El usuario ya está registrado</p>
+          } @case ('duplicate key value violates unique constraint
+          "usuarios_dni_key"') {
+          <p>Ya se registró un usuario con ese DNI</p>
+          } @default {
+          <p>Ocurrió un error inesperado. Inténtelo de nuevo.</p>
+          } }
         </ion-text>
         }
 

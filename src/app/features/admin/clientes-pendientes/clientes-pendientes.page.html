@@ -55,41 +55,43 @@
         <!-- Lista de clientes -->
         @for (cliente of clientes(); track cliente.id) {
           <div class="cliente-card"
-               [class.cliente-card--procesando]="procesando() === cliente.id">
+              [class.cliente-card--procesando]="procesando() === cliente.id">
 
-            <div class="cliente-avatar">
-              <img [src]="cliente.foto_url" alt="Foto de {{ cliente.nombre }}" />
-            </div>
+            <div class="cliente-card__top">
+              <div class="cliente-avatar">
+                <img [src]="cliente.foto_url" alt="Foto de {{ cliente.nombre }}" />
+              </div>
 
-            <div class="cliente-info">
-              <span class="cliente-nombre">{{ cliente.apellido }}, {{ cliente.nombre }}</span>
-              <span class="cliente-email">{{ cliente.email }}</span>
+              <div class="cliente-info">
+                <span class="cliente-nombre">{{ cliente.apellido }}, {{ cliente.nombre }}</span>
+                <span class="cliente-email">{{ cliente.email }}</span>
+              </div>
             </div>
 
             <div class="cliente-acciones">
-              <!-- Aprobar -->
-              <button class="btn-accion btn-aprobar"
-                      [disabled]="procesando() === cliente.id"
-                      (click)="aprobar(cliente)"
-                      title="Aceptar">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                  fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-              </button>
-
               <!-- Rechazar -->
               <button class="btn-accion btn-rechazar"
                       [disabled]="procesando() === cliente.id"
-                      (click)="rechazar(cliente)"
-                      title="Rechazar">
+                      (click)="rechazar(cliente)">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                   fill="none" stroke="currentColor" stroke-width="2.5"
                   stroke-linecap="round" stroke-linejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18"/>
                   <line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
+                <span>Rechazar</span>
+              </button>
+
+              <!-- Aprobar -->
+              <button class="btn-accion btn-aprobar"
+                      [disabled]="procesando() === cliente.id"
+                      (click)="aprobar(cliente)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Aceptar</span>
               </button>
             </div>
 
