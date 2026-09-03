@@ -73,15 +73,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <!--
-             Fuerza la descarga del modelo ML Kit para escaneo de barcodes
-             (PDF417 del DNI argentino) al instalar la app, en vez de
-             descargarlo on-demand la primera vez que se escanea.
-        -->
-        <meta-data
-            android:name="com.google.mlkit.vision.DEPENDENCIES"
-            android:value="barcode_ui" />
-
         <service
             android:name="com.capacitorjs.plugins.pushnotifications.MessagingService"
             android:exported="false" >

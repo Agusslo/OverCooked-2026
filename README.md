@@ -31,9 +31,10 @@
 | **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de los platos              | 29/08/2026   | 29/08/2026 |
 | **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | Registro anonimo                | 29/08/2026   | 29/08/2026 |
 | **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de las bebidas             | 30/08/2026   | 30/08/2026 |
-| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de las mesas             | 31/08/2026   | 31/08/2026 |
-| **Catanese, Demián**            | `feature/dev-delta` | Servicio de Mail              | 01/09/2026   | 01/09/2026 |
-| **Catanese, Demián**            | `feature/dev-delta` | Diseño del Mail               | 01/09/2026   | 01/09/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de las mesas               | 31/08/2026   | 31/08/2026 |
+| **Catanese, Demián**            | `feature/dev-delta` | Servicio de Mail                | 01/09/2026   | 01/09/2026 |
+| **Catanese, Demián**            | `feature/dev-delta` | Diseño del Mail                 | 01/09/2026   | 01/09/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | cliente registrado, QR DNI      | 3/09/2026    | 3/09/2026 |
 
 > Si algún integrante no llega con la funcionalidad comprometida, se reasigna el módulo o se cambia el plazo, y queda registrado acá mismo con la fecha del cambio.
 
@@ -41,14 +42,14 @@
 
 | Funcionalidad | Perfiles (dentro de la app) | Responsable | Estado | Fecha - Profe |
 | :--- | :--- | :--- | :--- | :--- |
-| 1. Agregar un empleado | dueño o supervisor | López, Agustín | Indefinido | |
-| 2. Agregar un nuevo plato | cocinero | Filippelli, Adrián | Indefinido | |
-| 3. Agregar una nueva bebida | cantinero | Filippelli, Adrián | Indefinido | |
-| 4. Agregar una nueva mesa | dueño o supervisor | Filippelli, Adrián | Indefinido | |
-| 5. Crear un cliente registrado | cliente o metre | López, Agustín | Indefinido | |
-| 6. Verificar ingreso del cliente registrado | dueño o supervisor | López, Agustín | Indefinido | |
-| 7. Rechazar a un cliente registrado | dueño o supervisor | López, Agustín | Indefinido | |
-| 8. Aceptar a un cliente registrado | dueño o supervisor | López, Agustín | Indefinido | |
+| 1. Agregar un empleado | dueño o supervisor | López, Agustín Nicolás | Indefinido | |
+| 2. Agregar un nuevo plato | cocinero | López, Agustín Nicolás | Indefinido | |
+| 3. Agregar una nueva bebida | cantinero | López, Agustín Nicolás | Indefinido | |
+| 4. Agregar una nueva mesa | dueño o supervisor | López, Agustín Nicolás | Indefinido | |
+| 5. Crear un cliente registrado | cliente o metre | López, Agustín Nicolás | Indefinido | |
+| 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
+| 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
+| 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
 | 9. Ingresar al local | cliente anónimo | Filippelli, Adrián | Indefinido | |
 | 10. Asignar una mesa a un cliente registrado | metre | Fernández Waisberg, Gabriel | Indefinido | |
 | 11. Ver el listado de los productos | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
@@ -63,7 +64,6 @@
 | 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo | Catanese, Demián | Indefinido | |
 | 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Catanese, Demián | Indefinido | |
 | 22. Confirmar el pago y liberar mesa | mozo | Catanese, Demián | Indefinido | |
-
 
 ## ✉️ Servicio de correos automáticos
 
