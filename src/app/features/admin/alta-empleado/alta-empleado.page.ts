@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
   CUSTOM_ELEMENTS_SCHEMA,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -62,12 +63,10 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
   mensajeError = '';
   mensajeExito = '';
 
-  constructor(
-    private fb: FormBuilder,
-    private qrScannerService: QrScannerService,
-    private adminService: AdminService,
-    private changeDetectorRef: ChangeDetectorRef,
-  ) {}
+  private fb = inject(FormBuilder);
+  private qrScannerService = inject(QrScannerService);
+  private adminService = inject(AdminService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   ngOnInit() {
     this.empleadoForm = this.fb.group(

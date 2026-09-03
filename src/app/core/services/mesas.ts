@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { Mesa, TipoMesa, EstadoMesa} from '../models/mesa.model';
 
@@ -15,7 +15,7 @@ const BUCKET = 'mesas-fotos';
   providedIn: 'root',
 })
 export class MesasService {
-  constructor(private supabaseService: SupabaseService) {}
+  private supabaseService = inject(SupabaseService);
 
   // "Se verifica la existencia de la nueva mesa": antes de crear, chequeamos
   // que no haya ya una mesa con ese número (el número identifica la mesa
