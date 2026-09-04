@@ -37,11 +37,15 @@ export class PushNotificationsService {
     this.inicializado = true;
 
     try {
+      // No comparamos sólo contra 'prompt': Android también puede
+      // devolver 'prompt-with-rationale', y si sólo mirábamos 'prompt'
+      // nunca se llegaba a pedir el permiso en ese caso.
       let permiso = await PushNotifications.checkPermissions();
-      if (permiso.receive === 'prompt') {
+      if (permiso.receive !== 'granted') {
         permiso = await PushNotifications.requestPermissions();
       }
       if (permiso.receive !== 'granted') {
+        console.warn('Permiso de notificaciones push no concedido:', permiso.receive);
         return;
       }
 

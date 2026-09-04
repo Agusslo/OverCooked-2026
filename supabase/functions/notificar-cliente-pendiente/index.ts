@@ -68,11 +68,13 @@ serve(async (req) => {
   }
 
   const cliente = payload.record;
+  console.log('[notificar-cliente-pendiente] payload recibido:', JSON.stringify(payload));
 
   // Sólo nos interesa el alta de un cliente que arranca pendiente
   // (el webhook está configurado para INSERT, pero validamos igual
   // por si algún día se agrega también UPDATE).
   if (!cliente || cliente.perfil !== 'cliente' || cliente.estado !== 'pendiente') {
+    console.log('[notificar-cliente-pendiente] omitido: perfil/estado no coinciden.');
     return json({ ok: true, omitido: true }, 200);
   }
 
@@ -91,12 +93,16 @@ serve(async (req) => {
     .in('usuarios.perfil', PERFILES_A_NOTIFICAR);
 
   if (error) {
+    console.log('[notificar-cliente-pendiente] error consultando push_tokens:', error.message);
     return json({ error: 'No se pudieron obtener los tokens.', detalle: error.message }, 500);
   }
+
+  console.log('[notificar-cliente-pendiente] filas de push_tokens encontradas:', JSON.stringify(filas));
 
   const tokens = (filas ?? []).map((fila: { token: string }) => fila.token).filter(Boolean);
 
   if (tokens.length === 0) {
+    console.log('[notificar-cliente-pendiente] no hay tokens para dueño/supervisor.');
     return json({ ok: true, enviados: 0 }, 200);
   }
 
@@ -117,6 +123,8 @@ serve(async (req) => {
   const fallidos = resultados
     .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
     .map((r) => String(r.reason));
+
+  console.log('[notificar-cliente-pendiente] resultado envío FCM:', JSON.stringify({ enviados, fallidos }));
 
   return json({ ok: true, enviados, fallidos: fallidos.length, detalleFallidos: fallidos }, 200);
 });
