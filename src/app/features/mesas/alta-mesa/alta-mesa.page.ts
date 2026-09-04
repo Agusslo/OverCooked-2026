@@ -12,7 +12,7 @@ import { Camera, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { RouterLink } from '@angular/router';
-import { MesasService } from '../../../core/services/mesas';
+import { MesasService } from '../../../core/services/mesas.service';
 import { TipoMesa } from '../../../core/models/mesa.model';
 
 @Component({

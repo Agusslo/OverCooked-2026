@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import * as QRCode from 'qrcode';
-import { MesasService } from '../../../core/services/mesas';
+import { MesasService } from '../../../core/services/mesas.service';
 import { Mesa, EstadoMesa } from '../../../core/models/mesa.model';
 
 @Component({
