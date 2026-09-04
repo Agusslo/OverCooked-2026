@@ -1,5 +1,10 @@
 {
 	"appId": "com.overcooked.app",
 	"appName": "OverCooked",
-	"webDir": "www"
+	"webDir": "www",
+	"plugins": {
+		"LocalNotifications": {
+			"smallIcon": "ic_stat_name"
+		}
+	}
 }

@@ -40,6 +40,15 @@
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="barcode_ui" />
+
+        <!-- Sin esto, FCM usa el ic_launcher a color como ícono de la
+             notificación y Android lo termina mostrando como un círculo
+             vacío (la barra de estado sólo acepta siluetas blancas).
+             ic_stat_name sale de Android Studio: New > Image Asset >
+             Notification Icons, usando src/assets/icon/logo.png. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_name" />
     </application>
 
     <!-- Permissions -->

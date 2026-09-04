@@ -4,8 +4,10 @@ import { Capacitor } from '@capacitor/core';
 import {
   ActionPerformed,
   PushNotifications,
+  PushNotificationSchema,
   Token,
 } from '@capacitor/push-notifications';
+import { LocalNotifications } from '@capacitor/local-notifications';
 import { SupabaseService } from './supabase.service';
 
 // Tabla donde se guarda el token de push de cada dispositivo, asociado
@@ -57,10 +59,16 @@ export class PushNotificationsService {
         console.warn('No se pudo registrar el dispositivo para push:', error);
       });
 
-      // Notificación recibida con la app abierta: no hace falta hacer
-      // nada especial, el sistema operativo ya la muestra sola cuando
-      // llega en segundo plano.
-      PushNotifications.addListener('pushNotificationReceived', () => {});
+      // Con la app en segundo plano/cerrada, Android muestra la
+      // notificación solo. Con la app abierta en primer plano NO lo hace
+      // (es comportamiento normal del sistema operativo), así que acá
+      // la disparamos nosotros como notificación local.
+      PushNotifications.addListener(
+        'pushNotificationReceived',
+        (notificacion: PushNotificationSchema) => {
+          void this.mostrarNotificacionEnPrimerPlano(notificacion);
+        },
+      );
 
       // El usuario tocó la notificación: lo llevamos directo al
       // listado de clientes pendientes.
@@ -75,6 +83,25 @@ export class PushNotificationsService {
       await PushNotifications.register();
     } catch (error) {
       console.warn('No se pudo inicializar las notificaciones push:', error);
+    }
+  }
+
+  private async mostrarNotificacionEnPrimerPlano(
+    notificacion: PushNotificationSchema,
+  ): Promise<void> {
+    try {
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            id: Date.now(),
+            title: notificacion.title ?? '',
+            body: notificacion.body ?? '',
+            extra: notificacion.data,
+          },
+        ],
+      });
+    } catch (error) {
+      console.warn('No se pudo mostrar la notificación en primer plano:', error);
     }
   }
 
