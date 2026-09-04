@@ -28,8 +28,7 @@ export interface DatosNuevoEmpleado {
 
 export class AdminService {
   private mailService = inject(MailService);
-
-  constructor(private supabaseService: SupabaseService) {}
+  private supabaseService = inject(SupabaseService);
 
   async crearEmpleado(datos: DatosNuevoEmpleado): Promise<Usuario> {
     const client = this.supabaseService.getClient();

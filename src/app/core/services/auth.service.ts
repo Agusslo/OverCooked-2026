@@ -13,15 +13,12 @@ const BUCKET_USUARIOS = 'usuarios-fotos';
 export class AuthService {
   router = inject(Router);
   private mailService = inject(MailService);
+  private supabaseService = inject(SupabaseService);
 
   private usuarioActualSubject = new BehaviorSubject<Usuario | null>(null);
   usuarioActual$ = this.usuarioActualSubject.asObservable();
 
-  readonly sesionLista: Promise<void>;
-
-  constructor(private supabaseService: SupabaseService) {
-    this.sesionLista = this.restaurarSesion();
-  }
+  readonly sesionLista: Promise<void> = this.restaurarSesion();
 
   private async restaurarSesion(): Promise<void> {
     try {

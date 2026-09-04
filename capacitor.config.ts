@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 import { KeyboardResize } from '@capacitor/keyboard';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'com.overcooked.app',
   appName: 'OverCooked',
   webDir: 'www',
   plugins: {
@@ -13,6 +13,9 @@ const config: CapacitorConfig = {
     Keyboard: {
       resize: KeyboardResize.Body,
       resizeOnFullScreen: true,
+    },
+    LocalNotifications: {
+      smallIcon: 'ic_stat_name',
     },
   },
 };

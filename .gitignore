@@ -24,6 +24,14 @@ log.txt
 /platforms
 /plugins
 
+# Android (proyecto nativo generado por Capacitor: sólo se versiona el código fuente/config)
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+android/capacitor-cordova-android-plugins/build/
+android/app/google-services.json
+
 # Compiled output
 /dist
 /tmp
@@ -70,3 +78,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Scripts locales
+/git_helper.bat

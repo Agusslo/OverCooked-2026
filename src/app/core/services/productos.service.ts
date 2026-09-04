@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { Producto, TipoProducto, SectorProducto } from '../models/producto.model';
 
@@ -21,7 +21,7 @@ const BUCKET = 'productos-fotos';
   providedIn: 'root',
 })
 export class ProductosService {
-  constructor(private supabaseService: SupabaseService) {}
+  private supabaseService = inject(SupabaseService);
 
   // "Se verifica la existencia en la carta (menú)": antes de guardar,
   // chequeamos que no haya ya un producto con ese nombre (sin importar

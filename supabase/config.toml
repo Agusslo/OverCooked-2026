@@ -5,3 +5,5 @@ project_id = "ydpukgjowtmoxbeyhncz"
 # JWT: valida el payload por su cuenta.
 [functions.enviar-mail]
 verify_jwt = false
+[functions.notificar-cliente-pendiente]
+verify_jwt = false
