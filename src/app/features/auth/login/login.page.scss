@@ -63,7 +63,18 @@ ion-content.login-page {
     max-width: 600px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+}
+
+// Agrupa cada input con su propio mensaje de error para que el
+// espacio de ese mensaje quede reservado siempre (ver .campo-error) y
+// no empuje el resto del formulario para abajo cuando aparece o
+// desaparece. El margin-bottom que antes tenía .login-field se movió
+// acá, así la separación entre campos no cambia.
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 9px;
 }
 
 .login-field {
@@ -77,7 +88,6 @@ ion-content.login-page {
     box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
     border: #D4603A 2px solid;
     overflow: hidden;
-    margin-bottom: 20px;
 }
 
 .login-field ion-input {
@@ -89,9 +99,15 @@ ion-content.login-page {
     font-family: 'ADLaM Display', system-ui, sans-serif;
 }
 
+.campo-error {
+    min-height: 1.1rem;
+    display: flex;
+    align-items: flex-start;
+}
+
 .form-error {
     width: 100%;
-    margin: -4px 0 0;
+    margin: 0;
     font-size: 0.8rem;
     text-align: center;
 }

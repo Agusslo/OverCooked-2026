@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { sesionPersistidaGuard } from './core/guards/sesion-persistida.guard';
 import { authRoutes } from './features/auth/auth.routes';
 import { adminRoutes } from './features/admin/admin.routes';
 import { cocinaRoutes } from './features/cocina/cocina.routes';
@@ -8,9 +9,14 @@ import { mesasRoutes } from './features/mesas/mesas.routes';
 
 export const routes: Routes = [
   {
+    // Angular no permite combinar canActivate con redirectTo en la
+    // misma ruta (los redirects se resuelven antes que los guards) —
+    // por eso acá no hay redirectTo: el guard mismo decide, siempre,
+    // hacia dónde redirigir (parseUrl), según haya o no sesión guardada.
     path: '',
-    redirectTo: 'auth/login',
     pathMatch: 'full',
+    canActivate: [sesionPersistidaGuard],
+    children: [],
   },
   {
     path: 'inicio',
