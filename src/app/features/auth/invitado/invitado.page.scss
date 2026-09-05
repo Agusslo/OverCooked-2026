@@ -16,19 +16,18 @@ ion-content.invitado-page {
     --padding-bottom: 0;
     --padding-start: 0;
     --padding-end: 0;
-    --overflow: hidden;
-    overflow: hidden;
     font-family: 'ADLaM Display', system-ui, sans-serif;
 }
 
 .invitado-shell {
-    min-height: 100vh;
-    height: 100vh;
+    // min-height (no height fija): si el contenido no entra —por ej.
+    // con el teclado tapando la mitad de la pantalla— el shell crece y
+    // ion-content lo scrollea, en vez de recortarlo con overflow:hidden.
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     background: var(--bg-hero);
     font-family: 'ADLaM Display', system-ui, sans-serif;
-    overflow: hidden;
 }
 
 .brand {
@@ -60,7 +59,6 @@ ion-content.invitado-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
 }
 
 .invitado-title {
@@ -78,7 +76,6 @@ ion-content.invitado-page {
     max-width: 600px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
     
 }
 
@@ -161,6 +158,18 @@ ion-content.invitado-page {
 .camera-cancel { background: var(--bg-panel); color: var(--accent-light); }
 .camera-capture { background: var(--gold); color: var(--accent-dark); }
 
+// Agrupa cada input con su propio mensaje de error para que el
+// espacio de ese mensaje quede reservado siempre (ver .campo-error) y
+// no empuje el resto del formulario para abajo cuando aparece o
+// desaparece. El margin-bottom que antes tenía .invitado-field se
+// movió acá, así la separación entre campos no cambia.
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 9px;
+}
+
 .invitado-field {
     --background: var(--accent-light);
     --border-radius: 24px;
@@ -172,7 +181,6 @@ ion-content.invitado-page {
     box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
     border: #D4603A 2px solid;
     overflow: hidden;
-    margin-bottom: 14px;
 }
 
 .invitado-field ion-input {
@@ -184,9 +192,15 @@ ion-content.invitado-page {
     font-family: 'ADLaM Display', system-ui, sans-serif;
 }
 
+.campo-error {
+    min-height: 1rem;
+    display: flex;
+    align-items: flex-start;
+}
+
 .form-error {
     width: 100%;
-    margin: -6px 0 4px;
+    margin: 0;
     font-size: 0.75rem;
     text-align: center;
 }

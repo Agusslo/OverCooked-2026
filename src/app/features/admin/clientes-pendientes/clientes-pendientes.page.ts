@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { AdminService } from '../../../core/services/admin.service';
 import { Usuario } from '../../../core/models/usuario.model';
 
@@ -7,6 +8,7 @@ import { Usuario } from '../../../core/models/usuario.model';
   standalone: true,
   templateUrl: './clientes-pendientes.page.html',
   styleUrls: ['./clientes-pendientes.page.scss'],
+  imports: [RouterLink],
 })
 export class ClientesPendientesPage implements OnInit {
   private adminService = inject(AdminService);

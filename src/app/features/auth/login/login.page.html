@@ -7,27 +7,35 @@
 
 
       <form [formGroup]="form" (ngSubmit)="iniciarSesion()" class="login-form">
-        <ion-item class="login-field" lines="none">
-          <ion-input type="email" formControlName="email" placeholder="Correo electrónico"
-            autocomplete="email"></ion-input>
-        </ion-item>
+        <div class="campo">
+          <ion-item class="login-field" lines="none">
+            <ion-input type="email" formControlName="email" placeholder="Correo electrónico"
+              autocomplete="email"></ion-input>
+          </ion-item>
 
-        @if (form.controls.email.invalid && form.controls.email.touched) {
-        <ion-text class="form-error" color="danger">
-          <p>Ingresá un correo electrónico válido.</p>
-        </ion-text>
-        }
+          <div class="campo-error">
+            @if (form.controls.email.invalid && form.controls.email.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Ingresá un correo electrónico válido.</p>
+            </ion-text>
+            }
+          </div>
+        </div>
 
-        <ion-item class="login-field" lines="none">
-          <ion-input type="password" formControlName="clave" placeholder="Contraseña"
-            autocomplete="current-password"></ion-input>
-        </ion-item>
+        <div class="campo">
+          <ion-item class="login-field" lines="none">
+            <ion-input type="password" formControlName="clave" placeholder="Contraseña"
+              autocomplete="current-password"></ion-input>
+          </ion-item>
 
-        @if (form.controls.clave.invalid && form.controls.clave.touched) {
-        <ion-text class="form-error" color="danger">
-          <p>La contraseña debe tener al menos 6 caracteres.</p>
-        </ion-text>
-        }
+          <div class="campo-error">
+            @if (form.controls.clave.invalid && form.controls.clave.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>La contraseña debe tener al menos 6 caracteres.</p>
+            </ion-text>
+            }
+          </div>
+        </div>
 
         @if (errorLogin()) {
         <ion-text class="form-error" color="danger">

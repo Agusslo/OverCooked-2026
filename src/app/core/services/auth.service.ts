@@ -273,9 +273,14 @@ export class AuthService {
     const extension = blob.type.split('/')[1] || 'jpeg';
     const ruta = `${nombreArchivo}.${extension}`;
 
+    // upsert: true porque el nombre de archivo es determinístico
+    // (cliente-<userId>) y un registro que quedó a medias (ver
+    // recuperarRegistroIncompleto) puede reintentar subir la foto para
+    // el mismo userId — sin esto, la segunda subida choca con la
+    // primera y falla con 400 "The resource already exists".
     const { error: errorSubida } = await client.storage
       .from(BUCKET_USUARIOS)
-      .upload(ruta, blob, { contentType: blob.type });
+      .upload(ruta, blob, { contentType: blob.type, upsert: true });
 
     if (errorSubida) {
       throw new Error(`No se pudo subir la foto: ${errorSubida.message}`);

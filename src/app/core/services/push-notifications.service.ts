@@ -9,6 +9,7 @@ import {
 } from '@capacitor/push-notifications';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { SupabaseService } from './supabase.service';
+import { environment } from '../../../environments/environment';
 
 // Tabla donde se guarda el token de push de cada dispositivo, asociado
 // al usuario logueado (ver CAMBIAR.md: hay que crear esta tabla en
@@ -32,8 +33,16 @@ export class PushNotificationsService {
 
   async inicializar(usuarioId: string): Promise<void> {
     // En navegador (desarrollo) no hay push notifications nativas —
-    // el plugin sólo funciona compilado a Android/iOS.
-    if (this.inicializado || !Capacitor.isNativePlatform()) {
+    // el plugin sólo funciona compilado a Android/iOS. Tampoco se puede
+    // habilitar sin android/app/google-services.json: PushNotifications
+    // .register() llama a Firebase, y sin ese archivo la llamada nativa
+    // tira una excepción que no se puede atrapar desde JS y cierra la
+    // app (ver environment.pushNotificationsHabilitadas).
+    if (
+      this.inicializado ||
+      !Capacitor.isNativePlatform() ||
+      !environment.pushNotificationsHabilitadas
+    ) {
       return;
     }
     this.inicializado = true;
