@@ -44,15 +44,15 @@
 ## 🚀 Roadmap de Entregas
 
 | Funcionalidad | Perfiles (dentro de la app) | Responsable | Estado | Fecha - Profe |
-| :--- | :--- | :--- | :--- | :--- |
-| 1. Agregar un empleado | dueño o supervisor | López, Agustín Nicolás | Indefinido | |
-| 2. Agregar un nuevo plato | cocinero | López, Agustín Nicolás | Indefinido | |
-| 3. Agregar una nueva bebida | cantinero | López, Agustín Nicolás | Indefinido | |
-| 4. Agregar una nueva mesa | dueño o supervisor | López, Agustín Nicolás | Indefinido | |
-| 5. Crear un cliente registrado | cliente o metre | López, Agustín Nicolás | Indefinido | |
-| 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
-| 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
-| 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
+| :--- | :--- | :--- | :---: | :--- |
+| 1. Agregar un empleado | dueño o supervisor | López, Agustín Nicolás | 🟡 | 05/09/2026 |
+| 2. Agregar un nuevo plato | cocinero | López, Agustín Nicolás | 🟡 | 05/09/2026 |
+| 3. Agregar una nueva bebida | cantinero | López, Agustín Nicolás | 🟡 | 05/09/2026 |
+| 4. Agregar una nueva mesa | dueño o supervisor | López, Agustín Nicolás | 🟡 | 05/09/2026 |
+| 5. Crear un cliente registrado | cliente o metre | López, Agustín Nicolás | 🟡 | 05/09/2026 |
+| 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | 🟡 | 05/09/2026 |
+| 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟡 | 05/09/2026 |
+| 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟡 | 05/09/2026 |
 | 9. Ingresar al local | cliente anónimo | Filippelli, Adrián | Indefinido | |
 | 10. Asignar una mesa a un cliente registrado | metre | Fernández Waisberg, Gabriel | Indefinido | |
 | 11. Ver el listado de los productos | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
