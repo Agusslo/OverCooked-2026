@@ -17,8 +17,12 @@ import {
   IonSpinner,
   IonText,
 } from '@ionic/angular';
+import { Haptics, NotificationType } from '@capacitor/haptics';
 import { AuthService } from '../../../core/services/auth.service';
-import { IRegistroAnonimo } from '../../../core/models/usuario.model';
+import { QrScannerService } from '../../../core/services/qr-scanner';
+import { ListaEsperaService } from '../../../core/services/lista-espera.service';
+import { IRegistroAnonimo, Usuario } from '../../../core/models/usuario.model';
+import { Capacitor } from '@capacitor/core';
 import {
   abrirCamaraWeb,
   capturarFotoWeb,
@@ -39,13 +43,19 @@ export class InvitadoPage implements OnDestroy {
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private qrScannerService = inject(QrScannerService);
+  private listaEsperaService = inject(ListaEsperaService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
+  // paso 1 = datos personales, paso 2 = escanear el QR de ingreso
+  paso = signal<1 | 2>(1);
   cargando = signal(false);
   errorInvitado = signal<string | null>(null);
   fotoUrl = signal<string | null>(null);
   camaraActiva = signal(false);
+
+  private usuarioAnonimo: Usuario | null = null;
 
   private abriendoCamara = false;
   private streamCamara?: MediaStream;
@@ -117,9 +127,13 @@ export class InvitadoPage implements OnDestroy {
     this.camaraActiva.set(false);
   }
 
+  // Paso 1 -> paso 2: registra la cuenta anónima y pasa a pedir el
+  // escaneo del QR de ingreso. Todavía no lo anota en la lista de
+  // espera — eso pasa recién cuando escanea (siguiente método).
   async continuar(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      await Haptics.notification({ type: NotificationType.Error }).catch(() => {});
       return;
     }
 
@@ -129,29 +143,72 @@ export class InvitadoPage implements OnDestroy {
       nombre: nombre!,
       apellido: apellido!,
       foto_url: this.fotoUrl() ?? '',
-      perfil: "anonimo"
+      perfil: 'anonimo',
     };
 
-    await this.intentarRegistroAnonimo(datos);
+    this.errorInvitado.set(null);
+    this.cargando.set(true);
+
+    try {
+      this.usuarioAnonimo = await this.authService.registrarAnonimo(datos);
+      this.paso.set(2);
+    } catch (error) {
+      await this.dispararError(
+        error instanceof Error ? error.message : 'No se pudo continuar como invitado.',
+      );
+    } finally {
+      this.cargando.set(false);
+    }
+  }
+
+  // Punto 9: escanea el QR fijo de ingreso al local y recién ahí
+  // queda anotado en la lista de espera del metre.
+  async escanearIngreso(): Promise<void> {
+    this.errorInvitado.set(null);
+
+    if (!Capacitor.isNativePlatform()) {
+      await this.dispararError('El escaneo de QR solo funciona compilado en el celular, no en el navegador.');
+      return;
+    }
+
+    const resultado = await this.qrScannerService.escanear();
+
+    if (!resultado || resultado.tipo !== 'LOCAL') {
+      await this.dispararError('Ese QR no es el de ingreso al local.');
+      return;
+    }
+
+    if (!this.usuarioAnonimo) {
+      await this.dispararError('Se perdió la sesión, volvé a intentar desde el principio.');
+      return;
+    }
+
+    this.cargando.set(true);
+    try {
+      await this.listaEsperaService.anotarse({
+        clienteAnonimoId: this.usuarioAnonimo.id,
+        nombre: `${this.usuarioAnonimo.nombre} ${this.usuarioAnonimo.apellido}`.trim(),
+        fotoUrl: this.usuarioAnonimo.foto_url,
+      });
+      await Haptics.notification({ type: NotificationType.Success }).catch(() => {});
+      this.router.navigateByUrl('/inicio');
+    } catch (error) {
+      await this.dispararError(
+        error instanceof Error ? error.message : 'No se pudo anotar en la lista de espera.',
+      );
+    } finally {
+      this.cargando.set(false);
+    }
   }
 
   volverAlLogin(): void {
     this.router.navigateByUrl('/auth/login');
   }
 
-  private async intentarRegistroAnonimo(datos: IRegistroAnonimo): Promise<void> {
-    this.errorInvitado.set(null);
-    this.cargando.set(true);
-
+  private async dispararError(texto: string): Promise<void> {
+    this.errorInvitado.set(texto);
     try {
-      await this.authService.registrarAnonimo(datos);
-      this.router.navigateByUrl('/inicio');
-    } catch (error) {
-      this.errorInvitado.set(
-        error instanceof Error ? error.message : 'No se pudo continuar como invitado.'
-      );
-    } finally {
-      this.cargando.set(false);
-    }
+      await Haptics.notification({ type: NotificationType.Error });
+    } catch {}
   }
 }
