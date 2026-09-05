@@ -7,23 +7,23 @@
 /* ---------- Variables ---------- */
 :host {
   /* Colores */
-  --color-bg:       #ee7a4f;
-  --color-card:     #c45030;
-  --color-header:   #c45030;
-  --color-input:    #a83820;
-  --color-deep:     #8c2e14;
-  --color-gold:     #f0c060;
+  --color-bg: #ee7a4f;
+  --color-card: #c45030;
+  --color-header: #c45030;
+  --color-input: #a83820;
+  --color-deep: #8c2e14;
+  --color-gold: #f0c060;
   --color-gold-dim: rgba(240, 192, 96, 0.25);
-  --color-rust:     #d4603a;
-  --color-cream:    #fef5ee;
-  --color-peach:    #f9bfa0;
-  --color-error:    #f5956b;
-  --color-success:  #6bcf7f;
+  --color-rust: #d4603a;
+  --color-cream: #fef5ee;
+  --color-peach: #f9bfa0;
+  --color-error: #f5956b;
+  --color-success: #6bcf7f;
 
   /* Radios */
-  --radius-card:  24px;
-  --radius-item:  16px;
-  --radius-btn:   12px;
+  --radius-card: 24px;
+  --radius-item: 16px;
+  --radius-btn: 12px;
 
   /* Fuentes */
   --font-body: 'ADLaM Display', system-ui, sans-serif;
@@ -80,8 +80,20 @@
   opacity: 0.1;
   pointer-events: none;
 }
-.header-box::before { width: 140px; height: 140px; top: -35px; right: -35px; }
-.header-box::after  { width:  84px; height:  84px; top: -14px; right: -14px; }
+
+.header-box::before {
+  width: 140px;
+  height: 140px;
+  top: -35px;
+  right: -35px;
+}
+
+.header-box::after {
+  width: 84px;
+  height: 84px;
+  top: -14px;
+  right: -14px;
+}
 
 .header-row {
   display: flex;
@@ -105,8 +117,14 @@
     height: 20px;
   }
 
-  &:hover  { transform: translateX(-2px); color: var(--color-cream); }
-  &:active { transform: scale(0.95); }
+  &:hover {
+    transform: translateX(-2px);
+    color: var(--color-cream);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 .header-titles {
@@ -164,8 +182,13 @@
 }
 
 @keyframes spinLogo {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .feedback-banner {
@@ -182,7 +205,9 @@
   color: var(--color-error);
   border: 1.5px solid rgba(245, 149, 107, 0.3);
 
-  svg { flex-shrink: 0; }
+  svg {
+    flex-shrink: 0;
+  }
 }
 
 /* ---------- Tarjeta de cliente ---------- */
@@ -349,6 +374,7 @@
   .card-box {
     transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
+
   .card-box:hover {
     transform: translateY(-2px);
     box-shadow:
@@ -359,6 +385,7 @@
 
 /* Accesibilidad: sin animaciones */
 @media (prefers-reduced-motion: reduce) {
+
   .btn-accion,
   .btn-back,
   .card-box,

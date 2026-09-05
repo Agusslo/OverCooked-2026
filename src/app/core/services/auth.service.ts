@@ -36,6 +36,12 @@ export class AuthService {
       }
 
       const usuario = await this.obtenerUsuarioPorId(data.session.user.id);
+
+      if (usuario.estado !== 'aprobado') {
+        await this.logout();
+        return;
+      }
+
       this.usuarioActualSubject.next(usuario);
     } catch (error) {
       // Una sesión que no se puede resolver (usuario borrado, fila
