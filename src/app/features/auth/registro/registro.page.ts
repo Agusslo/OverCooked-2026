@@ -3,9 +3,12 @@ import {
   ElementRef,
   ViewChild,
   ChangeDetectorRef,
+  OnInit,
+  AfterViewInit,
   OnDestroy,
   inject,
   signal,
+  computed,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -27,6 +30,8 @@ import {
 import { Camera, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Haptics, NotificationType } from '@capacitor/haptics';
+import { Keyboard } from '@capacitor/keyboard';
+import type { PluginListenerHandle } from '@capacitor/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { QrScannerService } from '../../../core/services/qr-scanner';
 import { IRegistro } from '../../../core/models/usuario.model';
@@ -46,8 +51,9 @@ import { IRegistro } from '../../../core/models/usuario.model';
     IonText,
   ],
 })
-export class RegistroPage implements OnDestroy {
+export class RegistroPage implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('videoCamara') videoCamara?: ElementRef<HTMLVideoElement>;
+  @ViewChild('shell') shell?: ElementRef<HTMLDivElement>;
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
@@ -61,9 +67,24 @@ export class RegistroPage implements OnDestroy {
   fotoUrl = signal<string | null>(null);
   fotoIntentada = signal(false);
   camaraActiva = signal(false);
+  // El scroll de la página sólo se habilita mientras el teclado está
+  // abierto (para poder llegar a los campos que tapa); el resto del
+  // tiempo la pantalla no tiene que scrollear. El plugin Keyboard no
+  // tiene implementación web (tira error en navegador), así que ahí
+  // se deja scrollear siempre — la restricción es sólo para la app nativa.
+  tecladoAbierto = signal(!Capacitor.isNativePlatform());
+  // Red de seguridad: si por lo que sea el contenido no entra en la
+  // pantalla (ej. se muestran varios errores de validación a la vez),
+  // se habilita el scroll igual aunque el teclado esté cerrado, para
+  // que nunca quede algo inalcanzable.
+  private contenidoDesborda = signal(false);
+  permitirScroll = computed(() => this.tecladoAbierto() || this.contenidoDesborda());
 
   private abriendoCamara = false;
   private streamCamara?: MediaStream;
+  private listenerTecladoShow?: PluginListenerHandle;
+  private listenerTecladoHide?: PluginListenerHandle;
+  private resizeObserver?: ResizeObserver;
 
   private passwordsIgualesValidator: ValidatorFn = (
     group: AbstractControl,
@@ -107,8 +128,39 @@ export class RegistroPage implements OnDestroy {
 
   private readonly camposPaso1 = ['nombre', 'apellido', 'dni'] as const;
 
+  async ngOnInit(): Promise<void> {
+    if (!Capacitor.isNativePlatform()) {
+      return;
+    }
+
+    this.listenerTecladoShow = await Keyboard.addListener('keyboardWillShow', () => {
+      this.tecladoAbierto.set(true);
+    });
+    this.listenerTecladoHide = await Keyboard.addListener('keyboardWillHide', () => {
+      this.tecladoAbierto.set(false);
+    });
+  }
+
+  ngAfterViewInit(): void {
+    const el = this.shell?.nativeElement;
+    if (!el) {
+      return;
+    }
+
+    const chequearDesborde = () => {
+      this.contenidoDesborda.set(el.scrollHeight > window.innerHeight);
+    };
+
+    this.resizeObserver = new ResizeObserver(chequearDesborde);
+    this.resizeObserver.observe(el);
+    chequearDesborde();
+  }
+
   ngOnDestroy() {
     this.detenerCamara();
+    this.listenerTecladoShow?.remove();
+    this.listenerTecladoHide?.remove();
+    this.resizeObserver?.disconnect();
   }
 
   sanitizarDni(event: CustomEvent<{ value?: string | null }>): void {

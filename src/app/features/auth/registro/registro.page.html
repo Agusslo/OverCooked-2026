@@ -1,5 +1,5 @@
-<ion-content class="registro-page">
-  <div class="registro-shell">
+<ion-content class="registro-page" [scrollY]="permitirScroll()">
+  <div class="registro-shell" #shell>
     <div class="brand">
       @if (paso() === 1) {
       <div class="foto-picker brand__picker">
@@ -69,57 +69,75 @@
           ESCANEAR DNI
         </ion-button>
 
-        <ion-item class="registro-field" lines="none">
-          <ion-input
-            type="text"
-            formControlName="nombre"
-            placeholder="Nombre"
-            autocomplete="given-name"
-          ></ion-input>
-        </ion-item>
+        <div class="campo">
+          <ion-item class="registro-field" lines="none">
+            <ion-input
+              type="text"
+              formControlName="nombre"
+              placeholder="Nombre"
+              autocomplete="given-name"
+            ></ion-input>
+          </ion-item>
 
-        @if (form.controls.nombre.invalid && form.controls.nombre.touched) {
-        <ion-text class="form-error" color="danger">
-          <p>Ingresá tu nombre.</p>
-        </ion-text>
-        }
+          <div class="campo-error">
+            @if (form.controls.nombre.invalid && form.controls.nombre.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Ingresá tu nombre.</p>
+            </ion-text>
+            }
+          </div>
+        </div>
 
-        <ion-item class="registro-field" lines="none">
-          <ion-input
-            type="text"
-            formControlName="apellido"
-            placeholder="Apellido"
-            autocomplete="family-name"
-          ></ion-input>
-        </ion-item>
+        <div class="campo">
+          <ion-item class="registro-field" lines="none">
+            <ion-input
+              type="text"
+              formControlName="apellido"
+              placeholder="Apellido"
+              autocomplete="family-name"
+            ></ion-input>
+          </ion-item>
 
-        @if (form.controls.apellido.invalid && form.controls.apellido.touched) {
-        <ion-text class="form-error" color="danger">
-          <p>Ingresá tu apellido.</p>
-        </ion-text>
-        }
+          <div class="campo-error">
+            @if (form.controls.apellido.invalid && form.controls.apellido.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Ingresá tu apellido.</p>
+            </ion-text>
+            }
+          </div>
+        </div>
 
-        <ion-item class="registro-field" lines="none">
-          <ion-input
-            type="tel"
-            formControlName="dni"
-            placeholder="DNI"
-            autocomplete="off"
-            inputmode="numeric"
-            maxlength="8"
-            (ionInput)="sanitizarDni($event)"
-          ></ion-input>
-        </ion-item>
+        <div class="campo">
+          <ion-item class="registro-field" lines="none">
+            <ion-input
+              type="tel"
+              formControlName="dni"
+              placeholder="DNI"
+              autocomplete="off"
+              inputmode="numeric"
+              maxlength="8"
+              (ionInput)="sanitizarDni($event)"
+            ></ion-input>
+          </ion-item>
 
-        @if (form.controls.dni.invalid && form.controls.dni.touched) {
-        <ion-text class="form-error" color="danger">
-          <p>Ingresá un DNI válido (7 u 8 dígitos numéricos).</p>
-        </ion-text>
-        } @if (fotoIntentada() && !fotoUrl()) {
-        <ion-text class="form-error" color="danger">
-          <p>Sacate una foto de perfil con la cámara.</p>
-        </ion-text>
-        } @if (errorRegistro()) {
+          <div class="campo-error">
+            @if (form.controls.dni.invalid && form.controls.dni.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Ingresá un DNI válido (7 u 8 dígitos numéricos).</p>
+            </ion-text>
+            }
+          </div>
+        </div>
+
+        <div class="campo-error">
+          @if (fotoIntentada() && !fotoUrl()) {
+          <ion-text class="form-error" color="danger">
+            <p>Sacate una foto de perfil con la cámara.</p>
+          </ion-text>
+          }
+        </div>
+
+        @if (errorRegistro()) {
         <ion-text class="form-error" color="danger">
           <p>{{ errorRegistro() }}</p>
         </ion-text>
@@ -134,57 +152,71 @@
           <span>SIGUIENTE</span>
         </ion-button>
         } @else {
-        <ion-item class="registro-field" lines="none">
-          <ion-input
-            type="email"
-            formControlName="email"
-            placeholder="Correo electrónico"
-            autocomplete="email"
-          ></ion-input>
-        </ion-item>
+        <div class="campo">
+          <ion-item class="registro-field" lines="none">
+            <ion-input
+              type="email"
+              formControlName="email"
+              placeholder="Correo electrónico"
+              autocomplete="email"
+            ></ion-input>
+          </ion-item>
 
-        @if (form.controls.email.invalid && form.controls.email.touched) {
-        <ion-text class="form-error" color="danger">
-          <p>Ingresá un correo electrónico válido.</p>
-        </ion-text>
-        }
+          <div class="campo-error">
+            @if (form.controls.email.invalid && form.controls.email.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Ingresá un correo electrónico válido.</p>
+            </ion-text>
+            }
+          </div>
+        </div>
 
-        <ion-item class="registro-field" lines="none">
-          <ion-input
-            type="password"
-            formControlName="password"
-            placeholder="Contraseña"
-            autocomplete="new-password"
-          ></ion-input>
-        </ion-item>
+        <div class="campo">
+          <ion-item class="registro-field" lines="none">
+            <ion-input
+              type="password"
+              formControlName="password"
+              placeholder="Contraseña"
+              autocomplete="new-password"
+            ></ion-input>
+          </ion-item>
 
-        @if (form.controls.password.invalid && form.controls.password.touched) {
-        <ion-text class="form-error" color="danger">
-          <p>La contraseña debe tener al menos 6 caracteres.</p>
-        </ion-text>
-        }
+          <div class="campo-error">
+            @if (form.controls.password.invalid && form.controls.password.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>La contraseña debe tener al menos 6 caracteres.</p>
+            </ion-text>
+            }
+          </div>
+        </div>
 
-        <ion-item class="registro-field" lines="none">
-          <ion-input
-            type="password"
-            formControlName="repetirPassword"
-            placeholder="Repetir contraseña"
-            autocomplete="new-password"
-          ></ion-input>
-        </ion-item>
+        <div class="campo">
+          <ion-item class="registro-field" lines="none">
+            <ion-input
+              type="password"
+              formControlName="repetirPassword"
+              placeholder="Repetir contraseña"
+              autocomplete="new-password"
+            ></ion-input>
+          </ion-item>
 
-        @if (form.controls.repetirPassword.hasError('required') &&
-        form.controls.repetirPassword.touched) {
-        <ion-text class="form-error" color="danger">
-          <p>Repetí tu contraseña.</p>
-        </ion-text>
-        } @else if
-        (form.controls.repetirPassword.hasError('passwordsNoCoinciden') &&
-        form.controls.repetirPassword.touched) {
-        <ion-text class="form-error" color="danger">
-          <p>Las contraseñas no coinciden.</p>
-        </ion-text>
-        } @if (errorRegistro()) {
+          <div class="campo-error">
+            @if (form.controls.repetirPassword.hasError('required') &&
+            form.controls.repetirPassword.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Repetí tu contraseña.</p>
+            </ion-text>
+            } @else if
+            (form.controls.repetirPassword.hasError('passwordsNoCoinciden') &&
+            form.controls.repetirPassword.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Las contraseñas no coinciden.</p>
+            </ion-text>
+            }
+          </div>
+        </div>
+
+        @if (errorRegistro()) {
         <ion-text class="form-error" color="danger">
           @switch (errorRegistro()) { @case ("User already registered") {
           <p>El usuario ya está registrado</p>
@@ -230,7 +262,7 @@
           expand="block"
           fill="clear"
           (click)="volverAlLogin()"
-          >VOLVER AL LOGIN</ion-button
+          >VOLVER AL INICIO</ion-button
         >
       </div>
     </div>
