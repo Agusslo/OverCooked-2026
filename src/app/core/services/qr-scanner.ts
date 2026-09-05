@@ -78,7 +78,10 @@ export class QrScannerService {
   }
 
   private procesarQr(codigo: string): ResultadoQr {
-    const valorLimpio = codigo.trim().toUpperCase();
+    // Sacamos cualquier caracter que no sea letra/número/guión bajo
+    // (espacios, saltos de línea, o caracteres invisibles que a veces
+    // meten los generadores de QR online) antes de comparar.
+    const valorLimpio = codigo.replace(/[^a-zA-Z0-9_]/g, '').toUpperCase();
 
     if (valorLimpio === 'LOCAL_INGRESO') {
       return { tipo: 'LOCAL', valor: 'LOCAL_INGRESO' };

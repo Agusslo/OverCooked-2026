@@ -195,31 +195,51 @@ export class AuthService {
   }
 
   async registrarAnonimo({ nombre, apellido, foto_url }: IRegistroAnonimo): Promise<Usuario> {
-    const client = this.supabaseService.getClient();
+    let userId: string;
 
-    const { data, error } = await client.auth.signInAnonymously();
+    try {
+      const { data, error } = await this.supabaseService.getClient().auth.signInAnonymously({
+        options: {
+          data: { nombre, apellido, foto_url },
+        },
+      });
 
-    if (error || !data.user) {
-      throw error ?? new Error('No se pudo registrar el usuario.');
+      if (error || !data.user) {
+        throw error ?? new Error('signInAnonymously no devolvió usuario.');
+      }
+
+      userId = data.user.id;
+    } catch (error) {
+      console.error('[registrarAnonimo] Falló signInAnonymously:', error);
+      throw new Error(
+        `PASO 1 (crear cuenta anónima) falló: ${error instanceof Error ? error.message : error}`,
+      );
     }
 
-    // Igual que en el resto de la app, la foto (si se sacó) se sube a
-    // Storage y sólo se guarda la URL pública — nunca el dataUrl base64.
-    const fotoUrlSubida = foto_url
-      ? await this.subirFoto(foto_url, `anonimo-${data.user.id}`)
-      : '';
+    try {
+      const { error: errorClienteAnonimo } = await this.supabaseService
+        .getClient()
+        .from('clientes_anonimos')
+        .insert({
+          id: userId,
+          nombre: `${nombre} ${apellido}`.trim(),
+        });
 
-    const { data: actualizado, error: errorUpdate } = await client.auth.updateUser({
-      data: { nombre, apellido, foto_url: fotoUrlSubida },
-    });
-
-    if (errorUpdate) {
-      throw new Error('No se pudieron guardar los datos del invitado.');
+      if (errorClienteAnonimo) {
+        throw errorClienteAnonimo;
+      }
+    } catch (error) {
+      console.error('[registrarAnonimo] Falló el insert en clientes_anonimos:', error);
+      throw new Error(
+        `PASO 2 (guardar en clientes_anonimos) falló: ${error instanceof Error ? error.message : JSON.stringify(error)}`,
+      );
     }
 
-    const usuario = this.usuarioDesdeSesionAnonima(actualizado.user ?? data.user);
-    this.usuarioActualSubject.next(usuario);
-    return usuario;
+    const {
+      data: { user: authUser },
+    } = await this.supabaseService.getClient().auth.getUser();
+
+    return this.usuarioDesdeSesionAnonima(authUser!);
   }
 
   // Los invitados (signInAnonymously) no tienen fila en 'usuarios': se
