@@ -11,7 +11,7 @@ export const environment = {
   // esa llamada tira una excepción nativa no capturable desde el lado
   // JS y CIERRA LA APP. Dejar en false hasta sumar ese archivo (Firebase
   // console → agregar app Android con el applicationId io.ionic.starter).
-  pushNotificationsHabilitadas: false,
+  pushNotificationsHabilitadas: true,
 };
 
 /*
