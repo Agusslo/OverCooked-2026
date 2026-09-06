@@ -165,26 +165,32 @@ export class InvitadoPage implements OnDestroy {
   // queda anotado en la lista de espera del metre.
   async escanearIngreso(): Promise<void> {
     this.errorInvitado.set(null);
-
-    if (!Capacitor.isNativePlatform()) {
-      await this.dispararError('El escaneo de QR solo funciona compilado en el celular, no en el navegador.');
-      return;
-    }
-
-    const resultado = await this.qrScannerService.escanear();
-
-    if (!resultado || resultado.tipo !== 'LOCAL') {
-      await this.dispararError('Ese QR no es el de ingreso al local.');
-      return;
-    }
-
-    if (!this.usuarioAnonimo) {
-      await this.dispararError('Se perdió la sesión, volvé a intentar desde el principio.');
-      return;
-    }
-
     this.cargando.set(true);
+
     try {
+      const resultado = await this.qrScannerService.escanear();
+
+      console.log('[escanearIngreso] resultado:', JSON.stringify(resultado));
+
+      if (!resultado) {
+        await this.dispararError(
+          'No se pudo escanear. Asegurate de que la app tenga permisos de cámara y volvé a intentar.',
+        );
+        return;
+      }
+
+      if (resultado.tipo !== 'LOCAL') {
+        await this.dispararError(
+          `Ese QR no es el de ingreso al local. Se leyó: "${resultado.tipo}" → "${resultado.valor}"`,
+        );
+        return;
+      }
+
+      if (!this.usuarioAnonimo) {
+        await this.dispararError('Se perdió la sesión, volvé a intentar desde el principio.');
+        return;
+      }
+
       await this.listaEsperaService.anotarse({
         clienteAnonimoId: this.usuarioAnonimo.id,
         nombre: `${this.usuarioAnonimo.nombre} ${this.usuarioAnonimo.apellido}`.trim(),
@@ -193,8 +199,9 @@ export class InvitadoPage implements OnDestroy {
       await Haptics.notification({ type: NotificationType.Success }).catch(() => {});
       this.router.navigateByUrl('/inicio');
     } catch (error) {
+      console.error('[escanearIngreso] error:', error);
       await this.dispararError(
-        error instanceof Error ? error.message : 'No se pudo anotar en la lista de espera.',
+        error instanceof Error ? error.message : 'No se pudo completar el escaneo.',
       );
     } finally {
       this.cargando.set(false);

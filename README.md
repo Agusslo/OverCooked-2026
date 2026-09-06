@@ -34,10 +34,8 @@
 | **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de las mesas               | 31/08/2026   | 31/08/2026 |
 | **Catanese, Demián**            | `feature/dev-delta` | Servicio de Mail                | 01/09/2026   | 01/09/2026 |
 | **Catanese, Demián**            | `feature/dev-delta` | Diseño del Mail                 | 01/09/2026   | 01/09/2026 |
-| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Cliente registrado, QR DNI      | 3/09/2026    | 3/09/2026  |
-| **Catanese, Demián**            | `feature/dev-delta` | Diseño de UI general            | 03/09/2026   | 05/09/2026 |
-| **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | Clientes pendientes             | 04/09/2026   | 04/09/2026 |
-| **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | Notificaciones Push             | 05/09/2026   | 05/09/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | cliente registrado, QR DNI      | 3/09/2026    | 3/09/2026  |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Cliente Anonimo                 | 5/09/2026    | 6/09/2026  |
 
 > Si algún integrante no llega con la funcionalidad comprometida, se reasigna el módulo o se cambia el plazo, y queda registrado acá mismo con la fecha del cambio.
 
@@ -53,7 +51,7 @@
 | 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
 | 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
 | 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
-| 9. Ingresar al local | cliente anónimo | Filippelli, Adrián | Indefinido | |
+| 9. Ingresar al local | cliente anónimo | López, Agustín Nicolás | Indefinido | |
 | 10. Asignar una mesa a un cliente registrado | metre | Fernández Waisberg, Gabriel | Indefinido | |
 | 11. Ver el listado de los productos | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
 | 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
@@ -67,6 +65,39 @@
 | 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo | Catanese, Demián | Indefinido | |
 | 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Catanese, Demián | Indefinido | |
 | 22. Confirmar el pago y liberar mesa | mozo | Catanese, Demián | Indefinido | |
+
+## ✉️ Servicio de correos automáticos
+
+**Responsable:** Catanese, Demián (`feature/dev-delta`)
+
+Envío automático de correos desde una casilla empresarial (requisito excluyente del TFI), sin exponer credenciales en la aplicación.
+
+### Arquitectura
+
+* **Proveedor:** [Resend](https://resend.com) con dominio propio verificado (`overcooked.abrdns.com`, DKIM + SPF).
+* **Backend:** Supabase Edge Function `enviar-mail` (`supabase/functions/enviar-mail/`). Es la única que conoce la `RESEND_API_KEY` (guardada en los *secrets* del proyecto Supabase, nunca en el front). Valida el payload, arma el HTML y llama a la API de Resend.
+* **Frontend:** `MailService` (`src/app/core/services/mail.service.ts`) invoca la función con `supabase.functions.invoke('enviar-mail', ...)`.
+* Un fallo de envío **nunca** aborta la operación de negocio (el estado ya quedó persistido); solo se registra en consola.
+
+### Correos implementados
+
+| Tipo | Se dispara desde | Punto TFI |
+| :--- | :--- | :--- |
+| `registro-pendiente` | `AuthService.registrarUsuario` — al crear un cliente registrado | 5 |
+| `cliente-aprobado` | `AdminService.aprobarCliente` — el dueño/supervisor acepta al cliente | 8 |
+| `cliente-rechazado` | `AdminService.rechazarCliente` — el dueño/supervisor rechaza al cliente | 7 |
+
+### Diseño del Mail
+
+**Responsable:** Catanese, Demián (`feature/dev-delta`)
+
+Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios** (requisito de los puntos 7 y 8), manteniendo un eje de diseño común: logo de OverCooked, tarjeta redondeada centrada, borde-guía lateral y pie de "correo automático".
+
+| Correo | Paleta | Título | Tipografías |
+| :--- | :--- | :--- | :--- |
+| Pendiente | naranja / dorado cálido | 26px | Verdana + Georgia |
+| Aprobado | verde "éxito" | 32px, festivo | Trebuchet MS + Palatino |
+| Rechazado | bordó sobrio | 21px, formal | Courier + Cambria |
 
 ### Puesta en marcha
 
