@@ -1,71 +1,109 @@
-    import { Injectable } from '@angular/core';
-    import { SupabaseService } from './supabase.service';
-    import { ClienteEnEspera } from '../models/lista-espera.model';
+import { Injectable } from '@angular/core';
+import { SupabaseService } from './supabase.service';
+import { ClienteEnEspera } from '../models/lista-espera.model';
 
-    export interface DatosAnotarse {
-    clienteId?: string;         // id de 'usuarios', si es cliente registrado
-    clienteAnonimoId?: string;  // id de auth, si es cliente anónimo
-    nombre: string;
-    fotoUrl: string;
-    }
+export interface DatosAnotarse {
+  clienteId?: string;         // id de 'usuarios', si es cliente registrado
+  clienteAnonimoId?: string;  // id de auth, si es cliente anónimo
+  nombre: string;
+  fotoUrl: string;
+}
 
-    @Injectable({
-    providedIn: 'root',
-    })
-    export class ListaEsperaService {
-    constructor(private supabaseService: SupabaseService) {}
+@Injectable({
+  providedIn: 'root',
+})
+export class ListaEsperaService {
+  constructor(private supabaseService: SupabaseService) {}
 
-    // Punto 9: al escanear el QR de ingreso, el cliente (anónimo o
-    // registrado) queda anotado en la lista de espera del metre.
-    async anotarse(datos: DatosAnotarse): Promise<void> {
+  // Corta una promesa que no responde en 'ms' milisegundos, para que
+  // nunca se quede colgada para siempre (le pasó al WebView de Android
+  // más de una vez con llamadas a Supabase justo después de otra).
+  private conTimeout<T>(promesa: PromiseLike<T>, ms: number): Promise<T> {
+    return Promise.race([
+      Promise.resolve(promesa),
+      new Promise<T>((_, reject) =>
+        setTimeout(() => reject(new Error('La conexión tardó demasiado, probá de nuevo.')), ms),
+      ),
+    ]);
+  }
+
+  // Punto 9: al escanear el QR de ingreso, el cliente (anónimo o
+  // registrado) queda anotado en la lista de espera del metre.
+  // Reintenta hasta 3 veces por si la llamada se cuelga o falla por
+  // un corte de red pasajero.
+  async anotarse(datos: DatosAnotarse): Promise<void> {
     const client = this.supabaseService.getClient();
+    let ultimoError: unknown = null;
 
-    const { error } = await client.from('lista_espera').insert({
-        cliente_id: datos.clienteId ?? null,
-        cliente_anonimo_id: datos.clienteAnonimoId ?? null,
-        nombre: datos.nombre,
-        foto_url: datos.fotoUrl,
-        estado: 'esperando',
-    });
+    for (let intento = 1; intento <= 3; intento++) {
+      try {
+        const { error } = await this.conTimeout(
+          client.from('lista_espera').insert({
+            cliente_id: datos.clienteId ?? null,
+            cliente_anonimo_id: datos.clienteAnonimoId ?? null,
+            nombre: datos.nombre,
+            foto_url: datos.fotoUrl,
+            estado: 'esperando',
+          }),
+          8000,
+        );
 
-    if (error) {
-        throw new Error('No se pudo anotar en la lista de espera.');
+        if (error) {
+          throw error;
+        }
+
+        return; // éxito, cortamos acá
+      } catch (error) {
+        ultimoError = error;
+        console.warn(`[anotarse] Intento ${intento} de 3 falló:`, error);
+
+        if (intento < 3) {
+          await new Promise((resolve) => setTimeout(resolve, intento * 300));
+        }
+      }
     }
-    }
 
-    // Para la pantalla del metre (punto 9/10): solo los que siguen
-    // esperando, más antiguos primero (orden de llegada).
-    async listarEsperando(): Promise<ClienteEnEspera[]> {
+    console.error('[anotarse] Los 3 intentos fallaron:', ultimoError);
+    throw new Error(
+      ultimoError instanceof Error
+        ? `No se pudo anotar en la lista de espera: ${ultimoError.message}`
+        : 'No se pudo anotar en la lista de espera.',
+    );
+  }
+
+  // Para la pantalla del metre (punto 9/10): solo los que siguen
+  // esperando, más antiguos primero (orden de llegada).
+  async listarEsperando(): Promise<ClienteEnEspera[]> {
     const { data, error } = await this.supabaseService
-        .getClient()
-        .from('lista_espera')
-        .select('*')
-        .eq('estado', 'esperando')
-        .order('created_at', { ascending: true });
+      .getClient()
+      .from('lista_espera')
+      .select('*')
+      .eq('estado', 'esperando')
+      .order('created_at', { ascending: true });
 
     if (error) {
-        throw new Error('No se pudo cargar la lista de espera.');
+      throw new Error('No se pudo cargar la lista de espera.');
     }
 
     return (data ?? []) as ClienteEnEspera[];
-    }
+  }
 
-    // "Eliminado del listado": no se borra la fila, se marca como
-    // cancelado (así queda historial y el enum ya contempla este caso).
-    async eliminar(id: string): Promise<void> {
+  // "Eliminado del listado": no se borra la fila, se marca como
+  // cancelado (así queda historial y el enum ya contempla este caso).
+  async eliminar(id: string): Promise<void> {
     const { error } = await this.supabaseService
-        .getClient()
-        .from('lista_espera')
-        .update({ estado: 'cancelado' })
-        .eq('id', id);
+      .getClient()
+      .from('lista_espera')
+      .update({ estado: 'cancelado' })
+      .eq('id', id);
 
     if (error) {
-        throw new Error('No se pudo sacar al cliente de la lista de espera.');
+      throw new Error('No se pudo sacar al cliente de la lista de espera.');
     }
-    }
+  }
 
-    // Punto 10: nadie puede recibir una mesa si no está esperando.
-    async estaEsperando(clienteId?: string, clienteAnonimoId?: string): Promise<boolean> {
+  // Punto 10: nadie puede recibir una mesa si no está esperando.
+  async estaEsperando(clienteId?: string, clienteAnonimoId?: string): Promise<boolean> {
     const client = this.supabaseService.getClient();
     let query = client.from('lista_espera').select('id').eq('estado', 'esperando');
 
@@ -74,9 +112,9 @@
     const { data, error } = await query.maybeSingle();
 
     if (error) {
-        throw new Error('No se pudo verificar la lista de espera.');
+      throw new Error('No se pudo verificar la lista de espera.');
     }
 
     return !!data;
-    }
-    }
+  }
+}
