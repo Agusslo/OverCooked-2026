@@ -309,6 +309,15 @@ ion-content.registro-page {
     letter-spacing: 0.04em;
 }
 
+.toggle-password {
+  background: none;
+  border: none;
+  color: #c45030;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+
 // Pantallas muy angostas (< 340px de ancho): un poco menos de padding
 // horizontal para que los campos no se sientan apretados contra el borde.
 @media (max-width: 340px) {
