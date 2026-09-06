@@ -77,6 +77,8 @@ export class RegistroPage implements OnInit, AfterViewInit, OnDestroy {
   // pantalla (ej. se muestran varios errores de validación a la vez),
   // se habilita el scroll igual aunque el teclado esté cerrado, para
   // que nunca quede algo inalcanzable.
+  mostrarPassword = signal(false);
+  mostrarRepetirPassword = signal(false);
   private contenidoDesborda = signal(false);
   permitirScroll = computed(() => this.tecladoAbierto() || this.contenidoDesborda());
 
@@ -289,6 +291,14 @@ export class RegistroPage implements OnInit, AfterViewInit, OnDestroy {
   volverADatos(): void {
     this.errorRegistro.set(null);
     this.paso.set(1);
+  }
+
+  toggleMostrarPassword(): void {
+    this.mostrarPassword.update((valor) => !valor);
+  }
+
+  toggleMostrarRepetirPassword(): void {
+    this.mostrarRepetirPassword.update((valor) => !valor);
   }
 
   async registrarse(): Promise<void> {

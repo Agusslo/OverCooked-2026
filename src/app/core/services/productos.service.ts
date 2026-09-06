@@ -78,6 +78,27 @@ export class ProductosService {
     return productoCreado as Producto;
   }
 
+  // NUEVO para el punto 11: trae solo los productos marcados como
+  // disponibles, que son los que el cliente puede pedir. Ordenamos por
+  // sector (cocina primero, bar después) y dentro de cada sector por
+  // nombre, para que la lista no salga desordenada.
+  async listarDisponibles(): Promise<Producto[]> {
+    const client = this.supabaseService.getClient();
+
+    const { data, error } = await client
+      .from('productos')
+      .select('*')
+      .eq('disponible', true)
+      .order('sector', { ascending: true })
+      .order('nombre', { ascending: true });
+
+    if (error) {
+      throw new Error('No se pudo cargar el menú.');
+    }
+
+    return (data ?? []) as Producto[];
+  }
+
   // Convierte el dataUrl (base64) que devuelve la cámara/galería en un
   // archivo real, lo sube al bucket de Storage, y devuelve la URL pública
   // para guardar en la tabla. Es lo mismo para las 3 fotos, por eso está

@@ -68,6 +68,25 @@ export class MesasService {
   return mesaCreada as Mesa;
 }
 
+  // NUEVO para el punto 11: cuando el cliente escanea el QR de la mesa
+  // (o el punto 10 lo asigna a una), necesitamos los datos completos
+  // de esa mesa (capacidad, etc.) a partir de su número.
+  async obtenerPorNumero(numero: number): Promise<Mesa> {
+    const client = this.supabaseService.getClient();
+
+    const { data, error } = await client
+      .from('mesas')
+      .select('*')
+      .eq('numero', numero)
+      .single();
+
+    if (error || !data) {
+      throw new Error(`No se encontró la mesa número ${numero}.`);
+    }
+
+    return data as Mesa;
+  }
+
   // Mismo mecanismo que ProductosService.subirFoto: convierte el dataUrl
   // (base64) que devuelve la cámara en un archivo real y lo sube a Storage.
   private async subirFoto(dataUrl: string, nombreArchivo: string): Promise<string> {

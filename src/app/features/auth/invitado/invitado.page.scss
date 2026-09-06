@@ -257,3 +257,106 @@ ion-content.invitado-page {
     height: 160px;
   }
 }
+
+.paso-espera {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.paso-espera p {
+  color: var(--accent-light);
+  font-size: 0.85rem;
+  text-align: center;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ---- Pantalla de espera (paso 2): full screen, estilo Mercado Pago ---- */
+.espera-screen {
+  height: 100%;
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px 28px 32px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, var(--bg-hero) 0%, var(--bg-panel) 100%);
+}
+
+.espera-visual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.espera-visual svg {
+  width: 55vw;
+  max-width: 240px;
+  height: auto;
+  color: var(--white);
+  opacity: 0.95;
+}
+
+.espera-copy {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.espera-copy h1 {
+  color: var(--white);
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin: 0 0 10px;
+}
+
+.espera-copy p {
+  color: var(--accent-light);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0 8px;
+}
+
+.espera-error {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.espera-error p {
+  color: #fff0f0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.espera-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Botón grande, pensado para el pulgar, pegado abajo */
+.espera-btn-principal {
+  --background: var(--gold);
+  --background-activated: #dcab54;
+  --color: var(--accent-dark);
+  --border-radius: 18px;
+  --box-shadow: none;
+  height: 64px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.espera-btn-secundario {
+  --color: var(--accent-light);
+  --box-shadow: none;
+  height: 44px;
+  font-weight: 700;
+}

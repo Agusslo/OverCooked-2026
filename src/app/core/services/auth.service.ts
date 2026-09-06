@@ -31,7 +31,9 @@ export class AuthService {
       // Los invitados (signInAnonymously) no tienen fila en 'usuarios' —
       // su identidad vive en el user_metadata de la sesión anónima.
       if (data.session.user.is_anonymous) {
-        this.usuarioActualSubject.next(this.usuarioDesdeSesionAnonima(data.session.user));
+        this.usuarioActualSubject.next(
+          this.usuarioDesdeSesionAnonima(data.session.user),
+        );
         return;
       }
 
@@ -65,14 +67,14 @@ export class AuthService {
     if (usuario.estado === 'rechazado') {
       await this.logout();
       throw new Error(
-        'Tu solicitud de registro fue rechazada por el restaurante. No podés ingresar con este usuario.'
+        'Tu solicitud de registro fue rechazada por el restaurante. No podés ingresar con este usuario.',
       );
     }
 
     if (usuario.estado !== 'aprobado') {
       await this.logout();
       throw new Error(
-        'Tu registro todavía no fue aprobado por el restaurante.'
+        'Tu registro todavía no fue aprobado por el restaurante.',
       );
     }
 
@@ -80,7 +82,14 @@ export class AuthService {
     return usuario;
   }
 
-  async registrarUsuario({ nombre, apellido, dni, email, password, foto_url }: IRegistro): Promise<Usuario> {
+  async registrarUsuario({
+    nombre,
+    apellido,
+    dni,
+    email,
+    password,
+    foto_url,
+  }: IRegistro): Promise<Usuario> {
     const { data, error } = await this.supabaseService.getClient().auth.signUp({
       email,
       password,
@@ -91,27 +100,48 @@ export class AuthService {
     // y la confirmación está habilitada (protección contra enumeración de emails).
     const esUsuarioFalso = data?.user?.identities?.length === 0;
 
-    if (esUsuarioFalso || (error && error.message === 'User already registered')) {
+    if (
+      esUsuarioFalso ||
+      (error && error.message === 'User already registered')
+    ) {
       // El auth user ya existe. Puede ser un registro previo que falló
       // después de signUp (foto, insert en usuarios, etc.). Intentamos
       // recuperar: si el perfil en la tabla 'usuarios' no existe, lo creamos.
-      return this.recuperarRegistroIncompleto({ nombre, apellido, dni, email, password, foto_url });
+      return this.recuperarRegistroIncompleto({
+        nombre,
+        apellido,
+        dni,
+        email,
+        password,
+        foto_url,
+      });
     }
 
     if (error || !data.user) {
       throw error ?? new Error('No se pudo registrar el usuario.');
     }
 
-    return this.completarRegistro(data.user.id, { nombre, apellido, dni, email, foto_url });
+    return this.completarRegistro(data.user.id, {
+      nombre,
+      apellido,
+      dni,
+      email,
+      foto_url,
+    });
   }
 
   /**
    * Intenta completar un registro cuyo auth.user ya existe pero cuyo
    * perfil en la tabla 'usuarios' no fue creado (registro previo fallido).
    */
-  private async recuperarRegistroIncompleto(
-    { nombre, apellido, dni, email, password, foto_url }: IRegistro,
-  ): Promise<Usuario> {
+  private async recuperarRegistroIncompleto({
+    nombre,
+    apellido,
+    dni,
+    email,
+    password,
+    foto_url,
+  }: IRegistro): Promise<Usuario> {
     // Necesitamos el user.id → intentamos loguearnos con las credenciales.
     const { data: loginData, error: loginError } = await this.supabaseService
       .getClient()
@@ -141,7 +171,13 @@ export class AuthService {
 
     // No tiene perfil → completar el registro que quedó a medias.
     try {
-      const usuario = await this.completarRegistro(userId, { nombre, apellido, dni, email, foto_url });
+      const usuario = await this.completarRegistro(userId, {
+        nombre,
+        apellido,
+        dni,
+        email,
+        foto_url,
+      });
       // Cerramos sesión para que el flujo siga siendo: registrarse → esperar
       // aprobación del dueño → login.
       await this.logout();
@@ -168,26 +204,28 @@ export class AuthService {
     // CUIL (el punto 5 del PDF no lo pide, solo DNI), y arranca
     // en 'pendiente' — login() ya rechaza a los que no estén
     // en estado 'aprobado'.
-    const { data: usuarioCreado, error: errorInsert } = await this.supabaseService
-      .getClient()
-      .from('usuarios')
-      .insert({
-        id: userId,
-        nombre,
-        apellido,
-        dni: String(dni),
-        cuil: null,
-        email,
-        perfil: 'cliente',
-        foto_url: fotoUrlSubida,
-        estado: 'pendiente',
-      })
-      .select()
-      .single();
+    const { data: usuarioCreado, error: errorInsert } =
+      await this.supabaseService
+        .getClient()
+        .from('usuarios')
+        .insert({
+          id: userId,
+          nombre,
+          apellido,
+          dni: String(dni),
+          cuil: null,
+          email,
+          perfil: 'cliente',
+          foto_url: fotoUrlSubida,
+          estado: 'pendiente',
+        })
+        .select()
+        .single();
 
     if (errorInsert || !usuarioCreado) {
       throw new Error(
-        errorInsert?.message ?? 'No se pudo guardar el usuario en la base de datos.'
+        errorInsert?.message ??
+          'No se pudo guardar el usuario en la base de datos.',
       );
     }
 
@@ -200,30 +238,79 @@ export class AuthService {
     return usuarioCreado as Usuario;
   }
 
-  async registrarAnonimo({ nombre, apellido, foto_url }: IRegistroAnonimo): Promise<Usuario> {
-    const client = this.supabaseService.getClient();
+  async registrarAnonimo({
+    nombre,
+    apellido,
+    foto_url,
+  }: IRegistroAnonimo): Promise<Usuario> {
+    let userId: string;
 
-    const { data, error } = await client.auth.signInAnonymously();
+    // Subimos la foto a Storage ANTES de crear la sesión anónima.
+    // La foto como data URL (base64) puede pesar varios MB y
+    // signInAnonymously guarda user_metadata con un límite chico
+    // → "Failed to fetch" si mandamos el base64 directo.
+    const idTemporal = crypto.randomUUID();
+    let fotoPublicUrl = '';
 
-    if (error || !data.user) {
-      throw error ?? new Error('No se pudo registrar el usuario.');
+    if (foto_url) {
+      try {
+        fotoPublicUrl = await this.subirFoto(foto_url, `anonimo-${idTemporal}`);
+      } catch (error) {
+        console.warn(
+          '[registrarAnonimo] No se pudo subir la foto, se continúa sin ella:',
+          error,
+        );
+      }
     }
 
-    // Igual que en el resto de la app, la foto (si se sacó) se sube a
-    // Storage y sólo se guarda la URL pública — nunca el dataUrl base64.
-    const fotoUrlSubida = foto_url
-      ? await this.subirFoto(foto_url, `anonimo-${data.user.id}`)
-      : '';
+    try {
+      const { data, error } = await this.supabaseService
+        .getClient()
+        .auth.signInAnonymously({
+          options: {
+            data: { nombre, apellido, foto_url: fotoPublicUrl },
+          },
+        });
 
-    const { data: actualizado, error: errorUpdate } = await client.auth.updateUser({
-      data: { nombre, apellido, foto_url: fotoUrlSubida },
-    });
+      if (error || !data.user) {
+        throw error ?? new Error('signInAnonymously no devolvió usuario.');
+      }
 
-    if (errorUpdate) {
-      throw new Error('No se pudieron guardar los datos del invitado.');
+      userId = data.user.id;
+    } catch (error) {
+      console.error('[registrarAnonimo] Falló signInAnonymously:', error);
+      throw new Error(
+        `PASO 1 (crear cuenta anónima) falló: ${error instanceof Error ? error.message : error}`,
+      );
     }
 
-    const usuario = this.usuarioDesdeSesionAnonima(actualizado.user ?? data.user);
+    try {
+      const { error: errorClienteAnonimo } = await this.supabaseService
+        .getClient()
+        .from('clientes_anonimos')
+        .insert({
+          id: userId,
+          nombre: `${nombre} ${apellido}`.trim(),
+        });
+
+      if (errorClienteAnonimo) {
+        throw errorClienteAnonimo;
+      }
+    } catch (error) {
+      console.error(
+        '[registrarAnonimo] Falló el insert en clientes_anonimos:',
+        error,
+      );
+      throw new Error(
+        `PASO 2 (guardar en clientes_anonimos) falló: ${error instanceof Error ? error.message : JSON.stringify(error)}`,
+      );
+    }
+
+    const {
+      data: { user: authUser },
+    } = await this.supabaseService.getClient().auth.getUser();
+
+    const usuario = this.usuarioDesdeSesionAnonima(authUser!);
     this.usuarioActualSubject.next(usuario);
     return usuario;
   }
@@ -271,7 +358,10 @@ export class AuthService {
     return data as Usuario;
   }
 
-  private async subirFoto(dataUrl: string, nombreArchivo: string): Promise<string> {
+  private async subirFoto(
+    dataUrl: string,
+    nombreArchivo: string,
+  ): Promise<string> {
     const client = this.supabaseService.getClient();
 
     const respuesta = await fetch(dataUrl);
@@ -292,7 +382,9 @@ export class AuthService {
       throw new Error(`No se pudo subir la foto: ${errorSubida.message}`);
     }
 
-    const { data: urlPublica } = client.storage.from(BUCKET_USUARIOS).getPublicUrl(ruta);
+    const { data: urlPublica } = client.storage
+      .from(BUCKET_USUARIOS)
+      .getPublicUrl(ruta);
     return urlPublica.publicUrl;
   }
 

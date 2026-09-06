@@ -33,6 +33,7 @@ export class LoginPage {
   cargando = signal(false);
   errorLogin = signal<string | null>(null);
 
+  mostrarClave = signal(false);
   // Un FormGroup junta varios campos de formulario (FormControl)
   // bajo un mismo objeto. El array de cada campo es
   // [valorInicial, listaDeValidadores]. Validators.required
@@ -43,6 +44,8 @@ export class LoginPage {
     email: ['', [Validators.required, Validators.email]],
     clave: ['', [Validators.required, Validators.minLength(6)]],
   });
+
+
 
   async iniciarSesion(): Promise<void> {
     if (this.form.invalid) {
@@ -61,6 +64,10 @@ export class LoginPage {
     // verificamos arriba que el formulario es válido, así que
     // los campos obligatorios no pueden estar vacíos.
     await this.intentarLogin(email!, clave!);
+  }
+
+  toggleMostrarClave(): void {
+    this.mostrarClave.update((valor) => !valor);
   }
 
   irAccesosRapidos(): void {

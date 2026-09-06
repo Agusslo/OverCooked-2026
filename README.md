@@ -34,7 +34,8 @@
 | **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de las mesas               | 31/08/2026   | 31/08/2026 |
 | **Catanese, Demián**            | `feature/dev-delta` | Servicio de Mail                | 01/09/2026   | 01/09/2026 |
 | **Catanese, Demián**            | `feature/dev-delta` | Diseño del Mail                 | 01/09/2026   | 01/09/2026 |
-| **López, Agustín Nicolás**      | `feature/dev-alfa`  | cliente registrado, QR DNI      | 3/09/2026    | 3/09/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | cliente registrado, QR DNI      | 3/09/2026    | 3/09/2026  |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Cliente Anonimo                 | 5/09/2026    | 6/09/2026  |
 
 > Si algún integrante no llega con la funcionalidad comprometida, se reasigna el módulo o se cambia el plazo, y queda registrado acá mismo con la fecha del cambio.
 
@@ -50,7 +51,7 @@
 | 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
 | 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
 | 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
-| 9. Ingresar al local | cliente anónimo | Filippelli, Adrián | Indefinido | |
+| 9. Ingresar al local | cliente anónimo | López, Agustín Nicolás | Indefinido | |
 | 10. Asignar una mesa a un cliente registrado | metre | Fernández Waisberg, Gabriel | Indefinido | |
 | 11. Ver el listado de los productos | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
 | 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |

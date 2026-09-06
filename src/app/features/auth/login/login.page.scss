@@ -183,7 +183,14 @@ ion-content.login-page {
 }
 
 
-
+.toggle-password {
+  background: none;
+  border: none;
+  color: #c45030;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
 
 .quick-chip ion-icon {
     color: var(--accent-light);

@@ -1,0 +1,88 @@
+<div class="menu-page-wrapper">
+  <div class="main-container">
+    <div class="card-box">
+      <div class="header-box">
+        <h2>Menú</h2>
+        @if (mesa()) {
+          <p>Mesa {{ mesa()?.numero }} · {{ mesa()?.capacidad }} comensales</p>
+        }
+      </div>
+
+      <div class="menu-body">
+        @if (cargando()) {
+          <div class="estado-carga">
+            <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
+            <span>Cargando el menú...</span>
+          </div>
+        } @else if (mensajeError()) {
+          <div class="feedback-banner error">
+            <span>{{ mensajeError() }}</span>
+          </div>
+        } @else if (productos().length === 0) {
+          <div class="estado-vacio">
+            <span>Todavía no hay productos cargados en la carta.</span>
+          </div>
+        } @else {
+          <div class="productos-scroll">
+            @for (producto of productos(); track producto.id) {
+              <div class="producto-card">
+                <div class="producto-foto">
+                  @if (fotoActual(producto)) {
+                    <img [src]="fotoActual(producto)" [alt]="producto.nombre" />
+                  }
+
+                  @if (fotosDe(producto).length > 1) {
+                    <button
+                      type="button"
+                      class="foto-nav foto-nav--izq"
+                      (click)="anteriorFoto(producto)"
+                      title="Foto anterior"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      class="foto-nav foto-nav--der"
+                      (click)="siguienteFoto(producto)"
+                      title="Foto siguiente"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6" />
+                      </svg>
+                    </button>
+
+                    <div class="foto-puntos">
+                      @for (foto of fotosDe(producto); track $index) {
+                        <span class="punto" [class.punto-activo]="$index === indiceActual(producto)"></span>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <div class="producto-info">
+                  <div class="producto-info-top">
+                    <h3>{{ producto.nombre }}</h3>
+                    <span class="producto-precio">${{ producto.precio }}</span>
+                  </div>
+                  <p class="producto-descripcion">{{ producto.descripcion }}</p>
+                  <span class="producto-tiempo">{{ producto.tiempo_elaboracion_minutos }} min aprox.</span>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!--
+        El botón de "consulta al mozo" (chat) es la otra mitad del punto 11.
+        Lo dejamos visible pero deshabilitado hasta que armemos el chat
+        en el próximo paso, así queda claro dónde va a ir.
+      -->
+      <button type="button" class="btn-consulta-mozo" disabled title="Próximamente">
+        Consulta al mozo (próximamente)
+      </button>
+    </div>
+  </div>
+</div>

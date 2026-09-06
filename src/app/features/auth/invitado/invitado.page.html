@@ -1,5 +1,6 @@
 <ion-content class="invitado-page">
   <div class="invitado-shell">
+    @if (paso() === 1) {
     <div class="brand">
       <div class="foto-picker brand__picker">
         @if (camaraActiva()) {
@@ -89,5 +90,41 @@
         <ion-button class="action-btn" type="button" expand="block" fill="clear" (click)="volverAlLogin()">VOLVER AL INICIO</ion-button>
       </div>
     </div>
+    } @else {
+<div class="espera-screen">
+  <div class="espera-visual">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
+      <path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+      <path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
+      <path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+      <rect x="7" y="7" width="10" height="10" rx="1"/>
+    </svg>
   </div>
-</ion-content>
+
+  <div class="espera-copy">
+    <h1>Escaneá el QR de ingreso</h1>
+    <p>Buscá el cartel en la entrada del local y escaneá el código para anotarte en la lista de espera.</p>
+  </div>
+
+  @if (errorInvitado()) {
+  <div class="espera-error">
+    <p>{{ errorInvitado() }}</p>
+  </div>
+  }
+
+  <div class="espera-actions">
+    <ion-button class="espera-btn-principal" expand="block" type="button" [disabled]="cargando()" (click)="escanearIngreso()">
+      @if (cargando()) {
+      <ion-spinner name="crescent"></ion-spinner>
+      } @else {
+      <span>ESCANEAR QR</span>
+      }
+    </ion-button>
+
+    <ion-button class="espera-btn-secundario" expand="block" fill="clear" type="button" (click)="volverAlLogin()">
+      VOLVER AL INICIO
+    </ion-button>
+  </div>
+</div>
+}
