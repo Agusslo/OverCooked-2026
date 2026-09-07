@@ -1,0 +1,338 @@
+/* =============================================
+   Asignar Mesa (metre) — Mobile-first
+   Sistema de diseño: paleta terracota #ee7a4f
+   Tipografía: ADLaM Display
+   ============================================= */
+
+:host {
+  --color-bg: #ee7a4f;
+  --color-card: #c45030;
+  --color-header: #c45030;
+  --color-input: #a83820;
+  --color-deep: #8c2e14;
+  --color-gold: #f0c060;
+  --color-gold-dim: rgba(240, 192, 96, 0.25);
+  --color-cream: #fef5ee;
+  --color-peach: #f9bfa0;
+  --color-error: #f5956b;
+
+  --radius-card: 24px;
+  --radius-item: 16px;
+  --radius-btn: 12px;
+
+  --font-body: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.asignar-page-wrapper {
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg);
+  font-family: var(--font-body);
+}
+
+.main-container {
+  width: min(100%, 460px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-box {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: var(--color-card);
+  overflow: hidden;
+}
+
+/* ---------- Header ---------- */
+
+.header-box {
+  flex-shrink: 0;
+  background: var(--color-header);
+  padding: max(1.2rem, env(safe-area-inset-top)) 1.25rem 1.2rem;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: var(--color-gold);
+  cursor: pointer;
+  display: flex;
+  padding: 0.4rem;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.header-titles {
+  flex: 1;
+  min-width: 0;
+
+  h2 {
+    font-size: clamp(1.2rem, 4dvh, 1.6rem);
+    font-weight: 700;
+    color: var(--color-cream);
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  p {
+    font-size: 0.78rem;
+    color: var(--color-peach);
+    margin: 0.15rem 0 0;
+  }
+}
+
+/* ---------- Cuerpo ---------- */
+
+.asignar-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.9rem 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.estado-carga {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--color-peach);
+  font-size: 0.9rem;
+  padding: 2rem;
+}
+
+.spinner-logo {
+  width: 36px;
+  height: 36px;
+  animation: spinLogo 1s linear infinite;
+}
+
+@keyframes spinLogo {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.seccion--flex {
+  flex: 1;
+  min-height: 0;
+}
+
+.seccion-titulo {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-cream);
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.seccion-hint {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-gold);
+}
+
+.estado-vacio-chico {
+  color: var(--color-peach);
+  font-size: 0.82rem;
+  padding: 0.75rem;
+  background: var(--color-input);
+  border-radius: var(--radius-btn);
+  text-align: center;
+}
+
+/* ---------- Chips de clientes esperando ---------- */
+
+.fila-scroll {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cliente-chip {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 74px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cliente-chip__avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--color-deep);
+  border: 2.5px solid transparent;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.cliente-chip--activo .cliente-chip__avatar {
+  border-color: var(--color-gold);
+  transform: scale(1.05);
+}
+
+.cliente-chip__nombre {
+  font-size: 0.72rem;
+  color: var(--color-peach);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.cliente-chip--activo .cliente-chip__nombre {
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+/* ---------- Mesas libres ---------- */
+
+.mesas-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.mesa-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: var(--color-input);
+  border-radius: var(--radius-item);
+  padding: 0.75rem 0.9rem;
+}
+
+.mesa-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+
+  h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-cream);
+  }
+
+  span {
+    font-size: 0.75rem;
+    color: var(--color-peach);
+  }
+}
+
+.btn-asignar {
+  flex-shrink: 0;
+  height: 38px;
+  padding: 0 1rem;
+  border-radius: var(--radius-btn);
+  border: none;
+  background: var(--color-gold);
+  color: var(--color-deep);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.feedback-banner {
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-btn);
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: rgba(140, 46, 20, 0.7);
+  color: var(--color-error);
+  border: 1.5px solid rgba(245, 149, 107, 0.3);
+}
+
+/* ---------- BREAKPOINTS ---------- */
+
+@media (max-width: 479px) {
+  .main-container {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+  }
+
+  .card-box {
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .main-container {
+    height: auto;
+    max-height: 96dvh;
+  }
+
+  .card-box {
+    border-radius: var(--radius-card);
+    max-height: 96dvh;
+    box-shadow:
+      0 32px 80px rgba(140, 46, 20, 0.55),
+      0 0 0 1px rgba(249, 191, 160, 0.1);
+  }
+}

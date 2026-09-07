@@ -11,4 +11,13 @@ export const clienteRoutes: Routes = [
     canActivate: [authGuard],
     data: { perfiles: ['cliente', 'anonimo'] },
   },
+  // Punto 10: sólo el cliente registrado pasa por acá para escanear
+  // el QR de la mesa que le asignó el metre.
+  {
+    path: 'escanear-mesa',
+    loadComponent: () =>
+      import('./escanear-mesa/escanear-mesa.page').then((m) => m.EscanearMesaPage),
+    canActivate: [authGuard],
+    data: { perfiles: ['cliente'] },
+  },
 ];

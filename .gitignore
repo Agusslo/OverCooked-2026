@@ -80,4 +80,4 @@ testem.log
 Thumbs.db
 
 # Scripts locales
-/git_helper.bat
+/backup_completo.sql

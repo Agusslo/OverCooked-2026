@@ -5,10 +5,11 @@ import { AuthService } from '../../../core/services/auth.service';
 import { PushNotificationsService } from '../../../core/services/push-notifications.service';
 import { panelPara } from '../../../core/models/inicio.model';
 
-// Perfiles que ven "Clientes pendientes" y por lo tanto son quienes
-// tienen que enterarse por push cuando llega un registro nuevo
-// (punto 6 del PDF).
-const PERFILES_NOTIFICABLES = ['dueño', 'supervisor'];
+// Perfiles que reciben alguna push notification: dueño/supervisor por
+// los clientes pendientes (punto 6) y cliente por la asignación de su
+// mesa (punto 10). El resto de los perfiles todavía no tiene ningún
+// push propio.
+const PERFILES_NOTIFICABLES = ['dueño', 'supervisor', 'cliente'];
 
 @Component({
   selector: 'app-inicio',

@@ -16,12 +16,14 @@ import { environment } from '../../../environments/environment';
 // Supabase antes de que esto funcione de punta a punta).
 const TABLA_TOKENS = 'push_tokens';
 
-// Punto 6 del PDF: cuando un cliente nuevo queda pendiente de
-// aprobación, dueño/supervisor tienen que enterarse por push
-// notification. Este servicio sólo se ocupa de la mitad "cliente":
-// pedir permiso, registrar el dispositivo y guardar su token. El envío
-// de la notificación en sí lo dispara un trigger de la base de datos
-// (ver supabase/functions/notificar-cliente-pendiente y CAMBIAR.md).
+// Puntos 6 y 10 del PDF: dueño/supervisor se enteran por push cuando
+// hay un cliente pendiente de aprobación, y el cliente se entera por
+// push cuando el metre le asigna una mesa. Este servicio sólo se
+// ocupa de la mitad "dispositivo": pedir permiso, registrar el
+// dispositivo y guardar su token. El envío de la notificación en sí
+// lo dispara un trigger de la base de datos (ver
+// supabase/functions/notificar-cliente-pendiente y
+// supabase/functions/notificar-mesa-asignada).
 @Injectable({
   providedIn: 'root',
 })
@@ -79,13 +81,17 @@ export class PushNotificationsService {
         },
       );
 
-      // El usuario tocó la notificación: lo llevamos directo al
-      // listado de clientes pendientes.
+      // El usuario tocó la notificación: la llevamos a la pantalla que
+      // corresponda según el tipo que viaja en el "data" del push.
       PushNotifications.addListener(
         'pushNotificationActionPerformed',
         (accion: ActionPerformed) => {
-          void accion;
-          this.router.navigateByUrl('/admin/clientes-pendientes');
+          const tipo = accion.notification.data?.['tipo'];
+          if (tipo === 'mesa-asignada') {
+            this.router.navigateByUrl('/cliente/escanear-mesa');
+          } else {
+            this.router.navigateByUrl('/admin/clientes-pendientes');
+          }
         },
       );
 

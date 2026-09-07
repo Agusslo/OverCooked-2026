@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Haptics, NotificationType } from '@capacitor/haptics';
+import { AuthService } from '../../../core/services/auth.service';
 import { MesasService } from '../../../core/services/mesas.service';
 import { ProductosService } from '../../../core/services/productos.service';
 import { Mesa } from '../../../core/models/mesa.model';
@@ -16,6 +17,7 @@ import { Producto } from '../../../core/models/producto.model';
 })
 export class MenuPage implements OnInit {
   private route = inject(ActivatedRoute);
+  private authService = inject(AuthService);
   private mesasService = inject(MesasService);
   private productosService = inject(ProductosService);
 
@@ -47,6 +49,22 @@ export class MenuPage implements OnInit {
         this.mesasService.obtenerPorNumero(numero),
         this.productosService.listarDisponibles(),
       ]);
+
+      // Punto 10: un cliente registrado sólo puede ver el menú de SU
+      // mesa asignada, aunque entre directo por la URL sin pasar por
+      // el escaneo (ver EscanearMesaPage, que hace la misma validación
+      // antes de llegar acá).
+      const usuario = this.authService.usuarioActual;
+      if (usuario?.perfil === 'cliente') {
+        const mesaAsignada = await this.mesasService.obtenerMesaAsignadaA(usuario.id);
+        if (!mesaAsignada || mesaAsignada.numero !== numero) {
+          const detalle = mesaAsignada
+            ? `Tu mesa asignada es la Nº ${mesaAsignada.numero}.`
+            : 'Todavía no tenés una mesa asignada.';
+          await this.dispararError(`Esa no es tu mesa. ${detalle}`);
+          return;
+        }
+      }
 
       this.mesa.set(mesa);
       this.productos.set(productos);

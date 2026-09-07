@@ -17,6 +17,8 @@ export interface AccionInicio {
     | 'cliente'
     | 'mesas'
     | 'mesa-nueva'
+    | 'asignar-mesa'
+    | 'escanear-mesa'
     | 'plato'
     | 'bebida';
 }
@@ -103,17 +105,49 @@ const PANEL_CANTINERO: PanelInicio = {
   ],
 };
 
+const PANEL_METRE: PanelInicio = {
+  rol: 'Metre',
+  titulo: 'Panel del salón',
+  subtitulo: 'Asignación de mesas',
+  acciones: [
+    {
+      titulo: 'Asignar mesa',
+      detalle: 'Ubicar a un cliente que está esperando',
+      ruta: '/metre/asignar-mesa',
+      icono: 'asignar-mesa',
+    },
+  ],
+};
+
+// Punto 10 del PDF: el cliente registrado escanea el QR de la mesa
+// que le asignó el metre para entrar al menú.
+const PANEL_CLIENTE: PanelInicio = {
+  rol: 'Cliente',
+  titulo: 'Bienvenido',
+  subtitulo: 'Tu mesa',
+  acciones: [
+    {
+      titulo: 'Escanear mi mesa',
+      detalle: 'Entrar a la mesa que te asignó el metre',
+      ruta: '/cliente/escanear-mesa',
+      icono: 'escanear-mesa',
+    },
+  ],
+};
+
 /*
- * Dueño, supervisor, cocinero y cantinero ya tienen accesos definidos.
- * Mozo, metre y cliente todavía no tienen pantallas propias en la app:
- * caen en un panel "vacío" (sólo encabezado + cerrar sesión) hasta que
- * se las implemente.
+ * Dueño, supervisor, cocinero, cantinero, metre y cliente ya tienen
+ * accesos definidos. Mozo todavía no tiene pantalla propia en la app:
+ * cae en un panel "vacío" (sólo encabezado + cerrar sesión) hasta que
+ * se la implemente.
  */
 export const PANELES_INICIO: Partial<Record<PerfilUsuario, PanelInicio>> = {
   dueño: PANEL_DUENIO,
   supervisor: PANEL_SUPERVISOR,
   cocinero: PANEL_COCINERO,
   cantinero: PANEL_CANTINERO,
+  metre: PANEL_METRE,
+  cliente: PANEL_CLIENTE,
 };
 
 export function panelPara(perfil: PerfilUsuario | undefined): PanelInicio | null {

@@ -7,6 +7,7 @@ import { cocinaRoutes } from './features/cocina/cocina.routes';
 import { barRoutes } from './features/bar/bar.routes';
 import { mesasRoutes } from './features/mesas/mesas.routes';
 import { clienteRoutes } from './features/cliente/cliente.routes';
+import { metreRoutes } from './features/metre/metre.routes';
 
 export const routes: Routes = [
   {
@@ -27,4 +28,5 @@ export const routes: Routes = [
   { path: 'bar', children: barRoutes },
   { path: 'mesas', children: mesasRoutes },
   { path: 'cliente', children: clienteRoutes },
+  { path: 'metre', children: metreRoutes },
 ];

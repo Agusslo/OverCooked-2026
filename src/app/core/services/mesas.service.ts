@@ -125,6 +125,48 @@ export class MesasService {
     return (data ?? []) as Mesa[];
   }
 
+  // Para la pantalla de asignación del metre (punto 10): sólo las
+  // mesas libres, que son las únicas que se le pueden dar a alguien.
+  async listarLibres(): Promise<Mesa[]> {
+    const client = this.supabaseService.getClient();
+
+    const { data, error } = await client
+      .from('mesas')
+      .select('*')
+      .eq('estado', 'libre')
+      .order('numero', { ascending: true });
+
+    if (error) {
+      throw new Error('No se pudieron cargar las mesas libres.');
+    }
+
+    return (data ?? []) as Mesa[];
+  }
+
+  // Punto 10: mesa que el metre le asignó a este cliente registrado
+  // (la asignación "vigente", es decir sin fecha_fin). Devuelve null
+  // si todavía no tiene ninguna. Se usa tanto para validar el QR que
+  // escanea el cliente como para que no pueda "vincularse" a otra
+  // mesa distinta de la suya.
+  async obtenerMesaAsignadaA(clienteId: string): Promise<Mesa | null> {
+    const client = this.supabaseService.getClient();
+
+    const { data, error } = await client
+      .from('asignaciones_mesa')
+      .select('mesas(*)')
+      .eq('cliente_id', clienteId)
+      .is('fecha_fin', null)
+      .order('fecha_inicio', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      throw new Error('No se pudo verificar la mesa asignada.');
+    }
+
+    return (data?.['mesas'] as Mesa | undefined) ?? null;
+  }
+
   // Cambia SOLO el estado (disponibilidad) de una mesa ya creada.
   async actualizarEstado(id: string, estado: EstadoMesa): Promise<void> {
     const client = this.supabaseService.getClient();

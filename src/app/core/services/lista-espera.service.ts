@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { SupabaseService } from './supabase.service';
+import { MesasService } from './mesas.service';
 import { ClienteEnEspera } from '../models/lista-espera.model';
 
 export interface DatosAnotarse {
@@ -13,7 +14,8 @@ export interface DatosAnotarse {
   providedIn: 'root',
 })
 export class ListaEsperaService {
-  constructor(private supabaseService: SupabaseService) {}
+  private mesasService = inject(MesasService);
+  private supabaseService = inject(SupabaseService);
 
   // Corta una promesa que no responde en 'ms' milisegundos, para que
   // nunca se quede colgada para siempre (le pasó al WebView de Android
@@ -86,6 +88,56 @@ export class ListaEsperaService {
     }
 
     return (data ?? []) as ClienteEnEspera[];
+  }
+
+  // Para la pantalla del metre de asignación de mesas: sólo clientes
+  // REGISTRADOS (cliente_id no nulo) que siguen esperando. Los
+  // anónimos no entran acá porque la asignación pide un cliente
+  // registrado.
+  async listarEsperandoRegistrados(): Promise<ClienteEnEspera[]> {
+    const { data, error } = await this.supabaseService
+      .getClient()
+      .from('lista_espera')
+      .select('*')
+      .eq('estado', 'esperando')
+      .not('cliente_id', 'is', null)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      throw new Error('No se pudo cargar la lista de espera.');
+    }
+
+    return (data ?? []) as ClienteEnEspera[];
+  }
+
+  // Punto 10: el metre asigna una mesa libre a un cliente registrado
+  // que está esperando. Queda el historial en 'asignaciones_mesa'
+  // (tabla ya prevista en la base para esto: liga mesa + cliente +
+  // la fila de lista_espera de origen), se marca esa fila de espera
+  // como 'asignado' y la mesa pasa a ocupada.
+  async asignarMesa(espera: ClienteEnEspera, mesaId: string): Promise<void> {
+    const client = this.supabaseService.getClient();
+
+    const { error: errorAsignacion } = await client.from('asignaciones_mesa').insert({
+      mesa_id: mesaId,
+      cliente_id: espera.cliente_id,
+      lista_espera_id: espera.id,
+    });
+
+    if (errorAsignacion) {
+      throw new Error('No se pudo asignar la mesa al cliente.');
+    }
+
+    const { error: errorEspera } = await client
+      .from('lista_espera')
+      .update({ estado: 'asignado' })
+      .eq('id', espera.id);
+
+    if (errorEspera) {
+      throw new Error('La mesa se asignó, pero no se pudo actualizar la lista de espera.');
+    }
+
+    await this.mesasService.actualizarEstado(mesaId, 'ocupada');
   }
 
   // "Eliminado del listado": no se borra la fila, se marca como
