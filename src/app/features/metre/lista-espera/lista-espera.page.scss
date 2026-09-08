@@ -1,0 +1,199 @@
+:host {
+  --color-bg: #ee7a4f;
+  --color-card: #c45030;
+  --color-header: #c45030;
+  --color-input: #a83820;
+  --color-deep: #8c2e14;
+  --color-gold: #f0c060;
+  --color-gold-dim: rgba(240, 192, 96, 0.25);
+  --color-cream: #fef5ee;
+  --color-peach: #f9bfa0;
+  --color-error: #f5956b;
+  --radius-card: 24px;
+  --radius-item: 16px;
+  --radius-btn: 12px;
+  --font-body: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.espera-page-wrapper {
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg);
+  font-family: var(--font-body);
+}
+
+.main-container {
+  width: min(100%, 460px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-box {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: var(--color-card);
+  overflow: hidden;
+}
+
+.header-box {
+  flex-shrink: 0;
+  background: var(--color-header);
+  padding: 1.2rem 1.25rem;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: var(--color-gold);
+  cursor: pointer;
+  display: flex;
+  padding: 0.4rem;
+  flex-shrink: 0;
+}
+
+.header-titles h2 {
+  font-size: clamp(1.2rem, 4dvh, 1.6rem);
+  font-weight: 700;
+  color: var(--color-cream);
+  margin: 0;
+}
+.header-titles p {
+  font-size: 0.78rem;
+  color: var(--color-peach);
+  margin: 0.15rem 0 0;
+}
+
+.espera-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.75rem 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.estado-carga,
+.estado-vacio {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--color-peach);
+  font-size: 0.9rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.spinner-logo {
+  width: 36px;
+  height: 36px;
+  animation: spinLogo 1s linear infinite;
+}
+@keyframes spinLogo {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.feedback-banner {
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-btn);
+  font-size: 0.8rem;
+  background: rgba(140, 46, 20, 0.7);
+  color: var(--color-error);
+  border: 1.5px solid rgba(245, 149, 107, 0.3);
+}
+
+/* ---------- Tarjeta de cliente ---------- */
+.cliente-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--color-input);
+  border-radius: var(--radius-item);
+  padding: 0.85rem;
+}
+
+.cliente-card--procesando {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.cliente-card__top {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.cliente-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: var(--radius-btn);
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--color-deep);
+  border: 2px solid var(--color-gold-dim);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.cliente-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cliente-nombre {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-cream);
+}
+
+.cliente-tipo {
+  font-size: 0.75rem;
+  color: var(--color-peach);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.btn-sacar {
+  height: 44px;
+  border-radius: var(--radius-btn);
+  border: 1.5px solid rgba(245, 149, 107, 0.3);
+  background: var(--color-deep);
+  color: var(--color-error);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  svg { width: 16px; height: 16px; }
+
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}

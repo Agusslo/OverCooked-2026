@@ -52,7 +52,7 @@
 | 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
 | 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
 | 9. Ingresar al local | cliente anónimo | López, Agustín Nicolás | Indefinido | |
-| 10. Asignar una mesa a un cliente registrado | metre | Fernández Waisberg, Gabriel | Indefinido | |
+| 10. Asignar una mesa a un cliente registrado | metre | Filippelli, Adrián | Indefinido | |
 | 11. Ver el listado de los productos | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
 | 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
 | 13. Rechazar el pedido, para que el usuario lo modifique | mozo | Fernández Waisberg, Gabriel | Indefinido | |
