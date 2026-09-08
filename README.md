@@ -42,17 +42,17 @@
 ## 🚀 Roadmap de Entregas
 
 | Funcionalidad | Perfiles (dentro de la app) | Responsable | Estado | Fecha - Profe |
-| :--- | :--- | :--- | :--- | :--- |
-| 1. Agregar un empleado | dueño o supervisor | López, Agustín Nicolás | Indefinido | |
-| 2. Agregar un nuevo plato | cocinero | López, Agustín Nicolás | Indefinido | |
-| 3. Agregar una nueva bebida | cantinero | López, Agustín Nicolás | Indefinido | |
-| 4. Agregar una nueva mesa | dueño o supervisor | López, Agustín Nicolás | Indefinido | |
-| 5. Crear un cliente registrado | cliente o metre | López, Agustín Nicolás | Indefinido | |
-| 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
-| 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
-| 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
-| 9. Ingresar al local | cliente anónimo | López, Agustín Nicolás | Indefinido | |
-| 10. Asignar una mesa a un cliente registrado | metre | Filippelli, Adrián | Indefinido | |
+| :--- | :--- | :--- | :---: | :--- |
+| 1. Agregar un empleado | dueño o supervisor | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 2. Agregar un nuevo plato | cocinero | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 3. Agregar una nueva bebida | cantinero | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 4. Agregar una nueva mesa | dueño o supervisor | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 5. Crear un cliente registrado | cliente o metre | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 9. Ingresar al local | cliente anónimo | Filippelli, Adrián | Indefinido | |
+| 10. Asignar una mesa a un cliente registrado | metre | Fernández Waisberg, Gabriel | Indefinido | |
 | 11. Ver el listado de los productos | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
 | 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
 | 13. Rechazar el pedido, para que el usuario lo modifique | mozo | Fernández Waisberg, Gabriel | Indefinido | |
