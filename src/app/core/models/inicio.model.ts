@@ -19,6 +19,7 @@ export interface AccionInicio {
     | 'mesa-nueva'
     | 'asignar-mesa'
     | 'escanear-mesa'
+    | 'lista-espera'
     | 'plato'
     | 'bebida'
     | 'chat';
@@ -61,6 +62,12 @@ const ACCIONES_ADMIN: AccionInicio[] = [
     detalle: 'Crear una mesa nueva y su código QR',
     ruta: '/mesas/alta-mesa',
     icono: 'mesa-nueva',
+  },
+  {
+    titulo: 'Lista de espera',
+    detalle: 'Ver quién está esperando ingresar',
+    ruta: '/metre/lista-espera',
+    icono: 'lista-espera',
   },
 ];
 
@@ -111,6 +118,12 @@ const PANEL_METRE: PanelInicio = {
   titulo: 'Panel del salón',
   subtitulo: 'Asignación de mesas',
   acciones: [
+    {
+      titulo: 'Lista de espera',
+      detalle: 'Ver quién está esperando ingresar',
+      ruta: '/metre/lista-espera',
+      icono: 'lista-espera',
+    },
     {
       titulo: 'Asignar mesa',
       detalle: 'Ubicar a un cliente que está esperando',
@@ -166,7 +179,9 @@ export const PANELES_INICIO: Partial<Record<PerfilUsuario, PanelInicio>> = {
   mozo: PANEL_MOZO,
 };
 
-export function panelPara(perfil: PerfilUsuario | undefined): PanelInicio | null {
+export function panelPara(
+  perfil: PerfilUsuario | undefined,
+): PanelInicio | null {
   if (!perfil) return null;
   return PANELES_INICIO[perfil] ?? null;
 }
