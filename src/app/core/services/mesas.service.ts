@@ -143,6 +143,24 @@ export class MesasService {
     return (data ?? []) as Mesa[];
   }
 
+  // Para el panel del mozo (punto 11): las mesas con clientes sentados,
+  // que son las que pueden tener una consulta activa.
+  async listarOcupadas(): Promise<Mesa[]> {
+    const client = this.supabaseService.getClient();
+
+    const { data, error } = await client
+      .from('mesas')
+      .select('*')
+      .eq('estado', 'ocupada')
+      .order('numero', { ascending: true });
+
+    if (error) {
+      throw new Error('No se pudieron cargar las mesas ocupadas.');
+    }
+
+    return (data ?? []) as Mesa[];
+  }
+
   // Punto 10: mesa que el metre le asignó a este cliente registrado
   // (la asignación "vigente", es decir sin fecha_fin). Devuelve null
   // si todavía no tiene ninguna. Se usa tanto para validar el QR que

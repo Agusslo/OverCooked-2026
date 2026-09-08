@@ -1,12 +1,13 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { AuthService } from '../../../core/services/auth.service';
 import { MesasService } from '../../../core/services/mesas.service';
 import { ProductosService } from '../../../core/services/productos.service';
 import { Mesa } from '../../../core/models/mesa.model';
 import { Producto } from '../../../core/models/producto.model';
+
 
 @Component({
   selector: 'app-menu',
@@ -17,6 +18,7 @@ import { Producto } from '../../../core/models/producto.model';
 })
 export class MenuPage implements OnInit {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private authService = inject(AuthService);
   private mesasService = inject(MesasService);
   private productosService = inject(ProductosService);
@@ -118,10 +120,18 @@ export class MenuPage implements OnInit {
     }));
   }
 
+  irAConsulta(): void {
+    const mesa = this.mesa();
+    if (mesa) {
+      this.router.navigate(['/cliente/chat', mesa.numero]);
+    }
+  }
+
   private async dispararError(texto: string): Promise<void> {
     this.mensajeError.set(texto);
     try {
       await Haptics.notification({ type: NotificationType.Error });
     } catch {}
   }
+
 }

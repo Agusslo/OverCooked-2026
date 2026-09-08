@@ -80,9 +80,11 @@
         Lo dejamos visible pero deshabilitado hasta que armemos el chat
         en el próximo paso, así queda claro dónde va a ir.
       -->
-      <button type="button" class="btn-consulta-mozo" disabled title="Próximamente">
-        Consulta al mozo (próximamente)
-      </button>
+      @if (mesa()) {
+        <button type="button" class="btn-consulta-mozo" (click)="irAConsulta()">
+          Consulta al mozo
+        </button>
+      }
     </div>
   </div>
 </div>

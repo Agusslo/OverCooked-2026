@@ -20,4 +20,13 @@ export const clienteRoutes: Routes = [
     canActivate: [authGuard],
     data: { perfiles: ['cliente'] },
   },
+  // Punto 11: consulta al mozo, misma pantalla que usa el mozo del
+  // otro lado (ver mozo.routes.ts).
+  {
+    path: 'chat/:numero',
+    loadComponent: () =>
+      import('../chat/chat-mesa/chat-mesa.page').then((m) => m.ChatMesaPage),
+    canActivate: [authGuard],
+    data: { perfiles: ['cliente', 'anonimo'] },
+  },
 ];

@@ -8,6 +8,7 @@ import { barRoutes } from './features/bar/bar.routes';
 import { mesasRoutes } from './features/mesas/mesas.routes';
 import { clienteRoutes } from './features/cliente/cliente.routes';
 import { metreRoutes } from './features/metre/metre.routes';
+import { mozoRoutes } from './features/mozo/mozo.routes';
 
 export const routes: Routes = [
   {
@@ -29,4 +30,5 @@ export const routes: Routes = [
   { path: 'mesas', children: mesasRoutes },
   { path: 'cliente', children: clienteRoutes },
   { path: 'metre', children: metreRoutes },
+  { path: 'mozo', children: mozoRoutes },
 ];

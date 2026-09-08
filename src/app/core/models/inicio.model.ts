@@ -20,7 +20,8 @@ export interface AccionInicio {
     | 'asignar-mesa'
     | 'escanear-mesa'
     | 'plato'
-    | 'bebida';
+    | 'bebida'
+    | 'chat';
 }
 
 export interface PanelInicio {
@@ -119,6 +120,20 @@ const PANEL_METRE: PanelInicio = {
   ],
 };
 
+const PANEL_MOZO: PanelInicio = {
+  rol: 'Mozo',
+  titulo: 'Panel del mozo',
+  subtitulo: 'Consultas de las mesas',
+  acciones: [
+    {
+      titulo: 'Consultas de mesas',
+      detalle: 'Ver y responder a los clientes',
+      ruta: '/mozo/consultas',
+      icono: 'chat',
+    },
+  ],
+};
+
 // Punto 10 del PDF: el cliente registrado escanea el QR de la mesa
 // que le asignó el metre para entrar al menú.
 const PANEL_CLIENTE: PanelInicio = {
@@ -148,6 +163,7 @@ export const PANELES_INICIO: Partial<Record<PerfilUsuario, PanelInicio>> = {
   cantinero: PANEL_CANTINERO,
   metre: PANEL_METRE,
   cliente: PANEL_CLIENTE,
+  mozo: PANEL_MOZO,
 };
 
 export function panelPara(perfil: PerfilUsuario | undefined): PanelInicio | null {

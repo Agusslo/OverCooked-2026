@@ -1,0 +1,146 @@
+.chat-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  background: #2b1a12;
+}
+
+.main-container {
+  width: 100%;
+  max-width: 480px;
+}
+
+.card-box {
+  background: #3a2418;
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: calc(100vh - 32px);
+}
+
+.header-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  h2 {
+    color: #f9bfa0;
+    margin: 0;
+    font-size: 18px;
+  }
+
+  p {
+    color: #d9a888;
+    margin: 2px 0 0;
+    font-size: 13px;
+  }
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: #f9bfa0;
+}
+
+.estado-carga,
+.estado-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 0;
+  color: #d9a888;
+}
+
+.spinner-logo {
+  width: 48px;
+  height: 48px;
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.mensajes-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px;
+}
+
+.burbuja {
+  max-width: 75%;
+  background: #4a2e1e;
+  border-radius: 14px;
+  padding: 8px 12px;
+  align-self: flex-start;
+
+  &--propia {
+    align-self: flex-end;
+    background: #a83820;
+  }
+}
+
+.burbuja-autor {
+  display: block;
+  color: #f9bfa0;
+  font-size: 11px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.burbuja-texto {
+  color: #fff;
+  margin: 0;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.feedback-banner.error {
+  background: #5a1f1f;
+  color: #f8b4b4;
+  padding: 10px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.chat-form {
+  display: flex;
+  gap: 8px;
+
+  input {
+    flex: 1;
+    background: #4a2e1e;
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    color: #fff;
+
+    &::placeholder {
+      color: #b98d70;
+    }
+  }
+}
+
+.btn-enviar {
+  background: #a83820;
+  border: none;
+  border-radius: 12px;
+  width: 44px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
