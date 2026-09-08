@@ -99,6 +99,24 @@ Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios**
 | Aprobado | verde "éxito" | 32px, festivo | Trebuchet MS + Palatino |
 | Rechazado | bordó sobrio | 21px, formal | Courier + Cambria |
 
+### Notificaciones
+
+**Responsable:** Fernández Waisberg, Gabriel (`feature/dev-gamma`)
+
+Cada notificacion segun el caso que es necesario. Cuando un cliente quiere registrarse le llega la notificación al dueño/supervisor
+
+| Tipo | Se dispara desde | Punto TFI |
+| :--- | :--- | :---: |
+| `registro-pendiente` | `AuthService.registrarUsuario` — al crear un cliente registrado | 5 |
+| `cliente-aprobado` | `AdminService.aprobarCliente` — el dueño/supervisor acepta al cliente | 8 |
+| `cliente-rechazado` | `AdminService.rechazarCliente` — el dueño/supervisor rechaza al cliente | 7 |
+
+### QR
+<div align="center">
+  <img src="src/assets/QR/qr_ingreso_local.png" alt="Ingreso al Local" width="250">
+  <p>Ingreso al local</p>
+</div>
+
 ### Puesta en marcha
 
 ```bash
