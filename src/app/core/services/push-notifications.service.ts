@@ -89,6 +89,8 @@ export class PushNotificationsService {
           const tipo = accion.notification.data?.['tipo'];
           if (tipo === 'mesa-asignada') {
             this.router.navigateByUrl('/cliente/escanear-mesa');
+          } else if (tipo === 'lista-espera') {
+            this.router.navigateByUrl('/metre/lista-espera');
           } else {
             this.router.navigateByUrl('/admin/clientes-pendientes');
           }
