@@ -79,7 +79,7 @@
               <!-- Rechazar -->
               <button class="btn-accion btn-rechazar"
                       [disabled]="procesando() === cliente.id"
-                      (click)="rechazar(cliente)">
+                      (click)="pedirConfirmacion(cliente, 'rechazar')">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                   fill="none" stroke="currentColor" stroke-width="2.5"
                   stroke-linecap="round" stroke-linejoin="round">
@@ -92,7 +92,7 @@
               <!-- Aprobar -->
               <button class="btn-accion btn-aprobar"
                       [disabled]="procesando() === cliente.id"
-                      (click)="aprobar(cliente)">
+                      (click)="pedirConfirmacion(cliente, 'aprobar')">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                   fill="none" stroke="currentColor" stroke-width="2.5"
                   stroke-linecap="round" stroke-linejoin="round">
@@ -108,4 +108,75 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal de confirmación -->
+  @if (confirmacion(); as pend) {
+    <div class="modal-overlay" (click)="cancelarConfirmacion()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <div class="modal-icono"
+             [class.modal-icono--rechazar]="pend.accion === 'rechazar'">
+          @if (pend.accion === 'aprobar') {
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          }
+        </div>
+
+        <h3>{{ pend.accion === 'aprobar' ? '¿Aprobar cliente?' : '¿Rechazar cliente?' }}</h3>
+        <p>
+          {{ pend.accion === 'aprobar'
+            ? 'Se le dará acceso a la app y recibirá un correo de aprobación.'
+            : 'No podrá ingresar con este usuario y recibirá un correo de rechazo.' }}
+          <br />
+          <strong>{{ pend.cliente.apellido }}, {{ pend.cliente.nombre }}</strong>
+        </p>
+
+        <div class="modal-acciones">
+          <button class="btn-modal btn-modal--cancelar" type="button"
+                  (click)="cancelarConfirmacion()">
+            Cancelar
+          </button>
+          <button class="btn-modal"
+                  [class.btn-modal--aprobar]="pend.accion === 'aprobar'"
+                  [class.btn-modal--rechazar]="pend.accion === 'rechazar'"
+                  type="button"
+                  (click)="confirmar()">
+            {{ pend.accion === 'aprobar' ? 'Aprobar' : 'Rechazar' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Mensaje de éxito -->
+  @if (mensajeExito(); as exito) {
+    <div class="modal-overlay" (click)="cerrarExito()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <div class="modal-icono modal-icono--exito">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h3>¡Listo!</h3>
+        <p>{{ exito }}</p>
+        <div class="modal-acciones">
+          <button class="btn-modal btn-modal--aprobar" type="button" (click)="cerrarExito()">
+            Aceptar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 </div>

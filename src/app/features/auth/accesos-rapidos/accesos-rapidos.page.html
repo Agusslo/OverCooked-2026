@@ -9,6 +9,14 @@
           [disabled]="cargando()"
           aria-label="Entrar como {{ acceso.perfil }}"
         >
+          <span class="quick-item__foto" aria-hidden="true">
+            @if (fotos()[acceso.email]; as foto) {
+              <img [src]="foto" alt="" />
+            } @else {
+              <span>{{ inicial(acceso) }}</span>
+            }
+          </span>
+
           <span class="quick-item__content">
             <span class="quick-item__label">{{ acceso.perfil.toUpperCase() }}</span>
             <span class="quick-item__description">{{ acceso.descripcion }}</span>

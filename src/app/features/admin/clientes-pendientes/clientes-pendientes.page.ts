@@ -3,6 +3,8 @@ import { RouterLink } from '@angular/router';
 import { AdminService } from '../../../core/services/admin.service';
 import { Usuario } from '../../../core/models/usuario.model';
 
+type AccionPendiente = 'aprobar' | 'rechazar';
+
 @Component({
   selector: 'app-clientes-pendientes',
   standalone: true,
@@ -21,6 +23,13 @@ export class ClientesPendientesPage implements OnInit {
   // mientras se procesa (y no los de toda la lista).
   procesando = signal<string | null>(null);
 
+  // Cliente + acción que está esperando confirmación en el modal.
+  // null = modal cerrado.
+  confirmacion = signal<{ cliente: Usuario; accion: AccionPendiente } | null>(null);
+
+  // Mensaje de éxito que se muestra tras aprobar/rechazar.
+  mensajeExito = signal<string | null>(null);
+
   ngOnInit(): void {
     this.cargarClientes();
   }
@@ -38,28 +47,48 @@ export class ClientesPendientesPage implements OnInit {
     }
   }
 
-  async aprobar(cliente: Usuario): Promise<void> {
+  // Abre el modal de confirmación para la acción elegida.
+  pedirConfirmacion(cliente: Usuario, accion: AccionPendiente): void {
+    this.mensajeExito.set(null);
+    this.confirmacion.set({ cliente, accion });
+  }
+
+  cancelarConfirmacion(): void {
+    this.confirmacion.set(null);
+  }
+
+  // Ejecuta la acción confirmada en el modal.
+  async confirmar(): Promise<void> {
+    const pendiente = this.confirmacion();
+    if (!pendiente) return;
+
+    const { cliente, accion } = pendiente;
+    this.confirmacion.set(null);
     this.procesando.set(cliente.id);
+    this.error.set(null);
+
     try {
-      await this.adminService.aprobarCliente(cliente);
+      if (accion === 'aprobar') {
+        await this.adminService.aprobarCliente(cliente);
+        this.mensajeExito.set(`Se aprobó a ${cliente.nombre} ${cliente.apellido}.`);
+      } else {
+        await this.adminService.rechazarCliente(cliente);
+        this.mensajeExito.set(`Se rechazó a ${cliente.nombre} ${cliente.apellido}.`);
+      }
       this.quitarDeLista(cliente.id);
     } catch (err) {
-      this.error.set(err instanceof Error ? err.message : 'No se pudo aprobar al cliente.');
+      const generico =
+        accion === 'aprobar'
+          ? 'No se pudo aprobar al cliente.'
+          : 'No se pudo rechazar al cliente.';
+      this.error.set(err instanceof Error ? err.message : generico);
     } finally {
       this.procesando.set(null);
     }
   }
 
-  async rechazar(cliente: Usuario): Promise<void> {
-    this.procesando.set(cliente.id);
-    try {
-      await this.adminService.rechazarCliente(cliente);
-      this.quitarDeLista(cliente.id);
-    } catch (err) {
-      this.error.set(err instanceof Error ? err.message : 'No se pudo rechazar al cliente.');
-    } finally {
-      this.procesando.set(null);
-    }
+  cerrarExito(): void {
+    this.mensajeExito.set(null);
   }
 
   private quitarDeLista(id: string): void {
