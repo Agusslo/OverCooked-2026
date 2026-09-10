@@ -88,6 +88,7 @@ export class PushNotificationsService {
         (accion: ActionPerformed) => {
           const data = accion.notification.data ?? {};
           const tipo = data['tipo'];
+          const numeroMesa = data['numeroMesa'];
           if (tipo === 'mesa-asignada') {
             this.router.navigateByUrl('/inicio');
           } else if (tipo === 'lista-espera') {
@@ -101,6 +102,13 @@ export class PushNotificationsService {
             this.router.navigateByUrl(
               pedidoId ? `/cliente/estado-pedido/${pedidoId}` : '/inicio',
             );
+          } else if (tipo === 'mensaje-mesa' && numeroMesa) {
+            const hiloClienteId = data['hiloClienteId'];
+            if (hiloClienteId) {
+              this.router.navigateByUrl(`/mozo/chat/${numeroMesa}/${hiloClienteId}`);
+            } else {
+              this.router.navigateByUrl(`/mozo/hilos/${numeroMesa}`);
+            }
           } else {
             this.router.navigateByUrl('/admin/clientes-pendientes');
           }

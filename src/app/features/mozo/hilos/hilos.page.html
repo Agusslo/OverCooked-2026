@@ -1,0 +1,46 @@
+<div class="hilos-page-wrapper">
+  <div class="main-container">
+    <div class="card-box">
+      <div class="header-box">
+        <h2>Mesa {{ mesa()?.numero }}</h2>
+        <p>Conversaciones abiertas</p>
+      </div>
+
+      @if (cargando()) {
+        <div class="estado-carga">
+          <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
+          <span>Cargando conversaciones...</span>
+        </div>
+      } @else if (hilos().length === 0) {
+        <div class="estado-vacio">
+          <span>Todavía no hay ninguna consulta en esta mesa.</span>
+        </div>
+      } @else {
+        <div class="hilos-lista">
+          @for (hilo of hilos(); track hilo.hiloClienteId) {
+            <button type="button" class="hilo-item" (click)="abrirHilo(hilo)">
+              <span class="hilo-item__texto">
+                <span class="hilo-item__nombre">
+                  {{ hilo.clienteNombre }}
+                  @if (hilo.tieneNovedad) {
+                    <span class="punto-novedad" aria-label="Mensaje nuevo sin leer"></span>
+                  }
+                </span>
+                <span class="hilo-item__ultimo">{{ hilo.ultimoMensaje }}</span>
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </button>
+          }
+        </div>
+      }
+
+      @if (mensajeError()) {
+        <div class="feedback-banner error">
+          <span>{{ mensajeError() }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

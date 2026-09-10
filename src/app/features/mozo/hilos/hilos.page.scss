@@ -1,0 +1,115 @@
+.hilos-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  background: #2b1a12;
+}
+
+.main-container {
+  width: 100%;
+  max-width: 480px;
+}
+
+.card-box {
+  background: #3a2418;
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header-box {
+  text-align: center;
+
+  h2 {
+    color: #f9bfa0;
+    margin: 0;
+    font-size: 22px;
+  }
+
+  p {
+    color: #d9a888;
+    margin: 4px 0 0;
+    font-size: 14px;
+  }
+}
+
+.estado-carga,
+.estado-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 0;
+  color: #d9a888;
+}
+
+.spinner-logo {
+  width: 48px;
+  height: 48px;
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.hilos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hilo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #4a2e1e;
+  border: 2px solid #a83820;
+  border-radius: 12px;
+  padding: 14px;
+  color: #f9bfa0;
+  text-align: left;
+}
+
+.hilo-item__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.hilo-item__nombre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+}
+
+.hilo-item__ultimo {
+  font-size: 12px;
+  color: #d9a888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.punto-novedad {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #e63946;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.feedback-banner.error {
+  background: #5a1f1f;
+  color: #f8b4b4;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+}

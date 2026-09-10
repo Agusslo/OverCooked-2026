@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "208387129410",
+    "project_id": "overcooked-cfc69",
+    "storage_bucket": "overcooked-cfc69.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208387129410:android:2a5f698f50fc1b647a2ddb",
+        "android_client_info": {
+          "package_name": "com.overcooked.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBt9ufesJqLKYU5EZfUL0mTpgf1YE7PXE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
