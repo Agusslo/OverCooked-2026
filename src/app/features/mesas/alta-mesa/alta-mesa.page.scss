@@ -35,7 +35,7 @@
   */
   --field-py: clamp(0.42rem, 1.4dvh, 0.85rem);
   --field-px: clamp(0.75rem, 2vw, 1rem);
-  --form-gap: clamp(0.5rem, 2vw, 4rem);
+  --form-gap: clamp(0.9rem, 2.5vw, 4rem);
   --header-v: clamp(0.85rem, 2.5dvh, 2rem);
   --header-h: clamp(1rem, 3vw, 1.75rem);
   --btn-py: clamp(0.55rem, 1.8dvh, 0.9rem);
@@ -239,6 +239,7 @@
   background: var(--color-gold);
   color: var(--color-deep);
   border: none;
+  margin-top: clamp(3rem, 8dvh, 5rem);
   font-size: clamp(0.72rem, 1.9dvh, 0.88rem);
   padding: var(--btn-py) 1rem;
   border-radius: var(--radius-btn);
@@ -421,9 +422,34 @@
   color: var(--color-error);
   padding-left: 0.2rem;
 }
+
+/*
+  El error se posiciona en el hueco que dejan --form-gap entre inputs,
+  sin empujar el resto del formulario hacia abajo.
+*/
+.input-field-group .error-msg {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 2px;
+  line-height: 1.1;
+  pointer-events: none;
+}
+
 .error-msg.text-center {
   text-align: center;
   padding-left: 0;
+}
+
+/* Error de la foto: también flota, no desplaza el botón */
+.photos-section .error-msg.text-center {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 2px;
+  line-height: 1.1;
+  pointer-events: none;
 }
 
 /* ---------- Sección de fotos ---------- */
@@ -672,8 +698,8 @@
   :host {
     --header-v: clamp(0.6rem, 2dvh, 1.2rem);
     --header-h: clamp(0.75rem, 2.5vw, 1rem);
-    --form-gap: clamp(0.25rem, 0.8dvh, 0.5rem);
-    --btn-py: clamp(0.5rem, 1.5dvh, 0.75rem);
+    --form-gap: clamp(0.75rem, 1.8dvh, 1.1rem);
+    --btn-py: clamp(1.5rem, 1.5dvh, 2.75rem);
     --field-py: clamp(0.35rem, 1.2dvh, 0.7rem);
   }
 
@@ -701,8 +727,8 @@
 
   .btn-uiverse,
   .btn-submit {
-    font-size: clamp(0.62rem, 1.6dvh, 0.75rem);
-    padding: clamp(0.5rem, 1.5dvh, 0.7rem) 0.8rem;
+    font-size: clamp(1rem, 1.6dvh, 0.75rem);
+    padding: clamp(1.5rem, 1.5dvh, 0.7rem) 0.8rem;
   }
 }
 

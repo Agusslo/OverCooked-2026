@@ -36,7 +36,9 @@ export class AsignarMesaPage implements OnInit {
     this.mensajeError.set('');
     try {
       const [clientes, mesasLibres] = await Promise.all([
-        this.listaEsperaService.listarEsperandoRegistrados(),
+        // Punto 9/10: el metre asigna mesa tanto a clientes registrados
+        // como a invitados (anónimos).
+        this.listaEsperaService.listarEsperando(),
         this.mesasService.listarLibres(),
       ]);
       this.clientes.set(clientes);

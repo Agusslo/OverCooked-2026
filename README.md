@@ -42,16 +42,16 @@
 ## 🚀 Roadmap de Entregas
 
 | Funcionalidad | Perfiles (dentro de la app) | Responsable | Estado | Fecha - Profe |
-| :--- | :--- | :--- | :--- | :--- |
-| 1. Agregar un empleado | dueño o supervisor | López, Agustín Nicolás | Indefinido | |
-| 2. Agregar un nuevo plato | cocinero | López, Agustín Nicolás | Indefinido | |
-| 3. Agregar una nueva bebida | cantinero | López, Agustín Nicolás | Indefinido | |
-| 4. Agregar una nueva mesa | dueño o supervisor | López, Agustín Nicolás | Indefinido | |
-| 5. Crear un cliente registrado | cliente o metre | López, Agustín Nicolás | Indefinido | |
-| 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
-| 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
-| 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | Indefinido | |
-| 9. Ingresar al local | cliente anónimo | López, Agustín Nicolás | Indefinido | |
+| :--- | :--- | :--- | :---: | :--- |
+| 1. Agregar un empleado | dueño o supervisor | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 2. Agregar un nuevo plato | cocinero | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 3. Agregar una nueva bebida | cantinero | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 4. Agregar una nueva mesa | dueño o supervisor | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 5. Crear un cliente registrado | cliente o metre | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟡 | 05/09/2026 - Octavio, Villegas |
+| 9. Ingresar al local | cliente anónimo | Filippelli, Adrián | Indefinido | |
 | 10. Asignar una mesa a un cliente registrado | metre | Fernández Waisberg, Gabriel | Indefinido | |
 | 11. Ver el listado de los productos | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
 | 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
@@ -98,6 +98,24 @@ Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios**
 | Pendiente | naranja / dorado cálido | 26px | Verdana + Georgia |
 | Aprobado | verde "éxito" | 32px, festivo | Trebuchet MS + Palatino |
 | Rechazado | bordó sobrio | 21px, formal | Courier + Cambria |
+
+### Notificaciones
+
+**Responsable:** Fernández Waisberg, Gabriel (`feature/dev-gamma`)
+
+Cada notificacion segun el caso que es necesario. Cuando un cliente quiere registrarse le llega la notificación al dueño/supervisor
+
+| Tipo | Se dispara desde | Punto TFI |
+| :--- | :--- | :---: |
+| `registro-pendiente` | `AuthService.registrarUsuario` — al crear un cliente registrado | 5 |
+| `cliente-aprobado` | `AdminService.aprobarCliente` — el dueño/supervisor acepta al cliente | 8 |
+| `cliente-rechazado` | `AdminService.rechazarCliente` — el dueño/supervisor rechaza al cliente | 7 |
+
+### QR
+<div align="center">
+  <img src="src/assets/QR/qr_ingreso_local.png" alt="Ingreso al Local" width="250">
+  <p>Ingreso al local</p>
+</div>
 
 ### Puesta en marcha
 

@@ -19,10 +19,7 @@ import {
 } from '@ionic/angular';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { AuthService } from '../../../core/services/auth.service';
-import { QrScannerService } from '../../../core/services/qr-scanner';
-import { ListaEsperaService } from '../../../core/services/lista-espera.service';
-import { IRegistroAnonimo, Usuario } from '../../../core/models/usuario.model';
-import { Capacitor } from '@capacitor/core';
+import { IRegistroAnonimo } from '../../../core/models/usuario.model';
 import {
   abrirCamaraWeb,
   capturarFotoWeb,
@@ -43,19 +40,13 @@ export class InvitadoPage implements OnDestroy {
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-  private qrScannerService = inject(QrScannerService);
-  private listaEsperaService = inject(ListaEsperaService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
-  // paso 1 = datos personales, paso 2 = escanear el QR de ingreso
-  paso = signal<1 | 2>(1);
   cargando = signal(false);
   errorInvitado = signal<string | null>(null);
   fotoUrl = signal<string | null>(null);
   camaraActiva = signal(false);
-
-  private usuarioAnonimo: Usuario | null = null;
 
   private abriendoCamara = false;
   private streamCamara?: MediaStream;
@@ -127,9 +118,9 @@ export class InvitadoPage implements OnDestroy {
     this.camaraActiva.set(false);
   }
 
-  // Paso 1 -> paso 2: registra la cuenta anónima y pasa a pedir el
-  // escaneo del QR de ingreso. Todavía no lo anota en la lista de
-  // espera — eso pasa recién cuando escanea (siguiente método).
+  // Registra la cuenta anónima y va a /inicio. Desde ahí el flujo es
+  // igual que el del cliente registrado: /inicio manda a /cliente/entrada
+  // a escanear el QR de la entrada del local (punto 9).
   async continuar(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -150,58 +141,11 @@ export class InvitadoPage implements OnDestroy {
     this.cargando.set(true);
 
     try {
-      this.usuarioAnonimo = await this.authService.registrarAnonimo(datos);
-      this.paso.set(2);
+      await this.authService.registrarAnonimo(datos);
+      this.router.navigateByUrl('/inicio');
     } catch (error) {
       await this.dispararError(
         error instanceof Error ? error.message : 'No se pudo continuar como invitado.',
-      );
-    } finally {
-      this.cargando.set(false);
-    }
-  }
-
-  // Punto 9: escanea el QR fijo de ingreso al local y recién ahí
-  // queda anotado en la lista de espera del metre.
-  async escanearIngreso(): Promise<void> {
-    this.errorInvitado.set(null);
-    this.cargando.set(true);
-
-    try {
-      const resultado = await this.qrScannerService.escanear();
-
-      console.log('[escanearIngreso] resultado:', JSON.stringify(resultado));
-
-      if (!resultado) {
-        await this.dispararError(
-          'No se pudo escanear. Asegurate de que la app tenga permisos de cámara y volvé a intentar.',
-        );
-        return;
-      }
-
-      if (resultado.tipo !== 'LOCAL') {
-        await this.dispararError(
-          `Ese QR no es el de ingreso al local. Se leyó: "${resultado.tipo}" → "${resultado.valor}"`,
-        );
-        return;
-      }
-
-      if (!this.usuarioAnonimo) {
-        await this.dispararError('Se perdió la sesión, volvé a intentar desde el principio.');
-        return;
-      }
-
-      await this.listaEsperaService.anotarse({
-        clienteAnonimoId: this.usuarioAnonimo.id,
-        nombre: `${this.usuarioAnonimo.nombre} ${this.usuarioAnonimo.apellido}`.trim(),
-        fotoUrl: this.usuarioAnonimo.foto_url,
-      });
-      await Haptics.notification({ type: NotificationType.Success }).catch(() => {});
-      this.router.navigateByUrl('/inicio');
-    } catch (error) {
-      console.error('[escanearIngreso] error:', error);
-      await this.dispararError(
-        error instanceof Error ? error.message : 'No se pudo completar el escaneo.',
       );
     } finally {
       this.cargando.set(false);

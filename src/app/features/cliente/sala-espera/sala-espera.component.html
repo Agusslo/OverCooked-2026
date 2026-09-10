@@ -1,0 +1,72 @@
+<div class="sala-shell">
+
+  <app-header-inicio rol="Cliente" />
+
+  <main class="sala-cuerpo">
+
+    @if (cargando()) {
+      <div class="sala-estado">
+        <img src="assets/icon/logo.png" alt="" class="sala-spinner" />
+        <span>Cargando…</span>
+      </div>
+    } @else if (estadoBoton() === 'con-pedido') {
+
+      <!-- Punto 12: pedido confirmado -> card del pedido + juegos. -->
+      <button type="button" class="sala-pedido-card" (click)="accionPrincipal()">
+        <div class="spc-foto">
+          @if (fotoActual()) {
+            <img [src]="fotoActual()" alt="Foto de un plato del pedido" />
+          }
+        </div>
+        <div class="spc-info">
+          <strong>MESA {{ mesaAsignada()?.numero }}</strong>
+          <span class="spc-items">{{ nombresItems() }}</span>
+          <span class="spc-tiempo">{{ tiempoPedido() }} M</span>
+        </div>
+      </button>
+
+      <section class="sala-juegos">
+        <span>JUEGO PRÓXIMAMENTE</span>
+      </section>
+
+      @if (mensajeError()) {
+        <p class="sala-error">{{ mensajeError() }}</p>
+      }
+
+    } @else {
+
+      <div class="sala-accion">
+        @switch (estadoBoton()) {
+          @case ('esperando') {
+            <button type="button" class="sala-boton" disabled>ESPERANDO ASIGNACIÓN DE MESA</button>
+            <p class="sala-aviso">Ya estás en la lista de espera. El metre te va a asignar una mesa en un rato.</p>
+          }
+          @case ('con-mesa') {
+            <button type="button" class="sala-boton sala-boton--activo" (click)="accionPrincipal()">
+              REALIZAR PEDIDO · MESA {{ mesaAsignada()?.numero }}
+            </button>
+            <p class="sala-aviso">¡Tu mesa está lista! Tocá para escanear el QR de tu mesa y ver el menú.</p>
+          }
+        }
+
+        @if (mensajeError()) {
+          <p class="sala-error">{{ mensajeError() }}</p>
+        }
+      </div>
+
+      <section class="sala-resenias">
+        <h2 class="sala-resenias__titulo">Reseñas de otros clientes</h2>
+        <div class="sala-resenias__proximamente">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.8 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" />
+          </svg>
+          <span>Próximamente vas a poder ver acá las reseñas de las encuestas.</span>
+        </div>
+      </section>
+    }
+  </main>
+
+  @if (mesaAsignada(); as mesa) {
+    <app-burbuja-mozo [numeroMesa]="mesa.numero" />
+  }
+</div>

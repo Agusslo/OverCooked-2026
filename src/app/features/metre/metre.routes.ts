@@ -9,4 +9,13 @@ export const metreRoutes: Routes = [
     canActivate: [authGuard],
     data: { perfiles: ['metre', 'dueño', 'supervisor'] },
   },
+  {
+    path: 'lista-espera',
+    loadComponent: () =>
+      import('./lista-espera/lista-espera.page').then(
+        (m) => m.ListaEsperaMetrePage,
+      ),
+    canActivate: [authGuard],
+    data: { perfiles: ['metre', 'dueño', 'supervisor'] },
+  },
 ];

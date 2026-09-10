@@ -12,6 +12,11 @@ export const environment = {
   // JS y CIERRA LA APP. Dejar en false hasta sumar ese archivo (Firebase
   // console → agregar app Android con el applicationId io.ionic.starter).
   pushNotificationsHabilitadas: true,
+  // Punto 12: cada cuántos milisegundos rota sola la foto del plato
+  // en el menú y en la pantalla de estado del pedido.
+  menuFotosIntervaloMs: 2000,
+  // Nombre del restaurante que se muestra en el menú y el pedido.
+  nombreRestaurante: 'OverCooked',
 };
 
 /*

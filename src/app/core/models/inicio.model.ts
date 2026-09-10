@@ -19,6 +19,7 @@ export interface AccionInicio {
     | 'mesa-nueva'
     | 'asignar-mesa'
     | 'escanear-mesa'
+    | 'lista-espera'
     | 'plato'
     | 'bebida'
     | 'chat';
@@ -61,6 +62,12 @@ const ACCIONES_ADMIN: AccionInicio[] = [
     detalle: 'Crear una mesa nueva y su código QR',
     ruta: '/mesas/alta-mesa',
     icono: 'mesa-nueva',
+  },
+  {
+    titulo: 'Lista de espera',
+    detalle: 'Ver quién está esperando ingresar',
+    ruta: '/metre/lista-espera',
+    icono: 'lista-espera',
   },
 ];
 
@@ -112,6 +119,12 @@ const PANEL_METRE: PanelInicio = {
   subtitulo: 'Asignación de mesas',
   acciones: [
     {
+      titulo: 'Lista de espera',
+      detalle: 'Ver quién está esperando ingresar',
+      ruta: '/metre/lista-espera',
+      icono: 'lista-espera',
+    },
+    {
       titulo: 'Asignar mesa',
       detalle: 'Ubicar a un cliente que está esperando',
       ruta: '/metre/asignar-mesa',
@@ -136,6 +149,9 @@ const PANEL_MOZO: PanelInicio = {
 
 // Punto 10 del PDF: el cliente registrado escanea el QR de la mesa
 // que le asignó el metre para entrar al menú.
+// El cliente y el invitado NO usan este panel: su /inicio es la sala de
+// espera (ver InicioPage + SalaEsperaComponent, punto 12). Se deja
+// definido por compatibilidad con panelPara().
 const PANEL_CLIENTE: PanelInicio = {
   rol: 'Cliente',
   titulo: 'Bienvenido',
@@ -166,7 +182,9 @@ export const PANELES_INICIO: Partial<Record<PerfilUsuario, PanelInicio>> = {
   mozo: PANEL_MOZO,
 };
 
-export function panelPara(perfil: PerfilUsuario | undefined): PanelInicio | null {
+export function panelPara(
+  perfil: PerfilUsuario | undefined,
+): PanelInicio | null {
   if (!perfil) return null;
   return PANELES_INICIO[perfil] ?? null;
 }

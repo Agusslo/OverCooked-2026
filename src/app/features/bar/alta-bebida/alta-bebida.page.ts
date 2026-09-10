@@ -4,17 +4,11 @@ import {
   ViewChild,
   inject,
   signal,
+  CUSTOM_ELEMENTS_SCHEMA,
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import {
-  IonContent,
-  IonItem,
-  IonInput,
-  IonTextarea,
-  IonButton,
-  IonSpinner,
-  IonText,
-} from '@ionic/angular';
+import { RouterLink } from '@angular/router';
 import { Camera, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Haptics, NotificationType } from '@capacitor/haptics';
@@ -29,16 +23,8 @@ type Fotos = [string | null, string | null, string | null];
   standalone: true,
   templateUrl: './alta-bebida.page.html',
   styleUrls: ['./alta-bebida.page.scss'],
-  imports: [
-    ReactiveFormsModule,
-    IonContent,
-    IonItem,
-    IonInput,
-    IonTextarea,
-    IonButton,
-    IonSpinner,
-    IonText,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AltaBebidaPage {
   @ViewChild('videoCamara') videoCamara?: ElementRef<HTMLVideoElement>;

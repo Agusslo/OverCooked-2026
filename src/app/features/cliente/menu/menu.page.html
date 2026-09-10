@@ -1,90 +1,159 @@
-<div class="menu-page-wrapper">
-  <div class="main-container">
-    <div class="card-box">
-      <div class="header-box">
-        <h2>Menú</h2>
-        @if (mesa()) {
-          <p>Mesa {{ mesa()?.numero }} · {{ mesa()?.capacidad }} comensales</p>
-        }
-      </div>
+<div class="menu-shell">
 
-      <div class="menu-body">
-        @if (cargando()) {
-          <div class="estado-carga">
-            <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
-            <span>Cargando el menú...</span>
-          </div>
-        } @else if (mensajeError()) {
-          <div class="feedback-banner error">
-            <span>{{ mensajeError() }}</span>
-          </div>
-        } @else if (productos().length === 0) {
-          <div class="estado-vacio">
-            <span>Todavía no hay productos cargados en la carta.</span>
-          </div>
-        } @else {
-          <div class="productos-scroll">
-            @for (producto of productos(); track producto.id) {
-              <div class="producto-card">
-                <div class="producto-foto">
-                  @if (fotoActual(producto)) {
-                    <img [src]="fotoActual(producto)" [alt]="producto.nombre" />
-                  }
+  @if (cargando()) {
+    <div class="menu-estado">
+      <img src="assets/icon/logo.png" alt="" class="menu-spinner" />
+      <span>Cargando el menú…</span>
+    </div>
+  } @else if (mensajeError() && productos().length === 0) {
+    <div class="menu-estado">
+      <div class="menu-banner error">{{ mensajeError() }}</div>
+      <button type="button" class="menu-volver-inicio" routerLink="/inicio">Volver al inicio</button>
+    </div>
+  } @else if (productos().length === 0) {
+    <div class="menu-estado">
+      <span>Todavía no hay productos cargados en la carta.</span>
+    </div>
+  } @else {
 
-                  @if (fotosDe(producto).length > 1) {
-                    <button
-                      type="button"
-                      class="foto-nav foto-nav--izq"
-                      (click)="anteriorFoto(producto)"
-                      title="Foto anterior"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="15 18 9 12 15 6" />
-                      </svg>
-                    </button>
-                    <button
-                      type="button"
-                      class="foto-nav foto-nav--der"
-                      (click)="siguienteFoto(producto)"
-                      title="Foto siguiente"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="9 18 15 12 9 6" />
-                      </svg>
-                    </button>
+    <div class="menu-viewport">
+      <div class="menu-track" [class.menu-track--anim]="!arrastrando()" [style.transform]="desplazamientoY()">
 
-                    <div class="foto-puntos">
-                      @for (foto of fotosDe(producto); track $index) {
-                        <span class="punto" [class.punto-activo]="$index === indiceActual(producto)"></span>
-                      }
-                    </div>
+        <!-- ===== Vista: Menú (plato a plato) ===== -->
+        <section class="vista vista-menu">
+          <header class="menu-top">
+            <button type="button" class="menu-top__back" routerLink="/inicio" aria-label="Volver">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h1>MENÚ</h1>
+          </header>
+
+          <div
+            class="plato-contenido"
+            [class.plato-contenido--anim]="!arrastrando()"
+            [style.transform]="'translateX(' + arrastreX() + 'px) rotate(' + (arrastreX() / 30) + 'deg)'"
+            (pointerdown)="alPresionar($event)"
+            (pointermove)="alMover($event)"
+            (pointerup)="alSoltar()"
+            (pointercancel)="alSoltar()"
+          >
+            <div
+              class="plato-foto"
+              [class.plato-foto--tocable]="fotosActuales().length > 1"
+              (click)="siguienteFoto()"
+            >
+              @if (fotoActual()) {
+                <img [src]="fotoActual()" [alt]="productoActual()?.nombre" draggable="false" />
+              }
+              @if (fotosActuales().length > 1) {
+                <div class="plato-dots">
+                  @for (f of fotosActuales(); track $index) {
+                    <span [class.on]="$index === (indiceFoto() % fotosActuales().length)"></span>
                   }
                 </div>
+              }
+            </div>
 
-                <div class="producto-info">
-                  <div class="producto-info-top">
-                    <h3>{{ producto.nombre }}</h3>
-                    <span class="producto-precio">${{ producto.precio }}</span>
-                  </div>
-                  <p class="producto-descripcion">{{ producto.descripcion }}</p>
-                  <span class="producto-tiempo">{{ producto.tiempo_elaboracion_minutos }} min aprox.</span>
+            @if (productoActual(); as p) {
+              <div class="plato-info">
+                <div class="plato-info__nom">
+                  <h2>{{ p.nombre }}</h2>
+                  <span class="plato-precio">${{ p.precio | number:'1.0-0' }}</span>
                 </div>
+                <span class="plato-rest">{{ restaurante }}</span>
+                <span class="plato-prep">{{ p.tiempo_elaboracion_minutos }} minutos de preparación</span>
+                <p class="plato-desc">{{ p.descripcion }}</p>
               </div>
             }
           </div>
-        }
-      </div>
 
-      <!--
-        El botón de "consulta al mozo" (chat) es la otra mitad del punto 11.
-        Lo dejamos visible pero deshabilitado hasta que armemos el chat
-        en el próximo paso, así queda claro dónde va a ir.
-      -->
-      @if (mesa()) {
-        <button type="button" class="btn-consulta-mozo" (click)="irAConsulta()">
-          Consulta al mozo
-        </button>
-      }
+          <div class="plato-acciones">
+            <button type="button" class="plato-verpedido" (click)="verPedido()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
+              <span>Mi pedido</span>
+              <strong>${{ total() | number:'1.0-0' }}</strong>
+            </button>
+
+            @if (productoActual(); as p) {
+              <div class="plato-agregar">
+                <div class="stepper">
+                  <button type="button" (click)="menosCantidad()" aria-label="Menos">−</button>
+                  <span>{{ cantidadElegida() }}</span>
+                  <button type="button" (click)="masCantidad()" aria-label="Más">+</button>
+                </div>
+                <button type="button" class="btn-agregar" (click)="agregarAlPedido(p)">
+                  Agregar · ${{ p.precio * cantidadElegida() | number:'1.0-0' }}
+                </button>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- ===== Vista: Mi Pedido ===== -->
+        <section class="vista vista-pedido">
+          <div
+            class="vp-handle"
+            (pointerdown)="alPresionar($event)"
+            (pointermove)="alMover($event)"
+            (pointerup)="alSoltar()"
+            (pointercancel)="alSoltar()"
+          >
+            <span class="vp-grab"></span>
+            <button type="button" class="vp-volver" (click)="verMenu()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              <span>Volver al menú</span>
+            </button>
+          </div>
+
+          <div class="vp-titulo">
+            <h1>Mi Pedido</h1>
+            <span>{{ restaurante }} · Mesa {{ mesa()?.numero }}</span>
+          </div>
+
+          <div class="vp-lista">
+            @if (lineasCarrito().length === 0) {
+              <p class="vp-vacio">Todavía no agregaste nada. Volvé al menú, elegí la cantidad y tocá "Agregar".</p>
+            } @else {
+              @for (linea of lineasCarrito(); track linea.producto.id) {
+                <div class="vp-item">
+                  <span class="vp-cant">{{ linea.cantidad }}</span>
+                  <div class="vp-info">
+                    <strong>{{ linea.producto.nombre }}</strong>
+                    <span>{{ linea.producto.descripcion }}</span>
+                  </div>
+                  <div class="vp-acciones">
+                    <button type="button" (click)="quitarUno(linea.producto)" aria-label="Quitar uno">−</button>
+                    <button type="button" (click)="agregar(linea.producto)" aria-label="Agregar uno">+</button>
+                  </div>
+                  <span class="vp-precio">${{ linea.producto.precio * linea.cantidad | number:'1.0-0' }}</span>
+                </div>
+              }
+            }
+          </div>
+
+          <div class="vp-resumen">
+            <div><span>Subtotal</span><span>${{ total() | number:'1.0-0' }}</span></div>
+            <div><span>Tiempo estimado</span><span>~{{ tiempoTotal() }} min</span></div>
+            <div class="vp-resumen__total"><span>Total</span><strong>${{ total() | number:'1.0-0' }}</strong></div>
+          </div>
+
+          <button
+            type="button"
+            class="vp-confirmar"
+            [disabled]="cantidadTotal() === 0 || confirmando()"
+            (click)="confirmar()"
+          >
+            {{ confirmando() ? 'Confirmando…' : 'Confirmar pedido · $' + (total() | number:'1.0-0') }}
+          </button>
+        </section>
+
+      </div>
     </div>
-  </div>
+
+    @if (mensajeError()) {
+      <div class="menu-banner error menu-banner--flotante">{{ mensajeError() }}</div>
+    }
+  }
+
+
 </div>

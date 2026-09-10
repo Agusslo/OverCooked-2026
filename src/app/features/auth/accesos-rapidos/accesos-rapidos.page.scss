@@ -75,7 +75,31 @@
   cursor: wait;
 }
 
+.quick-item__foto {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--arrow-bg);
+  color: var(--arrow-text);
+  display: grid;
+  place-items: center;
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
 .quick-item__content {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

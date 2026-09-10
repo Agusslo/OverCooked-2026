@@ -4,19 +4,26 @@ import { IonContent } from '@ionic/angular';
 import { AuthService } from '../../../core/services/auth.service';
 import { PushNotificationsService } from '../../../core/services/push-notifications.service';
 import { panelPara } from '../../../core/models/inicio.model';
+import { SalaEsperaComponent } from '../../cliente/sala-espera/sala-espera.component';
+import { HeaderInicioComponent } from '../../../shared/header-inicio/header-inicio.component';
 
 // Perfiles que reciben alguna push notification: dueño/supervisor por
-// los clientes pendientes (punto 6) y cliente por la asignación de su
-// mesa (punto 10). El resto de los perfiles todavía no tiene ningún
-// push propio.
-const PERFILES_NOTIFICABLES = ['dueño', 'supervisor', 'cliente', 'mozo'];
+// los clientes pendientes (punto 6), cliente por la asignación de su
+// mesa (punto 10) y el pedido (punto 12), metre por la lista de espera
+// y mozo por los pedidos nuevos.
+const PERFILES_NOTIFICABLES = ['dueño', 'supervisor', 'cliente', 'metre', 'mozo'];
+
+// Perfiles cuyo "inicio" es la sala de espera / pedido (punto 12), no el
+// panel de accesos.
+const PERFILES_SALA_ESPERA = ['cliente', 'anonimo'];
+
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
-  imports: [IonContent, RouterLink],
+  imports: [IonContent, RouterLink, SalaEsperaComponent, HeaderInicioComponent],
 })
 export class InicioPage implements OnInit {
   private authService = inject(AuthService);
@@ -36,6 +43,12 @@ export class InicioPage implements OnInit {
   // reciente que haya guardado el servicio.
   get usuario() {
     return this.authService.usuarioActual;
+  }
+
+  // El cliente (registrado o anónimo) ve la sala de espera; el resto de
+  // los perfiles ve el panel de accesos.
+  get esClienteOAnonimo(): boolean {
+    return !!this.usuario && PERFILES_SALA_ESPERA.includes(this.usuario.perfil);
   }
 
   // Panel (rol, título y accesos) que corresponde al perfil del

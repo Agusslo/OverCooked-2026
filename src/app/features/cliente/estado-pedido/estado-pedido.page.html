@@ -1,0 +1,66 @@
+<div class="ep-shell">
+
+  <header class="ep-header">
+    <button type="button" class="ep-back" routerLink="/inicio" aria-label="Volver">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+    </button>
+    <div class="ep-header__titulo">
+      <h1>Mi pedido</h1>
+      @if (numeroMesa(); as n) { <span>Mesa {{ n }}</span> }
+    </div>
+    <div class="ep-avatar">
+      @if (usuario?.foto_url) {
+        <img [src]="usuario!.foto_url" alt="Foto de perfil" />
+      } @else {
+        <span>{{ iniciales }}</span>
+      }
+    </div>
+  </header>
+
+  <main class="ep-cuerpo">
+
+    @if (cargando()) {
+      <div class="ep-estado">
+        <img src="assets/icon/logo.png" alt="" class="ep-spinner" />
+        <span>Cargando tu pedido…</span>
+      </div>
+    } @else if (mensajeError()) {
+      <div class="ep-banner error">{{ mensajeError() }}</div>
+    } @else if (pedido(); as p) {
+
+      <article class="ep-card">
+        <div class="ep-card__foto">
+          @if (fotoActual()) {
+            <img [src]="fotoActual()" alt="Foto de un plato del pedido" />
+          }
+        </div>
+
+        <div class="ep-card__body">
+          <span class="ep-badge ep-badge--{{ p.estado }}">{{ p.estado }}</span>
+          <p class="ep-mensaje">{{ etiquetaEstado() }}</p>
+
+          <div class="ep-items">
+            @for (item of (p.items ?? []); track item.id) {
+              <div class="ep-item">
+                <span class="ep-item__cant">{{ item.cantidad }}</span>
+                <span class="ep-item__nombre">{{ item.nombre }}</span>
+                <span class="ep-item__sector">{{ item.sector }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="ep-resumen">
+            <div><span>Total</span><strong>${{ p.total | number:'1.0-0' }}</strong></div>
+            <div><span>Tiempo estimado</span><span>~{{ tiempoTotal() }} min</span></div>
+          </div>
+        </div>
+      </article>
+    }
+  </main>
+
+  @if (numeroMesa(); as n) {
+    <app-burbuja-mozo [numeroMesa]="n" />
+  }
+</div>
