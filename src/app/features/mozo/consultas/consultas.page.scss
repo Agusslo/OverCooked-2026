@@ -82,3 +82,17 @@
   border-radius: 12px;
   text-align: center;
 }
+
+.mesa-item__nombre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.punto-novedad {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #e63946;
+  display: inline-block;
+}

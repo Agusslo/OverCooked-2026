@@ -9,7 +9,9 @@ import { panelPara } from '../../../core/models/inicio.model';
 // los clientes pendientes (punto 6) y cliente por la asignación de su
 // mesa (punto 10). El resto de los perfiles todavía no tiene ningún
 // push propio.
+
 const PERFILES_NOTIFICABLES = ['dueño', 'supervisor', 'cliente', 'metre'];
+
 
 @Component({
   selector: 'app-inicio',

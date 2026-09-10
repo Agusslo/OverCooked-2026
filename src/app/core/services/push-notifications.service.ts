@@ -87,10 +87,19 @@ export class PushNotificationsService {
         'pushNotificationActionPerformed',
         (accion: ActionPerformed) => {
           const tipo = accion.notification.data?.['tipo'];
+          const numeroMesa = accion.notification.data?.['numeroMesa'];
+
           if (tipo === 'mesa-asignada') {
             this.router.navigateByUrl('/cliente/escanear-mesa');
           } else if (tipo === 'lista-espera') {
             this.router.navigateByUrl('/metre/lista-espera');
+          } else if (tipo === 'mensaje-mesa' && numeroMesa) {
+            const hiloClienteId = accion.notification.data?.['hiloClienteId'];
+            if (hiloClienteId) {
+              this.router.navigateByUrl(`/mozo/chat/${numeroMesa}/${hiloClienteId}`);
+            } else {
+              this.router.navigateByUrl(`/mozo/hilos/${numeroMesa}`);
+            }
           } else {
             this.router.navigateByUrl('/admin/clientes-pendientes');
           }
