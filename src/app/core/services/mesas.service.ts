@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { RealtimeChannel } from '@supabase/supabase-js';
 import { SupabaseService } from './supabase.service';
 import { Mesa, TipoMesa, EstadoMesa} from '../models/mesa.model';
 
@@ -87,6 +88,24 @@ export class MesasService {
     return data as Mesa;
   }
 
+  // Como obtenerPorNumero pero a partir del id (lo usa la pantalla de
+  // estado del pedido, que tiene el mesa_id del pedido, no el número).
+  async obtenerPorId(id: string): Promise<Mesa> {
+    const client = this.supabaseService.getClient();
+
+    const { data, error } = await client
+      .from('mesas')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error || !data) {
+      throw new Error('No se encontró la mesa del pedido.');
+    }
+
+    return data as Mesa;
+  }
+
   // Mismo mecanismo que ProductosService.subirFoto: convierte el dataUrl
   // (base64) que devuelve la cámara en un archivo real y lo sube a Storage.
   private async subirFoto(dataUrl: string, nombreArchivo: string): Promise<string> {
@@ -166,13 +185,18 @@ export class MesasService {
   // si todavía no tiene ninguna. Se usa tanto para validar el QR que
   // escanea el cliente como para que no pueda "vincularse" a otra
   // mesa distinta de la suya.
-  async obtenerMesaAsignadaA(clienteId: string): Promise<Mesa | null> {
+  async obtenerMesaAsignadaA(
+    id: string,
+    esAnonimo = false,
+  ): Promise<Mesa | null> {
     const client = this.supabaseService.getClient();
+
+    const columna = esAnonimo ? 'cliente_anonimo_id' : 'cliente_id';
 
     const { data, error } = await client
       .from('asignaciones_mesa')
       .select('mesas(*)')
-      .eq('cliente_id', clienteId)
+      .eq(columna, id)
       .is('fecha_fin', null)
       .order('fecha_inicio', { ascending: false })
       .limit(1)
@@ -183,6 +207,34 @@ export class MesasService {
     }
 
     return (data?.['mesas'] as Mesa | undefined) ?? null;
+  }
+
+  // Punto 12 (sala de espera del cliente): escucha en vivo cuando el
+  // metre le asigna una mesa a este cliente, para cambiar solo el
+  // botón de "ESPERANDO MESA" a "REALIZAR PEDIDO" sin recargar.
+  escucharAsignacionDe(
+    clienteId: string,
+    alAsignar: () => void,
+  ): RealtimeChannel {
+    const client = this.supabaseService.getClient();
+
+    return client
+      .channel(`asignacion-mesa-${clienteId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'asignaciones_mesa',
+          filter: `cliente_id=eq.${clienteId}`,
+        },
+        () => alAsignar(),
+      )
+      .subscribe();
+  }
+
+  dejarDeEscuchar(canal: RealtimeChannel): void {
+    this.supabaseService.getClient().removeChannel(canal);
   }
 
   // Cambia SOLO el estado (disponibilidad) de una mesa ya creada.

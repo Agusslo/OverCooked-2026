@@ -11,7 +11,11 @@
 
   <div class="escanear-copy">
     <h1>Escaneá tu mesa</h1>
-    <p>Buscá el código QR en la mesa que te asignó el metre y escaneálo para entrar al menú.</p>
+    @if (mesaAsignada(); as m) {
+      <p>El metre te asignó la mesa Nº {{ m.numero }}. Escaneá su código QR para entrar al menú.</p>
+    } @else {
+      <p>Buscá el código QR en la mesa que te asignó el metre y escaneálo para entrar al menú.</p>
+    }
   </div>
 
   @if (mensajeError()) {
@@ -27,6 +31,16 @@
       } @else {
         <span>ESCANEAR QR</span>
       }
+    </ion-button>
+
+    @if (esWeb && mesaAsignada()) {
+      <button class="escanear-btn-dev" type="button" [disabled]="cargando()" (click)="simular()">
+        Simular escaneo (solo navegador)
+      </button>
+    }
+
+    <ion-button class="escanear-btn-secundario" expand="block" fill="clear" type="button" (click)="volver()">
+      VOLVER
     </ion-button>
   </div>
 </div>

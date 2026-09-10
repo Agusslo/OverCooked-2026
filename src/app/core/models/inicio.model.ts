@@ -149,6 +149,9 @@ const PANEL_MOZO: PanelInicio = {
 
 // Punto 10 del PDF: el cliente registrado escanea el QR de la mesa
 // que le asignó el metre para entrar al menú.
+// El cliente y el invitado NO usan este panel: su /inicio es la sala de
+// espera (ver InicioPage + SalaEsperaComponent, punto 12). Se deja
+// definido por compatibilidad con panelPara().
 const PANEL_CLIENTE: PanelInicio = {
   rol: 'Cliente',
   titulo: 'Bienvenido',

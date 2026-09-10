@@ -1,0 +1,128 @@
+:host {
+  --bg-hero: #ee7a4f;
+  --bg-panel: #c45030;
+  --accent-light: #f9bfa0;
+  --gold: #f0c060;
+  --accent-dark: #a83820;
+  --white: #ffffff;
+
+  display: block;
+  min-height: 100dvh;
+  font-family: system-ui, sans-serif;
+}
+
+.entrada-screen {
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px 28px 32px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, var(--bg-hero) 0%, var(--bg-panel) 100%);
+}
+
+.entrada-cargando {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.entrada-spinner {
+  width: 52px;
+  height: 52px;
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.entrada-visual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 55vw;
+    max-width: 220px;
+    height: auto;
+    color: var(--white);
+    opacity: 0.95;
+  }
+}
+
+.entrada-copy {
+  text-align: center;
+  margin-bottom: 24px;
+
+  h1 {
+    color: var(--white);
+    font-size: 1.7rem;
+    font-weight: 800;
+    margin: 0 0 10px;
+  }
+
+  p {
+    color: var(--accent-light);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0 8px;
+  }
+}
+
+.entrada-error {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  text-align: center;
+
+  p {
+    color: #fff0f0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+.entrada-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.entrada-btn-principal {
+  --background: var(--gold);
+  --background-activated: #dcab54;
+  --color: var(--accent-dark);
+  --border-radius: 18px;
+  --box-shadow: none;
+  height: 64px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.entrada-btn-dev {
+  background: transparent;
+  border: 1px dashed var(--accent-light);
+  color: var(--accent-light);
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  &:disabled { opacity: 0.5; }
+}
+
+.entrada-btn-secundario {
+  --color: var(--accent-light);
+  font-size: 0.8rem;
+  font-weight: 600;
+}

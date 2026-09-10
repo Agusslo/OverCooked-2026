@@ -93,3 +93,21 @@
   letter-spacing: 0.03em;
   text-transform: uppercase;
 }
+
+.escanear-btn-dev {
+  background: transparent;
+  border: 1px dashed var(--accent-light);
+  color: var(--accent-light);
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  &:disabled { opacity: 0.5; }
+}
+
+.escanear-btn-secundario {
+  --color: var(--accent-light);
+  font-size: 0.8rem;
+  font-weight: 600;
+}

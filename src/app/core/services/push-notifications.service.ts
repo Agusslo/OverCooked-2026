@@ -86,11 +86,21 @@ export class PushNotificationsService {
       PushNotifications.addListener(
         'pushNotificationActionPerformed',
         (accion: ActionPerformed) => {
-          const tipo = accion.notification.data?.['tipo'];
+          const data = accion.notification.data ?? {};
+          const tipo = data['tipo'];
           if (tipo === 'mesa-asignada') {
-            this.router.navigateByUrl('/cliente/escanear-mesa');
+            this.router.navigateByUrl('/inicio');
           } else if (tipo === 'lista-espera') {
             this.router.navigateByUrl('/metre/lista-espera');
+          } else if (tipo === 'pedido-nuevo') {
+            // Punto 12: el mozo recibe el aviso de un pedido nuevo.
+            this.router.navigateByUrl('/mozo/consultas');
+          } else if (tipo === 'pedido-confirmado' || tipo === 'pedido-rechazado') {
+            // Puntos 13/14: el cliente vuelve al estado de su pedido.
+            const pedidoId = data['pedidoId'];
+            this.router.navigateByUrl(
+              pedidoId ? `/cliente/estado-pedido/${pedidoId}` : '/inicio',
+            );
           } else {
             this.router.navigateByUrl('/admin/clientes-pendientes');
           }

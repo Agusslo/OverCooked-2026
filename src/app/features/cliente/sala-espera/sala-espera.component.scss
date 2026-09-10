@@ -1,0 +1,225 @@
+:host {
+  --hero: #ee7a4f;
+  --panel: #a83820;
+  --panel-2: #c45030;
+  --gold: #f0c060;
+  --texto: #fef5ee;
+  --texto-suave: #f9bfa0;
+
+  display: block;
+  min-height: 100dvh;
+  font-family: system-ui, sans-serif;
+}
+
+.sala-shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--hero);
+  color: var(--texto);
+}
+
+.sala-cuerpo {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  gap: 18px;
+}
+
+.sala-estado {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--texto-suave);
+}
+
+.sala-spinner {
+  width: 46px;
+  height: 46px;
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.sala-accion {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sala-boton {
+  width: 100%;
+  padding: 20px 16px;
+  border: none;
+  border-radius: 18px;
+  background: var(--gold);
+  color: var(--panel);
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-top: 2rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.2;
+
+  &:disabled {
+    background: #d8a24e;
+    color: #7a3517;
+  }
+
+  &--activo:active {
+    transform: scale(0.985);
+  }
+}
+
+.sala-aviso {
+  margin: 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+.sala-error {
+  margin: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffe0e0;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 12px;
+  border-radius: 12px;
+}
+
+/* ---------- Card del pedido en curso (mockup punto 12) ---------- */
+.sala-pedido-card {
+  flex: none;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  text-align: left;
+  background: var(--panel-2);
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  color: var(--texto);
+
+  &:active { transform: scale(0.99); }
+}
+
+.spc-foto {
+  width: 108px;
+  flex: none;
+  align-self: stretch;
+  position: relative;
+  background: #26150d;
+
+  // La imagen va absoluta para que su alto natural no estire la card:
+  // ocupa todo el alto que define la columna de info y recorta con cover.
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.spc-info {
+  flex: 1;
+  min-width: 0;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+
+  strong { font-size: 16px; font-weight: 800; letter-spacing: 0.04em; }
+}
+
+.spc-items {
+  font-size: 12.5px;
+  color: var(--texto-suave);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.spc-tiempo {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+
+.sala-juegos {
+  flex: 1;
+  min-height: 0;
+  background: var(--panel-2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+
+  span {
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--texto);
+  }
+}
+
+.sala-resenias {
+  flex: 1;
+  min-height: 0;
+  background: var(--panel-2);
+  border-radius: 20px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sala-resenias__titulo {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.sala-resenias__proximamente {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  color: var(--texto-suave);
+  padding: 0 12px;
+
+  svg {
+    width: 44px;
+    height: 44px;
+    color: var(--gold);
+  }
+
+  span {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+}

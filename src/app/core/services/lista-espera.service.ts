@@ -121,6 +121,7 @@ export class ListaEsperaService {
     const { error: errorAsignacion } = await client.from('asignaciones_mesa').insert({
       mesa_id: mesaId,
       cliente_id: espera.cliente_id,
+      cliente_anonimo_id: espera.cliente_anonimo_id,
       lista_espera_id: espera.id,
     });
 
