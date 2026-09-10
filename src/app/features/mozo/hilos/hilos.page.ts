@@ -44,12 +44,12 @@ export class HilosPage implements OnInit, OnDestroy {
       this.mesa.set(mesa);
       await this.refrescarHilos(mesa.id);
 
-      // Si llega un mensaje nuevo de esta mesa mientras el mozo está
-      // mirando esta lista, la refrescamos sola.
-      this.canal = this.mensajesService.escucharMensajesDeClientes((mensajeNuevo) => {
-        if (mensajeNuevo.mesa_id === mesa.id) {
-          void this.refrescarHilos(mesa.id);
-        }
+      // Cualquier mensaje nuevo de esta mesa (cliente O mozo) dispara
+      // un recálculo completo: así la vista previa y el puntito
+      // siempre reflejan el último estado real, sin importar quién
+      // escribió ni desde qué pantalla.
+      this.canal = this.mensajesService.escucharMensajesDeMesa(mesa.id, () => {
+        void this.refrescarHilos(mesa.id);
       });
     } catch (error) {
       await this.dispararError(

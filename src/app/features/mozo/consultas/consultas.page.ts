@@ -49,12 +49,10 @@ export class ConsultasPage implements OnInit, OnDestroy {
       // NUEVO: apenas se sabe qué mesas hay, nos suscribimos a
       // cualquier mensaje nuevo de cliente para prender el puntito
       // en vivo, sin depender de recargar la pantalla.
-      this.canal = this.mensajesService.escucharMensajesDeClientes((mensaje) => {
-        // Sólo nos importa si la mesa de ese mensaje es una de las
-        // que estamos mostrando ahora mismo (mesas ocupadas).
+      this.canal = this.mensajesService.escucharTodosLosMensajes((mensaje) => {
         const perteneceALaLista = this.mesas().some((m) => m.id === mensaje.mesa_id);
         if (perteneceALaLista) {
-          this.mesasConNovedad.update((set) => new Set(set).add(mensaje.mesa_id));
+          void this.recalcularNovedades();
         }
       });
     } catch (error) {
@@ -63,6 +61,17 @@ export class ConsultasPage implements OnInit, OnDestroy {
       );
     } finally {
       this.cargando.set(false);
+    }
+  }
+
+  private async recalcularNovedades(): Promise<void> {
+    try {
+      const novedades = await this.mensajesService.listarMesasConMensajeNuevo(
+        this.mesas().map((m) => m.id),
+      );
+      this.mesasConNovedad.set(novedades);
+    } catch (error) {
+      console.warn('No se pudo recalcular las novedades:', error);
     }
   }
 

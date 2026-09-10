@@ -185,7 +185,6 @@ export class MesasService {
     return (data?.['mesas'] as Mesa | undefined) ?? null;
   }
 
-  // Cambia SOLO el estado (disponibilidad) de una mesa ya creada.
   async actualizarEstado(id: string, estado: EstadoMesa): Promise<void> {
     const client = this.supabaseService.getClient();
 
@@ -196,6 +195,15 @@ export class MesasService {
 
     if (error) {
       throw new Error('No se pudo actualizar la disponibilidad de la mesa.');
+    }
+
+    // Al liberar la mesa termina el ciclo de esa ocupación: se borran
+    // todas las conversaciones que tuvo (todos los hilos), así el
+    // próximo comensal que se siente ahí arranca de cero, sin ver
+    // charlas de gente que ya se fue.
+    if (estado === 'libre') {
+      await client.from('mensajes_mesa').delete().eq('mesa_id', id);
+      await client.from('mesas_chat_leido').delete().eq('mesa_id', id);
     }
   }
 }

@@ -66,10 +66,16 @@ export class MensajesService {
     return data as MensajeMesa;
   }
 
-  // Escucha SOLO los mensajes de un hilo puntual. El filtro de
-  // Realtime sólo admite una condición por canal, así que filtramos
-  // por mesa acá y descartamos en el callback los mensajes que sean
-  // de un hilo distinto al que nos interesa.
+  // Sufijo random para que dos canales nunca choquen de nombre, ni
+  // siquiera si el anterior todavía no terminó de cerrarse (pasa al
+  // navegar rápido entre pantallas). Como siempre guardamos la
+  // referencia al canal en la variable 'canal' del componente, nunca
+  // necesitamos encontrarlo por nombre después — así que un nombre
+  // único por cada suscripción no tiene ninguna desventaja.
+  private nombreCanalUnico(base: string): string {
+    return `${base}-${crypto.randomUUID()}`;
+  }
+
   escucharHilo(
     mesaId: string,
     hiloClienteId: string,
@@ -78,7 +84,7 @@ export class MensajesService {
     const client = this.supabaseService.getClient();
 
     return client
-      .channel(`mensajes-hilo-${mesaId}-${hiloClienteId}`)
+      .channel(this.nombreCanalUnico(`mensajes-hilo-${mesaId}-${hiloClienteId}`))
       .on(
         'postgres_changes',
         {
@@ -97,20 +103,41 @@ export class MensajesService {
       .subscribe();
   }
 
-  // Para el listado del mozo: cualquier mensaje nuevo de cliente en
-  // CUALQUIER mesa/hilo, para prender los avisos en vivo.
-  escucharMensajesDeClientes(alRecibir: (mensaje: MensajeMesa) => void): RealtimeChannel {
+  // Para "Consultas de mesas" (listado general): cualquier mensaje
+  // nuevo, sin importar mesa ni autor. Con eso alcanza para saber que
+  // algo cambió y hay que recalcular qué mesas tienen novedad — el
+  // cálculo en sí lo hace listarMesasConMensajeNuevo, no este método.
+  escucharTodosLosMensajes(alRecibir: (mensaje: MensajeMesa) => void): RealtimeChannel {
     const client = this.supabaseService.getClient();
 
     return client
-      .channel('mensajes-mesa-clientes')
+      .channel(this.nombreCanalUnico('mensajes-todos'))
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'mensajes_mesa' },
+        (payload) => alRecibir(payload.new as MensajeMesa),
+      )
+      .subscribe();
+  }
+
+  // Para "Conversaciones abiertas" de una mesa puntual: cualquier
+  // mensaje de ESA mesa, sea de cliente o de mozo, dispara un
+  // recálculo completo de la lista de hilos (vista previa + puntito).
+  escucharMensajesDeMesa(
+    mesaId: string,
+    alRecibir: (mensaje: MensajeMesa) => void,
+  ): RealtimeChannel {
+    const client = this.supabaseService.getClient();
+
+    return client
+      .channel(this.nombreCanalUnico(`mensajes-mesa-${mesaId}`))
       .on(
         'postgres_changes',
         {
           event: 'INSERT',
           schema: 'public',
           table: 'mensajes_mesa',
-          filter: 'autor_perfil=neq.mozo',
+          filter: `mesa_id=eq.${mesaId}`,
         },
         (payload) => alRecibir(payload.new as MensajeMesa),
       )
@@ -134,9 +161,6 @@ export class MensajesService {
     }
   }
 
-  // Para la pantalla intermedia del mozo: lista, para una mesa
-  // puntual, todas las conversaciones (hilos) que tiene abiertas, con
-  // el nombre de cada cliente, su último mensaje y si hay novedad.
   async listarHilosDeMesa(mesaId: string): Promise<HiloActivo[]> {
     const client = this.supabaseService.getClient();
 
@@ -161,36 +185,57 @@ export class MensajesService {
       (leidos ?? []).map((f) => [f.hilo_cliente_id, f.ultima_lectura]),
     );
 
-    // Venimos ordenados de más nuevo a más viejo, así que el primer
-    // mensaje que aparece por cada hilo ya es el más reciente.
-    const porHilo = new Map<string, HiloActivo>();
+    // Recorremos una sola vez (vienen ordenados de más nuevo a más
+    // viejo). Por cada hilo guardamos: el mensaje más reciente en
+    // general (para la vista previa, sea de quien sea) Y el mensaje
+    // de CLIENTE más reciente por separado (para decidir la novedad
+    // — la propia respuesta del mozo no cuenta como "mensaje nuevo").
+    const previewPorHilo = new Map<string, { nombre: string; contenido: string; fecha: string }>();
+    const ultimoClientePorHilo = new Map<string, string>();
+
     for (const fila of mensajes ?? []) {
-      if (porHilo.has(fila.hilo_cliente_id)) continue;
+      if (!previewPorHilo.has(fila.hilo_cliente_id)) {
+        previewPorHilo.set(fila.hilo_cliente_id, {
+          nombre: fila.autor_nombre,
+          contenido: fila.contenido,
+          fecha: fila.created_at,
+        });
+      }
+      if (fila.autor_perfil !== 'mozo' && !ultimoClientePorHilo.has(fila.hilo_cliente_id)) {
+        ultimoClientePorHilo.set(fila.hilo_cliente_id, fila.created_at);
+      }
+    }
 
-      // El nombre a mostrar es el del CLIENTE dueño del hilo, aunque
-      // el último mensaje lo haya escrito el mozo.
-      const autorCliente = (mensajes ?? []).find(
-        (m) => m.hilo_cliente_id === fila.hilo_cliente_id && m.autor_perfil !== 'mozo',
-      );
+    // El nombre a mostrar siempre es el del cliente dueño del hilo,
+    // aunque el último mensaje en pantalla lo haya escrito el mozo.
+    const nombreClientePorHilo = new Map<string, string>();
+    for (const fila of mensajes ?? []) {
+      if (fila.autor_perfil !== 'mozo' && !nombreClientePorHilo.has(fila.hilo_cliente_id)) {
+        nombreClientePorHilo.set(fila.hilo_cliente_id, fila.autor_nombre);
+      }
+    }
 
-      const fechaLectura = lecturaPorHilo.get(fila.hilo_cliente_id);
+    const resultado: HiloActivo[] = [];
+    for (const [hiloClienteId, preview] of previewPorHilo) {
+      const fechaLectura = lecturaPorHilo.get(hiloClienteId);
+      const fechaUltimoCliente = ultimoClientePorHilo.get(hiloClienteId);
 
-      porHilo.set(fila.hilo_cliente_id, {
-        hiloClienteId: fila.hilo_cliente_id,
-        clienteNombre: autorCliente?.autor_nombre ?? fila.autor_nombre,
-        ultimoMensaje: fila.contenido,
-        ultimaFecha: fila.created_at,
-        tieneNovedad: !fechaLectura || fila.created_at > fechaLectura,
+      resultado.push({
+        hiloClienteId,
+        clienteNombre: nombreClientePorHilo.get(hiloClienteId) ?? preview.nombre,
+        ultimoMensaje: preview.contenido,
+        ultimaFecha: preview.fecha,
+        tieneNovedad:
+          !!fechaUltimoCliente &&
+          (!fechaLectura || new Date(fechaUltimoCliente).getTime() > new Date(fechaLectura).getTime()),
       });
     }
 
-    return Array.from(porHilo.values()).sort(
+    return resultado.sort(
       (a, b) => new Date(b.ultimaFecha).getTime() - new Date(a.ultimaFecha).getTime(),
     );
   }
 
-  // Para el listado principal de mesas: una mesa tiene novedad si
-  // ALGUNO de sus hilos tiene un mensaje de cliente sin leer.
   async listarMesasConMensajeNuevo(mesaIds: string[]): Promise<Set<string>> {
     if (mesaIds.length === 0) {
       return new Set();
@@ -232,7 +277,7 @@ export class MensajesService {
     for (const [clave, fechaMensaje] of ultimoPorHilo) {
       const [mesaId] = clave.split('|');
       const fechaLectura = lecturaPorHilo.get(clave);
-      if (!fechaLectura || fechaMensaje > fechaLectura) {
+      if (!fechaLectura || new Date(fechaMensaje).getTime() > new Date(fechaLectura).getTime()) {
         mesasConNovedad.add(mesaId);
       }
     }
