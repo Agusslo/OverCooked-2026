@@ -114,6 +114,9 @@ export class PushNotificationsService {
             } else {
               this.router.navigateByUrl(`/mozo/hilos/${numeroMesa}`);
             }
+          } else if (tipo === 'respuesta-mozo' && numeroMesa) {
+            // Punto 11: el mozo respondió la consulta del cliente.
+            this.router.navigateByUrl(`/cliente/chat/${numeroMesa}`);
           } else {
             this.router.navigateByUrl('/admin/clientes-pendientes');
           }

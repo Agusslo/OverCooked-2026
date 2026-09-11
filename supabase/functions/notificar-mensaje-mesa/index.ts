@@ -4,9 +4,17 @@
 // manda un mensaje en el chat de su mesa, todos los mozos tienen
 // que enterarse por push notification, incluso con la app cerrada.
 //
+// También cubre la mitad final de ese mismo punto: cuando un MOZO
+// responde esa consulta, el cliente dueño del hilo tiene que
+// enterarse por push. Los clientes anónimos nunca tienen push
+// registrado (ver PERFILES_NOTIFICABLES en inicio.page.ts, que
+// excluye 'anonimo'), así que para ellos esto no manda nada — el
+// aviso les sigue llegando por Realtime en pantalla.
+//
 // Esta función NO la llama el front — la dispara un Database
 // Webhook de Supabase (Database → Webhooks) sobre INSERT en la
-// tabla 'mensajes_mesa'.
+// tabla 'mensajes_mesa' (el mismo webhook para ambas direcciones:
+// el autor puede ser cliente/anonimo o mozo, y acá se distingue).
 //
 // Usa FCM HTTP v1 (OAuth2 con service account), igual que
 // notificar-mesa-asignada y notificar-cliente-pendiente.
@@ -64,11 +72,8 @@ serve(async (req) => {
   const mensaje = payload.record;
   console.log('[notificar-mensaje-mesa] payload recibido:', JSON.stringify(payload));
 
-  // Si el que escribió fue un mozo, no tiene sentido notificar a los
-  // mozos: es la respuesta, no una consulta nueva. Sólo avisamos
-  // cuando el mensaje viene del lado del cliente.
-  if (!mensaje || mensaje.autor_perfil === 'mozo') {
-    console.log('[notificar-mensaje-mesa] omitido: el mensaje no es de un cliente.');
+  if (!mensaje) {
+    console.log('[notificar-mensaje-mesa] omitido: sin registro.');
     return json({ ok: true, omitido: true }, 200);
   }
 
@@ -90,9 +95,61 @@ serve(async (req) => {
     return json({ error: 'No se pudo obtener la mesa del mensaje.' }, 500);
   }
 
-  // A diferencia de notificar-mesa-asignada (que le avisa a UN
-  // cliente puntual), acá le avisamos a TODOS los mozos: primero
-  // traemos sus ids, y con eso sus tokens de push.
+  // El mozo respondió: le avisamos sólo al cliente dueño del hilo (no
+  // a los demás mozos, que ya vieron la respuesta en su propia pantalla).
+  if (mensaje.autor_perfil === 'mozo') {
+    const { data: filas, error: errorTokens } = await supabase
+      .from('push_tokens')
+      .select('token')
+      .eq('usuario_id', mensaje.hilo_cliente_id);
+
+    if (errorTokens) {
+      console.log('[notificar-mensaje-mesa] error consultando push_tokens del cliente:', errorTokens.message);
+      return json({ error: 'No se pudieron obtener los tokens.', detalle: errorTokens.message }, 500);
+    }
+
+    const tokens = (filas ?? []).map((fila: { token: string }) => fila.token).filter(Boolean);
+
+    if (tokens.length === 0) {
+      // Esperable si el hilo es de un cliente anónimo (nunca registra
+      // push) o si el cliente registrado no tiene el dispositivo dado
+      // de alta todavía.
+      console.log('[notificar-mensaje-mesa] el cliente no tiene ningún dispositivo registrado.');
+      return json({ ok: true, enviados: 0 }, 200);
+    }
+
+    let accessToken: string;
+    try {
+      accessToken = await obtenerAccessToken();
+    } catch (err) {
+      return json({ error: 'No se pudo autenticar contra Firebase.', detalle: String(err) }, 500);
+    }
+
+    const resultados = await Promise.allSettled(
+      tokens.map((token: string) =>
+        enviarPush(accessToken, token, {
+          titulo: `Mesa ${mesa.numero} · ${mensaje.autor_nombre}`,
+          cuerpo: mensaje.contenido,
+          data: {
+            tipo: 'respuesta-mozo',
+            numeroMesa: String(mesa.numero),
+          },
+        }),
+      ),
+    );
+
+    const enviados = resultados.filter((r) => r.status === 'fulfilled').length;
+    const fallidos = resultados
+      .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
+      .map((r) => String(r.reason));
+
+    console.log('[notificar-mensaje-mesa] resultado envío FCM (a cliente):', JSON.stringify({ enviados, fallidos }));
+
+    return json({ ok: true, enviados, fallidos: fallidos.length, detalleFallidos: fallidos }, 200);
+  }
+
+  // El que escribió fue un cliente (registrado o anónimo): le avisamos
+  // a TODOS los mozos. Primero traemos sus ids, y con eso sus tokens.
   const { data: mozos, error: errorMozos } = await supabase
     .from('usuarios')
     .select('id')
@@ -136,7 +193,15 @@ serve(async (req) => {
 
   const resultados = await Promise.allSettled(
     tokens.map((token: string) =>
-      enviarPush(accessToken, token, mesa.numero, mensaje.hilo_cliente_id, mensaje.autor_nombre, mensaje.contenido),
+      enviarPush(accessToken, token, {
+        titulo: `Mesa ${mesa.numero} · ${mensaje.autor_nombre}`,
+        cuerpo: mensaje.contenido,
+        data: {
+          tipo: 'mensaje-mesa',
+          numeroMesa: String(mesa.numero),
+          hiloClienteId: mensaje.hilo_cliente_id,
+        },
+      }),
     ),
   );
 
@@ -153,10 +218,7 @@ serve(async (req) => {
 async function enviarPush(
   accessToken: string,
   token: string,
-  numeroMesa: number,
-  hiloClienteId: string,
-  autorNombre: string,
-  contenido: string,
+  opciones: { titulo: string; cuerpo: string; data: Record<string, string> },
 ): Promise<void> {
   const resp = await fetch(
     `https://fcm.googleapis.com/v1/projects/${FCM_PROJECT_ID}/messages:send`,
@@ -170,14 +232,10 @@ async function enviarPush(
         message: {
           token,
           notification: {
-            title: `Mesa ${numeroMesa} · ${autorNombre}`,
-            body: contenido,
+            title: opciones.titulo,
+            body: opciones.cuerpo,
           },
-          data: {
-            tipo: 'mensaje-mesa',
-            numeroMesa: String(numeroMesa),
-            hiloClienteId,
-          },
+          data: opciones.data,
         },
       }),
     },
