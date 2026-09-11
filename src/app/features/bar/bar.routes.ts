@@ -9,8 +9,6 @@ export const barRoutes: Routes = [
     canActivate: [authGuard],
     data: { perfiles: ['cantinero'] },
   },
-  // Punto 14: pedidos confirmados por el mozo, sólo los items de sector
-  // 'bar', agrupados por pedido.
   {
     path: 'pedidos',
     loadComponent: () =>
