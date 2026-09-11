@@ -8,4 +8,13 @@ export const cocinaRoutes: Routes = [
     canActivate: [authGuard],
     data: { perfiles: ['cocinero', 'dueño'] },
   },
+  // Punto 14: pedidos confirmados por el mozo, sólo los items de sector
+  // 'cocina', agrupados por pedido.
+  {
+    path: 'pedidos',
+    loadComponent: () =>
+      import('./pedidos-cocina/pedidos-cocina.page').then((m) => m.PedidosCocinaPage),
+    canActivate: [authGuard],
+    data: { perfiles: ['cocinero', 'dueño'] },
+  },
 ];

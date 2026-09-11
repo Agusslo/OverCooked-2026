@@ -370,6 +370,20 @@
   span { font-size: 12px; color: var(--texto-suave); }
 }
 
+.vp-banner-rechazo {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #5a1f1f;
+  color: #ffd9d9;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 13px;
+
+  strong { font-size: 14px; }
+}
+
 .vp-lista {
   flex: 1;
   min-height: 0;

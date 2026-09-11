@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { PedidosService } from '../../../core/services/pedidos.service';
@@ -17,6 +17,8 @@ import {
   Pedido,
   EstadoPedido,
   etiquetaEstadoPedido,
+  ESTADO_PEDIDO_INICIAL,
+  ESTADO_PEDIDO_RECHAZADO,
 } from '../../../core/models/pedido.model';
 import { environment } from '../../../../environments/environment';
 import { BurbujaMozoComponent } from '../../chat/burbuja-mozo/burbuja-mozo.component';
@@ -34,6 +36,7 @@ import { BurbujaMozoComponent } from '../../chat/burbuja-mozo/burbuja-mozo.compo
 })
 export class EstadoPedidoPage implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private pedidosService = inject(PedidosService);
   private mesasService = inject(MesasService);
   private authService = inject(AuthService);
@@ -66,6 +69,17 @@ export class EstadoPedidoPage implements OnInit, OnDestroy {
   etiquetaEstado = computed(() => {
     const estado = this.pedido()?.estado;
     return estado ? etiquetaEstadoPedido(estado) : '';
+  });
+
+  // Punto 13: el mozo rechazó el pedido, hay que ofrecerle al cliente
+  // modificarlo (no puede quedarse esperando sin hacer nada).
+  esRechazado = computed(() => this.pedido()?.estado === ESTADO_PEDIDO_RECHAZADO);
+
+  // Punto 14: el mozo confirmó el pedido (o ya avanzó más), el cliente
+  // puede entrar a la sección de juegos.
+  puedeAccederJuegos = computed(() => {
+    const estado = this.pedido()?.estado;
+    return !!estado && estado !== ESTADO_PEDIDO_INICIAL && estado !== ESTADO_PEDIDO_RECHAZADO;
   });
 
   // "Tiempo total estimado de realización del pedido completo" (punto 12).
@@ -152,5 +166,12 @@ export class EstadoPedidoPage implements OnInit, OnDestroy {
   fotoActual(): string {
     const fotos = this.fotos();
     return fotos[this.indiceFoto() % (fotos.length || 1)] ?? '';
+  }
+
+  // Punto 13: el cliente va a modificar el pedido rechazado; el menú
+  // detecta el pedido en estado 'rechazado' y precarga el carrito.
+  modificarPedido(): void {
+    const numero = this.numeroMesa();
+    if (numero) this.router.navigate(['/cliente/menu', numero]);
   }
 }

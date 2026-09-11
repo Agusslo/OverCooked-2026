@@ -2,6 +2,17 @@ import { Routes } from '@angular/router';
 import { authGuard } from '../../core/guards/auth.guard';
 
 export const mozoRoutes: Routes = [
+  // Punto 13: pedidos esperando confirmación del mozo (puede rechazarlos
+  // con un motivo para que el cliente los modifique).
+  {
+    path: 'pedidos-pendientes',
+    loadComponent: () =>
+      import('./pedidos-pendientes/pedidos-pendientes.page').then(
+        (m) => m.PedidosPendientesPage,
+      ),
+    canActivate: [authGuard],
+    data: { perfiles: ['mozo'] },
+  },
   {
     path: 'consultas',
     loadComponent: () =>

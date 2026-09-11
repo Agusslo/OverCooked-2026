@@ -167,6 +167,24 @@
   line-height: 1.35;
 }
 
+.ep-motivo-rechazo {
+  margin: 0;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--texto-suave);
+}
+
+.ep-btn-modificar {
+  align-self: flex-start;
+  background: var(--gold);
+  color: var(--panel);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 800;
+  font-size: 14px;
+}
+
 .ep-items {
   display: flex;
   flex-direction: column;

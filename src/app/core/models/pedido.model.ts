@@ -42,9 +42,26 @@ export interface Pedido {
   estado: EstadoPedido;
   total: number;
   created_at: string;
+  // Punto 13: motivo que carga el mozo al rechazar el pedido. Sólo
+  // tiene valor mientras estado === 'rechazado'.
+  motivo_rechazo?: string | null;
   // Se completa cuando se trae el pedido con su detalle.
   items?: PedidoItem[];
 }
+
+// Punto 13: el mozo rechaza el pedido para que el cliente lo modifique.
+export const ESTADO_PEDIDO_RECHAZADO = 'rechazado';
+
+// Punto 14: el mozo confirma el pedido. A partir de acá queda derivado
+// a cocina/bar (cada item ya tiene su 'sector' guardado desde que se
+// creó, punto 12) y el cliente puede acceder a los juegos.
+export const ESTADO_PEDIDO_CONFIRMADO = 'confirmado';
+
+// Estados en los que un pedido confirmado sigue "vivo" para el sector
+// (cocina/bar) que lo tiene que preparar: ya fue derivado pero todavía
+// no se entregó. Point 14 sólo necesita listar acá; el detalle de que
+// cocina/bar cambien el estado de cada item es de un punto posterior.
+export const ESTADOS_PEDIDO_EN_SECTOR = ['confirmado', 'en_preparacion', 'listo'];
 
 // Estados en los que el pedido ya está cerrado y la mesa quedó libre.
 export const ESTADOS_PEDIDO_TERMINADOS = ['pagado', 'cancelado'];

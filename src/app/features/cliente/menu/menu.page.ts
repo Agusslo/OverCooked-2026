@@ -14,7 +14,7 @@ import { ProductosService } from '../../../core/services/productos.service';
 import { PedidosService, LineaCarrito } from '../../../core/services/pedidos.service';
 import { Mesa } from '../../../core/models/mesa.model';
 import { Producto } from '../../../core/models/producto.model';
-import { Pedido } from '../../../core/models/pedido.model';
+import { Pedido, ESTADO_PEDIDO_RECHAZADO } from '../../../core/models/pedido.model';
 import { environment } from '../../../../environments/environment';
 import { BurbujaMozoComponent } from '../../chat/burbuja-mozo/burbuja-mozo.component';
 
@@ -49,6 +49,11 @@ export class MenuPage implements OnInit {
   mensajeError = signal('');
   confirmando = signal(false);
   pedidoEnCurso = signal<Pedido | null>(null);
+  // Punto 13: true cuando el pedido en curso fue rechazado por el mozo y
+  // el cliente lo está modificando para reenviarlo (en vez de armar uno
+  // nuevo desde cero).
+  modoEdicion = signal(false);
+  motivoRechazo = signal('');
 
   // 0 = vista menú, 1 = vista "Mi Pedido".
   vista = signal<0 | 1>(0);
@@ -148,12 +153,28 @@ export class MenuPage implements OnInit {
         return;
       }
 
-      this.pedidoEnCurso.set(
-        await this.pedidosService.obtenerPedidoActivo(mesa.id, {
-          clienteId: esAnonimo ? undefined : usuario.id,
-          clienteAnonimoId: esAnonimo ? usuario.id : undefined,
-        }),
-      );
+      const pedidoActivo = await this.pedidosService.obtenerPedidoActivo(mesa.id, {
+        clienteId: esAnonimo ? undefined : usuario.id,
+        clienteAnonimoId: esAnonimo ? usuario.id : undefined,
+      });
+      this.pedidoEnCurso.set(pedidoActivo);
+
+      // Punto 13: si el mozo rechazó el pedido, se precarga el carrito
+      // con lo que ya tenía para que el cliente lo modifique (agregar,
+      // quitar o cambiar cantidades) en vez de arrancar de cero.
+      if (pedidoActivo?.estado === ESTADO_PEDIDO_RECHAZADO) {
+        const pedidoConItems = await this.pedidosService.obtenerPedidoConItems(
+          pedidoActivo.id,
+        );
+        this.motivoRechazo.set(pedidoConItems.motivo_rechazo ?? '');
+        this.carrito.set(
+          Object.fromEntries(
+            (pedidoConItems.items ?? []).map((i) => [i.producto_id, i.cantidad]),
+          ),
+        );
+        this.modoEdicion.set(true);
+        this.vista.set(1);
+      }
 
       this.mesa.set(mesa);
       this.productos.set(productos);
@@ -311,7 +332,9 @@ export class MenuPage implements OnInit {
     if (!mesa || !usuario || this.confirmando()) return;
 
     const enCurso = this.pedidoEnCurso();
-    if (enCurso) {
+    // Punto 13: si el pedido en curso NO es el que se está reenviando
+    // (rechazado), no se deja arrancar uno nuevo para la misma mesa.
+    if (enCurso && !this.modoEdicion()) {
       await this.dispararError('Ya tenés un pedido en curso para esta mesa.');
       this.router.navigate(['/cliente/estado-pedido', enCurso.id]);
       return;
@@ -332,12 +355,16 @@ export class MenuPage implements OnInit {
     }));
 
     try {
-      await this.pedidosService.crearPedido({
-        mesaId: mesa.id,
-        clienteId: esAnonimo ? undefined : usuario.id,
-        clienteAnonimoId: esAnonimo ? usuario.id : undefined,
-        lineas,
-      });
+      if (this.modoEdicion() && enCurso) {
+        await this.pedidosService.reenviarPedido(enCurso.id, lineas);
+      } else {
+        await this.pedidosService.crearPedido({
+          mesaId: mesa.id,
+          clienteId: esAnonimo ? undefined : usuario.id,
+          clienteAnonimoId: esAnonimo ? usuario.id : undefined,
+          lineas,
+        });
+      }
       await Haptics.notification({ type: NotificationType.Success }).catch(() => {});
       // Al confirmar, el cliente vuelve al inicio, que ahora muestra la
       // card del pedido en curso + los juegos (mockup punto 12).

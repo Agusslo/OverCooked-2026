@@ -102,6 +102,11 @@ export class PushNotificationsService {
             this.router.navigateByUrl(
               pedidoId ? `/cliente/estado-pedido/${pedidoId}` : '/inicio',
             );
+          } else if (tipo === 'pedido-confirmado-sector') {
+            // Punto 14: a cocina/bar les llega el pedido derivado a su
+            // propio sector.
+            const sector = data['sector'];
+            this.router.navigateByUrl(sector === 'bar' ? '/bar/pedidos' : '/cocina/pedidos');
           } else if (tipo === 'mensaje-mesa' && numeroMesa) {
             const hiloClienteId = data['hiloClienteId'];
             if (hiloClienteId) {

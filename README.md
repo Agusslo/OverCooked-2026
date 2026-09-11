@@ -103,7 +103,7 @@ Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios**
 
 **Responsable:** Fernández Waisberg, Gabriel (`feature/dev-gamma`)
 
-Cada notificacion segun el caso que es necesario. Cuando un cliente quiere registrarse le llega la notificación al dueño/supervisor
+Cada notificacion segun el caso que es necesario. Cuando un cliente quiere registrarse le llega la notificación al dueño/supervisor y cuando el cliente registrado/anónimo pide una mesa al metre.
 
 | Tipo | Se dispara desde | Punto TFI |
 | :--- | :--- | :---: |

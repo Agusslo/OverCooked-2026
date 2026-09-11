@@ -41,6 +41,15 @@
           <span class="ep-badge ep-badge--{{ p.estado }}">{{ p.estado }}</span>
           <p class="ep-mensaje">{{ etiquetaEstado() }}</p>
 
+          @if (esRechazado()) {
+            @if (p.motivo_rechazo) {
+              <p class="ep-motivo-rechazo">"{{ p.motivo_rechazo }}"</p>
+            }
+            <button type="button" class="ep-btn-modificar" (click)="modificarPedido()">
+              Modificar pedido
+            </button>
+          }
+
           <div class="ep-items">
             @for (item of (p.items ?? []); track item.id) {
               <div class="ep-item">
@@ -57,6 +66,22 @@
           </div>
         </div>
       </article>
+
+      @if (puedeAccederJuegos()) {
+        <section class="ep-juegos">
+          <h2>Juegos</h2>
+          <div class="ep-juegos__proximamente">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="6" x2="10" y1="12" y2="12" />
+              <line x1="8" x2="8" y1="10" y2="14" />
+              <line x1="15" x2="15.01" y1="13" y2="13" />
+              <line x1="18" x2="18.01" y1="11" y2="11" />
+              <rect width="20" height="12" x="2" y="6" rx="6" />
+            </svg>
+            <span>Próximamente vas a poder jugar acá para ganar un descuento en tu cuenta.</span>
+          </div>
+        </section>
+      }
     }
   </main>
 

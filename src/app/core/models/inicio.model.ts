@@ -22,7 +22,8 @@ export interface AccionInicio {
     | 'lista-espera'
     | 'plato'
     | 'bebida'
-    | 'chat';
+    | 'chat'
+    | 'pedido';
 }
 
 export interface PanelInicio {
@@ -96,6 +97,13 @@ const PANEL_COCINERO: PanelInicio = {
       ruta: '/cocina/alta-plato',
       icono: 'plato',
     },
+    // Punto 14: pedidos que el mozo confirmó, derivados a cocina.
+    {
+      titulo: 'Pedidos de cocina',
+      detalle: 'Ver los platos que hay que preparar',
+      ruta: '/cocina/pedidos',
+      icono: 'pedido',
+    },
   ],
 };
 
@@ -109,6 +117,13 @@ const PANEL_CANTINERO: PanelInicio = {
       detalle: 'Agregar una bebida a la carta',
       ruta: '/bar/alta-bebida',
       icono: 'bebida',
+    },
+    // Punto 14: pedidos que el mozo confirmó, derivados a bar.
+    {
+      titulo: 'Pedidos de bar',
+      detalle: 'Ver las bebidas que hay que preparar',
+      ruta: '/bar/pedidos',
+      icono: 'pedido',
     },
   ],
 };
@@ -136,8 +151,14 @@ const PANEL_METRE: PanelInicio = {
 const PANEL_MOZO: PanelInicio = {
   rol: 'Mozo',
   titulo: 'Panel del mozo',
-  subtitulo: 'Consultas de las mesas',
+  subtitulo: 'Pedidos y consultas de las mesas',
   acciones: [
+    {
+      titulo: 'Pedidos pendientes',
+      detalle: 'Confirmar o rechazar pedidos de las mesas',
+      ruta: '/mozo/pedidos-pendientes',
+      icono: 'pedido',
+    },
     {
       titulo: 'Consultas de mesas',
       detalle: 'Ver y responder a los clientes',

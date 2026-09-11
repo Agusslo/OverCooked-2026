@@ -110,6 +110,16 @@
             <span>{{ restaurante }} · Mesa {{ mesa()?.numero }}</span>
           </div>
 
+          @if (modoEdicion()) {
+            <div class="vp-banner-rechazo">
+              <strong>El mozo rechazó tu pedido</strong>
+              @if (motivoRechazo()) {
+                <span>{{ motivoRechazo() }}</span>
+              }
+              <span>Modificalo y volvé a enviarlo.</span>
+            </div>
+          }
+
           <div class="vp-lista">
             @if (lineasCarrito().length === 0) {
               <p class="vp-vacio">Todavía no agregaste nada. Volvé al menú, elegí la cantidad y tocá "Agregar".</p>
@@ -143,7 +153,11 @@
             [disabled]="cantidadTotal() === 0 || confirmando()"
             (click)="confirmar()"
           >
-            {{ confirmando() ? 'Confirmando…' : 'Confirmar pedido · $' + (total() | number:'1.0-0') }}
+            {{
+              confirmando()
+                ? (modoEdicion() ? 'Reenviando…' : 'Confirmando…')
+                : (modoEdicion() ? 'Reenviar pedido · $' : 'Confirmar pedido · $') + (total() | number:'1.0-0')
+            }}
           </button>
         </section>
 
