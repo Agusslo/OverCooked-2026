@@ -16,6 +16,7 @@ const PERFILES_NOTIFICABLES = ['dueño', 'supervisor', 'cliente', 'metre', 'mozo
 // Perfiles cuyo "inicio" es la sala de espera / pedido (punto 12), no el
 // panel de accesos.
 const PERFILES_SALA_ESPERA = ['cliente', 'anonimo'];
+//
 
 
 @Component({
