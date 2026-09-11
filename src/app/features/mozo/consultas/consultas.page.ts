@@ -79,14 +79,31 @@ export class ConsultasPage implements OnInit, OnDestroy {
     return this.mesasConNovedad().has(mesa.id);
   }
 
-  abrirMesa(mesa: Mesa): void {
+  volver(): void {
+    this.router.navigateByUrl('/inicio');
+  }
 
+  async abrirMesa(mesa: Mesa): Promise<void> {
     this.mesasConNovedad.update((set) => {
       const copia = new Set(set);
       copia.delete(mesa.id);
       return copia;
     });
-    this.router.navigate(['/mozo/hilos', mesa.numero]);
+
+    try {
+      const hilos = await this.mensajesService.listarHilosDeMesa(mesa.id);
+      if (hilos.length === 1) {
+        // Un solo comensal escribiendo: vamos directo al chat, sin
+        // la parada intermedia de la lista de conversaciones.
+        this.router.navigate(['/mozo/chat', mesa.numero, hilos[0].hiloClienteId]);
+      } else {
+        this.router.navigate(['/mozo/hilos', mesa.numero]);
+      }
+    } catch {
+      // Si falla la consulta, no bloqueamos al mozo: lo mandamos a
+      // la lista igual, que ya maneja sus propios errores.
+      this.router.navigate(['/mozo/hilos', mesa.numero]);
+    }
   }
 
   private async dispararError(texto: string): Promise<void> {

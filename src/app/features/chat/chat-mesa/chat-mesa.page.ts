@@ -138,12 +138,28 @@ export class ChatMesaPage implements OnInit, OnDestroy {
     return mensaje.autor_id === this.miId;
   }
 
-  volver(): void {
-    const mesa = this.mesa();
-    if (this.esMozo && mesa) {
-      this.router.navigate(['/mozo/hilos', mesa.numero]);
-    } else {
+  async volver(): Promise<void> {
+    if (!this.esMozo) {
       this.router.navigateByUrl('/inicio');
+      return;
+    }
+
+    const mesa = this.mesa();
+    if (!mesa) {
+      this.router.navigateByUrl('/mozo/consultas');
+      return;
+    }
+
+    try {
+      const hilos = await this.mensajesService.listarHilosDeMesa(mesa.id);
+      if (hilos.length <= 1) {
+        // Si entraste directo (un solo hilo), salís directo también.
+        this.router.navigateByUrl('/mozo/consultas');
+      } else {
+        this.router.navigate(['/mozo/hilos', mesa.numero]);
+      }
+    } catch {
+      this.router.navigateByUrl('/mozo/consultas');
     }
   }
 

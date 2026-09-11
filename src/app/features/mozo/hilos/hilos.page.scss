@@ -20,8 +20,10 @@
   gap: 16px;
 }
 
-.header-box {
-  text-align: center;
+.header-box--con-back {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 
   h2 {
     color: #f9bfa0;
@@ -34,6 +36,17 @@
     margin: 4px 0 0;
     font-size: 14px;
   }
+}
+
+.header-titles {
+  flex: 1;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: #f9bfa0;
+  flex-shrink: 0;
 }
 
 .estado-carga,

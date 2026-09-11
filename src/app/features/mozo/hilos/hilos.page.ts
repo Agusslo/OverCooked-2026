@@ -69,6 +69,10 @@ export class HilosPage implements OnInit, OnDestroy {
     }
   }
 
+  volver(): void {
+    this.router.navigateByUrl('/mozo/consultas');
+  }
+
   abrirHilo(hilo: HiloActivo): void {
     const mesa = this.mesa();
     if (mesa) {
