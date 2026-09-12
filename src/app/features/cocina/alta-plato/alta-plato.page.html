@@ -215,22 +215,7 @@
           </div>
           @if (formIntentado() && !todasLasFotosCargadas()) {
             <span class="error-msg text-center">Las 3 fotos son obligatorias</span>
-          }                    <div class="camera-actions">
-                      <button
-                        type="button"
-                        class="camera-button camera-cancel"
-                        (click)="cancelarCamara()"
-                      >
-                        CANCELAR
-                      </button>
-                      <button
-                        type="button"
-                        class="camera-button camera-capture"
-                        (click)="capturarFoto()"
-                      >
-                        TOMAR FOTO
-                      </button>
-                    </div>
+          } 
         </div>
 
         <!-- Banners de Notificación -->

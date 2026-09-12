@@ -45,6 +45,10 @@ export class AccesosRapidosPage {
     return acceso.perfil.charAt(0).toUpperCase();
   }
 
+  volver(): void {
+    this.router.navigateByUrl('/auth/login');
+  }
+
   private async cargarFotos(): Promise<void> {
     try {
       const emails = this.accesosRapidos.map((a) => a.email);

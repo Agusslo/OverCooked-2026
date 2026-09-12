@@ -35,8 +35,8 @@ ion-content.login-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 35vh;
-    padding: 56px 0 32px;
+    min-height: 35dvh;
+    padding: max(56px, env(safe-area-inset-top)) 0 32px;
 }
 
 .brand__logo {

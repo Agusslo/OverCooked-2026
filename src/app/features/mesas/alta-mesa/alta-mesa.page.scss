@@ -172,7 +172,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--form-gap);
-  padding: var(--form-gap) var(--header-h) clamp(0.6rem, 2dvh, 1.5rem);
+  padding: var(--form-gap) var(--header-h) max(clamp(0.6rem, 2dvh, 1.5rem), env(safe-area-inset-bottom));
   -webkit-overflow-scrolling: touch; /* smooth scroll en iOS */
 }
 
@@ -718,7 +718,7 @@
   }
 
   .form-body {
-    padding: clamp(0.5rem, 1.5dvh, 1rem) clamp(0.75rem, 2vw, 1rem);
+    padding: clamp(0.5rem, 1.5dvh, 1rem) clamp(0.75rem, 2vw, 1rem) max(clamp(0.5rem, 1.5dvh, 1rem), env(safe-area-inset-bottom));
   }
 
   .header-box h2 {
