@@ -144,15 +144,14 @@ ion-content.login-page {
 }
 
 .action-btn {
-    --background: var(--accent-dark);
-    --background-activated: #8f2f1a;
-    --background-hover: #9a341d;
-    --color: var(--accent-light);
-    --border-radius: 12px;
-    --box-shadow: none;
-    height: 48px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
+  --color: #f9bfa0;
+  --background: #8c2e14;
+  --border-radius: 12px;
+  --border-style: solid;
+  --border-width: 1.5px;
+  --border-color: rgba(240, 192, 96, 0.25);
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
 .accesos-rapidos {
