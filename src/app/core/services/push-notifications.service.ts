@@ -7,7 +7,10 @@ import {
   PushNotificationSchema,
   Token,
 } from '@capacitor/push-notifications';
-import { LocalNotifications } from '@capacitor/local-notifications';
+import {
+  ActionPerformed as LocalActionPerformed,
+  LocalNotifications,
+} from '@capacitor/local-notifications';
 import { SupabaseService } from './supabase.service';
 import { environment } from '../../../environments/environment';
 
@@ -82,45 +85,20 @@ export class PushNotificationsService {
       );
 
       // El usuario tocó la notificación: la llevamos a la pantalla que
-      // corresponda según el tipo que viaja en el "data" del push.
+      // corresponda según el tipo que viaja en el "data" del push. Esto
+      // cubre el caso "app cerrada/en background" (push real, tocada
+      // desde la bandeja del sistema).
       PushNotifications.addListener(
         'pushNotificationActionPerformed',
-        (accion: ActionPerformed) => {
-          const data = accion.notification.data ?? {};
-          const tipo = data['tipo'];
-          const numeroMesa = data['numeroMesa'];
-          if (tipo === 'mesa-asignada') {
-            this.router.navigateByUrl('/inicio');
-          } else if (tipo === 'lista-espera') {
-            this.router.navigateByUrl('/metre/lista-espera');
-          } else if (tipo === 'pedido-nuevo') {
-            // Punto 12: el mozo recibe el aviso de un pedido nuevo.
-            this.router.navigateByUrl('/mozo/consultas');
-          } else if (tipo === 'pedido-confirmado' || tipo === 'pedido-rechazado') {
-            // Puntos 13/14: el cliente vuelve al estado de su pedido.
-            const pedidoId = data['pedidoId'];
-            this.router.navigateByUrl(
-              pedidoId ? `/cliente/estado-pedido/${pedidoId}` : '/inicio',
-            );
-          } else if (tipo === 'pedido-confirmado-sector') {
-            // Punto 14: a cocina/bar les llega el pedido derivado a su
-            // propio sector.
-            const sector = data['sector'];
-            this.router.navigateByUrl(sector === 'bar' ? '/bar/pedidos' : '/cocina/pedidos');
-          } else if (tipo === 'mensaje-mesa' && numeroMesa) {
-            const hiloClienteId = data['hiloClienteId'];
-            if (hiloClienteId) {
-              this.router.navigateByUrl(`/mozo/chat/${numeroMesa}/${hiloClienteId}`);
-            } else {
-              this.router.navigateByUrl(`/mozo/hilos/${numeroMesa}`);
-            }
-          } else if (tipo === 'respuesta-mozo' && numeroMesa) {
-            // Punto 11: el mozo respondió la consulta del cliente.
-            this.router.navigateByUrl(`/cliente/chat/${numeroMesa}`);
-          } else {
-            this.router.navigateByUrl('/admin/clientes-pendientes');
-          }
-        },
+        (accion: ActionPerformed) => this.navegarSegunTipo(accion.notification.data ?? {}),
+      );
+
+      // Mismo caso pero para cuando la notificación se mostró como local
+      // (app en primer plano, ver mostrarNotificacionEnPrimerPlano): sin
+      // este listener, tocar esa notificación no navegaba a ningún lado.
+      LocalNotifications.addListener(
+        'localNotificationActionPerformed',
+        (accion: LocalActionPerformed) => this.navegarSegunTipo(accion.notification.extra ?? {}),
       );
 
       await PushNotifications.register();
@@ -136,7 +114,11 @@ export class PushNotificationsService {
       await LocalNotifications.schedule({
         notifications: [
           {
-            id: Date.now(),
+            // Date.now() no entra en un int de 32 bits (lo que espera el
+            // plugin del lado nativo): sin el & se pasaba de rango y
+            // Android truncaba todos los ids al mismo valor, así que una
+            // notificación nueva pisaba a la anterior en vez de sumarse.
+            id: Date.now() & 0x7fffffff,
             title: notificacion.title ?? '',
             body: notificacion.body ?? '',
             extra: notificacion.data,
@@ -145,6 +127,43 @@ export class PushNotificationsService {
       });
     } catch (error) {
       console.warn('No se pudo mostrar la notificación en primer plano:', error);
+    }
+  }
+
+  // Misma lógica de navegación sin importar si la notificación llegó
+  // como push real (app cerrada/background) o como local (app abierta):
+  // el "data"/"extra" que viaja es el mismo objeto en los dos casos.
+  private navegarSegunTipo(data: Record<string, unknown>): void {
+    const tipo = data['tipo'];
+    const numeroMesa = data['numeroMesa'];
+    if (tipo === 'mesa-asignada') {
+      this.router.navigateByUrl('/inicio');
+    } else if (tipo === 'lista-espera') {
+      this.router.navigateByUrl('/metre/lista-espera');
+    } else if (tipo === 'pedido-nuevo') {
+      // Punto 12: el mozo recibe el aviso de un pedido nuevo.
+      this.router.navigateByUrl('/mozo/consultas');
+    } else if (tipo === 'pedido-confirmado' || tipo === 'pedido-rechazado') {
+      // Puntos 13/14: el cliente vuelve al estado de su pedido.
+      const pedidoId = data['pedidoId'];
+      this.router.navigateByUrl(pedidoId ? `/cliente/estado-pedido/${pedidoId}` : '/inicio');
+    } else if (tipo === 'pedido-confirmado-sector') {
+      // Punto 14: a cocina/bar les llega el pedido derivado a su propio
+      // sector.
+      const sector = data['sector'];
+      this.router.navigateByUrl(sector === 'bar' ? '/bar/pedidos' : '/cocina/pedidos');
+    } else if (tipo === 'mensaje-mesa' && numeroMesa) {
+      const hiloClienteId = data['hiloClienteId'];
+      if (hiloClienteId) {
+        this.router.navigateByUrl(`/mozo/chat/${numeroMesa}/${hiloClienteId}`);
+      } else {
+        this.router.navigateByUrl(`/mozo/hilos/${numeroMesa}`);
+      }
+    } else if (tipo === 'respuesta-mozo' && numeroMesa) {
+      // Punto 11: el mozo respondió la consulta del cliente.
+      this.router.navigateByUrl(`/cliente/chat/${numeroMesa}`);
+    } else {
+      this.router.navigateByUrl('/admin/clientes-pendientes');
     }
   }
 

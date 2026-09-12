@@ -9,9 +9,18 @@ import { HeaderInicioComponent } from '../../../shared/header-inicio/header-inic
 
 // Perfiles que reciben alguna push notification: dueño/supervisor por
 // los clientes pendientes (punto 6), cliente por la asignación de su
-// mesa (punto 10) y el pedido (punto 12), metre por la lista de espera
-// y mozo por los pedidos nuevos.
-const PERFILES_NOTIFICABLES = ['dueño', 'supervisor', 'cliente', 'metre', 'mozo'];
+// mesa (punto 10) y el pedido (punto 12), metre por la lista de espera,
+// mozo por los pedidos nuevos y cocinero/cantinero por los pedidos
+// confirmados que se derivan a su sector (punto 14).
+const PERFILES_NOTIFICABLES = [
+  'dueño',
+  'supervisor',
+  'cliente',
+  'metre',
+  'mozo',
+  'cocinero',
+  'cantinero',
+];
 
 // Perfiles cuyo "inicio" es la sala de espera / pedido (punto 12), no el
 // panel de accesos.

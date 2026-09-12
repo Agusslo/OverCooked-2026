@@ -82,6 +82,17 @@ export class LoginPage {
     this.router.navigateByUrl('/auth/invitado');
   }
 
+  // Ionic llama a este hook cada vez que la página deja de estar
+  // visible (se navega a otra pestaña/ruta o se vuelve atrás),
+  // incluso si la instancia del componente se mantiene viva en el
+  // stack. Lo usamos para limpiar los datos ingresados y que no
+  // queden expuestos al volver a entrar a /auth/login.
+  ionViewWillLeave(): void {
+    this.form.reset();
+    this.errorLogin.set(null);
+    this.mostrarClave.set(false);
+  }
+
   private async intentarLogin(email: string, clave: string): Promise<void> {
     this.errorLogin.set(null);
     this.cargando.set(true);

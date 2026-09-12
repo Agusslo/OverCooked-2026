@@ -182,13 +182,30 @@ ion-content.login-page {
 }
 
 
+// El ícono de mostrar/ocultar va en slot="end" y le resta ancho al
+// ion-input de ese lado; sin compensar, el texto centrado del input
+// queda corrido a la izquierda respecto al campo de Correo. El
+// spacer fantasma (mismo ancho, invisible) en slot="start" balancea
+// los dos lados para que el centrado sea real.
+.toggle-password,
+.toggle-password-spacer {
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .toggle-password {
   background: none;
   border: none;
   color: #c45030;
-  display: flex;
-  align-items: center;
   padding: 0 4px;
+}
+
+.toggle-password-spacer {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .quick-chip ion-icon {
