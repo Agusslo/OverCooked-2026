@@ -13,6 +13,7 @@ import { Capacitor } from '@capacitor/core';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { ProductosService } from '../../../core/services/productos.service';
 import { RouterLink } from '@angular/router';
+import { SpinnerOverlayComponent } from '../../../shared/spinner-overlay/spinner-overlay.component';
 
 type IndiceFoto = 0 | 1 | 2;
 // Las 3 fotos, en posiciones fijas: null = todavía no se cargó esa foto.
@@ -23,7 +24,12 @@ type Fotos = [string | null, string | null, string | null];
   standalone: true,
   templateUrl: './alta-plato.page.html',
   styleUrls: ['./alta-plato.page.scss'],
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    SpinnerOverlayComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AltaPlatoPage {
@@ -42,8 +48,6 @@ export class AltaPlatoPage {
     precio: ['', [Validators.required, Validators.min(1)]],
   });
 
-  // Signals: cuando cambian con .set(), Angular actualiza sola la
-  // parte de la pantalla que las usa (mismo patrón que login.page.ts).
   fotos = signal<Fotos>([null, null, null]);
   slotActivo = signal<IndiceFoto | null>(null);
   camaraActiva = signal(false);

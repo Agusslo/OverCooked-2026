@@ -13,6 +13,7 @@ import { Camera, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { ProductosService } from '../../../core/services/productos.service';
+import { SpinnerOverlayComponent } from '../../../shared/spinner-overlay/spinner-overlay.component';
 
 type IndiceFoto = 0 | 1 | 2;
 // Las 3 fotos, en posiciones fijas: null = todavía no se cargó esa foto.
@@ -23,7 +24,12 @@ type Fotos = [string | null, string | null, string | null];
   standalone: true,
   templateUrl: './alta-bebida.page.html',
   styleUrls: ['./alta-bebida.page.scss'],
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    SpinnerOverlayComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AltaBebidaPage {

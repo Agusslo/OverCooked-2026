@@ -14,13 +14,19 @@ import { Haptics, NotificationType } from '@capacitor/haptics';
 import { RouterLink } from '@angular/router';
 import { MesasService } from '../../../core/services/mesas.service';
 import { TipoMesa } from '../../../core/models/mesa.model';
+import { SpinnerOverlayComponent } from '../../../shared/spinner-overlay/spinner-overlay.component';
 
 @Component({
   selector: 'app-alta-mesa',
   standalone: true,
   templateUrl: './alta-mesa.page.html',
   styleUrls: ['./alta-mesa.page.scss'],
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    SpinnerOverlayComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AltaMesaPage {

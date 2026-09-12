@@ -23,6 +23,7 @@ import { Haptics, NotificationType } from '@capacitor/haptics';
 import { QrScannerService } from '../../../core/services/qr-scanner';
 import { AdminService } from '../../../core/services/admin.service';
 import { RouterLink } from '@angular/router';
+import { SpinnerOverlayComponent } from '../../../shared/spinner-overlay/spinner-overlay.component';
 
 // Validador cross-field: verifica que los dígitos del DNI
 // coincidan con las posiciones 2–9 del CUIL.
@@ -47,7 +48,12 @@ function cuilMatchDni(form: AbstractControl): ValidationErrors | null {
   templateUrl: './alta-empleado.page.html',
   styleUrls: ['./alta-empleado.page.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    SpinnerOverlayComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AltaEmpleadoPage implements OnInit, OnDestroy {
