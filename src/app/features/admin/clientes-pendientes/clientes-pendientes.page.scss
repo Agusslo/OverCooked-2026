@@ -66,7 +66,7 @@
 .header-box {
   flex-shrink: 0;
   background: var(--color-header);
-  padding: max(1.35rem, env(safe-area-inset-top)) 1.25rem 1.35rem;
+  padding: max(1.35rem, calc(env(safe-area-inset-top) + 12px), 24px) 1.25rem 1.35rem;
   position: relative;
   overflow: hidden;
 }

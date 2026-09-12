@@ -26,7 +26,7 @@
     box-sizing: border-box;
     text-align: center;
     /* respeta notches / barras del sistema en móvil */
-    padding-top: max(clamp(1.5rem, 6vw, 3rem), env(safe-area-inset-top));
+    padding-top: max(clamp(1.5rem, 6vw, 3rem), calc(env(safe-area-inset-top) + 12px));
     padding-bottom: max(clamp(1.5rem, 6vw, 3rem), env(safe-area-inset-bottom));
   }
 

@@ -90,7 +90,7 @@
 .header-box {
   flex-shrink: 0; /* nunca se aplasta */
   background: var(--color-header);
-  padding: max(var(--header-v), env(safe-area-inset-top)) var(--header-h) var(--header-v);
+  padding: max(var(--header-v), calc(env(safe-area-inset-top) + 12px), 24px) var(--header-h) var(--header-v);
   position: relative;
   overflow: hidden;
 }

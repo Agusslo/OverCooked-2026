@@ -2,7 +2,7 @@
   min-height: 100dvh;
   display: flex;
   justify-content: center;
-  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  padding: max(16px, calc(env(safe-area-inset-top) + 12px), 24px) 16px max(16px, env(safe-area-inset-bottom));
   background: #2b1a12;
 }
 

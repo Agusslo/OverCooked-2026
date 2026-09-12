@@ -44,7 +44,7 @@ ion-content.registro-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: max(var(--brand-pad-top), env(safe-area-inset-top)) 0 var(--brand-pad-bottom);
+  padding: max(var(--brand-pad-top), calc(env(safe-area-inset-top) + 12px), 24px) 0 var(--brand-pad-bottom);
   flex-shrink: 0;
 }
 

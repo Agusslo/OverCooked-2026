@@ -38,7 +38,7 @@ ion-content.invitado-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: max(56px, env(safe-area-inset-top)) 0 32px;
+  padding: max(56px, calc(env(safe-area-inset-top) + 12px)) 0 32px;
 }
 
 .brand__picker {
@@ -284,7 +284,7 @@ ion-content.invitado-page {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: max(40px, env(safe-area-inset-top)) 28px max(32px, env(safe-area-inset-bottom));
+  padding: max(40px, calc(env(safe-area-inset-top) + 12px)) 28px max(32px, env(safe-area-inset-bottom));
   box-sizing: border-box;
   background: linear-gradient(180deg, var(--bg-hero) 0%, var(--bg-panel) 100%);
 }

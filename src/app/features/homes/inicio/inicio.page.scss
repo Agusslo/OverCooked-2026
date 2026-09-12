@@ -37,7 +37,7 @@ ion-content.inicio-page {
 .inicio-header {
   flex: none;
   background: var(--panel);
-  padding: max(56px, env(safe-area-inset-top)) 20px 20px;
+  padding: max(56px, calc(env(safe-area-inset-top) + 12px)) 20px 20px;
   display: flex;
   align-items: center;
   gap: 13px;

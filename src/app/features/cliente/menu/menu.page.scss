@@ -106,7 +106,7 @@
 
 .menu-top {
   flex: none;
-  padding: max(44px, env(safe-area-inset-top)) 18px 6px;
+  padding: max(44px, calc(env(safe-area-inset-top) + 12px)) 18px 6px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -335,7 +335,7 @@
 
 .vp-handle {
   flex: none;
-  padding: max(40px, env(safe-area-inset-top)) 0 6px;
+  padding: max(40px, calc(env(safe-area-inset-top) + 12px)) 0 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
