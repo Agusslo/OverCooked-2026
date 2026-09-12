@@ -17,6 +17,7 @@ const PERFILES_NOTIFICABLES = ['dueño', 'supervisor', 'cliente', 'metre', 'mozo
 // panel de accesos.
 const PERFILES_SALA_ESPERA = ['cliente', 'anonimo'];
 //
+//
 
 
 @Component({
