@@ -222,15 +222,25 @@ ion-content.registro-page {
   border: #d4603a 2px solid;
   overflow: hidden;
   margin: 0;
+  position: relative;
 }
 
 .registro-field ion-input {
   --placeholder-color: var(--accent-dark);
   --color: var(--accent-dark);
+  --padding-start: 0;
+  --padding-end: 0;
+  width: 100%;
+  flex: 1 1 100%;
   font-size: clamp(0.82rem, 1.8dvh, 0.88rem);
   font-weight: 700;
   text-align: center;
   font-family: "ADLaM Display", system-ui, sans-serif;
+
+  &::part(native) {
+    padding: 0;
+    text-align: center;
+  }
 }
 
 .form-error {
@@ -300,6 +310,10 @@ ion-content.registro-page {
 }
 
 .toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   color: #c45030;
