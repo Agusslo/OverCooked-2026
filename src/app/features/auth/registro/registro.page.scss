@@ -185,17 +185,17 @@ ion-content.registro-page {
 
 .scan-btn {
   width: 100%;
-  --background: var(--accent-dark);
-  --background-activated: #8f2f1a;
-  --background-hover: #9a341d;
-  --color: var(--accent-light);
+  --background: #e3a24b;
+  --background-activated: #c98736;
+  --background-hover: #edb15a;
+  --color: #7f2d1d;
   --border-radius: 16px;
   --border-width: 2px;
   --border-style: solid;
-  --border-color: #d4603a;
+  --border-color: #f0c060;
   --box-shadow: 0px 4px 10px rgba(91, 28, 13, 0.24);
   height: var(--field-h);
-  margin: 0;
+  margin: 2px 0 0;
   font-weight: 800;
   letter-spacing: 0.04em;
   font-size: 0.85rem;
