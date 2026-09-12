@@ -155,7 +155,7 @@ ion-content.invitado-page {
   letter-spacing: 0.03em;
   cursor: pointer;
 }
-.camera-cancel { background: var(--bg-panel); color: var(--accent-light); }
+.camera-cancel { background: #8c2e14; color: #f9bfa0; border: 1.5px solid rgba(240, 192, 96, 0.25); }
 .camera-capture { background: var(--gold); color: var(--accent-dark); }
 
 // Agrupa cada input con su propio mensaje de error para que el
@@ -233,16 +233,14 @@ ion-content.invitado-page {
 }
 
 .action-btn {
-    --background: var(--accent-dark);
-    --background-activated: #8f2f1a;
-    --background-hover: #9a341d;
-    --color: var(--accent-light);
-    --border-radius: 12px;
-    --box-shadow: none;
-    height: 48px;
-    width: 100%;
-    font-weight: 800;
-    letter-spacing: 0.04em;
+  --color: #f9bfa0;
+  --background: #8c2e14;
+  --border-radius: 12px;
+  --border-style: solid;
+  --border-width: 1.5px;
+  --border-color: rgba(240, 192, 96, 0.25);
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
 @media (max-width: 380px) {

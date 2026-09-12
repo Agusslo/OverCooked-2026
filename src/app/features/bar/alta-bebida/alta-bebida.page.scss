@@ -190,9 +190,9 @@
 .btn-uiverse:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .btn-photo {
-  background: transparent;
-  color: var(--color-peach);
-  border: 1.5px solid rgba(249, 191, 160, 0.3);
+  background: #8c2e14;
+  color: #fef5ee;
+  border: 1.5px solid rgba(240, 192, 96, 0.25);
 }
 .btn-photo:hover:not(:disabled) { border-color: var(--color-gold); color: var(--color-gold); }
 
@@ -435,7 +435,7 @@
 }
 
 .camera-button:hover { opacity: 0.88; }
-.camera-cancel  { background: var(--color-header); color: var(--color-peach); border: 1.5px solid rgba(212, 96, 58, 0.4); }
+.camera-cancel  { background: #8c2e14; color: #f9bfa0; border: 1.5px solid rgba(240, 192, 96, 0.25); }
 .camera-capture { background: var(--color-gold);   color: var(--color-deep); }
 
 .photo-slot-actions {

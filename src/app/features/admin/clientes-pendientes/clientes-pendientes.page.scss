@@ -26,7 +26,7 @@
   --radius-btn: 12px;
 
   /* Fuentes */
-  --font-body: 'ADLaM Display', system-ui, sans-serif;
+  --font-body: "ADLaM Display", system-ui, sans-serif;
 }
 
 /* ---------- Wrapper: viewport completo ---------- */
@@ -66,14 +66,14 @@
 .header-box {
   flex-shrink: 0;
   background: var(--color-header);
-  padding: max(1.2rem, env(safe-area-inset-top)) 1.25rem 1.2rem;
+  padding: max(1.35rem, env(safe-area-inset-top)) 1.25rem 1.35rem;
   position: relative;
   overflow: hidden;
 }
 
 .header-box::before,
 .header-box::after {
-  content: '';
+  content: "";
   position: absolute;
   border-radius: 50%;
   border: 2px solid var(--color-gold);
@@ -109,12 +109,14 @@
   display: flex;
   padding: 0.4rem;
   flex-shrink: 0;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
   -webkit-tap-highlight-color: transparent;
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
   }
 
   &:hover {
@@ -132,7 +134,7 @@
   min-width: 0;
 
   h2 {
-    font-size: clamp(1.2rem, 4dvh, 1.6rem);
+    font-size: clamp(1.35rem, 4.6dvh, 1.8rem);
     font-weight: 700;
     color: var(--color-cream);
     margin: 0;
@@ -140,7 +142,7 @@
   }
 
   p {
-    font-size: 0.78rem;
+    font-size: 0.86rem;
     color: var(--color-peach);
     margin: 0.15rem 0 0;
   }
@@ -153,7 +155,7 @@
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 0.75rem 1rem 1.5rem;
+  padding: 1rem 0.8rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -215,12 +217,16 @@
 .cliente-card {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
   background: var(--color-input);
   border-radius: var(--radius-item);
-  padding: 0.85rem;
+  padding: 1rem;
+  min-height: 248px;
+  box-sizing: border-box;
   border: 1.5px solid transparent;
-  transition: border-color 0.15s ease, transform 0.1s ease;
+  transition:
+    border-color 0.15s ease,
+    transform 0.1s ease;
 
   &:active {
     transform: scale(0.99);
@@ -235,15 +241,15 @@
 .cliente-card__top {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
+  gap: 1rem;
 }
 
 /* Antes era un avatarcito de 48px — el PDF pide "buen tamaño" para
    la foto en el listado (punto 6), así que ahora es un cuadrado
    grande, bien identificable. */
 .cliente-avatar {
-  width: 110px;
-  height: 110px;
+  width: 132px;
+  height: 132px;
   border-radius: var(--radius-btn);
   flex-shrink: 0;
   overflow: hidden;
@@ -267,7 +273,7 @@
 }
 
 .cliente-nombre {
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--color-cream);
   line-height: 1.25;
@@ -275,7 +281,7 @@
 }
 
 .cliente-email {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--color-peach);
   overflow-wrap: break-word;
 }
@@ -284,28 +290,30 @@
 
 .cliente-acciones {
   display: flex;
-  gap: 0.6rem;
+  gap: 0.75rem;
 }
 
 .btn-accion {
   flex: 1;
-  height: 42px;
+  height: 48px;
   border-radius: var(--radius-btn);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.15s ease, transform 0.1s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.1s ease;
   -webkit-tap-highlight-color: transparent;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 19px;
+    height: 19px;
   }
 
   &:active:not(:disabled) {
@@ -329,11 +337,11 @@
 
 .btn-rechazar {
   background: var(--color-deep);
-  color: var(--color-error);
-  border: 1.5px solid rgba(245, 149, 107, 0.3);
+  color: var(--color-cream);
+  border: 1.5px solid rgba(240, 192, 96, 0.3);
 
   &:hover:not(:disabled) {
-    border-color: var(--color-error);
+    background: #76250f;
   }
 }
 
@@ -353,8 +361,12 @@
 }
 
 @keyframes modalFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-box {
@@ -373,8 +385,14 @@
 }
 
 @keyframes modalPop {
-  from { transform: scale(0.94); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.94);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .modal-icono {
@@ -439,7 +457,9 @@
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.15s ease, transform 0.1s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.1s ease;
   -webkit-tap-highlight-color: transparent;
 
   &:active {
@@ -448,9 +468,9 @@
 }
 
 .btn-modal--cancelar {
-  background: var(--color-input);
-  color: var(--color-peach);
-  border: 1.5px solid var(--color-gold-dim);
+  background: #8c2e14;
+  color: #fef5ee;
+  border: 1.5px solid rgba(240, 192, 96, 0.25);
 }
 
 .btn-modal--aprobar {
@@ -463,12 +483,12 @@
 }
 
 .btn-modal--rechazar {
-  background: var(--color-deep);
-  color: var(--color-error);
-  border: 1.5px solid rgba(245, 149, 107, 0.4);
+  background: var(--color-gold);
+  color: var(--color-deep);
+  border: none;
 
   &:hover {
-    border-color: var(--color-error);
+    opacity: 0.88;
   }
 }
 
@@ -507,7 +527,9 @@
 /* Desktop (1024px+): hover elevado */
 @media (min-width: 1024px) {
   .card-box {
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    transition:
+      box-shadow 0.3s ease,
+      transform 0.3s ease;
   }
 
   .card-box:hover {
@@ -520,7 +542,6 @@
 
 /* Accesibilidad: sin animaciones */
 @media (prefers-reduced-motion: reduce) {
-
   .btn-accion,
   .btn-back,
   .btn-modal,
