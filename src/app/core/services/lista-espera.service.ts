@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { MesasService } from './mesas.service';
 import { ClienteEnEspera } from '../models/lista-espera.model';
+import { conTimeout } from '../utils/con-timeout.util';
 
 export interface DatosAnotarse {
   clienteId?: string;         // id de 'usuarios', si es cliente registrado
@@ -17,18 +18,6 @@ export class ListaEsperaService {
   private mesasService = inject(MesasService);
   private supabaseService = inject(SupabaseService);
 
-  // Corta una promesa que no responde en 'ms' milisegundos, para que
-  // nunca se quede colgada para siempre (le pasó al WebView de Android
-  // más de una vez con llamadas a Supabase justo después de otra).
-  private conTimeout<T>(promesa: PromiseLike<T>, ms: number): Promise<T> {
-    return Promise.race([
-      Promise.resolve(promesa),
-      new Promise<T>((_, reject) =>
-        setTimeout(() => reject(new Error('La conexión tardó demasiado, probá de nuevo.')), ms),
-      ),
-    ]);
-  }
-
   // Punto 9: al escanear el QR de ingreso, el cliente (anónimo o
   // registrado) queda anotado en la lista de espera del metre.
   // Reintenta hasta 3 veces por si la llamada se cuelga o falla por
@@ -39,7 +28,7 @@ export class ListaEsperaService {
 
     for (let intento = 1; intento <= 3; intento++) {
       try {
-        const { error } = await this.conTimeout(
+        const { error } = await conTimeout(
           client.from('lista_espera').insert({
             cliente_id: datos.clienteId ?? null,
             cliente_anonimo_id: datos.clienteAnonimoId ?? null,
@@ -162,7 +151,7 @@ export class ListaEsperaService {
 
     query = clienteId ? query.eq('cliente_id', clienteId) : query.eq('cliente_anonimo_id', clienteAnonimoId!);
 
-    const { data, error } = await query.maybeSingle();
+    const { data, error } = await conTimeout(query.maybeSingle(), 8000);
 
     if (error) {
       throw new Error('No se pudo verificar la lista de espera.');

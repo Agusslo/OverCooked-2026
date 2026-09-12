@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { ViewWillEnter } from '@ionic/angular';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { AuthService } from '../../../core/services/auth.service';
@@ -28,7 +29,7 @@ type EstadoBoton = 'esperando' | 'con-mesa' | 'con-pedido';
   styleUrls: ['./sala-espera.component.scss'],
   imports: [BurbujaMozoComponent, HeaderInicioComponent],
 })
-export class SalaEsperaComponent implements OnInit, OnDestroy {
+export class SalaEsperaComponent implements OnInit, OnDestroy, ViewWillEnter {
   private authService = inject(AuthService);
   private mesasService = inject(MesasService);
   private listaEsperaService = inject(ListaEsperaService);
@@ -45,7 +46,6 @@ export class SalaEsperaComponent implements OnInit, OnDestroy {
   private intervalo?: ReturnType<typeof setInterval>;
   private intervaloFotos?: ReturnType<typeof setInterval>;
   private mesaAsignadaPrevia = false;
-  private redirigido = false;
 
   estadoBoton = computed<EstadoBoton>(() => {
     if (this.pedidoActivo()) return 'con-pedido';
@@ -72,7 +72,6 @@ export class SalaEsperaComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     await this.cargar();
-    if (!this.redirigido) this.cargando.set(false);
 
     const usuario = this.authService.usuarioActual;
     if (usuario && usuario.perfil !== 'anonimo') {
@@ -86,6 +85,14 @@ export class SalaEsperaComponent implements OnInit, OnDestroy {
       const total = this.fotosPedido().length;
       if (total > 1) this.indiceFoto.update((i) => (i + 1) % total);
     }, environment.menuFotosIntervaloMs);
+  }
+
+  // Ionic mantiene esta pantalla en caché al navegar a /cliente/entrada
+  // (no destruye el componente ni vuelve a correr ngOnInit): sin este
+  // hook, al volver de escanear el QR quedaba pegada en "Cargando…"
+  // para siempre, aunque ya hubiera quedado anotado en la lista de espera.
+  ionViewWillEnter(): void {
+    void this.cargar();
   }
 
   ngOnDestroy(): void {
@@ -105,9 +112,9 @@ export class SalaEsperaComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl('/auth/login');
       return;
     }
-
+    
     const esAnonimo = usuario.perfil === 'anonimo';
-
+    
     try {
       const [mesa, esperando] = await Promise.all([
         this.mesasService.obtenerMesaAsignadaA(usuario.id, esAnonimo),
@@ -119,7 +126,6 @@ export class SalaEsperaComponent implements OnInit, OnDestroy {
 
       // Todavía no está anotado ni tiene mesa: primero el QR de entrada.
       if (!mesa && !esperando) {
-        this.redirigido = true;
         this.router.navigateByUrl('/cliente/entrada');
         return;
       }
@@ -148,6 +154,12 @@ export class SalaEsperaComponent implements OnInit, OnDestroy {
       this.mensajeError.set(
         error instanceof Error ? error.message : 'No se pudo actualizar el estado.',
       );
+    } finally {
+      // Se resuelve siempre acá (no en ngOnInit): Ionic cachea esta
+      // pantalla al ir a /cliente/entrada y no vuelve a correr
+      // ngOnInit al volver, así que "cargando" tiene que actualizarse
+      // en cada pasada de cargar(), no solo en la primera.
+      this.cargando.set(false);
     }
   }
 

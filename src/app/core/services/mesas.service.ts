@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { SupabaseService } from './supabase.service';
 import { Mesa, TipoMesa, EstadoMesa} from '../models/mesa.model';
+import { conTimeout } from '../utils/con-timeout.util';
 
 export interface DatosNuevaMesa {
   numero: number;
@@ -193,14 +194,17 @@ export class MesasService {
 
     const columna = esAnonimo ? 'cliente_anonimo_id' : 'cliente_id';
 
-    const { data, error } = await client
-      .from('asignaciones_mesa')
-      .select('mesas(*)')
-      .eq(columna, id)
-      .is('fecha_fin', null)
-      .order('fecha_inicio', { ascending: false })
-      .limit(1)
-      .maybeSingle();
+    const { data, error } = await conTimeout(
+      client
+        .from('asignaciones_mesa')
+        .select('mesas(*)')
+        .eq(columna, id)
+        .is('fecha_fin', null)
+        .order('fecha_inicio', { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+      8000,
+    );
 
     if (error) {
       throw new Error('No se pudo verificar la mesa asignada.');

@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { SupabaseService } from './supabase.service';
+import { conTimeout } from '../utils/con-timeout.util';
 import { Producto, SectorProducto } from '../models/producto.model';
 import {
   Pedido,
@@ -194,7 +195,7 @@ export class PedidosService {
       ? query.eq('cliente_id', cliente.clienteId)
       : query.eq('cliente_anonimo_id', cliente.clienteAnonimoId!);
 
-    const { data, error } = await query.maybeSingle();
+    const { data, error } = await conTimeout(query.maybeSingle(), 8000);
 
     if (error) {
       // No bloqueamos el menú por esto: si no se pudo verificar, se
@@ -216,11 +217,10 @@ export class PedidosService {
   async obtenerPedidoConItems(pedidoId: string): Promise<Pedido> {
     const client = this.supabaseService.getClient();
 
-    const { data: pedido, error: errorPedido } = await client
-      .from('pedidos')
-      .select('*')
-      .eq('id', pedidoId)
-      .single();
+    const { data: pedido, error: errorPedido } = await conTimeout(
+      client.from('pedidos').select('*').eq('id', pedidoId).single(),
+      8000,
+    );
 
     if (errorPedido || !pedido) {
       throw new Error('No se encontró el pedido.');
@@ -228,10 +228,10 @@ export class PedidosService {
 
     // Traemos los renglones con el producto embebido para poder mostrar
     // nombre, foto y tiempo de elaboración.
-    const { data: filas, error: errorItems } = await client
-      .from('pedido_items')
-      .select('*, productos(*)')
-      .eq('pedido_id', pedidoId);
+    const { data: filas, error: errorItems } = await conTimeout(
+      client.from('pedido_items').select('*, productos(*)').eq('pedido_id', pedidoId),
+      8000,
+    );
 
     if (errorItems) {
       throw new Error('No se pudo cargar el detalle del pedido.');

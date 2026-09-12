@@ -31,7 +31,7 @@ import { BurbujaMozoComponent } from '../../chat/burbuja-mozo/burbuja-mozo.compo
   standalone: true,
   templateUrl: './menu.page.html',
   styleUrls: ['./menu.page.scss'],
-  imports: [CommonModule, RouterLink, BurbujaMozoComponent],
+  imports: [CommonModule, RouterLink],
 })
 export class MenuPage implements OnInit {
   private route = inject(ActivatedRoute);
