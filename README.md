@@ -70,7 +70,7 @@
 
 
 
-##<br>
+<br>
 
 ## 🎨 Ver Capturas de Pantalla
 
@@ -127,7 +127,8 @@
 
 <details>
 <summary>Vistas del Cliente</summary>
-    <img src="src/assets/capturas/cliente_home.jpg" alt="cliente-home-2" width="300">    <img src="src/assets/capturas/cliente_carta.jpg" alt="cliente-juego-tateti" width="300">
+    <img src="src/assets/capturas/cliente_home.jpg" alt="cliente-home-2" width="300">    
+    <img src="src/assets/capturas/cliente_carta.jpg" alt="cliente-juego-tateti" width="300">
     <img src="src/assets/capturas/cliente_pedido.jpg" alt="cliente-encuesta" width="300">
     <img src="src/assets/capturas/cliente_home2.jpg" alt="cliente-consulta" width="300">
 </details>
