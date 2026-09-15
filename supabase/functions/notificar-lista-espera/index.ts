@@ -147,6 +147,7 @@ async function enviarPush(accessToken: string, token: string, espera: FilaListaE
 }
 
 // --- Autenticación OAuth2 con service account (idéntico a notificar-cliente-pendiente) ---
+//--------------------------------------------------------------
 
 async function obtenerAccessToken(): Promise<string> {
   const ahora = Math.floor(Date.now() / 1000);
