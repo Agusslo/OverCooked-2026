@@ -73,14 +73,25 @@ export class EstadoPedidoPage implements OnInit, OnDestroy {
 
   // Punto 13: el mozo rechazó el pedido, hay que ofrecerle al cliente
   // modificarlo (no puede quedarse esperando sin hacer nada).
-  esRechazado = computed(() => this.pedido()?.estado === ESTADO_PEDIDO_RECHAZADO);
+  esRechazado = computed(
+    () => this.pedido()?.estado === ESTADO_PEDIDO_RECHAZADO,
+  );
 
   // Punto 14: el mozo confirmó el pedido (o ya avanzó más), el cliente
   // puede entrar a la sección de juegos.
   puedeAccederJuegos = computed(() => {
     const estado = this.pedido()?.estado;
-    return !!estado && estado !== ESTADO_PEDIDO_INICIAL && estado !== ESTADO_PEDIDO_RECHAZADO;
+    return (
+      !!estado &&
+      estado !== ESTADO_PEDIDO_INICIAL &&
+      estado !== ESTADO_PEDIDO_RECHAZADO
+    );
   });
+
+  // Punto 19: recién cuando el mozo entrega el pedido completo, el
+  // cliente puede acceder a la encuesta (a diferencia de los juegos,
+  // que se habilitan antes, apenas el mozo confirma el pedido).
+  puedeAccederEncuesta = computed(() => this.pedido()?.estado === 'entregado');
 
   // "Tiempo total estimado de realización del pedido completo" (punto 12).
   tiempoTotal = computed(() =>
@@ -135,7 +146,9 @@ export class EstadoPedidoPage implements OnInit, OnDestroy {
 
   private async recargar(): Promise<void> {
     const anterior = this.pedido()?.estado;
-    const actualizado = await this.pedidosService.obtenerPedidoConItems(this.pedidoId);
+    const actualizado = await this.pedidosService.obtenerPedidoConItems(
+      this.pedidoId,
+    );
     this.pedido.set(actualizado);
     if (anterior && anterior !== actualizado.estado) {
       void this.alCambiarEstado(actualizado.estado);

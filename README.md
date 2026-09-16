@@ -36,6 +36,8 @@
 | **Catanese, Demián**            | `feature/dev-delta` | Diseño del Mail                 | 01/09/2026   | 01/09/2026 |
 | **López, Agustín Nicolás**      | `feature/dev-alfa`  | cliente registrado, QR DNI      | 3/09/2026    | 3/09/2026  |
 | **López, Agustín Nicolás**      | `feature/dev-alfa`  | Cliente Anonimo                 | 5/09/2026    | 6/09/2026  |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Encuesta                 | 16/09/2026    | 16/09/2026  |
+
 
 > Si algún integrante no llega con la funcionalidad comprometida, se reasigna el módulo o se cambia el plazo, y queda registrado acá mismo con la fecha del cambio.
 
@@ -62,7 +64,7 @@
 | 17. Recepción de los productos correspondientes | cantinero | Catanese, Demián | Indefinido | |
 | 18. Realizar las tareas correspondientes | cocinero y cantinero | Catanese, Demián | Indefinido | |
 | 19. Entrega del pedido completo | mozo | Catanese, Demián | Indefinido | |
-| 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo | Catanese, Demián | Indefinido | |
+| 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo |  López, Agustín Nicolás | Indefinido | |
 | 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Catanese, Demián | Indefinido | |
 | 22. Confirmar el pago y liberar mesa | mozo | Catanese, Demián | Indefinido | |
 

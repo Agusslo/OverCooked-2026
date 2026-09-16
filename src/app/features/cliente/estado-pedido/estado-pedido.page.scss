@@ -43,7 +43,10 @@
   align-items: center;
   justify-content: center;
 
-  svg { width: 19px; height: 19px; }
+  svg {
+    width: 19px;
+    height: 19px;
+  }
 }
 
 .ep-header__titulo {
@@ -52,8 +55,15 @@
   display: flex;
   flex-direction: column;
 
-  h1 { margin: 0; font-size: 20px; font-weight: 800; }
-  span { font-size: 12px; color: var(--texto-suave); }
+  h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+  }
+  span {
+    font-size: 12px;
+    color: var(--texto-suave);
+  }
 }
 
 .ep-avatar {
@@ -70,7 +80,11 @@
   font-weight: 700;
   font-size: 15px;
 
-  img { width: 100%; height: 100%; object-fit: cover; }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .ep-cuerpo {
@@ -100,8 +114,12 @@
 }
 
 @keyframes girar {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .ep-banner.error {
@@ -154,10 +172,16 @@
   &--confirmado,
   &--en_preparacion,
   &--listo,
-  &--entregado { background: #2f6d3a; color: #d8f5dd; }
+  &--entregado {
+    background: #2f6d3a;
+    color: #d8f5dd;
+  }
 
   &--rechazado,
-  &--cancelado { background: #7a2020; color: #ffd9d9; }
+  &--cancelado {
+    background: #7a2020;
+    color: #ffd9d9;
+  }
 }
 
 .ep-mensaje {
@@ -241,7 +265,10 @@
     color: var(--texto-suave);
   }
 
-  strong { font-size: 18px; color: var(--texto); }
+  strong {
+    font-size: 18px;
+    color: var(--texto);
+  }
 }
 
 .ep-juegos {
@@ -253,7 +280,11 @@
   gap: 12px;
   flex: 1;
 
-  h2 { margin: 0; font-size: 15px; font-weight: 800; }
+  h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
+  }
 }
 
 .ep-juegos__proximamente {
@@ -268,8 +299,39 @@
   color: var(--texto-suave);
   padding: 0 8px;
 
-  svg { width: 42px; height: 42px; color: var(--gold); }
-  span { font-size: 13px; line-height: 1.4; }
+  svg {
+    width: 42px;
+    height: 42px;
+    color: var(--gold);
+  }
+  span {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+}
+
+.ep-encuesta {
+  display: flex;
+}
+
+.ep-encuesta__link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  background: var(--color-gold, #f0c060);
+  color: var(--color-deep, #8c2e14);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
 }
 
 :host ::ng-deep .burbuja-mozo {

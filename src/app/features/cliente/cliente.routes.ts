@@ -37,10 +37,19 @@ export const clienteRoutes: Routes = [
     canActivate: [authGuard],
     data: { perfiles: ['cliente', 'anonimo'] },
   },
-    {
+  {
     path: 'encuesta/:pedidoId',
     loadComponent: () =>
       import('./encuesta/encuesta.page').then((m) => m.EncuestaPage),
+    canActivate: [authGuard],
+    data: { perfiles: ['cliente', 'anonimo'] },
+  },
+  {
+    path: 'encuesta-resultados',
+    loadComponent: () =>
+      import('./encuesta/resultados/resultados-encuesta.page').then(
+        (m) => m.ResultadosEncuestaPage,
+      ),
     canActivate: [authGuard],
     data: { perfiles: ['cliente', 'anonimo'] },
   },

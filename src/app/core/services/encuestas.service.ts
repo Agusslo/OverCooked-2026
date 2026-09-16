@@ -107,4 +107,56 @@ export class EncuestasService {
       throw new Error('No se pudieron guardar tus respuestas.');
     }
   }
+
+    // Punto 20 (segunda mitad): resultados agregados de una pregunta,
+  // contando cuántas veces se repite cada 'valor' de respuesta.
+    async obtenerResultados(pregunta: PreguntaEncuesta,): Promise<{ etiqueta: string; cantidad: number }[]> {
+    const { data, error } = await conTimeout(
+      this.supabaseService
+        .getClient()
+        .from('respuestas_encuesta')
+        .select('valor')
+        .eq('pregunta_id', pregunta.id),
+    );
+
+    if (error) {
+      throw new Error('No se pudieron cargar los resultados.');
+    }
+
+    const conteo = new Map<string, number>();
+    for (const fila of data ?? []) {
+      conteo.set(fila.valor, (conteo.get(fila.valor) ?? 0) + 1);
+    }
+
+    // Para 'escala' siempre mostramos el 1 al 5 en orden, aunque
+    // alguno no tenga ninguna respuesta todavía (queda en 0) — si no,
+    // el gráfico salta valores y queda desordenado.
+    if (pregunta.tipo_control === 'escala') {
+      return ['1', '2', '3', '4', '5'].map((valor) => ({
+        etiqueta: valor,
+        cantidad: conteo.get(valor) ?? 0,
+      }));
+    }
+
+    return Array.from(conteo.entries()).map(([etiqueta, cantidad]) => ({ etiqueta, cantidad }));
+  }
+
+  // Para el texto libre no tiene sentido un gráfico (es texto, no
+  // datos agrupables) — se muestran los comentarios tal cual.
+  async obtenerComentarios(preguntaId: string): Promise<string[]> {
+    const { data, error } = await conTimeout(
+      this.supabaseService
+        .getClient()
+        .from('respuestas_encuesta')
+        .select('valor')
+        .eq('pregunta_id', preguntaId)
+        .order('created_at', { ascending: false }),
+    );
+
+    if (error) {
+      throw new Error('No se pudieron cargar los comentarios.');
+    }
+
+    return (data ?? []).map((fila) => fila.valor).filter((v) => v && v.trim().length > 0);
+  }
 }
