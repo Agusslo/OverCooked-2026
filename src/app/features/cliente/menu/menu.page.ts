@@ -384,4 +384,6 @@ export class MenuPage implements OnInit {
       await Haptics.notification({ type: NotificationType.Error });
     } catch {}
   }
+
+
 }

@@ -1,0 +1,38 @@
+<div class="hl-page-wrapper">
+  <div class="main-container">
+    <div class="card-box">
+      <div class="header-box header-box--con-back">
+        <button class="btn-back" type="button" (click)="volver()">←</button>
+        <h2>Mayor o Menor</h2>
+      </div>
+
+      @if (cargando()) {
+        <p>Cargando...</p>
+      } @else if (yaJugadoAntes()) {
+        <p>Ya jugaste este juego en esta mesa.</p>
+      } @else {
+        <div class="carta">
+          <span class="carta__valor">{{ etiquetaValor(cartaActual().valor) }}</span>
+          <span class="carta__palo">{{ cartaActual().palo }}</span>
+        </div>
+
+        <p class="puntaje">Puntaje: {{ puntaje() }}</p>
+
+        @if (!terminado()) {
+          <div class="botones">
+            <button type="button" (click)="elegir(false)">Menor</button>
+            <button type="button" (click)="elegir(true)">Mayor</button>
+          </div>
+        } @else {
+          <p class="resultado">
+            @if (descuentoGanado() > 0) {
+              ¡Ganaste {{ descuentoGanado() }}% de descuento!
+            } @else {
+              No conseguiste descuento esta vez.
+            }
+          </p>
+        }
+      }
+    </div>
+  </div>
+</div>

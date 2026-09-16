@@ -26,7 +26,13 @@
       </button>
 
       <section class="sala-juegos">
-        <span>JUEGO PRÓXIMAMENTE</span>
+        <button type="button" class="sala-juegos__boton" (click)="irAJuegos()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="12" x="3" y="6" rx="2" />
+            <path d="M8 12h.01M12 12h.01M16 12h.01M10 9v6M14 9v6" />
+          </svg>
+          <span>JUGAR Y GANAR DESCUENTO</span>
+        </button>
       </section>
 
       @if (mensajeError()) {

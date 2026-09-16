@@ -37,4 +37,19 @@ export const clienteRoutes: Routes = [
     canActivate: [authGuard],
     data: { perfiles: ['cliente', 'anonimo'] },
   },
+  
+  {
+    path: 'juegos/:numero',
+    loadComponent: () =>
+      import('./juegos/juegos.page').then((m) => m.JuegosPage),
+    canActivate: [authGuard],
+    data: { perfiles: ['cliente'] }, // sin 'anonimo': el punto 15 lo excluye a propósito
+  },
+  {
+    path: 'juegos/:numero/higher-lower',
+    loadComponent: () =>
+      import('./juegos/higher-lower/higher-lower.page').then((m) => m.HigherLowerPage),
+    canActivate: [authGuard],
+    data: { perfiles: ['cliente'] },
+  },
 ];
