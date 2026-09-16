@@ -28,8 +28,9 @@
             <div class="pedido-card">
               <div class="pedido-card__top">
                 <span class="pedido-mesa">Mesa {{ pedido.numeroMesa }}</span>
-                <span class="pedido-estado">{{ pedido.estado }}</span>
+                <span class="pedido-hora">{{ pedido.created_at | date: 'HH:mm' }}</span>
               </div>
+              <span class="pedido-estado">{{ pedido.estado }}</span>
 
               <div class="pedido-items">
                 @for (item of (pedido.items ?? []); track item.id) {
