@@ -222,6 +222,7 @@
     font-size: 0.9rem;
     line-height: 1.4;
   }
+}
 
 .sala-juegos__boton {
   width: 100%;
@@ -232,13 +233,12 @@
   padding: 14px;
   border-radius: 14px;
   border: none;
-  background: var(--gold, #f0c060);
-  color: var(--accent-dark, #7f2d1d);
+  background: var(--gold);
+  color: var(--panel);
   font-weight: 800;
 
   svg {
     width: 20px;
     height: 20px;
   }
-}
 }
