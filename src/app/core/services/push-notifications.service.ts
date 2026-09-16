@@ -152,6 +152,10 @@ export class PushNotificationsService {
       // sector.
       const sector = data['sector'];
       this.router.navigateByUrl(sector === 'bar' ? '/bar/pedidos' : '/cocina/pedidos');
+    } else if (tipo === 'pedido-listo') {
+      // Punto 18: cocina y bar terminaron todos los productos del
+      // pedido; el mozo lo va a retirar.
+      this.router.navigateByUrl('/mozo/pedidos-en-curso');
     } else if (tipo === 'mensaje-mesa' && numeroMesa) {
       const hiloClienteId = data['hiloClienteId'];
       if (hiloClienteId) {

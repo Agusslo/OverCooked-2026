@@ -159,6 +159,14 @@ const PANEL_MOZO: PanelInicio = {
       ruta: '/mozo/pedidos-pendientes',
       icono: 'pedido',
     },
+    // Punto 18: seguimiento de los pedidos ya confirmados hasta que
+    // cocina/bar terminen (pedido completo).
+    {
+      titulo: 'Pedidos en curso',
+      detalle: 'Ver el progreso de cocina y bar por mesa',
+      ruta: '/mozo/pedidos-en-curso',
+      icono: 'pedido',
+    },
     {
       titulo: 'Consultas de mesas',
       detalle: 'Ver y responder a los clientes',

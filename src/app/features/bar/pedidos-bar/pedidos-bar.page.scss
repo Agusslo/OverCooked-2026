@@ -109,6 +109,12 @@
   text-transform: capitalize;
 }
 
+.pedido-estado--listo {
+  color: #f0c060;
+  font-weight: 800;
+  text-transform: none;
+}
+
 .pedido-items {
   display: flex;
   flex-direction: column;
@@ -118,6 +124,7 @@
 
 .pedido-item {
   display: flex;
+  align-items: center;
   gap: 8px;
   font-size: 13px;
   color: #f9bfa0;
@@ -127,6 +134,30 @@
   font-weight: 800;
   color: #f0c060;
   min-width: 18px;
+}
+
+.pedido-item__nombre {
+  flex: 1;
+}
+
+.pedido-item__badge {
+  color: #f0c060;
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.btn-item-listo {
+  flex-shrink: 0;
+  background: #2060a8;
+  color: #dbeeff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+
+  &:disabled { opacity: 0.6; }
 }
 
 .feedback-banner.error {

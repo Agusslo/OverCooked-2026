@@ -11,6 +11,7 @@ import {
   ESTADO_PEDIDO_INICIAL,
   ESTADO_PEDIDO_RECHAZADO,
   ESTADO_PEDIDO_CONFIRMADO,
+  ESTADO_ITEM_LISTO,
 } from '../models/pedido.model';
 
 // Lo que arma el cliente en la pantalla del menú antes de confirmar:
@@ -379,9 +380,9 @@ export class PedidosService {
     }));
   }
 
-  // Punto 14: cocina/bar escuchan cualquier cambio en 'pedidos' para
-  // refrescar su lista sin recargar a mano (mismo patrón que el mozo
-  // en escucharPedidosPendientes).
+  // Punto 14/18: cocina/bar escuchan cambios en 'pedidos' (nuevo pedido
+  // derivado) y en 'pedido_items' (algún producto marcado listo, propio
+  // o del otro sector) para refrescar su lista sin recargar a mano.
   escucharPedidosSector(sector: SectorProducto, alCambiar: () => void): RealtimeChannel {
     const client = this.supabaseService.getClient();
 
@@ -390,6 +391,92 @@ export class PedidosService {
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'pedidos' },
+        () => alCambiar(),
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'pedido_items' },
+        () => alCambiar(),
+      )
+      .subscribe();
+  }
+
+  // Punto 18: cocina/bar marcan un producto como listo. Cuando es el
+  // último item pendiente del pedido (contando todos los sectores que
+  // intervienen), un trigger en la base pasa el pedido a 'listo' y
+  // dispara el aviso al mozo (ver supabase/sql/punto-18-setup.sql).
+  async marcarItemListo(itemId: string): Promise<void> {
+    const client = this.supabaseService.getClient();
+
+    const { error } = await client
+      .from('pedido_items')
+      .update({ estado: ESTADO_ITEM_LISTO })
+      .eq('id', itemId);
+
+    if (error) {
+      throw new Error('No se pudo marcar el producto como listo.');
+    }
+  }
+
+  // Punto 18: pedidos confirmados (o en curso) con TODOS sus items sin
+  // filtrar por sector, para que el mozo vea el progreso de cocina y
+  // bar en un mismo listado y sepa cuándo el pedido está completo.
+  async listarEnCurso(): Promise<PedidoPorSector[]> {
+    const client = this.supabaseService.getClient();
+
+    const { data, error } = await client
+      .from('pedidos')
+      .select(
+        '*, mesas(numero), pedido_items(id, producto_id, cantidad, precio_unitario, sector, estado, productos(nombre, descripcion, foto_url, tiempo_elaboracion_minutos))',
+      )
+      .in('estado', ESTADOS_PEDIDO_EN_SECTOR)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      throw new Error('No se pudieron cargar los pedidos en curso.');
+    }
+
+    return ((data ?? []) as FilaPedidoSector[]).map((f) => ({
+      id: f.id,
+      mesa_id: f.mesa_id,
+      cliente_id: f.cliente_id,
+      cliente_anonimo_id: f.cliente_anonimo_id,
+      estado: f.estado,
+      total: f.total,
+      created_at: f.created_at,
+      numeroMesa: f.mesas?.numero ?? 0,
+      items: f.pedido_items.map((i) => ({
+        id: i.id,
+        pedido_id: f.id,
+        producto_id: i.producto_id,
+        cantidad: i.cantidad,
+        precio_unitario: i.precio_unitario,
+        sector: i.sector,
+        estado: i.estado,
+        nombre: i.productos?.nombre ?? 'Producto',
+        descripcion: i.productos?.descripcion ?? '',
+        foto_url: i.productos?.foto_url ?? '',
+        tiempo_elaboracion_minutos: i.productos?.tiempo_elaboracion_minutos ?? 0,
+      })),
+    }));
+  }
+
+  // Punto 18: el mozo escucha cambios en 'pedidos' y en 'pedido_items'
+  // (cocina/bar marcando productos listos) para ver el progreso sin
+  // recargar a mano.
+  escucharPedidosEnCurso(alCambiar: () => void): RealtimeChannel {
+    const client = this.supabaseService.getClient();
+
+    return client
+      .channel('pedidos-en-curso')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'pedidos' },
+        () => alCambiar(),
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'pedido_items' },
         () => alCambiar(),
       )
       .subscribe();

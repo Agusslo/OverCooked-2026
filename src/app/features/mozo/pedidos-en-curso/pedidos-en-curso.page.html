@@ -1,0 +1,85 @@
+<div class="pec-page-wrapper">
+  <div class="main-container">
+    <div class="card-box">
+      <div class="header-box header-box--con-back">
+        <button class="btn-back" type="button" (click)="volver()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <div class="header-titles">
+          <h2>Pedidos en curso</h2>
+          <p>Progreso de cocina y bar por mesa</p>
+        </div>
+      </div>
+
+      @if (cargando()) {
+        <div class="estado-carga">
+          <img src="assets/icon/logo.png" alt="" class="spinner-logo" />
+          <span>Cargando pedidos...</span>
+        </div>
+      } @else if (pedidos().length === 0) {
+        <div class="estado-vacio">
+          <span>No hay pedidos en curso en este momento.</span>
+        </div>
+      } @else {
+        <div class="pedidos-lista">
+          @for (pedido of pedidos(); track pedido.id) {
+            <div class="pedido-card" [class.pedido-card--completo]="pedido.estado === 'listo'">
+              <div class="pedido-card__top">
+                <span class="pedido-mesa">Mesa {{ pedido.numeroMesa }}</span>
+                <span class="pedido-hora">{{ pedido.created_at | date: 'HH:mm' }}</span>
+              </div>
+
+              @if (pedido.estado === 'listo') {
+                <span class="pedido-badge-completo">Pedido completo, listo para retirar</span>
+              } @else {
+                <span class="pedido-estado">{{ pedido.estado }}</span>
+              }
+
+              @if (itemsPorSector(pedido, 'cocina').length > 0) {
+                <div class="pedido-sector">
+                  <span class="pedido-sector__titulo">Cocina</span>
+                  <div class="pedido-items">
+                    @for (item of itemsPorSector(pedido, 'cocina'); track item.id) {
+                      <div class="pedido-item">
+                        <span class="pedido-item__cant">{{ item.cantidad }}</span>
+                        <span class="pedido-item__nombre">{{ item.nombre }}</span>
+                        <span class="pedido-item__estado" [class.pedido-item__estado--listo]="item.estado === 'listo'">
+                          {{ item.estado === 'listo' ? 'Listo ✓' : 'Pendiente' }}
+                        </span>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+
+              @if (itemsPorSector(pedido, 'bar').length > 0) {
+                <div class="pedido-sector">
+                  <span class="pedido-sector__titulo">Bar</span>
+                  <div class="pedido-items">
+                    @for (item of itemsPorSector(pedido, 'bar'); track item.id) {
+                      <div class="pedido-item">
+                        <span class="pedido-item__cant">{{ item.cantidad }}</span>
+                        <span class="pedido-item__nombre">{{ item.nombre }}</span>
+                        <span class="pedido-item__estado" [class.pedido-item__estado--listo]="item.estado === 'listo'">
+                          {{ item.estado === 'listo' ? 'Listo ✓' : 'Pendiente' }}
+                        </span>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      @if (mensajeError()) {
+        <div class="feedback-banner error">
+          <span>{{ mensajeError() }}</span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

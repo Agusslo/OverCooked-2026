@@ -57,6 +57,17 @@ export const ESTADO_PEDIDO_RECHAZADO = 'rechazado';
 // creó, punto 12) y el cliente puede acceder a los juegos.
 export const ESTADO_PEDIDO_CONFIRMADO = 'confirmado';
 
+// Punto 18: estados del enum estado_item_pedido que usan cocina/bar
+// para marcar cada producto. 'en_preparacion' y 'entregado' quedan
+// para puntos posteriores (todavía nada los asigna).
+export const ESTADO_ITEM_PENDIENTE = 'pendiente';
+export const ESTADO_ITEM_LISTO = 'listo';
+
+// Punto 18: todos los items de los sectores intervinientes están
+// 'listo' -> un trigger en la base marca el pedido con este mismo
+// estado y el mozo ya lo puede retirar completo.
+export const ESTADO_PEDIDO_LISTO = 'listo';
+
 // Estados en los que un pedido confirmado sigue "vivo" para el sector
 // (cocina/bar) que lo tiene que preparar: ya fue derivado pero todavía
 // no se entregó. Point 14 sólo necesita listar acá; el detalle de que

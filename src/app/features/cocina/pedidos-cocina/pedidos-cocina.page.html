@@ -30,13 +30,27 @@
                 <span class="pedido-mesa">Mesa {{ pedido.numeroMesa }}</span>
                 <span class="pedido-hora">{{ pedido.created_at | date: 'HH:mm' }}</span>
               </div>
-              <span class="pedido-estado">{{ pedido.estado }}</span>
+              <span class="pedido-estado" [class.pedido-estado--listo]="pedido.estado === 'listo'">
+                {{ pedido.estado === 'listo' ? 'Pedido completo' : pedido.estado }}
+              </span>
 
               <div class="pedido-items">
                 @for (item of (pedido.items ?? []); track item.id) {
                   <div class="pedido-item">
                     <span class="pedido-item__cant">{{ item.cantidad }}</span>
                     <span class="pedido-item__nombre">{{ item.nombre }}</span>
+                    @if (item.estado === 'listo') {
+                      <span class="pedido-item__badge">Listo ✓</span>
+                    } @else {
+                      <button
+                        type="button"
+                        class="btn-item-listo"
+                        [disabled]="marcandoId() === item.id"
+                        (click)="marcarListo(item)"
+                      >
+                        {{ marcandoId() === item.id ? 'Marcando…' : 'Marcar listo' }}
+                      </button>
+                    }
                   </div>
                 }
               </div>
