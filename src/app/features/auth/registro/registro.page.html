@@ -151,6 +151,11 @@
 
         <div class="campo">
           <ion-item class="registro-field" lines="none">
+            <div
+              class="toggle-password-spacer"
+              slot="start"
+              aria-hidden="true"
+            ></div>
             <ion-input
               [type]="mostrarPassword() ? 'text' : 'password'"
               formControlName="password"
@@ -209,6 +214,11 @@
 
         <div class="campo">
           <ion-item class="registro-field" lines="none">
+            <div
+              class="toggle-password-spacer"
+              slot="start"
+              aria-hidden="true"
+            ></div>
             <ion-input
               [type]="mostrarRepetirPassword() ? 'text' : 'password'"
               formControlName="repetirPassword"
@@ -275,12 +285,12 @@
         <ion-text class="form-error" color="danger">
           <p>Sacate una foto de perfil con la cámara.</p>
         </ion-text>
-        } 
-        @if (errorRegistro()) {
+        } @if (errorRegistro()) {
         <ion-text class="form-error" color="danger">
           @switch (errorRegistro()) { @case ("User already registered") {
           <p>El usuario ya está registrado</p>
-          } @case ('duplicate key value violates unique constraint "usuarios_dni_key"') {
+          } @case ('duplicate key value violates unique constraint
+          "usuarios_dni_key"') {
           <p>Ya se registró un usuario con ese DNI</p>
           } @default {
           <p>Ocurrió un error inesperado. Inténtelo de nuevo.</p>

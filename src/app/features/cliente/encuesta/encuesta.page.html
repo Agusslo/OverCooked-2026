@@ -1,0 +1,130 @@
+<div class="encuesta-page-wrapper">
+  <div class="main-container">
+    <div class="card-box">
+
+      <div class="header-box">
+        <div class="header-row">
+          <div class="header-titles">
+            <h2>Encuesta de satisfacción</h2>
+            @if (encuesta()) {
+              <p>Pregunta {{ indice() + 1 }} de {{ encuesta()!.preguntas.length }}</p>
+            }
+          </div>
+        </div>
+        @if (encuesta()) {
+          <div class="progreso-barra">
+            <div class="progreso-relleno" [style.width.%]="progreso()"></div>
+          </div>
+        }
+      </div>
+
+      <div class="encuesta-body">
+        @if (cargando()) {
+          <div class="estado-carga">
+            <img src="assets/icon/logo.png" alt="" class="spinner-logo" />
+            <span>Cargando…</span>
+          </div>
+        } @else if (yaRespondida()) {
+          <div class="estado-vacio">
+            <span>Ya cargaste tu encuesta para esta estadía. ¡Gracias!</span>
+          </div>
+        } @else if (mensajeError() && !preguntaActual()) {
+          <div class="estado-vacio">
+            <span>{{ mensajeError() }}</span>
+          </div>
+        } @else if (preguntaActual(); as pregunta) {
+          <div class="pregunta-box">
+            <h3 class="pregunta-texto">{{ pregunta.texto }}</h3>
+
+            @switch (pregunta.tipo_control) {
+              @case ('si_no') {
+                <div class="control-si-no">
+                  <button
+                    type="button"
+                    class="btn-si-no"
+                    [class.activo]="valorActual() === 'si'"
+                    (click)="responderActual('si')"
+                  >
+                    SÍ
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-si-no"
+                    [class.activo]="valorActual() === 'no'"
+                    (click)="responderActual('no')"
+                  >
+                    NO
+                  </button>
+                </div>
+              }
+              @case ('escala') {
+                <div class="control-escala">
+                  @for (num of [1, 2, 3, 4, 5]; track num) {
+                    <button
+                      type="button"
+                      class="btn-escala"
+                      [class.activo]="valorActual() === num.toString()"
+                      (click)="responderActual(num.toString())"
+                    >
+                      {{ num }}
+                    </button>
+                  }
+                </div>
+                <div class="escala-labels">
+                  <span>Malo</span>
+                  <span>Excelente</span>
+                </div>
+              }
+              @case ('opcion_multiple') {
+                <div class="control-opciones">
+                  @for (opcion of pregunta.opciones; track opcion.id) {
+                    <button
+                      type="button"
+                      class="btn-opcion"
+                      [class.activo]="valorActual() === opcion.texto"
+                      (click)="responderActual(opcion.texto)"
+                    >
+                      {{ opcion.texto }}
+                    </button>
+                  }
+                </div>
+              }
+              @case ('texto_libre') {
+                <textarea
+                  class="control-texto-libre"
+                  rows="5"
+                  placeholder="Escribí tu comentario acá…"
+                  [ngModel]="valorActual()"
+                  (ngModelChange)="responderActual($event)"
+                ></textarea>
+              }
+            }
+          </div>
+
+          @if (mensajeError()) {
+            <div class="feedback-banner">
+              <span>{{ mensajeError() }}</span>
+            </div>
+          }
+
+          <div class="encuesta-acciones">
+            @if (indice() > 0) {
+              <button type="button" class="btn-volver" (click)="volver()" [disabled]="enviando()">
+                ATRÁS
+              </button>
+            }
+            <button type="button" class="btn-siguiente" (click)="siguiente()" [disabled]="enviando()">
+              @if (enviando()) {
+                <span>ENVIANDO…</span>
+              } @else if (esUltima()) {
+                <span>ENVIAR</span>
+              } @else {
+                <span>SIGUIENTE</span>
+              }
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

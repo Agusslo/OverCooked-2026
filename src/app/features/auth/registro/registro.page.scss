@@ -44,7 +44,12 @@ ion-content.registro-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: max(var(--brand-pad-top), calc(env(safe-area-inset-top) + 12px), 24px) 0 var(--brand-pad-bottom);
+  padding: max(
+      var(--brand-pad-top),
+      calc(env(safe-area-inset-top) + 12px),
+      24px
+    )
+    0 var(--brand-pad-bottom);
   flex-shrink: 0;
 }
 
@@ -299,22 +304,33 @@ ion-content.registro-page {
   letter-spacing: 0.05em;
 }
 
+.toggle-password,
+.toggle-password-spacer {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+}
+
 .toggle-password {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
   background: none;
   border: none;
   color: #c45030;
-  display: flex;
-  align-items: center;
-  padding: 0 4px;
+  padding: 0;
   cursor: pointer;
+  touch-action: manipulation;
+  z-index: 2;
 
   &:active {
     opacity: 0.7;
   }
+}
+
+.toggle-password-spacer {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 @media (max-height: 520px) {
