@@ -52,4 +52,11 @@ export const clienteRoutes: Routes = [
     canActivate: [authGuard],
     data: { perfiles: ['cliente'] },
   },
+  {
+    path: 'juegos/:numero/simon',
+    loadComponent: () =>
+      import('./juegos/simon/simon.page').then((m) => m.SimonPage),
+    canActivate: [authGuard],
+    data: { perfiles: ['cliente'] },
+  },
 ];
