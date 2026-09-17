@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { EncuestasService } from '../../../core/services/encuestas.service';
@@ -11,7 +11,7 @@ import { Encuesta } from '../../../core/models/encuesta.model';
   standalone: true,
   templateUrl: './encuesta.page.html',
   styleUrls: ['./encuesta.page.scss'],
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
 })
 export class EncuestaPage implements OnInit {
   private route = inject(ActivatedRoute);

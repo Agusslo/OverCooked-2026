@@ -201,7 +201,7 @@
   font-weight: 700;
 }
 
-.sala-resenias__proximamente {
+.sala-resenias__link {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -211,6 +211,11 @@
   gap: 12px;
   color: var(--texto-suave);
   padding: 0 12px;
+  text-decoration: none;
+
+  &:active {
+    transform: scale(0.99);
+  }
 
   svg {
     width: 44px;
@@ -221,5 +226,7 @@
   span {
     font-size: 0.9rem;
     line-height: 1.4;
+    font-weight: 700;
+    color: var(--texto);
   }
 }

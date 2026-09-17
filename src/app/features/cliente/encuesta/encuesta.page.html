@@ -27,6 +27,9 @@
         } @else if (yaRespondida()) {
           <div class="estado-vacio">
             <span>Ya cargaste tu encuesta para esta estadía. ¡Gracias!</span>
+            <a routerLink="/cliente/encuesta-resultados" class="link-resultados">
+              Ver resultados de la encuesta
+            </a>
           </div>
         } @else if (mensajeError() && !preguntaActual()) {
           <div class="estado-vacio">

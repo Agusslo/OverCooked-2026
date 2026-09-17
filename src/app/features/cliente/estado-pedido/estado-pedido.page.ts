@@ -19,6 +19,7 @@ import {
   etiquetaEstadoPedido,
   ESTADO_PEDIDO_INICIAL,
   ESTADO_PEDIDO_RECHAZADO,
+  ESTADO_PEDIDO_ENTREGADO,
 } from '../../../core/models/pedido.model';
 import { environment } from '../../../../environments/environment';
 import { BurbujaMozoComponent } from '../../chat/burbuja-mozo/burbuja-mozo.component';
@@ -54,6 +55,7 @@ export class EstadoPedidoPage implements OnInit, OnDestroy {
   cargando = signal(true);
   mensajeError = signal('');
   indiceFoto = signal(0);
+  confirmandoRecepcion = signal(false);
 
   private pedidoId = '';
   private canal?: RealtimeChannel;
@@ -88,10 +90,21 @@ export class EstadoPedidoPage implements OnInit, OnDestroy {
     );
   });
 
-  // Punto 19: recién cuando el mozo entrega el pedido completo, el
-  // cliente puede acceder a la encuesta (a diferencia de los juegos,
-  // que se habilitan antes, apenas el mozo confirma el pedido).
-  puedeAccederEncuesta = computed(() => this.pedido()?.estado === 'entregado');
+  // Punto 19: el mozo ya entregó el pedido; falta que el cliente
+  // confirme la recepción para habilitar la encuesta y pedir la cuenta.
+  fuePedidoEntregado = computed(() => this.pedido()?.estado === ESTADO_PEDIDO_ENTREGADO);
+  confirmoRecepcion = computed(() => this.pedido()?.confirmado_por_cliente === true);
+
+  // Punto 19: recién cuando el cliente confirma haber recibido el
+  // pedido, puede acceder a la encuesta y a pedir la cuenta (a
+  // diferencia de los juegos, que se habilitan antes, apenas el mozo
+  // confirma el pedido).
+  puedeAccederEncuesta = computed(
+    () => this.fuePedidoEntregado() && this.confirmoRecepcion(),
+  );
+  puedeAccederCuenta = computed(
+    () => this.fuePedidoEntregado() && this.confirmoRecepcion(),
+  );
 
   // "Tiempo total estimado de realización del pedido completo" (punto 12).
   tiempoTotal = computed(() =>
@@ -186,5 +199,27 @@ export class EstadoPedidoPage implements OnInit, OnDestroy {
   modificarPedido(): void {
     const numero = this.numeroMesa();
     if (numero) this.router.navigate(['/cliente/menu', numero]);
+  }
+
+  // Punto 19: el cliente confirma que recibió el pedido que el mozo
+  // entregó. Habilita la encuesta y la opción de pedir la cuenta.
+  async confirmarRecepcion(): Promise<void> {
+    if (this.confirmandoRecepcion() || this.confirmoRecepcion()) return;
+
+    this.confirmandoRecepcion.set(true);
+
+    try {
+      await this.pedidosService.confirmarRecepcionPedido(this.pedidoId);
+      this.pedido.update((p) => (p ? { ...p, confirmado_por_cliente: true } : p));
+      await Haptics.notification({ type: NotificationType.Success }).catch(() => {});
+    } catch (error) {
+      this.mensajeError.set(
+        error instanceof Error
+          ? error.message
+          : 'No se pudo confirmar la recepción del pedido.',
+      );
+    } finally {
+      this.confirmandoRecepcion.set(false);
+    }
   }
 }

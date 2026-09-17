@@ -63,6 +63,17 @@
         </button>
         }
 
+        @if (fuePedidoEntregado() && !confirmoRecepcion()) {
+        <button
+          type="button"
+          class="ep-btn-modificar"
+          [disabled]="confirmandoRecepcion()"
+          (click)="confirmarRecepcion()"
+        >
+          {{ confirmandoRecepcion() ? 'Confirmando...' : 'Confirmar recepción del pedido' }}
+        </button>
+        }
+
         <div class="ep-items">
           @for (item of (p.items ?? []); track item.id) {
           <div class="ep-item">
@@ -124,6 +135,23 @@
         </svg>
         <span>Contanos qué te pareció tu estadía</span>
       </a>
+    </section>
+    } @if (puedeAccederCuenta()) {
+    <section class="ep-cuenta">
+      <div class="ep-cuenta__proximamente">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect width="20" height="14" x="2" y="5" rx="2" />
+          <line x1="2" x2="22" y1="10" y2="10" />
+        </svg>
+        <span>Próximamente vas a poder pedir la cuenta desde acá.</span>
+      </div>
     </section>
     } }
   </main>

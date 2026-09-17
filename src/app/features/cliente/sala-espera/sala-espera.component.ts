@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ViewWillEnter } from '@ionic/angular';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { Haptics, NotificationType } from '@capacitor/haptics';
@@ -27,7 +27,7 @@ type EstadoBoton = 'esperando' | 'con-mesa' | 'con-pedido';
   standalone: true,
   templateUrl: './sala-espera.component.html',
   styleUrls: ['./sala-espera.component.scss'],
-  imports: [BurbujaMozoComponent, HeaderInicioComponent],
+  imports: [BurbujaMozoComponent, HeaderInicioComponent, RouterLink],
 })
 export class SalaEsperaComponent implements OnInit, OnDestroy, ViewWillEnter {
   private authService = inject(AuthService);

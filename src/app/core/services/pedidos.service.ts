@@ -11,6 +11,7 @@ import {
   ESTADO_PEDIDO_INICIAL,
   ESTADO_PEDIDO_RECHAZADO,
   ESTADO_PEDIDO_CONFIRMADO,
+  ESTADO_PEDIDO_ENTREGADO,
   ESTADO_ITEM_LISTO,
 } from '../models/pedido.model';
 
@@ -480,6 +481,36 @@ export class PedidosService {
         () => alCambiar(),
       )
       .subscribe();
+  }
+
+  // Punto 19: el mozo entrega el pedido completo (ya estaba 'listo').
+  async marcarPedidoEntregado(pedidoId: string): Promise<void> {
+    const client = this.supabaseService.getClient();
+
+    const { error } = await client
+      .from('pedidos')
+      .update({ estado: ESTADO_PEDIDO_ENTREGADO })
+      .eq('id', pedidoId);
+
+    if (error) {
+      throw new Error('No se pudo marcar el pedido como entregado.');
+    }
+  }
+
+  // Punto 19: el cliente confirma que recibió el pedido que el mozo
+  // marcó como entregado. Recién con esto se habilita, en su pantalla,
+  // el acceso a la encuesta y a la opción de pedir la cuenta.
+  async confirmarRecepcionPedido(pedidoId: string): Promise<void> {
+    const client = this.supabaseService.getClient();
+
+    const { error } = await client
+      .from('pedidos')
+      .update({ confirmado_por_cliente: true })
+      .eq('id', pedidoId);
+
+    if (error) {
+      throw new Error('No se pudo confirmar la recepción del pedido.');
+    }
   }
 
   // Punto 13: el cliente modifica un pedido rechazado (agrega, quita o

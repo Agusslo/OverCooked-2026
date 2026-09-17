@@ -45,6 +45,10 @@ export interface Pedido {
   // Punto 13: motivo que carga el mozo al rechazar el pedido. Sólo
   // tiene valor mientras estado === 'rechazado'.
   motivo_rechazo?: string | null;
+  // Punto 19: el cliente confirma haber recibido el pedido que el mozo
+  // marcó como entregado. Recién ahí se habilita el acceso a la
+  // encuesta y a pedir la cuenta.
+  confirmado_por_cliente?: boolean;
   // Se completa cuando se trae el pedido con su detalle.
   items?: PedidoItem[];
 }
@@ -67,6 +71,9 @@ export const ESTADO_ITEM_LISTO = 'listo';
 // 'listo' -> un trigger en la base marca el pedido con este mismo
 // estado y el mozo ya lo puede retirar completo.
 export const ESTADO_PEDIDO_LISTO = 'listo';
+
+// Punto 19: el mozo entrega el pedido completo (ya estaba 'listo').
+export const ESTADO_PEDIDO_ENTREGADO = 'entregado';
 
 // Estados en los que un pedido confirmado sigue "vivo" para el sector
 // (cocina/bar) que lo tiene que preparar: ya fue derivado pero todavía

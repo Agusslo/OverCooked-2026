@@ -172,6 +172,21 @@
   font-weight: 700;
 }
 
+.btn-entregar {
+  align-self: flex-start;
+  background: #f0c060;
+  color: #4a2e1e;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 800;
+  font-size: 13px;
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
 .feedback-banner.error {
   background: #5a1f1f;
   color: #f8b4b4;

@@ -37,6 +37,17 @@
                 <span class="pedido-estado">{{ pedido.estado }}</span>
               }
 
+              @if (pedido.estado === 'listo') {
+                <button
+                  type="button"
+                  class="btn-entregar"
+                  [disabled]="entregandoId() === pedido.id"
+                  (click)="entregarPedido(pedido)"
+                >
+                  {{ entregandoId() === pedido.id ? 'Entregando...' : 'Entregar pedido' }}
+                </button>
+              }
+
               @if (itemsPorSector(pedido, 'cocina').length > 0) {
                 <div class="pedido-sector">
                   <span class="pedido-sector__titulo">Cocina</span>

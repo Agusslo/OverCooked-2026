@@ -310,6 +310,36 @@
   }
 }
 
+.ep-cuenta {
+  background: var(--panel-2);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+}
+
+.ep-cuenta__proximamente {
+  flex: 1;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  color: var(--texto-suave);
+  padding: 0 8px;
+
+  svg {
+    width: 36px;
+    height: 36px;
+    color: var(--gold);
+  }
+  span {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+}
+
 .ep-encuesta {
   display: flex;
 }
