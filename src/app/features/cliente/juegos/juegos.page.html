@@ -1,0 +1,33 @@
+<div class="juegos-page-wrapper">
+  <div class="main-container">
+    <div class="card-box">
+      <div class="header-box header-box--con-back">
+        <button class="btn-back" type="button" (click)="volver()">←</button>
+        <div class="header-titles">
+          <h2>Juegos</h2>
+          <p>Ganá un descuento para tu cuenta</p>
+        </div>
+      </div>
+
+      @if (mejorDescuento() > 0) {
+        <div class="banner-descuento">¡Tenés {{ mejorDescuento() }}% de descuento asegurado!</div>
+      }
+
+      @for (j of juegos; track j.juego) {
+        <button
+          type="button"
+          class="juego-card"
+          [disabled]="!j.ruta || yaJugado(j.juego)"
+          (click)="jugar(j.ruta)"
+        >
+          <span>{{ j.nombre }}</span>
+          @if (yaJugado(j.juego)) {
+            <span class="etiqueta">Ya jugado</span>
+          } @else if (!j.ruta) {
+            <span class="etiqueta">Próximamente</span>
+          }
+        </button>
+      }
+    </div>
+  </div>
+</div>

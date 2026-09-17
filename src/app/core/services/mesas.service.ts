@@ -261,6 +261,7 @@ export class MesasService {
     if (estado === 'libre') {
       await client.from('mensajes_mesa').delete().eq('mesa_id', id);
       await client.from('mesas_chat_leido').delete().eq('mesa_id', id);
+      await client.from('juegos_resultados').delete().eq('mesa_id', id);
     }
   }
 }

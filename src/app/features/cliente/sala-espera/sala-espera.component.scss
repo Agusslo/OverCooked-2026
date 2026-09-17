@@ -223,3 +223,22 @@
     line-height: 1.4;
   }
 }
+
+.sala-juegos__boton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: var(--gold);
+  color: var(--panel);
+  font-weight: 800;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}

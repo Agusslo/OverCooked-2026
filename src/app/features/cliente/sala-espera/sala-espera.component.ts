@@ -172,4 +172,9 @@ export class SalaEsperaComponent implements OnInit, OnDestroy, ViewWillEnter {
       this.router.navigateByUrl('/cliente/escanear-mesa');
     }
   }
+
+  irAJuegos(): void {
+    const mesa = this.mesaAsignada();
+    if (mesa) this.router.navigate(['/cliente/juegos', mesa.numero]);
+  }
 }
