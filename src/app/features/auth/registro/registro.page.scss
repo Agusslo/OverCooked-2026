@@ -1,111 +1,111 @@
 :host {
-  font-family: "ADLaM Display", system-ui, sans-serif;
+    font-family: 'ADLaM Display', system-ui, sans-serif;
 
-  // Paleta oficial OverCooked
-  --bg-hero: #ee7a4f;
-  --bg-panel: #c45030;
-  --accent-dark: #a83820;
-  --accent-light: #f9bfa0;
-  --gold: #f0c060;
-  --white: #ffffff;
+    // Misma paleta que login_page.scss — sistema de diseño único para toda la app
+    --bg-hero: #ee7a4f; // franja superior, donde va el logo
+    --bg-panel: #c45030; // panel inferior redondeado
+    --accent-dark: #a83820; // texto sobre fondos claros / botones secundarios
+    --accent-light: #f9bfa0; // fondo de los inputs / texto sobre fondos oscuros
+    --gold: #f0c060; // botón principal
+    --white: #ffffff;
 
-  // Foto grande destacada y proporciones equilibradas
-  --foto-size: clamp(170px, 25dvh, 210px);
-  --field-h: clamp(40px, 5.4dvh, 46px);
-  --gap-form: clamp(4px, 0.9dvh, 8px);
-  --card-pad-v: clamp(10px, 1.8dvh, 18px);
-  --card-pad-h: clamp(18px, 5.5vw, 24px);
-  --brand-pad-top: clamp(10px, 1.8dvh, 18px);
-  --brand-pad-bottom: clamp(6px, 1dvh, 10px);
+    // Escala fluida: todo se calcula en base al alto real de pantalla
+    // (dvh), así que en un celular bajito (o con el teclado achicando
+    // el viewport) todo se compacta solo, en vez de depender de un
+    // único breakpoint fijo que dejaba la foto siempre gigante.
+    --foto-size: clamp(170px, 25dvh, 210px);
+    --field-h: clamp(34px, 5.4dvh, 52px);
+    --gap-form: clamp(3px, 1.1dvh, 14px);
+    --card-pad-v: clamp(2px, 0.6dvh, 8px);
+    --card-pad-h: clamp(18px, 6vw, 24px);
+    --brand-pad-top: clamp(20px, 5dvh, 48px);
+    --brand-pad-bottom: clamp(4px, 1.2dvh, 14px);
 }
 
 ion-content.registro-page {
-  --background: var(--bg-hero);
-  --padding-top: 0;
-  --padding-bottom: 0;
-  --padding-start: 0;
-  --padding-end: 0;
-  --overflow: hidden;
-  font-family: "ADLaM Display", system-ui, sans-serif;
+    --background: var(--bg-hero);
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    font-family: 'ADLaM Display', system-ui, sans-serif;
 }
 
 .registro-shell {
-  height: 100dvh;
-  max-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg-hero);
-  overflow: hidden;
-  box-sizing: border-box;
+    // min-height (no height fija): si el contenido no entra —por ej.
+    // con el teclado tapando la mitad de la pantalla— el shell crece y
+    // ion-content lo scrollea, en vez de recortarlo con overflow:hidden.
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-hero);
+    font-family: 'ADLaM Display', system-ui, sans-serif;
 }
 
 .brand {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: max(
-      var(--brand-pad-top),
-      calc(env(safe-area-inset-top) + 12px),
-      24px
-    )
-    0 var(--brand-pad-bottom);
-  flex-shrink: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: max(var(--brand-pad-top), env(safe-area-inset-top)) 0 var(--brand-pad-bottom);
+    flex-shrink: 0;
+}
+
+.brand__logo {
+    width: var(--foto-size);
+    max-width: 170px;
+    height: auto;
+    filter: brightness(0) invert(1);
+    display: block;
 }
 
 .brand__picker {
-  margin: 0;
+    margin: 0;
 }
 
 .foto-picker {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(4px, 1dvh, 8px);
 }
 
 .foto-picker__circle {
-  width: var(--foto-size);
-  height: var(--foto-size);
-  border-radius: 50%;
-  background: var(--accent-light);
-  border: #d4603a 3px dashed;
-  box-shadow: 0px 5px 14px rgba(0, 0, 0, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: 0;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-
-  &:active {
-    transform: scale(0.96);
-  }
+    width: var(--foto-size);
+    height: var(--foto-size);
+    border-radius: 50%;
+    background: var(--accent-light);
+    border: #d4603a 2px dashed;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0;
+    cursor: pointer;
 }
 
 .foto-picker__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .foto-picker__icono {
-  font-size: clamp(2.4rem, 6.5dvh, 3.4rem);
-  font-weight: 700;
-  color: var(--accent-dark);
-  line-height: 1;
+    font-size: clamp(1.3rem, 5dvh, 2rem);
+    font-weight: 700;
+    color: var(--accent-dark);
+    line-height: 1;
 }
 
 .foto-picker__label {
-  color: var(--white);
-  font-size: clamp(0.76rem, 1.7dvh, 0.88rem);
-  font-weight: 700;
-  text-align: center;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    color: var(--white);
+    font-size: clamp(0.68rem, 1.7dvh, 0.8rem);
+    font-weight: 700;
+    text-align: center;
 }
 
-/* ---- Recuadro de cámara en vivo ---- */
+/* ---- Recuadro de cámara en vivo (fallback web) ---- */
 .camera-box {
   width: var(--foto-size);
   border-radius: 20px;
@@ -114,7 +114,6 @@ ion-content.registro-page {
   border: 2px solid var(--gold);
   margin: 0 auto;
 }
-
 .camera-box video {
   width: 100%;
   height: var(--foto-size);
@@ -125,243 +124,204 @@ ion-content.registro-page {
 .camera-actions {
   display: flex;
   gap: 6px;
-  padding: 5px;
+  padding: 6px;
 }
 
 .camera-button {
   flex: 1;
-  padding: 6px;
+  padding: 8px;
   border-radius: 8px;
   border: none;
-  font-family: "ADLaM Display", system-ui, sans-serif;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.03em;
   cursor: pointer;
 }
-
-.camera-cancel {
-  background: #8c2e14;
-  color: #f9bfa0;
-  border: 1.5px solid rgba(240, 192, 96, 0.25);
-}
-
-.camera-capture {
-  background: var(--gold);
-  color: var(--accent-dark);
-}
+.camera-cancel { background: var(--bg-panel); color: var(--accent-light); }
+.camera-capture { background: var(--gold); color: var(--accent-dark); }
 
 .registro-card {
-  flex: 1;
-  min-height: 0;
-  width: 100%;
-  box-sizing: border-box;
-  background: var(--bg-panel);
-  border-radius: 36px 36px 0 0;
-  padding: var(--card-pad-v) var(--card-pad-h) clamp(10px, 1.5dvh, 16px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--bg-panel);
+    border-radius: 40px 40px 0 0;
+    padding: var(--card-pad-v) var(--card-pad-h) clamp(16px, 3dvh, 20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // En pantallas altas los tamaños ya llegaron a su tope (clamp
+    // máximo) y sobra espacio: centrarlo evita que todo quede pegado
+    // arriba con un bloque vacío abajo.
 }
 
 .registro-title {
-  width: 100%;
-  max-width: 500px;
-  color: var(--white);
-  font-size: clamp(1.1rem, 2.3dvh, 1.3rem);
-  font-weight: 700;
-  text-align: center;
-  line-height: 1.15;
-  margin: 0 0 2px;
-  flex-shrink: 0;
+    width: 100%;
+    max-width: 600px;
+    color: var(--white);
+    font-size: clamp(0.95rem, 3dvh, 1.3rem);
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.2;
+    margin: 1rem 0 clamp(6px, 1.4dvh, 18px);
+}
+
+.registro-pasos {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 0 0 clamp(6px, 1.4dvh, 16px);
+}
+
+.paso-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    opacity: 0.5;
+    flex-shrink: 0;
+}
+
+.paso-dot--activo {
+    opacity: 1;
+    background: var(--gold);
 }
 
 .registro-form {
-  width: 100%;
-  max-width: 500px;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: var(--gap-form);
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-form);
 }
 
 .scan-btn {
-  width: 100%;
-  --background: #e3a24b;
-  --background-activated: #c98736;
-  --background-hover: #edb15a;
-  --color: #7f2d1d;
-  --border-radius: 16px;
-  --border-width: 2px;
-  --border-style: solid;
-  --border-color: #f0c060;
-  --box-shadow: 0px 4px 10px rgba(91, 28, 13, 0.24);
-  height: var(--field-h);
-  margin: 2px 0 0;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  font-size: 0.85rem;
-  flex-shrink: 0;
+    --background: var(--accent-dark);
+    --background-activated: #8f2f1a;
+    --background-hover: #9a341d;
+    --color: var(--accent-light);
+    --border-radius: 12px;
+    --box-shadow: none;
+    height: var(--field-h);
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: 0.04em;
 }
 
+.registro-back {
+    --color: var(--accent-light);
+    --box-shadow: none;
+    height: clamp(34px, 5dvh, 42px);
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+// Agrupa cada input con su propio mensaje de error: así el gap entre
+// campos (--gap-form) no se duplica cuando aparece un error — el alto
+// total del formulario depende de la cantidad de CAMPOS, no de cuántos
+// errores estén visibles en un momento dado (ej. al tocar "Siguiente"
+// con todo vacío, antes se sumaban 4 gaps extra de golpe).
 .campo {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2px, 0.6dvh, 6px);
+}
+
+// El espacio del error queda reservado siempre (el <ion-text> entra y
+// sale con @if, pero este contenedor no), así el mensaje no empuja el
+// resto del formulario para abajo cuando aparece o desaparece.
+.campo-error {
+    min-height: 0.9rem;
+    display: flex;
+    align-items: flex-start;
 }
 
 .registro-field {
-  --background: var(--accent-light);
-  --border-radius: 22px;
-  --padding-start: 18px;
-  --padding-end: 18px;
-  --min-height: var(--field-h);
-  --highlight-height: 0;
-  height: var(--field-h);
-  border-radius: 22px;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.18);
-  border: #d4603a 2px solid;
-  overflow: hidden;
-  margin: 0;
-  position: relative;
+    --background: var(--accent-light);
+    --border-radius: 24px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --min-height: var(--field-h);
+    --highlight-height: 0;
+    border-radius: 24px;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
+    border: #D4603A 2px solid;
+    overflow: hidden;
+    margin: 0;
 }
 
 .registro-field ion-input {
-  --placeholder-color: var(--accent-dark);
-  --color: var(--accent-dark);
-  --padding-start: 0;
-  --padding-end: 0;
-  width: 100%;
-  flex: 1 1 100%;
-  font-size: clamp(0.82rem, 1.8dvh, 0.88rem);
-  font-weight: 700;
-  text-align: center;
-  font-family: "ADLaM Display", system-ui, sans-serif;
-
-  &::part(native) {
-    padding: 0;
+    --placeholder-color: var(--accent-dark);
+    --color: var(--accent-dark);
+    font-size: 0.9rem;
+    font-weight: 700;
     text-align: center;
-  }
+    font-family: 'ADLaM Display', system-ui, sans-serif;
 }
 
 .form-error {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  font-size: 0.65rem;
-  line-height: 1.1;
-  text-align: center;
+    width: 100%;
+    margin: 0;
+    font-size: 0.7rem;
+    line-height: 1.25;
+    text-align: center;
 }
 
 .form-error p {
-  margin: 0;
-  color: #fff0f0;
-  font-weight: 600;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.form-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-  flex-shrink: 0;
-  margin-top: 2px;
+    margin: 0;
+    color: #fff0f0;
+    font-weight: 600;
 }
 
 .registro-submit {
-  --background: var(--gold);
-  --background-activated: #dcab54;
-  --background-hover: #e6b661;
-  --color: var(--accent-dark);
-  --border-radius: 15px;
-  --box-shadow: 0 4px 10px rgba(91, 28, 13, 0.24);
-  --padding-top: 0;
-  --padding-bottom: 0;
-  height: clamp(40px, 5.2dvh, 44px);
-  margin: 0;
-  font-family: "ADLaM Display", system-ui, sans-serif;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-size: 0.9rem;
+    --background: var(--gold);
+    --background-activated: #dcab54;
+    --background-hover: #e6b661;
+    --color: var(--accent-dark);
+    --border-radius: 12px;
+    --box-shadow: none;
+    height: var(--field-h);
+    margin: 0;
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.secondary-actions {
+    width: 100%;
+    max-width: 600px;
+    margin-top: clamp(6px, 1.6dvh, 14px);
 }
 
 .action-btn {
-  --color: #f9bfa0;
-  --background: #8c2e14;
-  --border-radius: 12px;
-  --border-style: solid;
-  --border-width: 1.5px;
-  --border-color: rgba(240, 192, 96, 0.25);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-}
-
-.toggle-password,
-.toggle-password-spacer {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 44px;
+    --background: var(--accent-dark);
+    --background-activated: #8f2f1a;
+    --background-hover: #9a341d;
+    --color: var(--accent-light);
+    --border-radius: 12px;
+    --box-shadow: none;
+    height: clamp(36px, 5.2dvh, 46px);
+    width: 100%;
+    font-weight: 800;
+    letter-spacing: 0.04em;
 }
 
 .toggle-password {
   background: none;
   border: none;
   color: #c45030;
-  padding: 0;
-  cursor: pointer;
-  touch-action: manipulation;
-  z-index: 2;
-
-  &:active {
-    opacity: 0.7;
-  }
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
 }
 
-.toggle-password-spacer {
-  visibility: hidden;
-  pointer-events: none;
-}
-
-@media (max-height: 520px) {
-  .registro-shell {
-    overflow: hidden;
-  }
-
-  :host {
-    --foto-size: 112px;
-    --field-h: 32px;
-    --gap-form: 2px;
-  }
-
-  .foto-picker {
-    gap: 3px;
-  }
-
-  .registro-card {
-    padding-top: 7px;
-    padding-bottom: 7px;
-  }
-
-  .registro-title {
-    font-size: 1rem;
-  }
-
-  .registro-submit {
-    height: 32px;
-  }
-
-  .action-btn {
-    height: 28px;
-  }
+// Pantallas muy angostas (< 340px de ancho): un poco menos de padding
+// horizontal para que los campos no se sientan apretados contra el borde.
+@media (max-width: 340px) {
+    :host {
+        --card-pad-h: 14px;
+    }
 }

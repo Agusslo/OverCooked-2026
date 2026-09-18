@@ -256,11 +256,7 @@ ion-content.invitado-page {
   letter-spacing: 0.05em;
 }
 
-@media (max-width: 380px) {
-  :host {
-    --foto-size: 160px;
-  }
-}
+
 
 .paso-espera {
   display: flex;
