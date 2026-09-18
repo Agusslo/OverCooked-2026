@@ -36,7 +36,7 @@
 | **Catanese, Demián**            | `feature/dev-delta` | Diseño del Mail                 | 01/09/2026   | 01/09/2026 |
 | **López, Agustín Nicolás**      | `feature/dev-alfa`  | cliente registrado, QR DNI      | 3/09/2026    | 3/09/2026  |
 | **López, Agustín Nicolás**      | `feature/dev-alfa`  | Cliente Anonimo                 | 5/09/2026    | 6/09/2026  |
-| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Encuesta                 | 16/09/2026    | 16/09/2026  |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Encuesta                        | 16/09/2026    | 16/09/2026  |
 
 
 > Si algún integrante no llega con la funcionalidad comprometida, se reasigna el módulo o se cambia el plazo, y queda registrado acá mismo con la fecha del cambio.
