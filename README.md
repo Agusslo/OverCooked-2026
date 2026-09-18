@@ -111,7 +111,8 @@
     <img src="src/assets/capturas/mozo_home.jpg" alt="mozo-home" width="300">
     <img src="src/assets/capturas/mozo_consultas.jpg" alt="mozo-consultas" width="300">
     <img src="src/assets/capturas/mozo_chat.jpg" alt="mozo-confirmar" width="300">
-    <img src="src/assets/capturas/mozo_confirmar.jpg" alt="mozo-entregar" width="300"<    img src="src/assets/capturas/mozo_centregajpg" alt="mozo-entregar" width="300">
+    <img src="src/assets/capturas/mozo_confirmar.jpg" alt="mozo-entregar" width="300">
+    <img src="src/assets/capturas/mozo_entrega.jpg" alt="mozo-entregar" width="300">
 >
 </details>
 
@@ -126,7 +127,7 @@
 <summary>Vistas del Cocinero</summary>
     <img src="src/assets/capturas/cocinero_home.jpg" alt="cocinero-home" width="300">
     <img src="src/assets/capturas/cocinero_alta.jpg" alt="cocinero-alta" width="300">
-    <img src="src/assets/capturas/cocinero_pendientes.jpg" alt="cocinero-pendientes" width="300">
+    <img src="src/assets/capturas/cocinero_pendiente.jpg" alt="cocinero-pendientes" width="300">
 </details>
 
 <details>
