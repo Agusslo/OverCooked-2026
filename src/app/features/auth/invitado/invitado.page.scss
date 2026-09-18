@@ -240,20 +240,22 @@ ion-content.invitado-page {
 }
 
 .secondary-actions {
-  width: 100%;
-  max-width: 600px;
-  margin-top: 18px;
+    width: 100%;
+    max-width: 600px;
+    margin-top: clamp(6px, 1.6dvh, 14px);
 }
 
 .action-btn {
-  --color: #f9bfa0;
-  --background: #8c2e14;
-  --border-radius: 12px;
-  --border-style: solid;
-  --border-width: 1.5px;
-  --border-color: rgba(240, 192, 96, 0.25);
-  font-weight: 700;
-  letter-spacing: 0.05em;
+    --background: var(--accent-dark);
+    --background-activated: #8f2f1a;
+    --background-hover: #9a341d;
+    --color: var(--accent-light);
+    --border-radius: 12px;
+    --box-shadow: none;
+    height: clamp(36px, 5.2dvh, 46px);
+    width: 100%;
+    font-weight: 800;
+    letter-spacing: 0.04em;
 }
 
 

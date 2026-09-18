@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { Haptics, NotificationType } from '@capacitor/haptics';
@@ -11,6 +12,7 @@ import { Mesa } from '../../../core/models/mesa.model';
   standalone: true,
   templateUrl: './hilos.page.html',
   styleUrls: ['./hilos.page.scss'],
+  imports: [CommonModule],
 })
 export class HilosPage implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);

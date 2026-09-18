@@ -7,10 +7,15 @@
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
         </button>
+
+        @if (mesa()) {
+          <div class="header-avatar">{{ mesa()?.numero }}</div>
+        }
+
         <div class="header-titles">
-          <h2>Consulta al mozo</h2>
+          <h2>{{ tituloChat() }}</h2>
           @if (mesa()) {
-            <p>Mesa {{ mesa()?.numero }}</p>
+            <p>{{ subtituloChat() }}</p>
           }
         </div>
       </div>
@@ -26,11 +31,17 @@
             <div class="estado-vacio">
               <span>Todavía no hay mensajes. Escribí tu consulta abajo.</span>
             </div>
+          } @else {
+            <div class="fecha-divisor"><span>Hoy</span></div>
           }
+
           @for (mensaje of mensajes(); track mensaje.id) {
             <div class="burbuja" [class.burbuja--propia]="esMio(mensaje)">
-              <span class="burbuja-autor">{{ mensaje.autor_nombre }}</span>
+              @if (!esMio(mensaje)) {
+                <span class="burbuja-autor">{{ mensaje.autor_nombre }}</span>
+              }
               <p class="burbuja-texto">{{ mensaje.contenido }}</p>
+              <span class="burbuja-hora">{{ mensaje.created_at | date:'HH:mm' }}</span>
             </div>
           }
         </div>
@@ -47,11 +58,11 @@
             [ngModel]="textoNuevo()"
             (ngModelChange)="textoNuevo.set($event)"
             name="texto"
-            placeholder="Escribí tu mensaje..."
+            placeholder="Escribí un mensaje..."
             [disabled]="enviando()"
           />
           <button type="submit" class="btn-enviar" [disabled]="enviando() || !textoNuevo().trim()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="22" y1="2" x2="11" y2="13" />
               <polygon points="22 2 15 22 11 13 2 9 22 2" />
             </svg>

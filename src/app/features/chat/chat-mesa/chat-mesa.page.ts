@@ -7,6 +7,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RealtimeChannel } from '@supabase/supabase-js';
@@ -22,7 +23,7 @@ import { MensajeMesa } from '../../../core/models/mensaje.model';
   standalone: true,
   templateUrl: './chat-mesa.page.html',
   styleUrls: ['./chat-mesa.page.scss'],
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
 })
 export class ChatMesaPage implements OnInit, OnDestroy {
   @ViewChild('scrollMensajes') scrollMensajes?: ElementRef<HTMLDivElement>;
@@ -136,6 +137,25 @@ export class ChatMesaPage implements OnInit, OnDestroy {
 
   esMio(mensaje: MensajeMesa): boolean {
     return mensaje.autor_id === this.miId;
+  }
+
+  // Título/subtítulo del header: el mozo ve el nombre de quien escribe
+  // (lo tomamos del primer mensaje ajeno ya cargado, sin pedir datos
+  // extra); el cliente/anónimo siempre ve el mismo encabezado fijo.
+  tituloChat(): string {
+    if (!this.esMozo) {
+      return 'Consulta al mozo';
+    }
+    const deLaOtraParte = this.mensajes().find((m) => m.autor_id !== this.miId);
+    return deLaOtraParte?.autor_nombre ?? 'Cliente';
+  }
+
+  subtituloChat(): string {
+    const mesa = this.mesa();
+    if (!mesa) {
+      return '';
+    }
+    return this.esMozo ? `Mesa ${mesa.numero} · ${mesa.capacidad} personas` : `Mesa ${mesa.numero}`;
   }
 
   async volver(): Promise<void> {

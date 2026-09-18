@@ -60,7 +60,7 @@
         @if (paso() === 1) {
 
         <div class="campo">
-          <ion-item class="registro-field" lines="none">
+          <ion-item class="registro-field registro-field--password" lines="none">
             <ion-input
               type="text"
               formControlName="nombre"
@@ -204,7 +204,6 @@
             ></ion-input>
             <button
               type="button"
-              slot="end"
               class="toggle-password"
               (click)="toggleMostrarPassword()"
               [attr.aria-label]="mostrarPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
@@ -233,7 +232,7 @@
         </div>
 
         <div class="campo">
-          <ion-item class="registro-field" lines="none">
+          <ion-item class="registro-field registro-field--password" lines="none">
             <ion-input
               [type]="mostrarRepetirPassword() ? 'text' : 'password'"
               formControlName="repetirPassword"
@@ -242,7 +241,6 @@
             ></ion-input>
             <button
               type="button"
-              slot="end"
               class="toggle-password"
               (click)="toggleMostrarRepetirPassword()"
               [attr.aria-label]="mostrarRepetirPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"

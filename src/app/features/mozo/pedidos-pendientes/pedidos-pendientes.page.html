@@ -1,105 +1,112 @@
 <div class="pp-page-wrapper">
   <div class="main-container">
     <div class="card-box">
-      <div class="header-box header-box--con-back">
-        <button class="btn-back" type="button" (click)="volver()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-        </button>
-        <div class="header-titles">
-          <h2>Pedidos pendientes</h2>
-          <p>Esperando tu confirmación</p>
+      <div class="header-box">
+        <div class="header-row">
+          <button class="btn-back" type="button" (click)="volver()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <div class="header-titles">
+            <h2>Pedidos pendientes</h2>
+            <p>Esperando tu confirmación</p>
+          </div>
         </div>
       </div>
 
-      @if (cargando()) {
-        <div class="estado-carga">
-          <img src="assets/icon/logo.png" alt="" class="spinner-logo" />
-          <span>Cargando pedidos...</span>
-        </div>
-      } @else if (pedidos().length === 0) {
-        <div class="estado-vacio">
-          <span>No hay pedidos pendientes en este momento.</span>
-        </div>
-      } @else {
-        <div class="pedidos-lista">
-          @for (pedido of pedidos(); track pedido.id) {
-            <div class="pedido-card">
-              <div class="pedido-card__top">
-                <span class="pedido-mesa">Mesa {{ pedido.numeroMesa }}</span>
-                <span class="pedido-hora">{{ pedido.created_at | date:'HH:mm' }}</span>
-              </div>
-              <span class="pedido-cliente">{{ pedido.nombreCliente }}</span>
-
-              <div class="pedido-items">
-                @for (item of (pedido.items ?? []); track item.id) {
-                  <div class="pedido-item">
-                    <span class="pedido-item__cant">{{ item.cantidad }}</span>
-                    <span class="pedido-item__nombre">{{ item.nombre }}</span>
+      <div class="pp-body">
+        @if (cargando()) {
+          <div class="estado-carga">
+            <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
+            <span>Cargando pedidos...</span>
+          </div>
+        } @else if (pedidos().length === 0) {
+          <div class="estado-vacio">
+            <span>No hay pedidos pendientes en este momento.</span>
+          </div>
+        } @else {
+          <div class="pedidos-scroll">
+            @for (pedido of pedidos(); track pedido.id) {
+              <div class="pedido-card">
+                <div class="pedido-card__top">
+                  <div class="pedido-mesa-badge">{{ pedido.numeroMesa }}</div>
+                  <div class="pedido-card__info">
+                    <span class="pedido-mesa">Mesa {{ pedido.numeroMesa }}</span>
+                    <span class="pedido-cliente">{{ pedido.nombreCliente }}</span>
                   </div>
-                }
-              </div>
-
-              <div class="pedido-card__bottom">
-                <strong class="pedido-total">${{ pedido.total | number:'1.0-0' }}</strong>
-
-                @if (pedidoARechazar() !== pedido.id) {
-                  <div class="pedido-card__acciones">
-                    <button type="button" class="btn-rechazar" (click)="abrirRechazo(pedido)">
-                      Rechazar
-                    </button>
-                    <button
-                      type="button"
-                      class="btn-confirmar"
-                      [disabled]="confirmandoId() === pedido.id"
-                      (click)="confirmarPedido(pedido)"
-                    >
-                      {{ confirmandoId() === pedido.id ? 'Confirmando…' : 'Confirmar' }}
-                    </button>
-                  </div>
-                }
-              </div>
-
-              @if (pedidoARechazar() === pedido.id) {
-                <div class="rechazo-form">
-                  <label for="motivo-{{ pedido.id }}">Motivo del rechazo</label>
-                  <textarea
-                    id="motivo-{{ pedido.id }}"
-                    rows="3"
-                    placeholder="Ej: no tenemos más milanesas, elegí otra cosa"
-                    [formControl]="motivo"
-                  ></textarea>
-                  @if (motivo.invalid && motivo.touched) {
-                    <span class="rechazo-form__error">
-                      Contá el motivo con al menos 5 caracteres.
-                    </span>
-                  }
-                  <div class="rechazo-form__acciones">
-                    <button type="button" class="btn-cancelar" (click)="cancelarRechazo()">
-                      Cancelar
-                    </button>
-                    <button
-                      type="button"
-                      class="btn-confirmar-rechazo"
-                      [disabled]="enviandoRechazo()"
-                      (click)="confirmarRechazo(pedido)"
-                    >
-                      {{ enviandoRechazo() ? 'Enviando…' : 'Enviar rechazo' }}
-                    </button>
-                  </div>
+                  <span class="pedido-hora">{{ pedido.created_at | date:'HH:mm' }}</span>
                 </div>
-              }
-            </div>
-          }
-        </div>
-      }
 
-      @if (mensajeError()) {
-        <div class="feedback-banner error">
-          <span>{{ mensajeError() }}</span>
-        </div>
-      }
+                <div class="pedido-items">
+                  @for (item of (pedido.items ?? []); track item.id) {
+                    <div class="pedido-item">
+                      <span class="pedido-item__cant">{{ item.cantidad }}×</span>
+                      <span class="pedido-item__nombre">{{ item.nombre }}</span>
+                    </div>
+                  }
+                </div>
+
+                <div class="pedido-card__bottom">
+                  <strong class="pedido-total">${{ pedido.total | number:'1.0-0' }}</strong>
+
+                  @if (pedidoARechazar() !== pedido.id) {
+                    <div class="pedido-card__acciones">
+                      <button type="button" class="btn-rechazar" (click)="abrirRechazo(pedido)">
+                        Rechazar
+                      </button>
+                      <button
+                        type="button"
+                        class="btn-confirmar"
+                        [disabled]="confirmandoId() === pedido.id"
+                        (click)="confirmarPedido(pedido)"
+                      >
+                        {{ confirmandoId() === pedido.id ? 'Confirmando…' : 'Confirmar' }}
+                      </button>
+                    </div>
+                  }
+                </div>
+
+                @if (pedidoARechazar() === pedido.id) {
+                  <div class="rechazo-form">
+                    <label for="motivo-{{ pedido.id }}">Motivo del rechazo</label>
+                    <textarea
+                      id="motivo-{{ pedido.id }}"
+                      rows="3"
+                      placeholder="Ej: no tenemos más milanesas, elegí otra cosa"
+                      [formControl]="motivo"
+                    ></textarea>
+                    @if (motivo.invalid && motivo.touched) {
+                      <span class="rechazo-form__error">
+                        Contá el motivo con al menos 5 caracteres.
+                      </span>
+                    }
+                    <div class="rechazo-form__acciones">
+                      <button type="button" class="btn-cancelar" (click)="cancelarRechazo()">
+                        Cancelar
+                      </button>
+                      <button
+                        type="button"
+                        class="btn-confirmar-rechazo"
+                        [disabled]="enviandoRechazo()"
+                        (click)="confirmarRechazo(pedido)"
+                      >
+                        {{ enviandoRechazo() ? 'Enviando…' : 'Enviar rechazo' }}
+                      </button>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        @if (mensajeError()) {
+          <div class="feedback-banner error">
+            <span>{{ mensajeError() }}</span>
+          </div>
+        }
+      </div>
     </div>
   </div>
 </div>

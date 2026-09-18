@@ -17,7 +17,6 @@ import {
   Pedido,
   EstadoPedido,
   etiquetaEstadoPedido,
-  ESTADO_PEDIDO_INICIAL,
   ESTADO_PEDIDO_RECHAZADO,
   ESTADO_PEDIDO_ENTREGADO,
 } from '../../../core/models/pedido.model';
@@ -26,8 +25,8 @@ import { BurbujaMozoComponent } from '../../chat/burbuja-mozo/burbuja-mozo.compo
 
 // Punto 12 del PDF: una vez que el cliente confirma el pedido, entra a
 // esta pantalla a "esperar la confirmación por parte del mozo" y seguir
-// el estado. Muestra el detalle del pedido, una foto de los platos que
-// va rotando, y los juegos (todavía "Próximamente").
+// el estado. Muestra el detalle del pedido y una foto de los platos que
+// va rotando.
 @Component({
   selector: 'app-estado-pedido',
   standalone: true,
@@ -70,7 +69,7 @@ export class EstadoPedidoPage implements OnInit, OnDestroy {
 
   etiquetaEstado = computed(() => {
     const estado = this.pedido()?.estado;
-    return estado ? etiquetaEstadoPedido(estado) : '';
+    return estado ? etiquetaEstadoPedido(estado) : 'PENDIENTE MOZO';
   });
 
   // Punto 13: el mozo rechazó el pedido, hay que ofrecerle al cliente
@@ -79,26 +78,13 @@ export class EstadoPedidoPage implements OnInit, OnDestroy {
     () => this.pedido()?.estado === ESTADO_PEDIDO_RECHAZADO,
   );
 
-  // Punto 14: el mozo confirmó el pedido (o ya avanzó más), el cliente
-  // puede entrar a la sección de juegos.
-  puedeAccederJuegos = computed(() => {
-    const estado = this.pedido()?.estado;
-    return (
-      !!estado &&
-      estado !== ESTADO_PEDIDO_INICIAL &&
-      estado !== ESTADO_PEDIDO_RECHAZADO
-    );
-  });
-
   // Punto 19: el mozo ya entregó el pedido; falta que el cliente
   // confirme la recepción para habilitar la encuesta y pedir la cuenta.
   fuePedidoEntregado = computed(() => this.pedido()?.estado === ESTADO_PEDIDO_ENTREGADO);
   confirmoRecepcion = computed(() => this.pedido()?.confirmado_por_cliente === true);
 
   // Punto 19: recién cuando el cliente confirma haber recibido el
-  // pedido, puede acceder a la encuesta y a pedir la cuenta (a
-  // diferencia de los juegos, que se habilitan antes, apenas el mozo
-  // confirma el pedido).
+  // pedido, puede acceder a la encuesta y a pedir la cuenta.
   puedeAccederEncuesta = computed(
     () => this.fuePedidoEntregado() && this.confirmoRecepcion(),
   );
