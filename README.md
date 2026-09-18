@@ -172,6 +172,12 @@ Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios**
 | Aprobado | verde "éxito" | 32px, festivo | Trebuchet MS + Palatino |
 | Rechazado | bordó sobrio | 21px, formal | Courier + Cambria |
 
+<details>
+<summary>MAILS</summary>
+    <img src="https://cdn.discordapp.com/attachments/1540693681814769744/1550320789264535614/image.png?ex=6aade83f&is=6aac96bf&hm=f55c79db69f36580dc47e30dad6877286ffc05bbdcc9866c103a0a09f406eb3b&" alt="icono" width="1000"><br>
+    <img src="https://cdn.discordapp.com/attachments/1540693681814769744/1550320866024235068/image.png?ex=6aade852&is=6aac96d2&hm=3ae3309f3bde33baf910174b4277f4f1d6118d6ead78f2dd968bb3118395cb46&" alt="splash" width="1000">
+</details>
+
 ### Notificaciones
 
 **Responsable:** Fernández Waisberg, Gabriel (`feature/dev-gamma`)
