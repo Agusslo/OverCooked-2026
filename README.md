@@ -86,7 +86,8 @@
 
 <details>
 <summary>Registro: Cliente Registrado y Anonimo</summary>
-    <img src="src/assets/capturas/registro.jpg" alt="registro-1" width="300">
+    <img src="src/assets/capturas/registro.jpg" alt="registro-1" width="300"><    img src="src/assets/capturas/registro.2jpg" alt="registro-1" width="300">
+
     <img src="src/assets/capturas/registro_anonimo.jpg" alt="registro-anonimo" width="300">
 </details>
 
@@ -109,8 +110,9 @@
 <summary>Vistas del Mozo</summary>
     <img src="src/assets/capturas/mozo_home.jpg" alt="mozo-home" width="300">
     <img src="src/assets/capturas/mozo_consultas.jpg" alt="mozo-consultas" width="300">
-    <img src="src/assets/capturas/mozo_hatr.jpg" alt="mozo-confirmar" width="300">
-    <img src="src/assets/capturas/mozoconfirmarr.jpg" alt="mozo-entregar" width="300">
+    <img src="src/assets/capturas/mozochatr.jpg" alt="mozo-confirmar" width="300">
+    <img src="src/assets/capturas/moz_oconfirmar.jpg" alt="mozo-entregar" width="300"<    img src="src/assets/capturas/mozo_centregajpg" alt="mozo-entregar" width="300">
+>
 </details>
 
 <details>
