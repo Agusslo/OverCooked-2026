@@ -86,7 +86,8 @@
 
 <details>
 <summary>Registro: Cliente Registrado y Anonimo</summary>
-    <img src="src/assets/capturas/registro.jpg" alt="registro-1" width="300"><    img src="src/assets/capturas/registro.2jpg" alt="registro-1" width="300">
+    <img src="src/assets/capturas/registro.jpg" alt="registro-1" width="300">
+    <img src="src/assets/capturas/registro2.jpg" alt="registro-1" width="300">
 
     <img src="src/assets/capturas/registro_anonimo.jpg" alt="registro-anonimo" width="300">
 </details>
