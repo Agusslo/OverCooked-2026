@@ -185,13 +185,18 @@ Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios**
 
 **Responsable:** Fernández Waisberg, Gabriel (`feature/dev-gamma`)
 
-Cada notificacion segun el caso que es necesario. Cuando un cliente quiere registrarse le llega la notificación al dueño/supervisor y cuando el cliente registrado/anónimo pide una mesa al metre.
+Las notificaciones push se envían desde Edge Functions de Supabase cuando cambian ciertas tablas del negocio. El token del dispositivo se registra desde la app con `PushNotificationsService`, y luego el backend dispara el envío vía Firebase Cloud Messaging (FCM).
 
-| Tipo | Se dispara desde | Punto TFI |
-| :--- | :--- | :---: |
-| `registro-pendiente` | `AuthService.registrarUsuario` — al crear un cliente registrado | 5 |
-| `cliente-aprobado` | `AdminService.aprobarCliente` — el dueño/supervisor acepta al cliente | 8 |
-| `cliente-rechazado` | `AdminService.rechazarCliente` — el dueño/supervisor rechaza al cliente | 7 |
+| Tipo | Se dispara desde | Receptor | Punto TFI |
+| :--- | :--- | :--- | :---: |
+| `cliente-pendiente` | `usuarios` al quedar un cliente en `estado = 'pendiente'` | dueño / supervisor | 6 |
+| `lista-espera` | `lista_espera` al anotarse un cliente en espera | metre | 9 |
+| `mesa-asignada` | `asignaciones_mesa` al asignar una mesa a un cliente registrado | cliente | 10 |
+| `mensaje-mesa` | `mensajes_mesa` al enviar un mensaje en la mesa | mozos o cliente dueño del hilo | 11 |
+| `pedido-nuevo` | `pedidos` al quedar en `estado = 'pendiente_mozo'` | mozo | 12 |
+| `pedido-rechazado` | `pedidos` al cambiar a `estado = 'rechazado'` | cliente | 13 |
+| `pedido-confirmado` | `pedidos` al cambiar a `estado = 'confirmado'` | cocina / bar + cliente | 14 |
+| `pedido-listo` | `pedidos` al cambiar a `estado = 'listo'` | mozo | 18 |
 
 ### QR
 <div align="center">
