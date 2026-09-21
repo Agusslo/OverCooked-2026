@@ -47,7 +47,7 @@ export class JuegosService {
 
     // Si ya jugó ese juego (choca con el unique), no lo tratamos como
     // error fatal: simplemente no se sobreescribe, ya vale el primero.
-    if (error && !error.message.includes('duplicate')) {
+    if (error && !error.message.includes('duplicate') || error?.code === "23505") {
       throw new Error('No se pudo guardar el resultado del juego.');
     }
   }

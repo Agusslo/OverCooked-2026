@@ -41,7 +41,7 @@
                       <span class="mesa-item__personas">· {{ mesa.capacidad }} personas</span>
                     </span>
                     @if (previewDe(mesa)?.ultimaFecha) {
-                      <span class="mesa-item__hora">{{ previewDe(mesa)?.ultimaFecha | date:'HH:mm' }}</span>
+                      <span class="mesa-item__hora">{{ previewDe(mesa)?.ultimaFecha | date:'dd/MM HH:mm' }}</span>
                     }
                   </div>
                   <div class="mesa-item__linea-bottom">

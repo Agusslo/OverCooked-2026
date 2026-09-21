@@ -528,14 +528,18 @@ export class PedidosService {
       0,
     );
 
-    const { error: errorBorrar } = await client
+    // Para no dejar el pedido sin renglones si algo falla a mitad de camino,
+    // primero se insertan los nuevos y recién después se borran los viejos.
+    const { data: itemsViejos, error: errorViejos } = await client
       .from('pedido_items')
-      .delete()
+      .select('id')
       .eq('pedido_id', pedidoId);
 
-    if (errorBorrar) {
+    if (errorViejos) {
       throw new Error('No se pudo actualizar el detalle del pedido.');
     }
+
+    const idsViejos = (itemsViejos ?? []).map((i) => i.id as string);
 
     const filasItems = lineas.map((l) => ({
       pedido_id: pedidoId,
@@ -545,9 +549,28 @@ export class PedidosService {
       sector: l.producto.sector,
     }));
 
-    const { error: errorItems } = await client.from('pedido_items').insert(filasItems);
+    const { data: itemsNuevos, error: errorItems } = await client
+      .from('pedido_items')
+      .insert(filasItems)
+      .select('id');
     if (errorItems) {
       throw new Error('No se pudieron guardar los productos del pedido.');
+    }
+
+    if (idsViejos.length > 0) {
+      const { error: errorBorrar } = await client
+        .from('pedido_items')
+        .delete()
+        .in('id', idsViejos);
+
+      if (errorBorrar) {
+        // Revertimos: se quitan los nuevos y el pedido queda como estaba.
+        await client
+          .from('pedido_items')
+          .delete()
+          .in('id', (itemsNuevos ?? []).map((i) => i.id as string));
+        throw new Error('No se pudo actualizar el detalle del pedido.');
+      }
     }
 
     const { data: pedidoActualizado, error: errorUpdate } = await client

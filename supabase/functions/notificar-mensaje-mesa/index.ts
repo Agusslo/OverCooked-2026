@@ -29,13 +29,7 @@
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-const FCM_PROJECT_ID = Deno.env.get('FCM_PROJECT_ID') ?? '';
-const FCM_CLIENT_EMAIL = Deno.env.get('FCM_CLIENT_EMAIL') ?? '';
-const FCM_PRIVATE_KEY = (Deno.env.get('FCM_PRIVATE_KEY') ?? '').replace(/\\n/g, '\n');
-
-const FCM_SCOPE = 'https://www.googleapis.com/auth/firebase.messaging';
-const FCM_TOKEN_URL = 'https://oauth2.googleapis.com/token';
+import { enviarPush, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
 
 interface FilaMensaje {
   id: string;
@@ -58,7 +52,7 @@ serve(async (req) => {
     return json({ error: 'Método no permitido.' }, 405);
   }
 
-  if (!FCM_PROJECT_ID || !FCM_CLIENT_EMAIL || !FCM_PRIVATE_KEY) {
+  if (!firebaseConfigurado()) {
     return json({ error: 'Faltan variables de entorno de Firebase.' }, 500);
   }
 
@@ -70,7 +64,6 @@ serve(async (req) => {
   }
 
   const mensaje = payload.record;
-  console.log('[notificar-mensaje-mesa] payload recibido:', JSON.stringify(payload));
 
   if (!mensaje) {
     console.log('[notificar-mensaje-mesa] omitido: sin registro.');
@@ -128,8 +121,8 @@ serve(async (req) => {
     const resultados = await Promise.allSettled(
       tokens.map((token: string) =>
         enviarPush(accessToken, token, {
-          titulo: `Mesa ${mesa.numero} · ${mensaje.autor_nombre}`,
-          cuerpo: mensaje.contenido,
+          title: `Mesa ${mesa.numero} · ${mensaje.autor_nombre}`,
+          body: mensaje.contenido,
           data: {
             tipo: 'respuesta-mozo',
             numeroMesa: String(mesa.numero),
@@ -194,8 +187,8 @@ serve(async (req) => {
   const resultados = await Promise.allSettled(
     tokens.map((token: string) =>
       enviarPush(accessToken, token, {
-        titulo: `Mesa ${mesa.numero} · ${mensaje.autor_nombre}`,
-        cuerpo: mensaje.contenido,
+        title: `Mesa ${mesa.numero} · ${mensaje.autor_nombre}`,
+        body: mensaje.contenido,
         data: {
           tipo: 'mensaje-mesa',
           numeroMesa: String(mesa.numero),
@@ -214,110 +207,3 @@ serve(async (req) => {
 
   return json({ ok: true, enviados, fallidos: fallidos.length, detalleFallidos: fallidos }, 200);
 });
-
-async function enviarPush(
-  accessToken: string,
-  token: string,
-  opciones: { titulo: string; cuerpo: string; data: Record<string, string> },
-): Promise<void> {
-  const resp = await fetch(
-    `https://fcm.googleapis.com/v1/projects/${FCM_PROJECT_ID}/messages:send`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: {
-          token,
-          notification: {
-            title: opciones.titulo,
-            body: opciones.cuerpo,
-          },
-          data: opciones.data,
-        },
-      }),
-    },
-  );
-
-  if (!resp.ok) {
-    const detalle = await resp.text();
-    throw new Error(`FCM rechazó el envío a un token: ${detalle}`);
-  }
-}
-
-// --- Autenticación OAuth2 con service account (JWT Bearer flow) ---
-// Idéntico a notificar-mesa-asignada.
-
-async function obtenerAccessToken(): Promise<string> {
-  const ahora = Math.floor(Date.now() / 1000);
-  const header = { alg: 'RS256', typ: 'JWT' };
-  const claims = {
-    iss: FCM_CLIENT_EMAIL,
-    scope: FCM_SCOPE,
-    aud: FCM_TOKEN_URL,
-    iat: ahora,
-    exp: ahora + 3600,
-  };
-
-  const encoder = new TextEncoder();
-  const encabezadoB64 = base64UrlEncode(encoder.encode(JSON.stringify(header)));
-  const claimsB64 = base64UrlEncode(encoder.encode(JSON.stringify(claims)));
-  const entrada = `${encabezadoB64}.${claimsB64}`;
-
-  const clavePrivada = await importarClavePrivada(FCM_PRIVATE_KEY);
-  const firma = await crypto.subtle.sign(
-    { name: 'RSASSA-PKCS1-v1_5' },
-    clavePrivada,
-    encoder.encode(entrada),
-  );
-  const jwt = `${entrada}.${base64UrlEncode(new Uint8Array(firma))}`;
-
-  const resp = await fetch(FCM_TOKEN_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-      assertion: jwt,
-    }),
-  });
-
-  if (!resp.ok) {
-    throw new Error(`Google rechazó el JWT: ${await resp.text()}`);
-  }
-
-  const datos = await resp.json();
-  return datos.access_token as string;
-}
-
-async function importarClavePrivada(pem: string): Promise<CryptoKey> {
-  const cuerpoPem = pem
-    .replace('-----BEGIN PRIVATE KEY-----', '')
-    .replace('-----END PRIVATE KEY-----', '')
-    .replace(/\s/g, '');
-  const bytes = Uint8Array.from(atob(cuerpoPem), (c) => c.charCodeAt(0));
-
-  return crypto.subtle.importKey(
-    'pkcs8',
-    bytes,
-    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
-    false,
-    ['sign'],
-  );
-}
-
-function base64UrlEncode(bytes: Uint8Array): string {
-  let binario = '';
-  for (const byte of bytes) {
-    binario += String.fromCharCode(byte);
-  }
-  return btoa(binario).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
-
-function json(cuerpo: unknown, status: number): Response {
-  return new Response(JSON.stringify(cuerpo), {
-    status,
-    headers: { 'Content-Type': 'application/json' },
-  });
-}

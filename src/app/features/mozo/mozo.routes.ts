@@ -21,6 +21,15 @@ export const mozoRoutes: Routes = [
     data: { perfiles: ['mozo'] },
   },
   {
+    path: 'pagos-pendientes',
+    loadComponent: () =>
+      import('./pagos-pendientes/pagos-pendientes.page').then(
+        (m) => m.PagosPendientesPage,
+      ),
+    canActivate: [authGuard],
+    data: { perfiles: ['mozo'] },
+  },
+  {
     path: 'consultas',
     loadComponent: () =>
       import('./consultas/consultas.page').then((m) => m.ConsultasPage),

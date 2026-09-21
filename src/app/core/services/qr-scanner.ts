@@ -87,6 +87,12 @@ export class QrScannerService {
       return { tipo: 'LOCAL', valor: 'LOCAL_INGRESO' };
     }
 
+    // QR de propina (punto 21): "PROPINA_<NIVEL>". El valor es el código
+    // completo, que se busca en la tabla 'qr_propinas'.
+    if (valorLimpio.startsWith('PROPINA_')) {
+      return { tipo: 'PROPINA', valor: valorLimpio };
+    }
+
     if (valorLimpio.startsWith('MESA_')) {
       const numeroMesa = parseInt(valorLimpio.replace('MESA_', ''), 10);
       return { tipo: 'MESA', valor: numeroMesa };

@@ -62,7 +62,15 @@ export class AuthService {
       throw new Error('Correo o contraseña incorrectos.');
     }
 
-    const usuario = await this.obtenerUsuarioPorId(data.user.id);
+    let usuario: Usuario;
+    try {
+      usuario = await this.obtenerUsuarioPorId(data.user.id);
+    } catch (error) {
+      // Sin fila en 'usuarios' no hay perfil: no dejamos la sesión de
+      // Auth abierta a medias.
+      await this.logout();
+      throw error;
+    }
 
     if (usuario.estado === 'rechazado') {
       await this.logout();
@@ -301,6 +309,9 @@ export class AuthService {
         '[registrarAnonimo] Falló el insert en clientes_anonimos:',
         error,
       );
+      // La sesión anónima ya se creó: se cierra para no dejar un
+      // invitado "fantasma" sin fila en clientes_anonimos.
+      await this.logout().catch(() => {});
       throw new Error(
         `PASO 2 (guardar en clientes_anonimos) falló: ${error instanceof Error ? error.message : JSON.stringify(error)}`,
       );

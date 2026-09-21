@@ -167,6 +167,13 @@ const PANEL_MOZO: PanelInicio = {
       ruta: '/mozo/pedidos-en-curso',
       icono: 'pedido',
     },
+    // Punto 22: confirmar el pago del cliente y liberar la mesa.
+    {
+      titulo: 'Pagos pendientes',
+      detalle: 'Confirmar pagos y liberar mesas',
+      ruta: '/mozo/pagos-pendientes',
+      icono: 'pedido',
+    },
     {
       titulo: 'Consultas de mesas',
       detalle: 'Ver y responder a los clientes',

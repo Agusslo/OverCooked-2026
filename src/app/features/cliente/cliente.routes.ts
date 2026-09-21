@@ -24,6 +24,13 @@ export const clienteRoutes: Routes = [
     data: { perfiles: ['cliente', 'anonimo'] },
   },
   {
+    path: 'cuenta/:pedidoId',
+    loadComponent: () =>
+      import('./cuenta/cuenta.page').then((m) => m.CuentaPage),
+    canActivate: [authGuard],
+    data: { perfiles: ['cliente', 'anonimo'] },
+  },
+  {
     path: 'escanear-mesa',
     loadComponent: () =>
       import('./escanear-mesa/escanear-mesa.page').then((m) => m.EscanearMesaPage),

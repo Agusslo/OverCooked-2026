@@ -152,6 +152,13 @@ export class PushNotificationsService {
       // sector.
       const sector = data['sector'];
       this.router.navigateByUrl(sector === 'bar' ? '/bar/pedidos' : '/cocina/pedidos');
+    } else if (tipo === 'cuenta-solicitada' || tipo === 'pago-realizado') {
+      // Punto 21: el mozo ve el pago por confirmar (dueño y supervisor,
+      // sin acceso a esa pantalla, caen en /inicio por el guard).
+      this.router.navigateByUrl('/mozo/pagos-pendientes');
+    } else if (tipo === 'pago-confirmado') {
+      // Punto 22: dueño y supervisor sólo se enteran del cobro.
+      this.router.navigateByUrl('/inicio');
     } else if (tipo === 'pedido-listo') {
       // Punto 18: cocina y bar terminaron todos los productos del
       // pedido; el mozo lo va a retirar.

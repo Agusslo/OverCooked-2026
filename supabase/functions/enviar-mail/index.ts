@@ -9,8 +9,10 @@
 //   RESEND_API_KEY  -> API key de https://resend.com
 //   MAIL_FROM       -> Remitente verificado, ej: "OverCooked <hola@tudominio.com>"
 //   MAIL_LOGO_URL   -> URL pública del logo para los mails (opcional)
+//   SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY -> Inyectadas automáticamente por Supabase
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY') ?? '';
 const MAIL_FROM = Deno.env.get('MAIL_FROM') ?? 'OverCooked <onboarding@resend.dev>';
@@ -249,6 +251,61 @@ serve(async (req) => {
   }
   if (!para || !esEmailValido(para)) {
     return json({ error: 'Destinatario inválido.' }, 400);
+  }
+
+  // Sólo se manda a usuarios reales de la app (evita que la función se
+  // use para spamear desde el dominio remitente). Todos los flujos que
+  // envían mail lo hacen después de insertar la fila en 'usuarios'.
+  const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+  const supabaseServiceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if (!supabaseUrl || !supabaseServiceRoleKey) {
+    return json({ error: 'Faltan variables de entorno de Supabase.' }, 500);
+  }
+  const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
+
+  // ilike para ignorar mayúsculas; se escapan los comodines de LIKE
+  // (% y _, este último muy común en mails) para que sea una igualdad.
+  const emailEscapado = para.replace(/[\\%_]/g, '\\$&');
+  const { data: usuario, error: errorUsuario } = await supabase
+    .from('usuarios')
+    .select('id, estado')
+    .ilike('email', emailEscapado)
+    .limit(1)
+    .maybeSingle();
+
+  if (errorUsuario) {
+    return json({ error: 'No se pudo validar al destinatario.' }, 500);
+  }
+  if (!usuario) {
+    return json({ error: 'El destinatario no es un usuario registrado.' }, 403);
+  }
+
+  // verify_jwt está en false (el registro público no siempre tiene sesión),
+  // así que la autorización se hace acá según el tipo de mail:
+  if (tipo === 'registro-pendiente') {
+    // Texto fijo, sin contenido libre: sólo se permite mientras el
+    // destinatario siga 'pendiente' (o sea, justo después de registrarse).
+    if (usuario.estado !== 'pendiente') {
+      return json({ error: 'El destinatario no tiene un registro pendiente.' }, 403);
+    }
+  } else {
+    // Aprobado/rechazado (este último con 'motivo' libre): sólo los
+    // puede disparar un dueño o supervisor autenticado.
+    const token = (req.headers.get('Authorization') ?? '').replace(/^Bearer\s+/i, '');
+    const { data: authData } = await supabase.auth.getUser(token);
+    if (!token || !authData?.user) {
+      return json({ error: 'Se requiere iniciar sesión.' }, 401);
+    }
+
+    const { data: llamador } = await supabase
+      .from('usuarios')
+      .select('perfil')
+      .eq('id', authData.user.id)
+      .maybeSingle();
+
+    if (!llamador || !['dueño', 'supervisor'].includes(llamador.perfil)) {
+      return json({ error: 'No tenés permiso para enviar este correo.' }, 403);
+    }
   }
 
   const plantilla = armarPlantilla(tipo, nombre, motivo);
