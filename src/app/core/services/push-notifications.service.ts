@@ -146,7 +146,7 @@ export class PushNotificationsService {
       this.router.navigateByUrl('/metre/lista-espera');
     } else if (tipo === 'pedido-nuevo') {
       // Punto 12: el mozo recibe el aviso de un pedido nuevo.
-      this.router.navigateByUrl('/mozo/consultas');
+      this.router.navigateByUrl('/mozo/pedidos-pendientes');
     } else if (tipo === 'pedido-confirmado' || tipo === 'pedido-rechazado') {
       // Puntos 13/14: el cliente vuelve al estado de su pedido.
       const pedidoId = data['pedidoId'];
@@ -183,18 +183,33 @@ export class PushNotificationsService {
   }
 
   private async guardarToken(usuarioId: string, token: string): Promise<void> {
-    const { error } = await this.supabaseService
-      .getClient()
-      .from(TABLA_TOKENS)
-      .upsert(
-        {
-          usuario_id: usuarioId,
-          token,
-          plataforma: Capacitor.getPlatform(),
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: 'token' },
-      );
+    const client = this.supabaseService.getClient();
+
+    // Si el token quedó a nombre de otro usuario (el anterior no cerró
+    // sesión bien), el upsert directo lo rechaza la RLS. La función
+    // registrar_push_token (supabase/sql/push-token-rpc.sql) lo reasigna
+    // al usuario logueado con SECURITY DEFINER.
+    const { error: errorRpc } = await client.rpc('registrar_push_token', {
+      p_token: token,
+      p_plataforma: Capacitor.getPlatform(),
+    });
+
+    if (!errorRpc) {
+      this.tokenActual = token;
+      return;
+    }
+
+    // Si la función todavía no está creada en la base, caemos al upsert
+    // directo (sólo funciona si el token es nuevo o ya es de este usuario).
+    const { error } = await client.from(TABLA_TOKENS).upsert(
+      {
+        usuario_id: usuarioId,
+        token,
+        plataforma: Capacitor.getPlatform(),
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'token' },
+    );
 
     if (error) {
       console.warn('No se pudo guardar el token de notificaciones push:', error);
@@ -209,21 +224,37 @@ export class PushNotificationsService {
   // sesión después en el mismo teléfono. Si nunca se registró un token
   // en esta sesión no hace nada.
   async eliminarTokenActual(): Promise<void> {
-    if (!this.tokenActual) {
-      return;
-    }
-
-    const { error } = await this.supabaseService
-      .getClient()
-      .from(TABLA_TOKENS)
-      .delete()
-      .eq('token', this.tokenActual);
-
-    if (error) {
-      console.warn('No se pudo borrar el token de notificaciones push:', error);
-    }
-
+    const token = this.tokenActual;
     this.tokenActual = null;
+
+    // Se resetea siempre (aunque no haya token guardado: permiso denegado,
+    // falló el guardado, etc.) para que el próximo usuario que inicie
+    // sesión en este dispositivo pueda registrarse de nuevo.
+    const estabaInicializado = this.inicializado;
     this.inicializado = false;
+
+    if (token) {
+      const { error } = await this.supabaseService
+        .getClient()
+        .from(TABLA_TOKENS)
+        .delete()
+        .eq('token', token);
+
+      if (error) {
+        console.warn('No se pudo borrar el token de notificaciones push:', error);
+      }
+    }
+
+    // Los listeners quedan atados al usuario que inicializó (el de
+    // 'registration' guarda su usuarioId): si no se quitan, el próximo
+    // login los duplica y cada push se muestra/navega varias veces.
+    if (estabaInicializado) {
+      try {
+        await PushNotifications.removeAllListeners();
+        await LocalNotifications.removeAllListeners();
+      } catch (error) {
+        console.warn('No se pudieron quitar los listeners de push:', error);
+      }
+    }
   }
 }
