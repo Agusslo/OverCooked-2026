@@ -33,7 +33,6 @@ export class AccesosRapidosPage {
     { perfil: 'Mozo', email: 'mozo@restaurante.com', icono: 'restaurant', descripcion: 'Atención al cliente' },
     { perfil: 'Cantinero', email: 'cantinero@restaurante.com', icono: 'wine', descripcion: 'Bebidas y servicio' },
     { perfil: 'Cocinero', email: 'cocinero@restaurante.com', icono: 'flame', descripcion: 'Preparación de platos' },
-    { perfil: 'Cliente', email: 'cliente@restaurante.com', icono: 'person', descripcion: 'Cliente registrado de prueba' },
   ];
 
   constructor() {

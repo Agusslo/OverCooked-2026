@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SupabaseService } from './supabase.service';
 import { MailService } from './mail.service';
+import { PushNotificationsService } from './push-notifications.service';
 import { IRegistro, IRegistroAnonimo, Usuario } from '../models/usuario.model';
 import { Router } from '@angular/router';
 
@@ -14,6 +15,7 @@ export class AuthService {
   router = inject(Router);
   private mailService = inject(MailService);
   private supabaseService = inject(SupabaseService);
+  private pushNotificationsService = inject(PushNotificationsService);
 
   private usuarioActualSubject = new BehaviorSubject<Usuario | null>(null);
   usuarioActual$ = this.usuarioActualSubject.asObservable();
@@ -257,18 +259,19 @@ export class AuthService {
     // La foto como data URL (base64) puede pesar varios MB y
     // signInAnonymously guarda user_metadata con un límite chico
     // → "Failed to fetch" si mandamos el base64 directo.
-    const idTemporal = crypto.randomUUID();
-    let fotoPublicUrl = '';
+    // La foto es obligatoria: sin ella (o si falla la subida) no se crea el invitado.
+    if (!foto_url) {
+      throw new Error('Sacate una foto de perfil para continuar.');
+    }
 
-    if (foto_url) {
-      try {
-        fotoPublicUrl = await this.subirFoto(foto_url, `anonimo-${idTemporal}`);
-      } catch (error) {
-        console.warn(
-          '[registrarAnonimo] No se pudo subir la foto, se continúa sin ella:',
-          error,
-        );
-      }
+    const idTemporal = crypto.randomUUID();
+    let fotoPublicUrl: string;
+
+    try {
+      fotoPublicUrl = await this.subirFoto(foto_url, `anonimo-${idTemporal}`);
+    } catch (error) {
+      console.error('[registrarAnonimo] No se pudo subir la foto:', error);
+      throw new Error('No se pudo subir la foto. Intentá de nuevo.');
     }
 
     try {
@@ -350,6 +353,11 @@ export class AuthService {
   }
 
   async logout(): Promise<void> {
+    // Antes de cerrar la sesión: si no, la policy de push_tokens
+    // (usuario_id = auth.uid()) ya no deja borrar la fila y el próximo
+    // usuario que inicie sesión en este mismo dispositivo seguiría
+    // recibiendo las notificaciones de éste.
+    await this.pushNotificationsService.eliminarTokenActual();
     await this.supabaseService.getClient().auth.signOut();
     this.usuarioActualSubject.next(null);
   }

@@ -23,7 +23,7 @@
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { enviarPush, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
+import { enviarPushLote, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
 
 // Perfiles que tienen que enterarse de un cliente nuevo pendiente
 // (los mismos que ven la pantalla clientes-pendientes en el front).
@@ -102,22 +102,11 @@ serve(async (req) => {
     return json({ error: 'No se pudo autenticar contra Firebase.', detalle: String(err) }, 500);
   }
 
-  // La API v1 no soporta multicast (registration_ids): hay que mandar
-  // un request por token.
-  const resultados = await Promise.allSettled(
-    tokens.map((token: string) =>
-      enviarPush(accessToken, token, {
-        title: 'Nuevo cliente pendiente de aprobación',
-        body: `${cliente.apellido}, ${cliente.nombre} se registró y está esperando aprobación.`,
-        data: { tipo: 'cliente-pendiente', clienteId: cliente.id },
-      }),
-    ),
-  );
-
-  const enviados = resultados.filter((r) => r.status === 'fulfilled').length;
-  const fallidos = resultados
-    .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
-    .map((r) => String(r.reason));
+  const { enviados, fallidos } = await enviarPushLote(supabase, accessToken, tokens, {
+    title: 'Nuevo cliente pendiente de aprobación',
+    body: `${cliente.apellido}, ${cliente.nombre} se registró y está esperando aprobación.`,
+    data: { tipo: 'cliente-pendiente', clienteId: cliente.id },
+  });
 
   console.log('[notificar-cliente-pendiente] resultado envío FCM:', JSON.stringify({ enviados, fallidos }));
 

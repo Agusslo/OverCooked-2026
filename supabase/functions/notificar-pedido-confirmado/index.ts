@@ -16,7 +16,7 @@
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { enviarPush, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
+import { enviarPushLote, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
 
 // Sector del producto -> perfil que tiene que enterarse en ese sector.
 const PERFIL_POR_SECTOR: Record<string, string> = {
@@ -119,21 +119,13 @@ serve(async (req) => {
     }
 
     const tokens = (filas ?? []).map((f: { token: string }) => f.token).filter(Boolean);
-    const resultados = await Promise.allSettled(
-      tokens.map((token: string) =>
-        enviarPush(accessToken, token, {
-          title: 'Pedido confirmado para tu sector',
-          body: `Mesa Nº ${numeroMesa}: el mozo confirmó el pedido, ya lo tenés para preparar.`,
-          data: { tipo: 'pedido-confirmado-sector', pedidoId: pedido.id, sector },
-        }),
-      ),
-    );
-    enviados += resultados.filter((r) => r.status === 'fulfilled').length;
-    fallidos.push(
-      ...resultados
-        .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
-        .map((r) => String(r.reason)),
-    );
+    const resultado = await enviarPushLote(supabase, accessToken, tokens, {
+      title: 'Pedido confirmado para tu sector',
+      body: `Mesa Nº ${numeroMesa}: el mozo confirmó el pedido, ya lo tenés para preparar.`,
+      data: { tipo: 'pedido-confirmado-sector', pedidoId: pedido.id, sector },
+    });
+    enviados += resultado.enviados;
+    fallidos.push(...resultado.fallidos);
   }
 
   // Aviso al cliente (si es un cliente registrado, no invitado): su
@@ -148,21 +140,13 @@ serve(async (req) => {
       console.log('[notificar-pedido-confirmado] error consultando push_tokens del cliente:', errorCliente.message);
     } else {
       const tokensCliente = (filasCliente ?? []).map((f: { token: string }) => f.token).filter(Boolean);
-      const resultados = await Promise.allSettled(
-        tokensCliente.map((token: string) =>
-          enviarPush(accessToken, token, {
-            title: 'Confirmaron tu pedido',
-            body: `Mesa Nº ${numeroMesa}: tu pedido ya se envió a cocina/bar. Mientras esperás, ¡probá los juegos!`,
-            data: { tipo: 'pedido-confirmado', pedidoId: pedido.id },
-          }),
-        ),
-      );
-      enviados += resultados.filter((r) => r.status === 'fulfilled').length;
-      fallidos.push(
-        ...resultados
-          .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
-          .map((r) => String(r.reason)),
-      );
+      const resultado = await enviarPushLote(supabase, accessToken, tokensCliente, {
+        title: 'Confirmaron tu pedido',
+        body: `Mesa Nº ${numeroMesa}: tu pedido ya se envió a cocina/bar. Mientras esperás, ¡probá los juegos!`,
+        data: { tipo: 'pedido-confirmado', pedidoId: pedido.id },
+      });
+      enviados += resultado.enviados;
+      fallidos.push(...resultado.fallidos);
     }
   }
 

@@ -35,6 +35,10 @@ export class PushNotificationsService {
   private router = inject(Router);
 
   private inicializado = false;
+  // Token del dispositivo actual (si se registró en esta sesión de la
+  // app). Se usa para borrar SOLO esta fila al hacer logout, sin tocar
+  // los tokens de otros dispositivos del mismo usuario.
+  private tokenActual: string | null = null;
 
   async inicializar(usuarioId: string): Promise<void> {
     // En navegador (desarrollo) no hay push notifications nativas —
@@ -194,6 +198,32 @@ export class PushNotificationsService {
 
     if (error) {
       console.warn('No se pudo guardar el token de notificaciones push:', error);
+    } else {
+      this.tokenActual = token;
     }
+  }
+
+  // Se llama antes de auth.signOut() (ver AuthService.logout): borra
+  // la fila de push_tokens de este dispositivo para que un usuario que
+  // cerró sesión deje de recibir las notificaciones del que inicie
+  // sesión después en el mismo teléfono. Si nunca se registró un token
+  // en esta sesión no hace nada.
+  async eliminarTokenActual(): Promise<void> {
+    if (!this.tokenActual) {
+      return;
+    }
+
+    const { error } = await this.supabaseService
+      .getClient()
+      .from(TABLA_TOKENS)
+      .delete()
+      .eq('token', this.tokenActual);
+
+    if (error) {
+      console.warn('No se pudo borrar el token de notificaciones push:', error);
+    }
+
+    this.tokenActual = null;
+    this.inicializado = false;
   }
 }

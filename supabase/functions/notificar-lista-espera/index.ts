@@ -19,7 +19,7 @@
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { enviarPush, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
+import { enviarPushLote, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
 
 // Punto 9: al metre le avisamos cuando alguien se anota en la
 // lista de espera.
@@ -94,20 +94,11 @@ serve(async (req) => {
     return json({ error: 'No se pudo autenticar contra Firebase.', detalle: String(err) }, 500);
   }
 
-  const resultados = await Promise.allSettled(
-    tokens.map((token: string) =>
-      enviarPush(accessToken, token, {
-        title: 'Nuevo cliente en la lista de espera',
-        body: `${espera.nombre} se anotó y está esperando para ingresar.`,
-        data: { tipo: 'lista-espera', listaEsperaId: espera.id },
-      }),
-    ),
-  );
-
-  const enviados = resultados.filter((r) => r.status === 'fulfilled').length;
-  const fallidos = resultados
-    .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
-    .map((r) => String(r.reason));
+  const { enviados, fallidos } = await enviarPushLote(supabase, accessToken, tokens, {
+    title: 'Nuevo cliente en la lista de espera',
+    body: `${espera.nombre} se anotó y está esperando para ingresar.`,
+    data: { tipo: 'lista-espera', listaEsperaId: espera.id },
+  });
 
   console.log('[notificar-lista-espera] resultado envío FCM:', JSON.stringify({ enviados, fallidos }));
 

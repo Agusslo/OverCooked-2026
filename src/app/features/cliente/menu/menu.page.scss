@@ -38,6 +38,8 @@
   width: 46px;
   height: 46px;
   animation: girar 1s linear infinite;
+  /* El logo es naranja, igual que el fondo (--hero): se lo pasa a blanco para que se vea. */
+  filter: brightness(0) invert(1);
 }
 
 @keyframes girar {

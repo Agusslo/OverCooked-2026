@@ -29,7 +29,7 @@
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { enviarPush, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
+import { enviarPushLote, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
 
 interface FilaMensaje {
   id: string;
@@ -118,23 +118,14 @@ serve(async (req) => {
       return json({ error: 'No se pudo autenticar contra Firebase.', detalle: String(err) }, 500);
     }
 
-    const resultados = await Promise.allSettled(
-      tokens.map((token: string) =>
-        enviarPush(accessToken, token, {
-          title: `Mesa ${mesa.numero} · ${mensaje.autor_nombre}`,
-          body: mensaje.contenido,
-          data: {
-            tipo: 'respuesta-mozo',
-            numeroMesa: String(mesa.numero),
-          },
-        }),
-      ),
-    );
-
-    const enviados = resultados.filter((r) => r.status === 'fulfilled').length;
-    const fallidos = resultados
-      .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
-      .map((r) => String(r.reason));
+    const { enviados, fallidos } = await enviarPushLote(supabase, accessToken, tokens, {
+      title: `Mesa ${mesa.numero} · ${mensaje.autor_nombre}`,
+      body: mensaje.contenido,
+      data: {
+        tipo: 'respuesta-mozo',
+        numeroMesa: String(mesa.numero),
+      },
+    });
 
     console.log('[notificar-mensaje-mesa] resultado envío FCM (a cliente):', JSON.stringify({ enviados, fallidos }));
 
@@ -184,24 +175,15 @@ serve(async (req) => {
     return json({ error: 'No se pudo autenticar contra Firebase.', detalle: String(err) }, 500);
   }
 
-  const resultados = await Promise.allSettled(
-    tokens.map((token: string) =>
-      enviarPush(accessToken, token, {
-        title: `Mesa ${mesa.numero} · ${mensaje.autor_nombre}`,
-        body: mensaje.contenido,
-        data: {
-          tipo: 'mensaje-mesa',
-          numeroMesa: String(mesa.numero),
-          hiloClienteId: mensaje.hilo_cliente_id,
-        },
-      }),
-    ),
-  );
-
-  const enviados = resultados.filter((r) => r.status === 'fulfilled').length;
-  const fallidos = resultados
-    .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
-    .map((r) => String(r.reason));
+  const { enviados, fallidos } = await enviarPushLote(supabase, accessToken, tokens, {
+    title: `Mesa ${mesa.numero} · ${mensaje.autor_nombre}`,
+    body: mensaje.contenido,
+    data: {
+      tipo: 'mensaje-mesa',
+      numeroMesa: String(mesa.numero),
+      hiloClienteId: mensaje.hilo_cliente_id,
+    },
+  });
 
   console.log('[notificar-mensaje-mesa] resultado envío FCM:', JSON.stringify({ enviados, fallidos }));
 

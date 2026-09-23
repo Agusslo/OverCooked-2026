@@ -18,7 +18,7 @@
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { enviarPush, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
+import { enviarPushLote, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
 
 interface FilaPedido {
   id: string;
@@ -106,22 +106,13 @@ serve(async (req) => {
   }
 
   const numeroMesa = mesa?.numero ?? '?';
-  const resultados = await Promise.allSettled(
-    tokens.map((token: string) =>
-      enviarPush(accessToken, token, {
-        title: 'El mozo rechazó tu pedido',
-        body: pedido.motivo_rechazo
-          ? `Mesa Nº ${numeroMesa}: ${pedido.motivo_rechazo}`
-          : `Mesa Nº ${numeroMesa}: modificá tu pedido y volvé a enviarlo.`,
-        data: { tipo: 'pedido-rechazado', pedidoId: pedido.id },
-      }),
-    ),
-  );
-
-  const enviados = resultados.filter((r) => r.status === 'fulfilled').length;
-  const fallidos = resultados
-    .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
-    .map((r) => String(r.reason));
+  const { enviados, fallidos } = await enviarPushLote(supabase, accessToken, tokens, {
+    title: 'El mozo rechazó tu pedido',
+    body: pedido.motivo_rechazo
+      ? `Mesa Nº ${numeroMesa}: ${pedido.motivo_rechazo}`
+      : `Mesa Nº ${numeroMesa}: modificá tu pedido y volvé a enviarlo.`,
+    data: { tipo: 'pedido-rechazado', pedidoId: pedido.id },
+  });
 
   console.log('[notificar-pedido-rechazado] resultado envío FCM:', JSON.stringify({ enviados, fallidos }));
 

@@ -13,7 +13,7 @@
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { enviarPush, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
+import { enviarPushLote, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
 
 // A los mozos les avisamos cuando entra un pedido nuevo.
 const PERFILES_A_NOTIFICAR = ['mozo'];
@@ -94,20 +94,11 @@ serve(async (req) => {
   }
 
   const numeroMesa = mesa?.numero ?? '?';
-  const resultados = await Promise.allSettled(
-    tokens.map((token: string) =>
-      enviarPush(accessToken, token, {
-        title: 'Nuevo pedido para confirmar',
-        body: `La mesa Nº ${numeroMesa} terminó su pedido ($${pedido.total}). Revisalo y confirmalo.`,
-        data: { tipo: 'pedido-nuevo', pedidoId: pedido.id },
-      }),
-    ),
-  );
-
-  const enviados = resultados.filter((r) => r.status === 'fulfilled').length;
-  const fallidos = resultados
-    .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
-    .map((r) => String(r.reason));
+  const { enviados, fallidos } = await enviarPushLote(supabase, accessToken, tokens, {
+    title: 'Nuevo pedido para confirmar',
+    body: `La mesa Nº ${numeroMesa} terminó su pedido ($${pedido.total}). Revisalo y confirmalo.`,
+    data: { tipo: 'pedido-nuevo', pedidoId: pedido.id },
+  });
 
   console.log('[notificar-pedido-nuevo] resultado envío FCM:', JSON.stringify({ enviados, fallidos }));
 

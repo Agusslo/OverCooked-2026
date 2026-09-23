@@ -47,6 +47,7 @@ export class InvitadoPage implements OnDestroy {
   errorInvitado = signal<string | null>(null);
   fotoUrl = signal<string | null>(null);
   camaraActiva = signal(false);
+  fotoIntentada = signal(false);
 
   private abriendoCamara = false;
   private streamCamara?: MediaStream;
@@ -118,12 +119,11 @@ export class InvitadoPage implements OnDestroy {
     this.camaraActiva.set(false);
   }
 
-  // Registra la cuenta anónima y va a /inicio. Desde ahí el flujo es
-  // igual que el del cliente registrado: /inicio manda a /cliente/entrada
-  // a escanear el QR de la entrada del local (punto 9).
   async continuar(): Promise<void> {
-    if (this.form.invalid) {
+    // La foto es obligatoria para ingresar como invitado.
+    if (this.form.invalid || !this.fotoUrl()) {
       this.form.markAllAsTouched();
+      this.fotoIntentada.set(true);
       await Haptics.notification({ type: NotificationType.Error }).catch(() => {});
       return;
     }
@@ -133,7 +133,7 @@ export class InvitadoPage implements OnDestroy {
     const datos: IRegistroAnonimo = {
       nombre: nombre!,
       apellido: apellido!,
-      foto_url: this.fotoUrl() ?? '',
+      foto_url: this.fotoUrl()!,
       perfil: 'anonimo',
     };
 

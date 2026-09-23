@@ -148,14 +148,14 @@
 
 Envío automático de correos desde una casilla empresarial (requisito excluyente del TFI), sin exponer credenciales en la aplicación.
 
-### Arquitectura
+## Arquitectura
 
 * **Proveedor:** [Resend](https://resend.com) con dominio propio verificado (`overcooked.abrdns.com`, DKIM + SPF).
 * **Backend:** Supabase Edge Function `enviar-mail` (`supabase/functions/enviar-mail/`). Es la única que conoce la `RESEND_API_KEY` (guardada en los *secrets* del proyecto Supabase, nunca en el front). Valida el payload, arma el HTML y llama a la API de Resend.
 * **Frontend:** `MailService` (`src/app/core/services/mail.service.ts`) invoca la función con `supabase.functions.invoke('enviar-mail', ...)`.
 * Un fallo de envío **nunca** aborta la operación de negocio (el estado ya quedó persistido); solo se registra en consola.
 
-### Correos implementados
+## Correos implementados
 
 | Tipo | Se dispara desde | Punto TFI |
 | :--- | :--- | :--- |
@@ -163,7 +163,7 @@ Envío automático de correos desde una casilla empresarial (requisito excluyent
 | `cliente-aprobado` | `AdminService.aprobarCliente` — el dueño/supervisor acepta al cliente | 8 |
 | `cliente-rechazado` | `AdminService.rechazarCliente` — el dueño/supervisor rechaza al cliente | 7 |
 
-### Diseño del Mail
+## Diseño del Mail
 
 **Responsable:** Catanese, Demián (`feature/dev-delta`)
 
@@ -181,7 +181,7 @@ Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios**
     <img src="https://cdn.discordapp.com/attachments/1540693681814769744/1550320866024235068/image.png?ex=6aade852&is=6aac96d2&hm=3ae3309f3bde33baf910174b4277f4f1d6118d6ead78f2dd968bb3118395cb46&" alt="splash" width="1000">
 </details>
 
-### Notificaciones
+## Notificaciones
 
 **Responsable:** Fernández Waisberg, Gabriel (`feature/dev-gamma`)
 
@@ -198,10 +198,49 @@ Las notificaciones push se envían desde Edge Functions de Supabase cuando cambi
 | `pedido-confirmado` | `pedidos` al cambiar a `estado = 'confirmado'` | cocina / bar + cliente | 14 |
 | `pedido-listo` | `pedidos` al cambiar a `estado = 'listo'` | mozo | 18 |
 
-### QR
+## QR
 <div align="center">
   <img src="src/assets/QR/qr_ingreso_local.png" alt="Ingreso al Local" width="250">
   <p>Ingreso al local</p>
+</div>
+
+### Propinas
+<div align="center">
+  <img src="src/assets/QR/qr_propina_excelente.png" alt="Propina Excelente" width="250">
+  <p>Propina Excelente (20%)</p>
+
+  <img src="src/assets/QR/qr_propina_muy_bueno.png" alt="Propina Muy Buena" width="250">
+  <p>Propina Muy Buena (15%)</p>
+
+  <img src="src/assets/QR/qr_propina_bueno.png" alt="Propina Buena" width="250">
+  <p>Propina Buena (10%)</p>
+
+  <img src="src/assets/QR/qr_propina_regular.png" alt="Propina Regular" width="250">
+  <p>Propina Regular (5%)</p>
+
+  <img src="src/assets/QR/qr_propina_malo.png" alt="Propina Mala" width="250">
+  <p>Propina Mala (0%)</p>
+</div>
+
+### Mesas
+<div align="center">
+  <img src="src/assets/QR/qr-mesa-8.png" alt="Mesa 8" width="250">
+  <p>Mesa 8</p>
+
+  <img src="src/assets/QR/qr-mesa-23.png" alt="Mesa 23" width="250">
+  <p>Mesa 23</p>
+
+  <img src="src/assets/QR/qr-mesa-34.png" alt="Mesa 34" width="250">
+  <p>Mesa 34</p>
+
+  <img src="src/assets/QR/qr-mesa-55.png" alt="Mesa 55" width="250">
+  <p>Mesa 55</p>
+  
+  <img src="src/assets/QR/qr-mesa-59.png" alt="Mesa 59" width="250">
+  <p>Mesa 59</p>
+
+  <img src="src/assets/QR/qr-mesa-67.png" alt="Mesa 67" width="250">
+  <p>Mesa 67</p>
 </div>
 
 ### Puesta en marcha

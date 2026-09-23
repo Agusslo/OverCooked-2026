@@ -213,7 +213,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px max(10px, env(safe-area-inset-bottom));
+  padding: 18px 14px max(18px, env(safe-area-inset-bottom));
   background: var(--color-header);
 
   input {

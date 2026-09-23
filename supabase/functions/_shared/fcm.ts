@@ -11,6 +11,11 @@
 //
 // Usa FCM HTTP v1 (OAuth2 con service account) porque Google dio
 // de baja la API legacy (fcm.googleapis.com/fcm/send + server key).
+//
+// enviarPushLote() además borra de push_tokens cualquier token que
+// FCM rechace como NotRegistered/UNREGISTERED (app desinstalada,
+// token vencido, datos borrados): sin esto la tabla sólo crece y
+// cada notificación reintenta para siempre contra tokens muertos.
 
 const FCM_PROJECT_ID = Deno.env.get('FCM_PROJECT_ID') ?? '';
 const FCM_CLIENT_EMAIL = Deno.env.get('FCM_CLIENT_EMAIL') ?? '';
@@ -60,6 +65,52 @@ export async function enviarPush(
     const detalle = await resp.text();
     throw new Error(`FCM rechazó el envío a un token: ${detalle}`);
   }
+}
+
+// Cliente mínimo (sólo lo que usamos acá) para no atar este módulo
+// a una versión puntual del tipo SupabaseClient.
+interface ClienteBorradoTokens {
+  from(tabla: string): {
+    delete(): { in(columna: string, valores: string[]): Promise<{ error: { message: string } | null }> };
+  };
+}
+
+// Manda un push a cada token de la lista (un request por token, la
+// API v1 no soporta multicast) y borra de push_tokens los que FCM
+// rechazó como NotRegistered/UNREGISTERED: son dispositivos que
+// desinstalaron la app, perdieron el token o borraron datos, y
+// reintentarles en cada notificación futura es trabajo desperdiciado.
+export async function enviarPushLote(
+  supabase: ClienteBorradoTokens,
+  accessToken: string,
+  tokens: string[],
+  mensaje: MensajePush,
+): Promise<{ enviados: number; fallidos: string[] }> {
+  const resultados = await Promise.allSettled(
+    tokens.map((token) => enviarPush(accessToken, token, mensaje)),
+  );
+
+  const fallidos: string[] = [];
+  const tokensInvalidos: string[] = [];
+
+  resultados.forEach((resultado, i) => {
+    if (resultado.status === 'rejected') {
+      const razon = String(resultado.reason);
+      fallidos.push(razon);
+      if (razon.includes('NotRegistered') || razon.includes('UNREGISTERED')) {
+        tokensInvalidos.push(tokens[i]);
+      }
+    }
+  });
+
+  if (tokensInvalidos.length > 0) {
+    const { error } = await supabase.from('push_tokens').delete().in('token', tokensInvalidos);
+    if (error) {
+      console.log('[enviarPushLote] no se pudieron borrar tokens inválidos:', error.message);
+    }
+  }
+
+  return { enviados: resultados.length - fallidos.length, fallidos };
 }
 
 // --- Autenticación OAuth2 con service account (JWT Bearer flow) ---

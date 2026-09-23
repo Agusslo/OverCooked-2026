@@ -67,16 +67,7 @@ export class RegistroPage implements OnInit, AfterViewInit, OnDestroy {
   fotoUrl = signal<string | null>(null);
   fotoIntentada = signal(false);
   camaraActiva = signal(false);
-  // El scroll de la página sólo se habilita mientras el teclado está
-  // abierto (para poder llegar a los campos que tapa); el resto del
-  // tiempo la pantalla no tiene que scrollear. El plugin Keyboard no
-  // tiene implementación web (tira error en navegador), así que ahí
-  // se deja scrollear siempre — la restricción es sólo para la app nativa.
   tecladoAbierto = signal(!Capacitor.isNativePlatform());
-  // Red de seguridad: si por lo que sea el contenido no entra en la
-  // pantalla (ej. se muestran varios errores de validación a la vez),
-  // se habilita el scroll igual aunque el teclado esté cerrado, para
-  // que nunca quede algo inalcanzable.
   mostrarPassword = signal(false);
   mostrarRepetirPassword = signal(false);
   private contenidoDesborda = signal(false);

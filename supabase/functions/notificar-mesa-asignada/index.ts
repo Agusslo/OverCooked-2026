@@ -21,7 +21,7 @@
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { enviarPush, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
+import { enviarPushLote, firebaseConfigurado, json, obtenerAccessToken } from '../_shared/fcm.ts';
 
 interface FilaAsignacion {
   id: string;
@@ -105,22 +105,11 @@ serve(async (req) => {
     return json({ error: 'No se pudo autenticar contra Firebase.', detalle: String(err) }, 500);
   }
 
-  // La API v1 no soporta multicast (registration_ids): hay que mandar
-  // un request por token.
-  const resultados = await Promise.allSettled(
-    tokens.map((token: string) =>
-      enviarPush(accessToken, token, {
-        title: 'Tu mesa está lista',
-        body: `Se te asignó la mesa Nº ${mesa.numero}. Escaneá su código QR para entrar.`,
-        data: { tipo: 'mesa-asignada', numeroMesa: String(mesa.numero) },
-      }),
-    ),
-  );
-
-  const enviados = resultados.filter((r) => r.status === 'fulfilled').length;
-  const fallidos = resultados
-    .filter((r): r is PromiseRejectedResult => r.status === 'rejected')
-    .map((r) => String(r.reason));
+  const { enviados, fallidos } = await enviarPushLote(supabase, accessToken, tokens, {
+    title: 'Tu mesa está lista',
+    body: `Se te asignó la mesa Nº ${mesa.numero}. Escaneá su código QR para entrar.`,
+    data: { tipo: 'mesa-asignada', numeroMesa: String(mesa.numero) },
+  });
 
   console.log('[notificar-mesa-asignada] resultado envío FCM:', JSON.stringify({ enviados, fallidos }));
 

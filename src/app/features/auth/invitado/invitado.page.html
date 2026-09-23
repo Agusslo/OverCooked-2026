@@ -25,6 +25,11 @@
           <span class="foto-picker__label">
             {{ fotoUrl() ? 'Volver a sacar la foto' : 'Foto de perfil (cámara)' }}
           </span>
+          @if (fotoIntentada() && !fotoUrl()) {
+          <ion-text class="form-error" color="danger">
+            <p>Sacate una foto de perfil con la cámara.</p>
+          </ion-text>
+          }
         }
       </div>
     </div>
