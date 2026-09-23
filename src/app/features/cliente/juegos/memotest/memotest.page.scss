@@ -1,0 +1,167 @@
+.memo-page-wrapper {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  background: #2b1a12;
+}
+
+.main-container {
+  width: 100%;
+  max-width: 480px;
+}
+
+.card-box {
+  background: #3a2418;
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header-box--con-back {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  h2 {
+    color: #f9bfa0;
+    margin: 0;
+    font-size: 20px;
+  }
+
+  p {
+    color: #d9a888;
+    margin: 2px 0 0;
+    font-size: 13px;
+  }
+}
+
+.header-titles { flex: 1; }
+
+.btn-back {
+  background: none;
+  border: none;
+  color: #f9bfa0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.memo-estado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 30px 0;
+  color: #d9a888;
+  text-align: center;
+}
+
+.spinner-logo {
+  width: 48px;
+  height: 48px;
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #f0c060;
+}
+
+.tablero {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.ficha {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 2px solid #a83820;
+  background: #4a2e1e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: transform 0.15s;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+  }
+
+  &--vuelta {
+    background: #f9bfa0;
+    border-color: #f0c060;
+  }
+
+  &--encontrada {
+    background: #2f7a3c;
+    border-color: #9ee6a8;
+    opacity: 0.8;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.resultado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.victoria {
+  margin: 0;
+  color: #9ee6a8;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.derrota {
+  margin: 0;
+  color: #f8b4b4;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.descuento {
+  margin: 0;
+  color: #f0c060;
+  font-weight: 700;
+  text-align: center;
+}
+
+.memo-btn-volver {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: #4a2e1e;
+  color: #f9bfa0;
+  font-weight: 700;
+}
+
+.feedback-banner.error {
+  background: #5a1f1f;
+  color: #f8b4b4;
+  padding: 10px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 0.85rem;
+}

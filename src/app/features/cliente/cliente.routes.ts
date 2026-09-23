@@ -81,4 +81,11 @@ export const clienteRoutes: Routes = [
     canActivate: [authGuard],
     data: { perfiles: ['cliente'] },
   },
+  {
+    path: 'juegos/:numero/memotest',
+    loadComponent: () =>
+      import('./juegos/memotest/memotest.page').then((m) => m.MemotestPage),
+    canActivate: [authGuard],
+    data: { perfiles: ['cliente'] },
+  },
 ];
