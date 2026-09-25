@@ -29,17 +29,6 @@
   justify-content: center;
 }
 
-.entrada-spinner {
-  width: 52px;
-  height: 52px;
-  animation: girar 1s linear infinite;
-}
-
-@keyframes girar {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .entrada-visual {
   flex: 1;
   display: flex;

@@ -177,22 +177,6 @@
   text-align: center;
 }
 
-.spinner-logo {
-  width: 36px;
-  height: 36px;
-  animation: spinLogo 1s linear infinite;
-}
-
-@keyframes spinLogo {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .feedback-banner {
   display: flex;
   align-items: center;

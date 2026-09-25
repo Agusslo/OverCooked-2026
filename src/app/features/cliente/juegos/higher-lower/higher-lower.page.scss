@@ -62,17 +62,6 @@
   text-align: center;
 }
 
-.spinner-logo {
-  width: 48px;
-  height: 48px;
-  animation: girar 1s linear infinite;
-}
-
-@keyframes girar {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .info {
   display: flex;
   justify-content: center;

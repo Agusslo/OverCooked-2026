@@ -14,7 +14,6 @@ import {
   IonItem,
   IonInput,
   IonButton,
-  IonSpinner,
   IonText,
 } from '@ionic/angular';
 import { Haptics, NotificationType } from '@capacitor/haptics';
@@ -33,7 +32,7 @@ import {
   standalone: true,
   templateUrl: './invitado.page.html',
   styleUrls: ['./invitado.page.scss'],
-  imports: [ReactiveFormsModule, IonContent, IonItem, IonInput, IonButton, IonSpinner, IonText],
+  imports: [ReactiveFormsModule, IonContent, IonItem, IonInput, IonButton, IonText],
 })
 export class InvitadoPage implements OnDestroy {
   @ViewChild('videoCamara') videoCamara?: ElementRef<HTMLVideoElement>;

@@ -59,17 +59,6 @@
   text-align: center;
 }
 
-.spinner-logo {
-  width: 48px;
-  height: 48px;
-  animation: girar 1s linear infinite;
-}
-
-@keyframes girar {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .simon-btn-iniciar {
   padding: 14px 24px;
   border: none;

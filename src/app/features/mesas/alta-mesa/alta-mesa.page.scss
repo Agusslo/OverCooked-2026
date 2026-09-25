@@ -207,23 +207,6 @@
   cursor: not-allowed;
 }
 
-/* Spinner con logo para estados de carga */
-.spinner-logo {
-  width: 22px;
-  height: 22px;
-  animation: spinLogo 1s linear infinite;
-  flex-shrink: 0;
-}
-
-@keyframes spinLogo {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .btn-photo {
   background: #8c2e14;
   color: #fef5ee;
