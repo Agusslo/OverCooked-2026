@@ -206,19 +206,19 @@ Las notificaciones push se envían desde Edge Functions de Supabase cuando cambi
 
 ### Propinas
 <div align="center">
-  <img src="src/assets/QR/propina_excelente.png" alt="Propina Excelente" width="250">
+  <img src="src/assets/QR/qr_propina_excelente.png" alt="Propina Excelente" width="250">
   <p>Propina Excelente (20%)</p>
 
-  <img src="src/assets/QR/propina_muy_bueno.png" alt="Propina Muy Buena" width="250">
+  <img src="src/assets/QR/qr_propina_muy_bueno.png" alt="Propina Muy Buena" width="250">
   <p>Propina Muy Buena (15%)</p>
 
-  <img src="src/assets/QR/propina_bueno.png" alt="Propina Buena" width="250">
+  <img src="src/assets/QR/qr_propina_bueno.png" alt="Propina Buena" width="250">
   <p>Propina Buena (10%)</p>
 
-  <img src="src/assets/QR/propina_regular.png" alt="Propina Regular" width="250">
+  <img src="src/assets/QR/qr_propina_regular.png" alt="Propina Regular" width="250">
   <p>Propina Regular (5%)</p>
 
-  <img src="src/assets/QR/propina_malo.png" alt="Propina Mala" width="250">
+  <img src="src/assets/QR/qr_propina_malo.png" alt="Propina Mala" width="250">
   <p>Propina Mala (0%)</p>
 </div>
 

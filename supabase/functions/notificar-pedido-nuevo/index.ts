@@ -29,7 +29,6 @@ interface PayloadWebhook {
   type: 'INSERT' | 'UPDATE' | 'DELETE';
   table: string;
   record: FilaPedido | null;
-  old_record: FilaPedido | null;
 }
 
 serve(async (req) => {
@@ -54,14 +53,6 @@ serve(async (req) => {
   // ('pendiente_mozo' es el valor inicial del enum estado_pedido).
   if (!pedido || pedido.estado !== 'pendiente_mozo') {
     console.log('[notificar-pedido-nuevo] omitido: estado no coincide.');
-    return json({ ok: true, omitido: true }, 200);
-  }
-
-  // El trigger 'notificar-pedido-reenviado' llama a esta función en
-  // cada UPDATE de 'pedidos': sólo avisamos si el pedido ACABA de pasar
-  // a 'pendiente_mozo' (reenvío tras un rechazo), no si ya lo estaba.
-  if (payload.type === 'UPDATE' && payload.old_record?.estado === 'pendiente_mozo') {
-    console.log('[notificar-pedido-nuevo] omitido: el pedido ya estaba pendiente.');
     return json({ ok: true, omitido: true }, 200);
   }
 
