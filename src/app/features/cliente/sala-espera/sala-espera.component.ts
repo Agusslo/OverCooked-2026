@@ -15,6 +15,17 @@ import { HeaderInicioComponent } from '../../../shared/header-inicio/header-inic
 
 type EstadoBoton = 'esperando' | 'con-mesa' | 'con-pedido';
 
+const ESTADOS_CORTOS: Record<string, string> = {
+  pendiente_mozo: 'POR CONFIRMAR',
+  pendiente: 'POR CONFIRMAR',
+  rechazado: 'A MODIFICAR',
+  confirmado: 'CONFIRMADO',
+  en_preparacion: 'EN COCINA',
+  en_preparación: 'EN COCINA',
+  listo: 'LISTO',
+  entregado: 'ENTREGADO',
+};
+
 // Punto 12: el "inicio" del cliente (registrado o invitado) una vez que
 // está anotado en la lista de espera. Se muestra dentro de InicioPage.
 //  - Anotado, sin mesa   -> "ESPERANDO MESA".
@@ -69,6 +80,17 @@ export class SalaEsperaComponent implements OnInit, OnDestroy, ViewWillEnter {
       0,
     ),
   );
+
+  esAnonimo(): boolean {
+    return this.authService.usuarioActual?.perfil === 'anonimo';
+  }
+
+  // Chip corto del estado para la card del pedido (el texto largo va en
+  // la pantalla de estado-pedido).
+  estadoCorto = computed(() => {
+    const estado = this.pedidoActivo()?.estado ?? '';
+    return ESTADOS_CORTOS[estado] ?? estado.replace(/_/g, ' ').toUpperCase();
+  });
 
   async ngOnInit(): Promise<void> {
     await this.cargar();
@@ -173,8 +195,19 @@ export class SalaEsperaComponent implements OnInit, OnDestroy, ViewWillEnter {
     }
   }
 
-  irAJuegos(): void {
+  irAJuegos(ruta?: string): void {
     const mesa = this.mesaAsignada();
-    if (mesa) this.router.navigate(['/cliente/juegos', mesa.numero]);
+    if (!mesa) return;
+    // Punto 15: los juegos son sólo para clientes registrados (las rutas
+    // /cliente/juegos tienen perfiles: ['cliente']). Sin este aviso el
+    // guard rebotaba al invitado a /inicio y parecía que no pasaba nada;
+    // ahora las cards se ven atenuadas con un aviso encima.
+    if (this.esAnonimo()) {
+      void Haptics.notification({ type: NotificationType.Warning }).catch(() => {});
+      return;
+    }
+    const destino: (string | number)[] = ['/cliente/juegos', mesa.numero];
+    if (ruta) destino.push(ruta);
+    this.router.navigate(destino);
   }
 }
