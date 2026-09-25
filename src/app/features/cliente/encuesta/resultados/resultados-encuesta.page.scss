@@ -81,15 +81,6 @@
   color: var(--color-peach);
   text-align: center;
 }
-.spinner-logo {
-  width: 40px;
-  height: 40px;
-  animation: spinLogo 1s linear infinite;
-}
-@keyframes spinLogo {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
 
 .pregunta-texto {
   color: var(--color-cream);

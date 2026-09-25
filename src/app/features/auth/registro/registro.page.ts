@@ -24,7 +24,6 @@ import {
   IonItem,
   IonInput,
   IonButton,
-  IonSpinner,
   IonText,
 } from '@ionic/angular';
 import { Camera, CameraSource } from '@capacitor/camera';
@@ -47,7 +46,6 @@ import { IRegistro } from '../../../core/models/usuario.model';
     IonItem,
     IonInput,
     IonButton,
-    IonSpinner,
     IonText,
   ],
 })

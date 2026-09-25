@@ -34,17 +34,6 @@
   color: var(--texto-suave);
 }
 
-.menu-spinner {
-  width: 46px;
-  height: 46px;
-  animation: girar 1s linear infinite;
-}
-
-@keyframes girar {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .menu-banner.error {
   background: #5a1f1f;
   color: #ffd9d9;

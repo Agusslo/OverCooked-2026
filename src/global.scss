@@ -54,3 +54,22 @@ ion-router-outlet .ion-page {
     transform: translateY(0);
   }
 }
+/* Spinner único de la app: logo girando (usar en <img src="assets/icon/logo.png" class="spinner-logo">) */
+.spinner-logo {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  animation: spinLogo 1s linear infinite;
+}
+.spinner-logo--grande {
+  width: 56px;
+  height: 56px;
+}
+.spinner-logo--chico {
+  width: 24px;
+  height: 24px;
+}
+@keyframes spinLogo {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

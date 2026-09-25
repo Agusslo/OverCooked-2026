@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent, IonSpinner, IonText } from '@ionic/angular';
+import { IonContent, IonText } from '@ionic/angular';
 import { AuthService } from '../../../core/services/auth.service';
 import { SupabaseService } from '../../../core/services/supabase.service';
 import { AccesoRapido } from '../auth.interfaces';
@@ -10,7 +10,7 @@ import { environment } from '../../../../environments/environment';
   selector: 'app-accesos-rapidos',
   templateUrl: './accesos-rapidos.page.html',
   styleUrls: ['./accesos-rapidos.page.scss'],
-  imports: [IonContent, IonSpinner, IonText],
+  imports: [IonContent, IonText],
 })
 export class AccesosRapidosPage {
   private authService = inject(AuthService);

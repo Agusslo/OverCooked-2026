@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonItem, IonInput, IonButton, IonSpinner, IonText } from '@ionic/angular';
+import { IonContent, IonItem, IonInput, IonButton, IonText } from '@ionic/angular';
 import { AuthService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
 
@@ -10,7 +10,7 @@ import { environment } from '../../../../environments/environment';
   standalone: true,
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  imports: [ReactiveFormsModule, IonContent, IonItem, IonInput, IonButton, IonSpinner, IonText],
+  imports: [ReactiveFormsModule, IonContent, IonItem, IonInput, IonButton, IonText],
 })
 export class LoginPage {
   // "inject()" es una forma alternativa de pedirle a Angular

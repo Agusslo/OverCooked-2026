@@ -84,24 +84,6 @@
   color: var(--texto-suave);
 }
 
-.cu-spinner {
-  width: 64px;
-  height: 64px;
-  animation: cu-girar 1.2s linear infinite;
-
-  &--chico {
-    width: 32px;
-    height: 32px;
-    flex: none;
-  }
-}
-
-@keyframes cu-girar {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .cu-card {
   background: var(--panel-2);
   border-radius: 20px;

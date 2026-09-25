@@ -14,7 +14,7 @@
   <main class="cu-cuerpo">
     @if (cargando()) {
       <div class="cu-estado">
-        <img src="assets/icon/logo.png" alt="" class="cu-spinner" />
+        <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
         <span>Cargando tu cuenta…</span>
       </div>
     } @else if (!pedido()) {
@@ -98,7 +98,7 @@
               </button>
             } @else if (fase() === 'esperando') {
               <div class="cu-aviso">
-                <img src="assets/icon/logo.png" alt="" class="cu-spinner cu-spinner--chico" />
+                <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
                 <span>Pago realizado. Esperando que el mozo lo confirme…</span>
               </div>
             } @else {

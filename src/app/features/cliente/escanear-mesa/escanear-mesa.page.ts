@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Capacitor } from '@capacitor/core';
-import { IonButton, IonSpinner } from '@ionic/angular';
+import { IonButton } from '@ionic/angular';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { AuthService } from '../../../core/services/auth.service';
 import { QrScannerService } from '../../../core/services/qr-scanner';
@@ -17,7 +17,7 @@ import { Mesa } from '../../../core/models/mesa.model';
   standalone: true,
   templateUrl: './escanear-mesa.page.html',
   styleUrls: ['./escanear-mesa.page.scss'],
-  imports: [IonButton, IonSpinner],
+  imports: [IonButton],
 })
 export class EscanearMesaPage implements OnInit {
   private authService = inject(AuthService);
