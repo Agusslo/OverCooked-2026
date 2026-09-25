@@ -4,7 +4,7 @@ import { IonContent, IonSpinner, IonText } from '@ionic/angular';
 import { AuthService } from '../../../core/services/auth.service';
 import { SupabaseService } from '../../../core/services/supabase.service';
 import { AccesoRapido } from '../auth.interfaces';
-import { CLAVE_PRUEBA } from '../login/login.page';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-accesos-rapidos',
@@ -75,11 +75,16 @@ export class AccesosRapidosPage {
   }
 
   async accederRapido(acceso: AccesoRapido): Promise<void> {
+    if (environment.production || !environment.clavePrueba) {
+      this.errorLogin.set('Los accesos rápidos no están disponibles.');
+      return;
+    }
+
     this.errorLogin.set(null);
     this.cargando.set(true);
 
     try {
-      await this.authService.login(acceso.email, CLAVE_PRUEBA);
+      await this.authService.login(acceso.email, environment.clavePrueba);
       this.router.navigateByUrl('/inicio');
     } catch (error) {
       this.errorLogin.set(

@@ -125,6 +125,12 @@ export class EntradaPage implements OnInit {
     this.router.navigateByUrl('/inicio');
   }
 
+  // Punto 22: con el QR de la lista de espera también se ven los
+  // resultados de las encuestas.
+  verResultados(): void {
+    this.router.navigateByUrl('/cliente/encuesta-resultados');
+  }
+
   async salir(): Promise<void> {
     await this.authService.logout();
     this.router.navigateByUrl('/auth/login');

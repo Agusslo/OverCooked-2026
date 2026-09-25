@@ -254,11 +254,22 @@ export class MesasService {
       throw new Error('No se pudo actualizar la disponibilidad de la mesa.');
     }
 
-    // Al liberar la mesa termina el ciclo de esa ocupación: se borran
-    // todas las conversaciones que tuvo (todos los hilos), así el
-    // próximo comensal que se siente ahí arranca de cero, sin ver
-    // charlas de gente que ya se fue.
+    // Al liberar la mesa termina el ciclo de esa ocupación: se cierran
+    // las asignaciones vigentes (si no, el cliente anterior seguiría
+    // "asignado" a la mesa) y se borran todas las conversaciones que
+    // tuvo (todos los hilos), así el próximo comensal que se siente ahí
+    // arranca de cero, sin ver charlas de gente que ya se fue.
     if (estado === 'libre') {
+      const { error: errorAsignacion } = await client
+        .from('asignaciones_mesa')
+        .update({ fecha_fin: new Date().toISOString() })
+        .eq('mesa_id', id)
+        .is('fecha_fin', null);
+
+      if (errorAsignacion) {
+        throw new Error('La mesa se liberó, pero no se pudo cerrar su asignación.');
+      }
+
       await client.from('mensajes_mesa').delete().eq('mesa_id', id);
       await client.from('mesas_chat_leido').delete().eq('mesa_id', id);
       await client.from('juegos_resultados').delete().eq('mesa_id', id);

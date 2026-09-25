@@ -1,0 +1,269 @@
+:host {
+  --hero: #ee7a4f;
+  --panel: #a83820;
+  --panel-2: #c45030;
+  --gold: #f0c060;
+  --texto: #fef5ee;
+  --texto-suave: #f9bfa0;
+
+  display: block;
+  min-height: 100dvh;
+  font-family: system-ui, sans-serif;
+}
+
+.cu-shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--hero);
+  color: var(--texto);
+}
+
+.cu-header {
+  flex: none;
+  background: var(--panel);
+  padding: max(44px, calc(env(safe-area-inset-top) + 12px)) 16px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.cu-back {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 999px;
+  border: none;
+  background: var(--gold);
+  color: var(--panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 19px;
+    height: 19px;
+  }
+}
+
+.cu-header__titulo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--gold);
+  }
+
+  span {
+    font-size: 13px;
+    color: var(--texto-suave);
+  }
+}
+
+.cu-cuerpo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 16px calc(24px + env(safe-area-inset-bottom));
+}
+
+.cu-estado {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--texto-suave);
+}
+
+.cu-spinner {
+  width: 64px;
+  height: 64px;
+  animation: cu-girar 1.2s linear infinite;
+
+  &--chico {
+    width: 32px;
+    height: 32px;
+    flex: none;
+  }
+}
+
+@keyframes cu-girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cu-card {
+  background: var(--panel-2);
+  border-radius: 20px;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--gold);
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.4;
+    color: var(--texto);
+  }
+
+  &--centro {
+    text-align: center;
+    align-items: stretch;
+  }
+}
+
+.cu-btn {
+  width: 100%;
+  min-height: 52px;
+  border: none;
+  border-radius: 14px;
+  background: var(--gold);
+  color: var(--panel);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+
+  &:disabled {
+    opacity: 0.6;
+  }
+
+  &--sec {
+    background: transparent;
+    color: var(--texto);
+    border: 2px solid var(--texto-suave);
+    font-weight: 700;
+  }
+}
+
+.cu-simular {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+
+.cu-btn-dev {
+  min-height: 40px;
+  border-radius: 10px;
+  border: 1px dashed var(--texto-suave);
+  background: transparent;
+  color: var(--texto);
+}
+
+.cu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--texto-suave);
+}
+
+.cu-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    'cant nombre importe'
+    'cant unit importe';
+  column-gap: 10px;
+  align-items: center;
+
+  &__cant {
+    grid-area: cant;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  &__nombre {
+    grid-area: nombre;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  &__unit {
+    grid-area: unit;
+    font-size: 12px;
+    color: var(--texto-suave);
+  }
+
+  &__importe {
+    grid-area: importe;
+    font-size: 15px;
+  }
+}
+
+.cu-linea {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+
+  &--descuento {
+    color: var(--gold);
+  }
+}
+
+.cu-total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 2px solid var(--texto-suave);
+
+  span {
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--texto-suave);
+  }
+
+  strong {
+    font-size: 40px;
+    line-height: 1.1;
+    color: var(--gold);
+  }
+}
+
+.cu-aviso {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--panel);
+  text-align: center;
+
+  &--ok {
+    background: #1f6f4e;
+  }
+}
+
+.cu-banner {
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+
+  &.error {
+    background: #5f1a10;
+    color: #fff;
+  }
+}

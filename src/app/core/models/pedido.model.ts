@@ -49,6 +49,8 @@ export interface Pedido {
   // marcó como entregado. Recién ahí se habilita el acceso a la
   // encuesta y a pedir la cuenta.
   confirmado_por_cliente?: boolean;
+  // Punto 21: el cliente pidió la cuenta (se avisa por push a los mozos).
+  cuenta_solicitada?: boolean;
   // Se completa cuando se trae el pedido con su detalle.
   items?: PedidoItem[];
 }
@@ -75,6 +77,10 @@ export const ESTADO_PEDIDO_LISTO = 'listo';
 // Punto 19: el mozo entrega el pedido completo (ya estaba 'listo').
 export const ESTADO_PEDIDO_ENTREGADO = 'entregado';
 
+// Punto 22: el mozo confirma el pago y el pedido se cierra (valor real del
+// enum estado_pedido de la base).
+export const ESTADO_PEDIDO_CERRADO = 'cerrado';
+
 // Estados en los que un pedido confirmado sigue "vivo" para el sector
 // (cocina/bar) que lo tiene que preparar: ya fue derivado pero todavía
 // no se entregó. Point 14 sólo necesita listar acá; el detalle de que
@@ -82,7 +88,8 @@ export const ESTADO_PEDIDO_ENTREGADO = 'entregado';
 export const ESTADOS_PEDIDO_EN_SECTOR = ['confirmado', 'en_preparacion', 'listo'];
 
 // Estados en los que el pedido ya está cerrado y la mesa quedó libre.
-export const ESTADOS_PEDIDO_TERMINADOS = ['pagado', 'cancelado'];
+// ('cerrado' es el valor real del enum estado_pedido en la base.)
+export const ESTADOS_PEDIDO_TERMINADOS = ['cerrado', 'pagado', 'cancelado'];
 
 // Texto para mostrarle al cliente en la pantalla de estado del pedido.
 // Se resuelve por función para tolerar valores del enum que todavía no

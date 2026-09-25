@@ -278,26 +278,23 @@
   display: flex;
 }
 
-.ep-cuenta__proximamente {
+.ep-cuenta__link {
   flex: 1;
-  min-height: 90px;
+  min-height: 56px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
   gap: 10px;
-  color: var(--texto-suave);
-  padding: 0 8px;
+  border-radius: 14px;
+  background: var(--gold);
+  color: var(--panel);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 16px;
 
   svg {
-    width: 36px;
-    height: 36px;
-    color: var(--gold);
-  }
-  span {
-    font-size: 13px;
-    line-height: 1.4;
+    width: 24px;
+    height: 24px;
   }
 }
 

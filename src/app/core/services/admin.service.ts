@@ -46,33 +46,60 @@ export class AdminService {
       password: datos.clave,
     });
 
-    if (errorAuth || !altaAuth.user) {
+    // Si el mail ya tiene cuenta en Auth, Supabase devuelve un usuario
+    // "falso" (identities vacío) o el error 'User already registered'.
+    // Puede ser un alta anterior que falló después del signUp (foto o
+    // insert): intentamos recuperarla con las mismas credenciales.
+    const cuentaYaExiste =
+      altaAuth?.user?.identities?.length === 0 ||
+      errorAuth?.message === 'User already registered';
+
+    let userId: string;
+
+    if (cuentaYaExiste) {
+      const { data: loginData, error: errorLogin } =
+        await client.auth.signInWithPassword({
+          email: datos.correo,
+          password: datos.clave,
+        });
+
+      if (errorLogin || !loginData.user) {
+        await this.restaurarSesionAdmin(sesionAdmin);
+        throw new Error('Ya existe una cuenta con ese correo.');
+      }
+      userId = loginData.user.id;
+    } else if (errorAuth || !altaAuth.user) {
       throw new Error(errorAuth?.message || 'No se pudo crear la cuenta del empleado.');
+    } else {
+      userId = altaAuth.user.id;
     }
 
     // Apenas tenemos el id del nuevo usuario, restauramos la
     // sesión del admin. De acá en adelante, cualquier operación
     // (incluyendo la subida de la foto y el insert de abajo) se
     // hace como el admin, no como el empleado recién creado.
-    if (sesionAdmin) {
-      const { error: errorSesion } = await client.auth.setSession({
-        access_token: sesionAdmin.access_token,
-        refresh_token: sesionAdmin.refresh_token,
-      });
+    await this.restaurarSesionAdmin(sesionAdmin);
 
-      if (errorSesion) {
-        throw new Error('El empleado se creó, pero no se pudo restaurar tu sesión.');
+    if (cuentaYaExiste) {
+      const { data: perfilExistente } = await client
+        .from('usuarios')
+        .select('id')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (perfilExistente) {
+        throw new Error('Ya existe un empleado registrado con ese correo.');
       }
     }
 
     // La foto se sube a Storage (nunca en base64 en la tabla),
     // mismo mecanismo que ProductosService y MesasService.
-    const foto_url = await this.subirFoto(datos.fotoDataUrl, `empleado-${altaAuth.user.id}`);
+    const foto_url = await this.subirFoto(datos.fotoDataUrl, `empleado-${userId}`);
 
     const { data: usuarioCreado, error: errorInsert } = await client
       .from('usuarios')
       .insert({
-        id: altaAuth.user.id,
+        id: userId,
         nombre: datos.nombre,
         apellido: datos.apellido,
         dni: datos.dni,
@@ -94,6 +121,25 @@ export class AdminService {
     return usuarioCreado as Usuario;
   }
 
+  // signUp/signInWithPassword reemplazan la sesión activa por la del
+  // empleado: se vuelve a la del admin que está haciendo el alta.
+  private async restaurarSesionAdmin(
+    sesionAdmin: { access_token: string; refresh_token: string } | null,
+  ): Promise<void> {
+    if (!sesionAdmin) {
+      return;
+    }
+
+    const { error } = await this.supabaseService.getClient().auth.setSession({
+      access_token: sesionAdmin.access_token,
+      refresh_token: sesionAdmin.refresh_token,
+    });
+
+    if (error) {
+      throw new Error('El empleado se creó, pero no se pudo restaurar tu sesión.');
+    }
+  }
+
   // Convierte el dataUrl (base64) que devuelve la cámara en un
   // archivo real y lo sube al bucket de fotos de usuarios.
   private async subirFoto(dataUrl: string, nombreArchivo: string): Promise<string> {
@@ -106,7 +152,9 @@ export class AdminService {
 
     const { error: errorSubida } = await client.storage
       .from(BUCKET_USUARIOS)
-      .upload(ruta, blob, { contentType: blob.type });
+      // upsert: el nombre es determinístico (empleado-<userId>) y un alta
+      // que quedó a medias puede reintentar la subida para el mismo id.
+      .upload(ruta, blob, { contentType: blob.type, upsert: true });
 
     if (errorSubida) {
       throw new Error(`No se pudo subir la foto: ${errorSubida.message}`);

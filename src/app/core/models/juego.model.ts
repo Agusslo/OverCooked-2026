@@ -1,4 +1,4 @@
-export type NombreJuego = 'higher_lower' | 'simon' | 'tercero';
+export type NombreJuego = 'higher_lower' | 'simon' | 'memotest';
 
 export interface ResultadoJuego {
   id: string;
@@ -13,5 +13,5 @@ export interface ResultadoJuego {
 export const JUEGOS_DISPONIBLES: { juego: NombreJuego; nombre: string; ruta: string }[] = [
   { juego: 'higher_lower', nombre: 'Mayor o Menor', ruta: 'higher-lower' },
   { juego: 'simon', nombre: 'Simón', ruta: 'simon' },
-  { juego: 'tercero', nombre: 'Próximamente', ruta: '' },
+  { juego: 'memotest', nombre: 'Memotest', ruta: 'memotest' },
 ];

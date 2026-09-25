@@ -3,12 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonContent, IonItem, IonInput, IonButton, IonSpinner, IonText } from '@ionic/angular';
 import { AuthService } from '../../../core/services/auth.service';
-
-// Contraseña compartida por los usuarios de PRUEBA que van a
-// cargar en la base de datos (dueño, supervisor, metre, etc.).
-// Cuando armen ese script de datos iniciales, tiene que usar
-// esta misma contraseña para que los accesos rápidos funcionen.
-export const CLAVE_PRUEBA = 'Password123';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -34,6 +29,10 @@ export class LoginPage {
   errorLogin = signal<string | null>(null);
 
   mostrarClave = signal(false);
+
+  // Los accesos rápidos (login con clave de prueba) sólo existen en dev.
+  accesosRapidosHabilitados = !environment.production;
+
   // Un FormGroup junta varios campos de formulario (FormControl)
   // bajo un mismo objeto. El array de cada campo es
   // [valorInicial, listaDeValidadores]. Validators.required
