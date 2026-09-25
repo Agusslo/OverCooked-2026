@@ -54,15 +54,17 @@ serve(async (req) => {
 
   const pedido = payload.record;
   const anterior = payload.old_record;
+  // Cliente registrado o invitado: el id del invitado es el de su
+  // sesión anónima de Auth, igual que push_tokens.usuario_id.
+  const destinatario = pedido?.cliente_id ?? pedido?.cliente_anonimo_id ?? null;
 
   // Sólo cuando el pedido ACABA de pasar a 'rechazado' (no en cada
-  // UPDATE de la tabla) y tiene cliente registrado: los clientes
-  // anónimos no tienen fila en 'usuarios' ni token en 'push_tokens'.
+  // UPDATE de la tabla).
   if (
     !pedido ||
     pedido.estado !== 'rechazado' ||
     anterior?.estado === 'rechazado' ||
-    !pedido.cliente_id
+    !destinatario
   ) {
     console.log('[notificar-pedido-rechazado] omitido: no aplica.');
     return json({ ok: true, omitido: true }, 200);
@@ -84,7 +86,7 @@ serve(async (req) => {
   const { data: filas, error } = await supabase
     .from('push_tokens')
     .select('token')
-    .eq('usuario_id', pedido.cliente_id);
+    .eq('usuario_id', destinatario);
 
   if (error) {
     console.log('[notificar-pedido-rechazado] error consultando push_tokens:', error.message);

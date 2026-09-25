@@ -54,12 +54,13 @@ serve(async (req) => {
   }
 
   const asignacion = payload.record;
+  // Cliente registrado o invitado: push_tokens.usuario_id referencia
+  // auth.users, y el id del invitado (clientes_anonimos.id) es el de su
+  // sesión anónima de Auth.
+  const destinatario = asignacion?.cliente_id ?? asignacion?.cliente_anonimo_id ?? null;
 
-  // Los clientes anónimos no tienen fila en 'usuarios' ni token en
-  // 'push_tokens' (esa tabla referencia usuarios.id), así que sólo
-  // avisamos cuando el asignado es un cliente registrado.
-  if (!asignacion || !asignacion.cliente_id) {
-    console.log('[notificar-mesa-asignada] omitido: no es un cliente registrado.');
+  if (!asignacion || !destinatario) {
+    console.log('[notificar-mesa-asignada] omitido: la asignación no tiene cliente.');
     return json({ ok: true, omitido: true }, 200);
   }
 
@@ -84,7 +85,7 @@ serve(async (req) => {
   const { data: filas, error: errorTokens } = await supabase
     .from('push_tokens')
     .select('token')
-    .eq('usuario_id', asignacion.cliente_id);
+    .eq('usuario_id', destinatario);
 
   if (errorTokens) {
     console.log('[notificar-mesa-asignada] error consultando push_tokens:', errorTokens.message);

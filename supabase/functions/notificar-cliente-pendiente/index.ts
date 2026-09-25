@@ -76,12 +76,29 @@ serve(async (req) => {
   }
   const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
-  // Tokens de los dispositivos de dueño/supervisor (ver CAMBIAR.md
-  // para la tabla push_tokens).
+  // Tokens de los dispositivos de dueño/supervisor. En dos pasos (ids y
+  // después tokens) porque push_tokens.usuario_id referencia auth.users
+  // (también hay invitados), no 'usuarios', y no se puede embeber.
+  const { data: destinatarios, error: errorDest } = await supabase
+    .from('usuarios')
+    .select('id')
+    .in('perfil', PERFILES_A_NOTIFICAR);
+
+  if (errorDest) {
+    console.log('[notificar-cliente-pendiente] error consultando usuarios:', errorDest.message);
+    return json({ error: 'No se pudieron obtener los destinatarios.', detalle: errorDest.message }, 500);
+  }
+
+  const ids = (destinatarios ?? []).map((u: { id: string }) => u.id);
+  if (ids.length === 0) {
+    console.log('[notificar-cliente-pendiente] no hay dueño/supervisor registrados.');
+    return json({ ok: true, enviados: 0 }, 200);
+  }
+
   const { data: filas, error } = await supabase
     .from('push_tokens')
-    .select('token, usuarios!inner(perfil)')
-    .in('usuarios.perfil', PERFILES_A_NOTIFICAR);
+    .select('token')
+    .in('usuario_id', ids);
 
   if (error) {
     console.log('[notificar-cliente-pendiente] error consultando push_tokens:', error.message);

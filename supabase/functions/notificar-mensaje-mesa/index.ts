@@ -6,10 +6,9 @@
 //
 // También cubre la mitad final de ese mismo punto: cuando un MOZO
 // responde esa consulta, el cliente dueño del hilo tiene que
-// enterarse por push. Los clientes anónimos nunca tienen push
-// registrado (ver PERFILES_NOTIFICABLES en inicio.page.ts, que
-// excluye 'anonimo'), así que para ellos esto no manda nada — el
-// aviso les sigue llegando por Realtime en pantalla.
+// enterarse por push. Vale también para invitados: hilo_cliente_id es
+// el id de su sesión anónima de Auth, que es a lo que referencia
+// push_tokens.usuario_id.
 //
 // Esta función NO la llama el front — la dispara un Database
 // Webhook de Supabase (Database → Webhooks) sobre INSERT en la
@@ -104,9 +103,8 @@ serve(async (req) => {
     const tokens = (filas ?? []).map((fila: { token: string }) => fila.token).filter(Boolean);
 
     if (tokens.length === 0) {
-      // Esperable si el hilo es de un cliente anónimo (nunca registra
-      // push) o si el cliente registrado no tiene el dispositivo dado
-      // de alta todavía.
+      // Esperable si el cliente (registrado o invitado) no tiene el
+      // dispositivo dado de alta todavía o no dio permiso de push.
       console.log('[notificar-mensaje-mesa] el cliente no tiene ningún dispositivo registrado.');
       return json({ ok: true, enviados: 0 }, 200);
     }

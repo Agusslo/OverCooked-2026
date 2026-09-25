@@ -11,11 +11,14 @@ import { HeaderInicioComponent } from '../../../shared/header-inicio/header-inic
 // los clientes pendientes (punto 6), cliente por la asignación de su
 // mesa (punto 10) y el pedido (punto 12), metre por la lista de espera,
 // mozo por los pedidos nuevos y cocinero/cantinero por los pedidos
-// confirmados que se derivan a su sector (punto 14).
+// confirmados que se derivan a su sector (punto 14). El invitado
+// (anonimo) recibe lo mismo que el cliente: su id es el de la sesión
+// anónima de Auth, que es a lo que referencia push_tokens.usuario_id.
 const PERFILES_NOTIFICABLES = [
   'dueño',
   'supervisor',
   'cliente',
+  'anonimo',
   'metre',
   'mozo',
   'cocinero',

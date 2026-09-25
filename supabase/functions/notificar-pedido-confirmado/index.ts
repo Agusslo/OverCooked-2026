@@ -108,10 +108,26 @@ serve(async (req) => {
     const perfil = PERFIL_POR_SECTOR[sector];
     if (!perfil) continue;
 
+    // En dos pasos (ids y después tokens) porque push_tokens.usuario_id
+    // referencia auth.users (también hay invitados), no 'usuarios', y no
+    // se puede embeber.
+    const { data: personal, error: errorPersonal } = await supabase
+      .from('usuarios')
+      .select('id')
+      .eq('perfil', perfil);
+
+    if (errorPersonal) {
+      console.log(`[notificar-pedido-confirmado] error consultando usuarios (${sector}):`, errorPersonal.message);
+      continue;
+    }
+
+    const ids = (personal ?? []).map((u: { id: string }) => u.id);
+    if (ids.length === 0) continue;
+
     const { data: filas, error } = await supabase
       .from('push_tokens')
-      .select('token, usuarios!inner(perfil)')
-      .eq('usuarios.perfil', perfil);
+      .select('token')
+      .in('usuario_id', ids);
 
     if (error) {
       console.log(`[notificar-pedido-confirmado] error consultando push_tokens (${sector}):`, error.message);
@@ -128,13 +144,15 @@ serve(async (req) => {
     fallidos.push(...resultado.fallidos);
   }
 
-  // Aviso al cliente (si es un cliente registrado, no invitado): su
-  // pedido ya fue derivado y ya puede entrar a la sección de juegos.
-  if (pedido.cliente_id) {
+  // Aviso al cliente (registrado o invitado: el id del invitado es el de
+  // su sesión anónima de Auth): su pedido ya fue derivado y ya puede
+  // entrar a la sección de juegos.
+  const destinatarioCliente = pedido.cliente_id ?? pedido.cliente_anonimo_id;
+  if (destinatarioCliente) {
     const { data: filasCliente, error: errorCliente } = await supabase
       .from('push_tokens')
       .select('token')
-      .eq('usuario_id', pedido.cliente_id);
+      .eq('usuario_id', destinatarioCliente);
 
     if (errorCliente) {
       console.log('[notificar-pedido-confirmado] error consultando push_tokens del cliente:', errorCliente.message);

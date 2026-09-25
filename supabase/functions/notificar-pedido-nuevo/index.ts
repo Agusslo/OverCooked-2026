@@ -29,6 +29,7 @@ interface PayloadWebhook {
   type: 'INSERT' | 'UPDATE' | 'DELETE';
   table: string;
   record: FilaPedido | null;
+  old_record: FilaPedido | null;
 }
 
 serve(async (req) => {
@@ -48,10 +49,18 @@ serve(async (req) => {
   }
 
   const pedido = payload.record;
+  const anterior = payload.old_record;
 
   // Sólo cuando el cliente terminó el pedido y espera confirmación
   // ('pendiente_mozo' es el valor inicial del enum estado_pedido).
-  if (!pedido || pedido.estado !== 'pendiente_mozo') {
+  // También la dispara el trigger notificar-pedido-reenviado (UPDATE,
+  // rechazado -> pendiente_mozo): en ese caso sólo avisamos si el pedido
+  // ACABA de volver a pendiente_mozo, no en cualquier UPDATE posterior.
+  if (
+    !pedido ||
+    pedido.estado !== 'pendiente_mozo' ||
+    (payload.type === 'UPDATE' && anterior?.estado === 'pendiente_mozo')
+  ) {
     console.log('[notificar-pedido-nuevo] omitido: estado no coincide.');
     return json({ ok: true, omitido: true }, 200);
   }
@@ -69,10 +78,29 @@ serve(async (req) => {
     .eq('id', pedido.mesa_id)
     .single();
 
+  // En dos pasos (ids y después tokens) porque push_tokens.usuario_id
+  // referencia auth.users (también hay invitados), no 'usuarios', y no
+  // se puede embeber.
+  const { data: mozos, error: errorMozos } = await supabase
+    .from('usuarios')
+    .select('id')
+    .in('perfil', PERFILES_A_NOTIFICAR);
+
+  if (errorMozos) {
+    console.log('[notificar-pedido-nuevo] error consultando mozos:', errorMozos.message);
+    return json({ error: 'No se pudieron obtener los mozos.', detalle: errorMozos.message }, 500);
+  }
+
+  const idsMozos = (mozos ?? []).map((m: { id: string }) => m.id);
+  if (idsMozos.length === 0) {
+    console.log('[notificar-pedido-nuevo] no hay ningún mozo registrado.');
+    return json({ ok: true, enviados: 0 }, 200);
+  }
+
   const { data: filas, error } = await supabase
     .from('push_tokens')
-    .select('token, usuarios!inner(perfil)')
-    .in('usuarios.perfil', PERFILES_A_NOTIFICAR);
+    .select('token')
+    .in('usuario_id', idsMozos);
 
   if (error) {
     console.log('[notificar-pedido-nuevo] error consultando push_tokens:', error.message);

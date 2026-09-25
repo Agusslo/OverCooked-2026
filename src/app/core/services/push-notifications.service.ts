@@ -15,9 +15,11 @@ import { SupabaseService } from './supabase.service';
 import { environment } from '../../../environments/environment';
 
 // Tabla donde se guarda el token de push de cada dispositivo, asociado
-// al usuario logueado (ver CAMBIAR.md: hay que crear esta tabla en
-// Supabase antes de que esto funcione de punta a punta).
+// al usuario logueado (registrado o invitado: usuario_id referencia
+// auth.users, ver supabase/sql/push-notifications.sql).
 const TABLA_TOKENS = 'push_tokens';
+// Alta/reasignación del token del dispositivo a auth.uid().
+const FUNCION_REGISTRAR_TOKEN = 'registrar_push_token';
 
 // Puntos 6 y 10 del PDF: dueño/supervisor se enteran por push cuando
 // hay un cliente pendiente de aprobación, y el cliente se entera por
@@ -35,6 +37,15 @@ export class PushNotificationsService {
   private router = inject(Router);
 
   private inicializado = false;
+  // Los listeners de Capacitor se registran UNA sola vez por ejecución
+  // de la app: si se volvían a agregar en cada login (logout → login con
+  // otro usuario), quedaban duplicados y el de 'registration' del
+  // usuario anterior seguía guardando el token a su nombre.
+  private listenersRegistrados = false;
+  // Usuario logueado al que pertenece este dispositivo. Los listeners lo
+  // leen en el momento del evento (no lo capturan al registrarse), así
+  // un cambio de usuario no deja callbacks apuntando al anterior.
+  private usuarioId: string | null = null;
   // Token del dispositivo actual (si se registró en esta sesión de la
   // app). Se usa para borrar SOLO esta fila al hacer logout, sin tocar
   // los tokens de otros dispositivos del mismo usuario.
@@ -55,6 +66,7 @@ export class PushNotificationsService {
       return;
     }
     this.inicializado = true;
+    this.usuarioId = usuarioId;
 
     try {
       // No comparamos sólo contra 'prompt': Android también puede
@@ -69,46 +81,62 @@ export class PushNotificationsService {
         return;
       }
 
-      PushNotifications.addListener('registration', (token: Token) => {
-        void this.guardarToken(usuarioId, token.value);
-      });
+      await this.registrarListeners();
 
-      PushNotifications.addListener('registrationError', (error) => {
-        console.warn('No se pudo registrar el dispositivo para push:', error);
-      });
-
-      // Con la app en segundo plano/cerrada, Android muestra la
-      // notificación solo. Con la app abierta en primer plano NO lo hace
-      // (es comportamiento normal del sistema operativo), así que acá
-      // la disparamos nosotros como notificación local.
-      PushNotifications.addListener(
-        'pushNotificationReceived',
-        (notificacion: PushNotificationSchema) => {
-          void this.mostrarNotificacionEnPrimerPlano(notificacion);
-        },
-      );
-
-      // El usuario tocó la notificación: la llevamos a la pantalla que
-      // corresponda según el tipo que viaja en el "data" del push. Esto
-      // cubre el caso "app cerrada/en background" (push real, tocada
-      // desde la bandeja del sistema).
-      PushNotifications.addListener(
-        'pushNotificationActionPerformed',
-        (accion: ActionPerformed) => this.navegarSegunTipo(accion.notification.data ?? {}),
-      );
-
-      // Mismo caso pero para cuando la notificación se mostró como local
-      // (app en primer plano, ver mostrarNotificacionEnPrimerPlano): sin
-      // este listener, tocar esa notificación no navegaba a ningún lado.
-      LocalNotifications.addListener(
-        'localNotificationActionPerformed',
-        (accion: LocalActionPerformed) => this.navegarSegunTipo(accion.notification.extra ?? {}),
-      );
-
+      // En un re-login (mismo proceso de la app) register() vuelve a
+      // emitir 'registration' con el mismo token, que se guarda ahora a
+      // nombre del usuario nuevo.
       await PushNotifications.register();
     } catch (error) {
       console.warn('No se pudo inicializar las notificaciones push:', error);
     }
+  }
+
+  private async registrarListeners(): Promise<void> {
+    if (this.listenersRegistrados) {
+      return;
+    }
+    this.listenersRegistrados = true;
+
+    await PushNotifications.addListener('registration', (token: Token) => {
+      // Si el evento llega después de un logout no hay a quién asignarle
+      // el token.
+      if (this.usuarioId) {
+        void this.guardarToken(token.value);
+      }
+    });
+
+    await PushNotifications.addListener('registrationError', (error) => {
+      console.warn('No se pudo registrar el dispositivo para push:', error);
+    });
+
+    // Con la app en segundo plano/cerrada, Android muestra la
+    // notificación solo. Con la app abierta en primer plano NO lo hace
+    // (es comportamiento normal del sistema operativo), así que acá
+    // la disparamos nosotros como notificación local.
+    await PushNotifications.addListener(
+      'pushNotificationReceived',
+      (notificacion: PushNotificationSchema) => {
+        void this.mostrarNotificacionEnPrimerPlano(notificacion);
+      },
+    );
+
+    // El usuario tocó la notificación: la llevamos a la pantalla que
+    // corresponda según el tipo que viaja en el "data" del push. Esto
+    // cubre el caso "app cerrada/en background" (push real, tocada
+    // desde la bandeja del sistema).
+    await PushNotifications.addListener(
+      'pushNotificationActionPerformed',
+      (accion: ActionPerformed) => this.navegarSegunTipo(accion.notification.data ?? {}),
+    );
+
+    // Mismo caso pero para cuando la notificación se mostró como local
+    // (app en primer plano, ver mostrarNotificacionEnPrimerPlano): sin
+    // este listener, tocar esa notificación no navegaba a ningún lado.
+    await LocalNotifications.addListener(
+      'localNotificationActionPerformed',
+      (accion: LocalActionPerformed) => this.navegarSegunTipo(accion.notification.extra ?? {}),
+    );
   }
 
   private async mostrarNotificacionEnPrimerPlano(
@@ -145,8 +173,9 @@ export class PushNotificationsService {
     } else if (tipo === 'lista-espera') {
       this.router.navigateByUrl('/metre/lista-espera');
     } else if (tipo === 'pedido-nuevo') {
-      // Punto 12: el mozo recibe el aviso de un pedido nuevo.
-      this.router.navigateByUrl('/mozo/consultas');
+      // Punto 12: el mozo recibe el aviso de un pedido nuevo y lo
+      // confirma/rechaza desde pedidos-pendientes.
+      this.router.navigateByUrl('/mozo/pedidos-pendientes');
     } else if (tipo === 'pedido-confirmado' || tipo === 'pedido-rechazado') {
       // Puntos 13/14: el cliente vuelve al estado de su pedido.
       const pedidoId = data['pedidoId'];
@@ -182,19 +211,19 @@ export class PushNotificationsService {
     }
   }
 
-  private async guardarToken(usuarioId: string, token: string): Promise<void> {
+  // Va por la función registrar_push_token (SECURITY DEFINER) y no por
+  // un upsert directo: si el token del dispositivo ya estaba a nombre de
+  // otro usuario (cerró la app sin logout, sesión vencida), la policy
+  // de push_tokens (usuario_id = auth.uid()) bloqueaba el UPDATE y el
+  // usuario nuevo nunca recibía pushes. La función asigna el token
+  // siempre a auth.uid(), así que no se puede registrar a nombre ajeno.
+  private async guardarToken(token: string): Promise<void> {
     const { error } = await this.supabaseService
       .getClient()
-      .from(TABLA_TOKENS)
-      .upsert(
-        {
-          usuario_id: usuarioId,
-          token,
-          plataforma: Capacitor.getPlatform(),
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: 'token' },
-      );
+      .rpc(FUNCION_REGISTRAR_TOKEN, {
+        p_token: token,
+        p_plataforma: Capacitor.getPlatform(),
+      });
 
     if (error) {
       console.warn('No se pudo guardar el token de notificaciones push:', error);
@@ -207,23 +236,23 @@ export class PushNotificationsService {
   // la fila de push_tokens de este dispositivo para que un usuario que
   // cerró sesión deje de recibir las notificaciones del que inicie
   // sesión después en el mismo teléfono. Si nunca se registró un token
-  // en esta sesión no hace nada.
+  // en esta sesión no borra nada, pero igual resetea el estado para que
+  // el próximo login vuelva a inicializar.
   async eliminarTokenActual(): Promise<void> {
-    if (!this.tokenActual) {
-      return;
-    }
+    if (this.tokenActual) {
+      const { error } = await this.supabaseService
+        .getClient()
+        .from(TABLA_TOKENS)
+        .delete()
+        .eq('token', this.tokenActual);
 
-    const { error } = await this.supabaseService
-      .getClient()
-      .from(TABLA_TOKENS)
-      .delete()
-      .eq('token', this.tokenActual);
-
-    if (error) {
-      console.warn('No se pudo borrar el token de notificaciones push:', error);
+      if (error) {
+        console.warn('No se pudo borrar el token de notificaciones push:', error);
+      }
     }
 
     this.tokenActual = null;
+    this.usuarioId = null;
     this.inicializado = false;
   }
 }

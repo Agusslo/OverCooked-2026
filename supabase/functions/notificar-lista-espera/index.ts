@@ -69,11 +69,29 @@ serve(async (req) => {
   }
   const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
-  // Tokens de los dispositivos con perfil 'metre'.
+  // Tokens de los dispositivos con perfil 'metre'. En dos pasos (ids y
+  // después tokens) porque push_tokens.usuario_id referencia auth.users
+  // (también hay invitados), no 'usuarios', y no se puede embeber.
+  const { data: metres, error: errorMetres } = await supabase
+    .from('usuarios')
+    .select('id')
+    .in('perfil', PERFILES_A_NOTIFICAR);
+
+  if (errorMetres) {
+    console.log('[notificar-lista-espera] error consultando metres:', errorMetres.message);
+    return json({ error: 'No se pudieron obtener los metres.', detalle: errorMetres.message }, 500);
+  }
+
+  const ids = (metres ?? []).map((u: { id: string }) => u.id);
+  if (ids.length === 0) {
+    console.log('[notificar-lista-espera] no hay ningún metre registrado.');
+    return json({ ok: true, enviados: 0 }, 200);
+  }
+
   const { data: filas, error } = await supabase
     .from('push_tokens')
-    .select('token, usuarios!inner(perfil)')
-    .in('usuarios.perfil', PERFILES_A_NOTIFICAR);
+    .select('token')
+    .in('usuario_id', ids);
 
   if (error) {
     console.log('[notificar-lista-espera] error consultando push_tokens:', error.message);
