@@ -180,6 +180,7 @@ Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios**
     <img src="src/assets/capturas/mail.png" alt="cliente-consulta" alt="icono" width="1000"><br>
     <img src="src/assets/capturas/mail2.png" alt="cliente-consulta" alt="splash" width="1000">
 </details>
+
 ### Puesta en marcha
 
 ```bash
