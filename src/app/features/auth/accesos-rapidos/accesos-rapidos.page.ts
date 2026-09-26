@@ -74,7 +74,7 @@ export class AccesosRapidosPage {
   }
 
   async accederRapido(acceso: AccesoRapido): Promise<void> {
-    if (environment.production || !environment.clavePrueba) {
+    if (!environment.clavePrueba) {
       this.errorLogin.set('Los accesos rápidos no están disponibles.');
       return;
     }

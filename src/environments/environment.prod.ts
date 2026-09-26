@@ -5,5 +5,5 @@ export const environment = {
   pushNotificationsHabilitadas: true,
   menuFotosIntervaloMs: 2000,
   nombreRestaurante: 'OverCooked',
-  clavePrueba: '',
+  clavePrueba: 'Password123',
 };
