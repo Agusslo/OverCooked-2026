@@ -180,6 +180,13 @@ Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios**
     <img src="src/assets/capturas/mail.png" alt="cliente-consulta" alt="icono" width="1000"><br>
     <img src="src/assets/capturas/mail2.png" alt="cliente-consulta" alt="splash" width="1000">
 </details>
+### Puesta en marcha
+
+```bash
+npx supabase link --project-ref ydpukgjowtmoxbeyhncz
+npx supabase secrets set RESEND_API_KEY=... "MAIL_FROM=OverCooked <hola@overcooked.abrdns.com>" MAIL_LOGO_URL=...
+npx supabase functions deploy enviar-mail
+```
 
 ## Notificaciones
 
@@ -242,14 +249,6 @@ Las notificaciones push se envían desde Edge Functions de Supabase cuando cambi
   <img src="src/assets/QR/qr-mesa-67.png" alt="Mesa 67" width="250">
   <p>Mesa 67</p>
 </div>
-
-### Puesta en marcha
-
-```bash
-npx supabase link --project-ref ydpukgjowtmoxbeyhncz
-npx supabase secrets set RESEND_API_KEY=... "MAIL_FROM=OverCooked <hola@overcooked.abrdns.com>" MAIL_LOGO_URL=...
-npx supabase functions deploy enviar-mail
-```
 
 ## ⚙️ Requisitos Previos y Herramientas a Instalar
 
