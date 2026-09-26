@@ -177,9 +177,16 @@ Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios**
 
 <details>
 <summary>MAILS</summary>
-    <img src="https://cdn.discordapp.com/attachments/1540693681814769744/1550320789264535614/image.png?ex=6aade83f&is=6aac96bf&hm=f55c79db69f36580dc47e30dad6877286ffc05bbdcc9866c103a0a09f406eb3b&" alt="icono" width="1000"><br>
-    <img src="https://cdn.discordapp.com/attachments/1540693681814769744/1550320866024235068/image.png?ex=6aade852&is=6aac96d2&hm=3ae3309f3bde33baf910174b4277f4f1d6118d6ead78f2dd968bb3118395cb46&" alt="splash" width="1000">
+    <img src="src/assets/capturas/mail.png" alt="cliente-consulta" alt="icono" width="1000"><br>
+    <img src="src/assets/capturas/mail2.png" alt="cliente-consulta" alt="splash" width="1000">
 </details>
+### Puesta en marcha
+
+```bash
+npx supabase link --project-ref ydpukgjowtmoxbeyhncz
+npx supabase secrets set RESEND_API_KEY=... "MAIL_FROM=OverCooked <hola@overcooked.abrdns.com>" MAIL_LOGO_URL=...
+npx supabase functions deploy enviar-mail
+```
 
 ## Notificaciones
 
@@ -242,14 +249,6 @@ Las notificaciones push se envían desde Edge Functions de Supabase cuando cambi
   <img src="src/assets/QR/qr-mesa-67.png" alt="Mesa 67" width="250">
   <p>Mesa 67</p>
 </div>
-
-### Puesta en marcha
-
-```bash
-npx supabase link --project-ref ydpukgjowtmoxbeyhncz
-npx supabase secrets set RESEND_API_KEY=... "MAIL_FROM=OverCooked <hola@overcooked.abrdns.com>" MAIL_LOGO_URL=...
-npx supabase functions deploy enviar-mail
-```
 
 ## ⚙️ Requisitos Previos y Herramientas a Instalar
 
