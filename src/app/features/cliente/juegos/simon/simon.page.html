@@ -38,7 +38,7 @@
         <div class="info">
           <span>Ronda: {{ rondaActual() }}</span>
           <span>Score: {{ score() }}</span>
-          <span>Vidas: {{ vidas() }} / 3</span>
+          <span>Vidas: {{ vidas() }} / 5</span>
           @if (turnoJugador()) {
             <span class="tiempo" [class.tiempo--urgente]="tiempoRestante() <= 2">
               {{ tiempoRestante() }}s
@@ -52,7 +52,11 @@
 
         @if (juegoTerminado()) {
           <div class="resultado">
-            <p class="titulo-resultado">Juego terminado</p>
+            @if (victoria()) {
+              <p class="victoria">¡Ganaste!</p>
+            } @else {
+              <p class="derrota">¡Perdiste!</p>
+            }
             <p class="score-final">Score: {{ score() }}</p>
             @if (descuentoGanado() > 0) {
               <p class="descuento">¡Conseguiste {{ descuentoGanado() }}% de descuento!</p>
