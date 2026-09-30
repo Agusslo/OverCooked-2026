@@ -38,6 +38,7 @@
       <div class="sala-separador">
         <span>MIENTRAS ESPERÁS</span>
         <i></i>
+        <span>GANÁ DESCUENTOS</span>
       </div>
 
       <section class="sala-juegos" [class.sala-juegos--bloqueado]="esAnonimo()">
@@ -46,8 +47,8 @@
             <img src="assets/cartas/cartaj.png" alt="" />
           </div>
           <div class="juego-card__pie">
-            <strong>Mayor o Menor</strong>
-            <span>Ganá un descuento en tu cuenta</span>
+            <strong>Mayor o Menor (20%)</strong>
+            <span>1 jugador · suerte</span>
           </div>
         </button>
 
@@ -56,7 +57,7 @@
             <i></i><i></i><i></i><i></i>
           </div>
           <div class="juego-card__pie">
-            <strong>Simón</strong>
+            <strong>Simón (15%)</strong>
             <span>1 jugador · memoria</span>
           </div>
         </button>
@@ -69,13 +70,13 @@
             </svg>
           </div>
           <div class="juego-card__pie">
-            <strong>Todos los juegos</strong>
-            <span>Tu descuento y más</span>
+            <strong>Memotest (10%)</strong>
+            <span>1 jugador · memoria</span>
           </div>
         </button>
         @if (esAnonimo()) {
           <div class="sala-juegos__aviso">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#5e2412" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect width="16" height="11" x="4" y="11" rx="2" />
               <path d="M8 11V7a4 4 0 0 1 8 0v4" />
             </svg>

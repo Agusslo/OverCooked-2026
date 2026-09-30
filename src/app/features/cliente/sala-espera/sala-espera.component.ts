@@ -129,6 +129,12 @@ export class SalaEsperaComponent implements OnInit, OnDestroy, ViewWillEnter {
   }
 
   private async cargar(): Promise<void> {
+    // Ionic deja esta pantalla viva en el stack al navegar a otra (p. ej.
+    // resultados de encuestas) y el setInterval sigue corriendo: si no
+    // cortamos acá, la redirección a /cliente/entrada de más abajo saca
+    // al cliente de la pantalla que está viendo a los pocos segundos.
+    if (!this.router.url.startsWith('/inicio')) return;
+
     const usuario = this.authService.usuarioActual;
     if (!usuario) {
       this.router.navigateByUrl('/auth/login');
