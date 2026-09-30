@@ -51,7 +51,7 @@ export class MemotestPage implements OnInit, OnDestroy {
   private juegosService = inject(JuegosService);
 
   fichas = signal<Ficha[]>([]);
-  vidas = signal(3);
+  vidas = signal(5);
   pares = signal(0);
   juegoTerminado = signal(false);
   victoria = signal(false);
@@ -181,8 +181,9 @@ export class MemotestPage implements OnInit, OnDestroy {
     this.juegoTerminado.set(true);
     this.victoria.set(gano);
 
-    // Descuento según vidas restantes al ganar (si perdió, 0%)
-    const descuento = !gano ? 0 : this.vidas() === 3 ? 20 : this.vidas() === 2 ? 15 : 10;
+    // Memotest: dificultad media, da 15% fijo si encontrás todos los
+    // pares antes de quedarte sin vidas, 0% si perdés.
+    const descuento = gano ? 15 : 0;
     this.descuentoGanado.set(descuento);
 
     try {

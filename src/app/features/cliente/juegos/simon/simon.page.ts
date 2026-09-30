@@ -9,6 +9,7 @@ type Color = 'rojo' | 'azul' | 'verde' | 'amarillo';
 
 const COLORES: Color[] = ['rojo', 'azul', 'verde', 'amarillo'];
 const TIEMPO_POR_RONDA = 5; // segundos que tiene el jugador para repetir la secuencia
+const META_RONDAS = 8;
 
 @Component({
   selector: 'app-simon',
@@ -28,6 +29,7 @@ export class SimonPage implements OnInit, OnDestroy {
   // Estado del juego
   juegoIniciado = signal(false);
   juegoTerminado = signal(false);
+  victoria = signal(false);
   turnoJugador = signal(false);
   colorActivo = signal<Color | null>(null);
   score = signal(0);
@@ -93,6 +95,12 @@ export class SimonPage implements OnInit, OnDestroy {
 
   private siguienteRonda(): void {
     this.rondaActual.update((r) => r + 1);
+
+    if (this.rondaActual() > META_RONDAS) {
+      void this.terminarJuego(true);
+      return;
+    }
+
     this.indiceJugador = 0;
     this.turnoJugador.set(false);
     this.mensajeRonda.set('');
@@ -179,13 +187,13 @@ export class SimonPage implements OnInit, OnDestroy {
     }
   }
 
-  private async terminarJuego(): Promise<void> {
+  private async terminarJuego(gano = false): Promise<void> {
+    this.limpiarTimers();
     this.juegoTerminado.set(true);
+    this.victoria.set(gano);
     this.turnoJugador.set(false);
 
-    // Mapeo de rondas a descuento
-    const rondas = this.rondaActual();
-    const descuento = rondas >= 6 ? 20 : rondas >= 4 ? 15 : rondas >= 2 ? 10 : 0;
+    const descuento = gano ? 10 : 0;
     this.descuentoGanado.set(descuento);
 
     try {

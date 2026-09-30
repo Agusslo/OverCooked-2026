@@ -126,10 +126,9 @@ export class HigherLowerPage implements OnInit {
     this.juegoTerminado.set(true);
     this.victoria.set(gano);
 
-    // Mapeo de aciertos a descuento. Ganar la partida completa (7
-    // aciertos) da el máximo; quedarse a mitad de camino da algo menor.
-    const aciertos = this.rondasGanadas();
-    const descuento = gano ? 20 : aciertos >= 5 ? 15 : aciertos >= 3 ? 10 : 0;
+    // Higher/Lower es el juego más difícil: da 20% fijo si ganás,
+    // 0% si perdés (sin descuentos parciales por aciertos).
+    const descuento = gano ? 20 : 0;
     this.descuentoGanado.set(descuento);
 
     try {
@@ -137,7 +136,7 @@ export class HigherLowerPage implements OnInit {
         this.clienteId,
         this.mesaId,
         'higher_lower',
-        aciertos,
+        this.rondasGanadas(),
         descuento,
       );
     } catch (error) {
