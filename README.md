@@ -45,28 +45,28 @@
 
 | Funcionalidad | Perfiles (dentro de la app) | Responsable | Estado | Fecha - Profe |
 | :--- | :--- | :--- | :---: | :--- |
-| 1. Agregar un empleado | dueño o supervisor | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
-| 2. Agregar un nuevo plato | cocinero | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
-| 3. Agregar una nueva bebida | cantinero | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
-| 4. Agregar una nueva mesa | dueño o supervisor | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
-| 5. Crear un cliente registrado | cliente o metre | López, Agustín Nicolás | 🟡 | 05/09/2026 - Octavio, Villegas |
-| 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | 🟡 | 05/09/2026 - Octavio, Villegas |
-| 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟡 | 05/09/2026 - Octavio, Villegas |
-| 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟡 | 05/09/2026 - Octavio, Villegas |
-| 9. Ingresar al local | cliente anónimo | Filippelli, Adrián | Indefinido | |
-| 10. Asignar una mesa a un cliente registrado | metre | Fernández Waisberg, Gabriel | Indefinido | |
-| 11. Ver el listado de los productos | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
-| 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Fernández Waisberg, Gabriel | Indefinido | |
-| 13. Rechazar el pedido, para que el usuario lo modifique | mozo | Fernández Waisberg, Gabriel | Indefinido | |
-| 14. Confirmar el pedido | mozo | Fernández Waisberg, Gabriel | Indefinido | |
-| 15. Acceder a los juegos | cliente registrado | Catanese, Demián | Indefinido | |
-| 16. Recepción de los productos correspondientes | cocinero | Catanese, Demián | Indefinido | |
-| 17. Recepción de los productos correspondientes | cantinero | Catanese, Demián | Indefinido | |
-| 18. Realizar las tareas correspondientes | cocinero y cantinero | Catanese, Demián | Indefinido | |
-| 19. Entrega del pedido completo | mozo | Catanese, Demián | Indefinido | |
-| 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo |  López, Agustín Nicolás | Indefinido | |
-| 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Catanese, Demián | Indefinido | |
-| 22. Confirmar el pago y liberar mesa | mozo | Catanese, Demián | Indefinido | |
+| 1. Agregar un empleado | dueño o supervisor | López, Agustín Nicolás | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 2. Agregar un nuevo plato | cocinero | López, Agustín Nicolás | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 3. Agregar una nueva bebida | cantinero | López, Agustín Nicolás | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 4. Agregar una nueva mesa | dueño o supervisor | López, Agustín Nicolás | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 5. Crear un cliente registrado | cliente o metre | López, Agustín Nicolás | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 9. Ingresar al local | cliente anónimo | Filippelli, Adrián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 10. Asignar una mesa a un cliente registrado | metre | Fernández Waisberg, Gabriel | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 11. Ver el listado de los productos | cliente registrado o anónimo | Fernández Waisberg, Gabriel | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Fernández Waisberg, Gabriel | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 13. Rechazar el pedido, para que el usuario lo modifique | mozo | Fernández Waisberg, Gabriel | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 14. Confirmar el pedido | mozo | Fernández Waisberg, Gabriel | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 15. Acceder a los juegos | cliente registrado | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 16. Recepción de los productos correspondientes | cocinero | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 17. Recepción de los productos correspondientes | cantinero | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 18. Realizar las tareas correspondientes | cocinero y cantinero | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 19. Entrega del pedido completo | mozo | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo |  López, Agustín Nicolás | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 22. Confirmar el pago y liberar mesa | mozo | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
 
 
 
