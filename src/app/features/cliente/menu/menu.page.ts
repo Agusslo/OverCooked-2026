@@ -2,6 +2,7 @@ import {
   Component,
   OnInit,
   computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -17,6 +18,7 @@ import { Producto } from '../../../core/models/producto.model';
 import { Pedido, ESTADO_PEDIDO_RECHAZADO } from '../../../core/models/pedido.model';
 import { environment } from '../../../../environments/environment';
 import { BurbujaMozoComponent } from '../../chat/burbuja-mozo/burbuja-mozo.component';
+import { precargarImagenes } from '../../utils/precargarImagenes';
 
 // Punto 12 del PDF: el cliente arma el pedido para toda la mesa.
 //  - Vista "menú": un plato por vez. Se desliza a los costados (estilo
@@ -115,6 +117,20 @@ export class MenuPage implements OnInit {
   desplazamientoY = computed(() => {
     const base = this.vista() === 0 ? '0px' : '-100dvh';
     return `translateY(calc(${base} + ${this.arrastreY()}px))`;
+  });
+
+  // Precarga las 3 fotos del plato actual y de los platos vecinos (el
+  // siguiente y el anterior), así al tocar la foto o deslizar ya están
+  // descargadas. No se precarga todo el menú para no gastar datos.
+  private precargaFotos = effect(() => {
+    const lista = this.productos();
+    const total = lista.length;
+    if (!total) return;
+    const indice = this.indiceProducto();
+    for (const desplazamiento of [0, 1, -1]) {
+      const p = lista[(indice + desplazamiento + total) % total];
+      precargarImagenes([p.foto_url, p.foto_url_2, p.foto_url_3]);
+    }
   });
 
   ngOnInit(): void {

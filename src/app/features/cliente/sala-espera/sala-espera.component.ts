@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ViewWillEnter } from '@ionic/angular';
 import { RealtimeChannel } from '@supabase/supabase-js';
@@ -12,6 +12,7 @@ import { Pedido } from '../../../core/models/pedido.model';
 import { environment } from '../../../../environments/environment';
 import { BurbujaMozoComponent } from '../../chat/burbuja-mozo/burbuja-mozo.component';
 import { HeaderInicioComponent } from '../../../shared/header-inicio/header-inicio.component';
+import { precargarImagenes } from '../../utils/precargarImagenes';
 
 type EstadoBoton = 'esperando' | 'con-mesa' | 'con-pedido';
 
@@ -69,6 +70,10 @@ export class SalaEsperaComponent implements OnInit, OnDestroy, ViewWillEnter {
       .map((i) => i.foto_url ?? '')
       .filter((u) => !!u),
   );
+
+  // Precarga las fotos del pedido para que la rotación no espere la
+  // descarga de cada una (las ya pedidas no se vuelven a pedir).
+  private precargaFotos = effect(() => precargarImagenes(this.fotosPedido()));
 
   nombresItems = computed(() =>
     (this.pedidoActivo()?.items ?? []).map((i) => i.nombre ?? 'Producto').join(' · '),

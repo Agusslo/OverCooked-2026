@@ -3,6 +3,7 @@ import {
   OnDestroy,
   OnInit,
   computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -22,6 +23,7 @@ import {
 } from '../../../core/models/pedido.model';
 import { environment } from '../../../../environments/environment';
 import { BurbujaMozoComponent } from '../../chat/burbuja-mozo/burbuja-mozo.component';
+import { precargarImagenes } from '../../utils/precargarImagenes';
 
 // Punto 12 del PDF: una vez que el cliente confirma el pedido, entra a
 // esta pantalla a "esperar la confirmación por parte del mozo" y seguir
@@ -66,6 +68,10 @@ export class EstadoPedidoPage implements OnInit, OnDestroy {
       .map((i) => i.foto_url ?? '')
       .filter((u) => !!u),
   );
+
+  // Precarga todas las fotos del pedido (son pocas) para que la rotación
+  // no espere la descarga de cada una.
+  private precargaFotos = effect(() => precargarImagenes(this.fotos()));
 
   etiquetaEstado = computed(() => {
     const estado = this.pedido()?.estado;

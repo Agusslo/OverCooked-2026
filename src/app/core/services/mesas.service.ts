@@ -117,9 +117,11 @@ export class MesasService {
     const extension = blob.type.split('/')[1] || 'jpeg';
     const ruta = `${nombreArchivo}.${extension}`;
 
+    // cacheControl de 1 año: cada mesa tiene su propio archivo y nunca se
+    // reescribe (por defecto supabase-js usa 1 hora).
     const { error: errorSubida } = await client.storage
       .from(BUCKET)
-      .upload(ruta, blob, { contentType: blob.type });
+      .upload(ruta, blob, { contentType: blob.type, cacheControl: '31536000' });
 
     if (errorSubida) {
       throw new Error(`No se pudo subir la foto de la mesa: ${errorSubida.message}`);

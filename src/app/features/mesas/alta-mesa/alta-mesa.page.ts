@@ -15,6 +15,7 @@ import { RouterLink } from '@angular/router';
 import { MesasService } from '../../../core/services/mesas.service';
 import { TipoMesa } from '../../../core/models/mesa.model';
 import { SpinnerOverlayComponent } from '../../../shared/spinner-overlay/spinner-overlay.component';
+import { OPCIONES_TAMANIO_FOTO, frameDeVideoADataUrl } from '../../utils/cameraUtils';
 
 @Component({
   selector: 'app-alta-mesa',
@@ -98,7 +99,7 @@ export class AltaMesaPage {
       }
 
       const image = await Camera.getPhoto({
-        quality: 85,
+        ...OPCIONES_TAMANIO_FOTO,
         allowEditing: false,
         resultType: 'dataUrl' as any,
         source: CameraSource.Camera, // sin opción de galería
@@ -146,11 +147,7 @@ export class AltaMesaPage {
       return;
     }
 
-    const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    canvas.getContext('2d')?.drawImage(video, 0, 0);
-    this.foto.set(canvas.toDataURL('image/jpeg', 0.85));
+    this.foto.set(frameDeVideoADataUrl(video));
 
     this.detenerCamara();
   }

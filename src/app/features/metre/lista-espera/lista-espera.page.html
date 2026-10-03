@@ -31,7 +31,7 @@
             <div class="cliente-card" [class.cliente-card--procesando]="quitando() === cliente.id">
             <div class="cliente-card__top">
                 <div class="cliente-avatar">
-                <img [src]="cliente.foto_url" [alt]="'Foto de ' + cliente.nombre" />
+                <img [src]="cliente.foto_url" [alt]="'Foto de ' + cliente.nombre" loading="lazy" decoding="async" />
                 </div>
                 <div class="cliente-info">
                 <span class="cliente-nombre">{{ cliente.nombre }}</span>
