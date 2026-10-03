@@ -7,7 +7,7 @@ import { CuentaService, PagoPendiente } from '../../../core/services/cuenta.serv
 
 // Punto 22 del PDF: el mozo confirma el pago que hizo el cliente (punto
 // 21). Al confirmar se cierra el pedido y se libera la mesa; el cliente lo
-// ve en su pantalla y dueño y supervisor reciben la push (ver
+// ve en su pantalla y mozos, dueño y supervisor reciben la push (ver
 // supabase/functions/notificar-cuenta).
 @Component({
   selector: 'app-pagos-pendientes',
