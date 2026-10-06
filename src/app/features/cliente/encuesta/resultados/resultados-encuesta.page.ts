@@ -10,7 +10,7 @@ import {
   effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { EncuestasService } from '../../../../core/services/encuestas.service';
 import {
@@ -33,7 +33,15 @@ export class ResultadosEncuestaPage
   @ViewChild('canvasGrafico') canvasGrafico?: ElementRef<HTMLCanvasElement>;
 
   private encuestasService = inject(EncuestasService);
+  private route = inject(ActivatedRoute);
   private chart?: Chart;
+
+  // Si se llegó desde la entrada (todavía sin escanear el QR del local),
+  // volver a /inicio dejaría ver la sala de espera; se vuelve a la entrada.
+  rutaVolver =
+    this.route.snapshot.queryParamMap.get('volver') === 'entrada'
+      ? '/cliente/entrada'
+      : '/inicio';
 
   cargando = signal(true);
   mensajeError = signal('');

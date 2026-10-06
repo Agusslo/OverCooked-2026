@@ -10,13 +10,28 @@ export interface CameraCaptureResult {
   stream?: MediaStream;
 }
 
+// Tamaño máximo (lado mayor, en px) de las fotos que se suben a Storage.
+// Una foto de cámara sin reducir pesa 2-5 MB y se muestra como avatar o
+// tarjeta: con 1080 px queda en ~100-200 KB y se ve igual de bien.
+export const LADO_MAXIMO_FOTO = 1080;
+const CALIDAD_FOTO = 80;
+
+// Opciones de tamaño/calidad para Camera.getPhoto: width y height juntos
+// encajan la foto en un cuadrado de LADO_MAXIMO_FOTO respetando la
+// proporción original.
+export const OPCIONES_TAMANIO_FOTO = {
+  quality: CALIDAD_FOTO,
+  width: LADO_MAXIMO_FOTO,
+  height: LADO_MAXIMO_FOTO,
+} as const;
+
 /**
  * Toma una foto usando la cámara nativa (Capacitor) si está disponible.
  * Si no hay plataforma nativa, se debe usar abrirCamaraWeb + capturarFotoWeb.
  */
 export async function tomarFotoNativa(): Promise<string | null> {
   const image = await Camera.getPhoto({
-    quality: 85,
+    ...OPCIONES_TAMANIO_FOTO,
     allowEditing: false,
     resultType: 'dataUrl' as any,
     source: CameraSource.Camera,
@@ -60,11 +75,23 @@ export function capturarFotoWeb(
     return null;
   }
 
+  return frameDeVideoADataUrl(video);
+}
+
+/**
+ * Dibuja el frame actual del video en un canvas reducido a
+ * LADO_MAXIMO_FOTO (lado mayor) y lo devuelve como dataUrl JPEG.
+ */
+export function frameDeVideoADataUrl(video: HTMLVideoElement): string {
+  const escala = Math.min(
+    1,
+    LADO_MAXIMO_FOTO / Math.max(video.videoWidth, video.videoHeight),
+  );
   const canvas = document.createElement('canvas');
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  canvas.getContext('2d')?.drawImage(video, 0, 0);
-  return canvas.toDataURL('image/jpeg', 0.85);
+  canvas.width = Math.round(video.videoWidth * escala);
+  canvas.height = Math.round(video.videoHeight * escala);
+  canvas.getContext('2d')?.drawImage(video, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL('image/jpeg', CALIDAD_FOTO / 100);
 }
 
 /**

@@ -68,10 +68,18 @@
           </div>
 
           <div class="plato-acciones">
+            <!-- Punto 12: el importe acumulado y el tiempo total estimado
+                 quedan siempre visibles y en tamaño grande. -->
             <button type="button" class="plato-verpedido" (click)="verPedido()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
-              <span>Mi pedido</span>
-              <strong>${{ total() | number:'1.0-0' }}</strong>
+              <svg class="plato-verpedido__flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
+              <span class="plato-verpedido__info">
+                <span class="plato-verpedido__titulo">Mi pedido</span>
+                <span class="plato-verpedido__tiempo">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.8V12l3 1.8"/></svg>
+                  {{ tiempoTotal() }} minutos
+                </span>
+              </span>
+              <strong class="plato-verpedido__total">${{ total() | number:'1.0-0' }}</strong>
             </button>
 
             @if (productoActual(); as p) {
@@ -143,7 +151,7 @@
 
           <div class="vp-resumen">
             <div><span>Subtotal</span><span>${{ total() | number:'1.0-0' }}</span></div>
-            <div><span>Tiempo estimado</span><span>~{{ tiempoTotal() }} min</span></div>
+            <div class="vp-resumen__tiempo"><span>Tiempo estimado</span><strong>{{ tiempoTotal() }} minutos</strong></div>
             <div class="vp-resumen__total"><span>Total</span><strong>${{ total() | number:'1.0-0' }}</strong></div>
           </div>
 

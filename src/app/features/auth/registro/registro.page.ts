@@ -34,6 +34,7 @@ import type { PluginListenerHandle } from '@capacitor/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { QrScannerService } from '../../../core/services/qr-scanner';
 import { IRegistro } from '../../../core/models/usuario.model';
+import { OPCIONES_TAMANIO_FOTO, frameDeVideoADataUrl } from '../../utils/cameraUtils';
 
 @Component({
   selector: 'app-registro',
@@ -192,7 +193,7 @@ export class RegistroPage implements OnInit, AfterViewInit, OnDestroy {
       }
 
       const image = await Camera.getPhoto({
-        quality: 85,
+        ...OPCIONES_TAMANIO_FOTO,
         allowEditing: false,
         resultType: 'dataUrl' as any,
         source: CameraSource.Camera,
@@ -237,11 +238,7 @@ export class RegistroPage implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    canvas.getContext('2d')?.drawImage(video, 0, 0);
-    this.fotoUrl.set(canvas.toDataURL('image/jpeg', 0.85));
+    this.fotoUrl.set(frameDeVideoADataUrl(video));
     this.detenerCamara();
   }
 

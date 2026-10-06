@@ -5,15 +5,25 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { MesasService } from '../../../../core/services/mesas.service';
 import { JuegosService } from '../../../../core/services/juegos.service';
 
+interface IPalo {
+  nombre: 'Tomate' | 'Zanahoria' | 'Lechuga' | 'Cebolla';
+  icono: string;
+  clase: string;
+}
+
 interface ICarta {
   nombre: string;
   valor: number;
-  imagen: string;
+  palo: IPalo;
 }
 
-// Punto 15: Mayor o Menor. Se juega UNA sola vez por estadía (lo pide
-// el PDF: "solo si se gana en el primer intento"), así que no hay
-// "jugar de nuevo" una vez que el resultado quedó registrado.
+const PALOS: IPalo[] = [
+  { nombre: 'Tomate', icono: '🍅', clase: 'carta--tomate' },
+  { nombre: 'Zanahoria', icono: '🥕', clase: 'carta--zanahoria' },
+  { nombre: 'Lechuga', icono: '🥬', clase: 'carta--lechuga' },
+  { nombre: 'Cebolla', icono: '🧅', clase: 'carta--cebolla' },
+];
+
 @Component({
   selector: 'app-higher-lower',
   standalone: true,
@@ -29,18 +39,21 @@ export class HigherLowerPage implements OnInit {
 
   private readonly META_ACIERTOS = 7;
 
-  cartas: ICarta[] = [
-    { nombre: '2', valor: 2, imagen: 'assets/cartas/carta2.png' },
-    { nombre: '3', valor: 3, imagen: 'assets/cartas/carta3.png' },
-    { nombre: '4', valor: 4, imagen: 'assets/cartas/carta4.png' },
-    { nombre: '5', valor: 5, imagen: 'assets/cartas/carta5.png' },
-    { nombre: '6', valor: 6, imagen: 'assets/cartas/carta6.png' },
-    { nombre: '7', valor: 7, imagen: 'assets/cartas/carta7.png' },
-    { nombre: '8', valor: 8, imagen: 'assets/cartas/carta8.png' },
-    { nombre: '9', valor: 9, imagen: 'assets/cartas/carta9.png' },
-    { nombre: '10', valor: 10, imagen: 'assets/cartas/carta10.png' },
-    { nombre: 'J', valor: 11, imagen: 'assets/cartas/cartaj.png' },
-    { nombre: 'Q', valor: 12, imagen: 'assets/cartas/cartaq.png' },
+  // Valores de la carta; el palo se sortea aparte en cada ronda.
+  private readonly valores: { nombre: string; valor: number }[] = [
+    { nombre: 'A', valor: 1 },
+    { nombre: '2', valor: 2 },
+    { nombre: '3', valor: 3 },
+    { nombre: '4', valor: 4 },
+    { nombre: '5', valor: 5 },
+    { nombre: '6', valor: 6 },
+    { nombre: '7', valor: 7 },
+    { nombre: '8', valor: 8 },
+    { nombre: '9', valor: 9 },
+    { nombre: '10', valor: 10 },
+    { nombre: 'J', valor: 11 },
+    { nombre: 'Q', valor: 12 },
+    { nombre: 'K', valor: 13 }
   ];
 
   cartaActual = signal<ICarta | null>(null);
@@ -87,8 +100,9 @@ export class HigherLowerPage implements OnInit {
   }
 
   private cartaAleatoria(): void {
-    const index = Math.floor(Math.random() * this.cartas.length);
-    this.cartaActual.set(this.cartas[index]);
+    const valor = this.valores[Math.floor(Math.random() * this.valores.length)];
+    const palo = PALOS[Math.floor(Math.random() * PALOS.length)];
+    this.cartaActual.set({ ...valor, palo });
   }
 
   async adivinar(eleccion: 'mayor' | 'menor'): Promise<void> {
@@ -126,8 +140,6 @@ export class HigherLowerPage implements OnInit {
     this.juegoTerminado.set(true);
     this.victoria.set(gano);
 
-    // Higher/Lower es el juego más difícil: da 20% fijo si ganás,
-    // 0% si perdés (sin descuentos parciales por aciertos).
     const descuento = gano ? 20 : 0;
     this.descuentoGanado.set(descuento);
 

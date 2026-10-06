@@ -29,8 +29,10 @@
               <circle cx="12" cy="12" r="8.4" />
               <path d="M12 7.8V12l3 1.8" />
             </svg>
-            <strong>{{ tiempoPedido() }} min</strong>
-            <span>PARA QUE LLEGUE</span>
+            <div class="spc-tiempo__texto">
+              <strong>{{ tiempoPedido() }} minutos</strong>
+              <span>PARA QUE LLEGUE</span>
+            </div>
           </div>
         </div>
       </button>
@@ -38,44 +40,42 @@
       <div class="sala-separador">
         <span>MIENTRAS ESPERÁS</span>
         <i></i>
+        <span>GANÁ DESCUENTOS</span>
       </div>
 
       <section class="sala-juegos" [class.sala-juegos--bloqueado]="esAnonimo()">
         <button type="button" class="juego-card juego-card--destacado" (click)="irAJuegos('higher-lower')">
           <div class="juego-card__arte">
-            <img src="assets/cartas/cartaj.png" alt="" />
+            <img src="assets/juegos/higher-lower/logo.webp" alt="logo higher-lower" />
           </div>
           <div class="juego-card__pie">
-            <strong>Mayor o Menor</strong>
-            <span>Ganá un descuento en tu cuenta</span>
+            <strong>Mayor o Menor (20%)</strong>
+            <span>1 jugador · suerte</span>
           </div>
         </button>
 
         <button type="button" class="juego-card" (click)="irAJuegos('simon')">
           <div class="juego-card__arte juego-card__arte--simon">
-            <i></i><i></i><i></i><i></i>
+            <img src="assets/juegos/simon/logo.webp" alt="logo simon" />
           </div>
           <div class="juego-card__pie">
-            <strong>Simón</strong>
-            <span>1 jugador · memoria</span>
+            <strong>Simón (15%)</strong>
+            <span>1 jugador · patrón</span>
           </div>
         </button>
 
         <button type="button" class="juego-card" (click)="irAJuegos()">
-          <div class="juego-card__arte">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect width="18" height="12" x="3" y="6" rx="2" />
-              <path d="M8 12h.01M12 12h.01M16 12h.01M10 9v6M14 9v6" />
-            </svg>
+          <div class="juego-card__arte juego-card__arte--memotest">
+            <img src="assets/juegos/memotest/logo.webp" alt="logo memotest" />
           </div>
           <div class="juego-card__pie">
-            <strong>Todos los juegos</strong>
-            <span>Tu descuento y más</span>
+            <strong>Memotest (10%)</strong>
+            <span>1 jugador · memoria</span>
           </div>
         </button>
         @if (esAnonimo()) {
           <div class="sala-juegos__aviso">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#5e2412" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect width="16" height="11" x="4" y="11" rx="2" />
               <path d="M8 11V7a4 4 0 0 1 8 0v4" />
             </svg>

@@ -111,9 +111,12 @@ export class ProductosService {
     const extension = blob.type.split('/')[1] || 'jpeg';
     const ruta = `${nombreArchivo}.${extension}`;
 
+    // cacheControl de 1 año: el nombre lleva Date.now() y nunca se
+    // reescribe, así que el navegador/CDN pueden guardarla sin revalidar
+    // (por defecto supabase-js usa 1 hora).
     const { error: errorSubida } = await client.storage
       .from(BUCKET)
-      .upload(ruta, blob, { contentType: blob.type });
+      .upload(ruta, blob, { contentType: blob.type, cacheControl: '31536000' });
 
     if (errorSubida) {
       throw new Error(`No se pudo subir una de las fotos: ${errorSubida.message}`);

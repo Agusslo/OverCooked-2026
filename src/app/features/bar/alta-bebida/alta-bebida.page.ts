@@ -14,6 +14,7 @@ import { Capacitor } from '@capacitor/core';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { ProductosService } from '../../../core/services/productos.service';
 import { SpinnerOverlayComponent } from '../../../shared/spinner-overlay/spinner-overlay.component';
+import { OPCIONES_TAMANIO_FOTO, frameDeVideoADataUrl } from '../../utils/cameraUtils';
 
 type IndiceFoto = 0 | 1 | 2;
 // Las 3 fotos, en posiciones fijas: null = todavía no se cargó esa foto.
@@ -88,7 +89,7 @@ export class AltaBebidaPage {
       }
 
       const image = await Camera.getPhoto({
-        quality: 85,
+        ...OPCIONES_TAMANIO_FOTO,
         allowEditing: false,
         resultType: 'dataUrl' as any,
         source: fuente === 'camara' ? CameraSource.Camera : CameraSource.Photos,
@@ -142,13 +143,8 @@ export class AltaBebidaPage {
       return;
     }
 
-    const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    canvas.getContext('2d')?.drawImage(video, 0, 0);
-
     const fotosActuales = [...this.fotos()] as Fotos;
-    fotosActuales[indice] = canvas.toDataURL('image/jpeg', 0.85);
+    fotosActuales[indice] = frameDeVideoADataUrl(video);
     this.fotos.set(fotosActuales);
 
     this.detenerCamara();

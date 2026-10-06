@@ -125,10 +125,13 @@ export class EntradaPage implements OnInit {
     this.router.navigateByUrl('/inicio');
   }
 
-  // Punto 22: con el QR de la lista de espera también se ven los
-  // resultados de las encuestas.
   verResultados(): void {
-    this.router.navigateByUrl('/cliente/encuesta-resultados');
+    // Le avisamos a resultados que vuelva acá y no a /inicio: sin el QR
+    // escaneado, /inicio mostraba la sala de espera unos segundos antes
+    // de redirigir, como si ya estuviera anotado.
+    this.router.navigate(['/cliente/encuesta-resultados'], {
+      queryParams: { volver: 'entrada' },
+    });
   }
 
   async salir(): Promise<void> {

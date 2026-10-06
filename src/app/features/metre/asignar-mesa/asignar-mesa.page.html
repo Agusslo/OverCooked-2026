@@ -47,7 +47,7 @@
                     (click)="seleccionarCliente(cliente)"
                   >
                     <span class="cliente-chip__avatar">
-                      <img [src]="cliente.foto_url" [alt]="'Foto de ' + cliente.nombre" />
+                      <img [src]="cliente.foto_url" [alt]="'Foto de ' + cliente.nombre" loading="lazy" decoding="async" />
                     </span>
                     <span class="cliente-chip__nombre">{{ cliente.nombre }}</span>
                   </button>

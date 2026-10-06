@@ -12,6 +12,6 @@ export interface ResultadoJuego {
 
 export const JUEGOS_DISPONIBLES: { juego: NombreJuego; nombre: string; ruta: string; descuentoPct: number }[] = [
   { juego: 'higher_lower', nombre: 'Mayor o Menor', ruta: 'higher-lower', descuentoPct: 20 },
-  { juego: 'simon', nombre: 'Simón', ruta: 'simon', descuentoPct: 10 },
   { juego: 'memotest', nombre: 'Memotest', ruta: 'memotest', descuentoPct: 15 },
+  { juego: 'simon', nombre: 'Simón', ruta: 'simon', descuentoPct: 10 },
 ];

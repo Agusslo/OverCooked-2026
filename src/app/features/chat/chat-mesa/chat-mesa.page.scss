@@ -44,8 +44,7 @@
   align-items: center;
   gap: 10px;
   background: var(--color-header);
-  padding: max(1.2rem, calc(env(safe-area-inset-top) + 12px), 24px) 1.1rem 1rem;
-  margin-bottom: 8px;
+  padding: max(2rem, calc(env(safe-area-inset-top) + 12px), 24px) 1.1rem 1rem;
 }
 
 .btn-back {

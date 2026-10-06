@@ -261,20 +261,58 @@
 }
 
 .plato-verpedido {
-  align-self: center;
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   background: var(--panel-2);
   border: none;
-  border-radius: 999px;
-  padding: 8px 18px;
+  border-radius: 18px;
+  padding: 10px 16px;
   color: var(--texto);
-  font-size: 13px;
-  font-weight: 600;
+  text-align: left;
 
-  svg { width: 15px; height: 15px; }
-  strong { color: var(--gold); font-size: 14px; }
+  &:active { transform: scale(0.99); }
+}
+
+.plato-verpedido__flecha {
+  width: 22px;
+  height: 22px;
+  flex: none;
+}
+
+.plato-verpedido__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plato-verpedido__titulo {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.plato-verpedido__tiempo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--texto);
+  white-space: nowrap;
+
+  svg { width: 19px; height: 19px; flex: none; color: var(--gold); }
+}
+
+.plato-verpedido__total {
+  flex: none;
+  color: var(--gold);
+  font-size: 28px;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .plato-agregar {
@@ -477,9 +515,15 @@
   div {
     display: flex;
     justify-content: space-between;
-    font-size: 13px;
+    align-items: baseline;
+    font-size: 15px;
     color: var(--texto-suave);
   }
+}
+
+.vp-resumen__tiempo {
+  span { color: var(--texto) !important; font-size: 17px !important; font-weight: 700; }
+  strong { font-size: 22px; font-weight: 800; color: var(--gold); white-space: nowrap; }
 }
 
 .vp-resumen__total {
@@ -487,8 +531,8 @@
   padding-top: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
 
-  span { color: var(--texto) !important; font-size: 15px !important; font-weight: 700; }
-  strong { font-size: 20px; color: var(--texto); }
+  span { color: var(--texto) !important; font-size: 20px !important; font-weight: 800; }
+  strong { font-size: 34px; font-weight: 800; color: var(--gold); white-space: nowrap; }
 }
 
 .vp-confirmar {

@@ -154,14 +154,16 @@ export class AdminService {
       .from(BUCKET_USUARIOS)
       // upsert: el nombre es determinístico (empleado-<userId>) y un alta
       // que quedó a medias puede reintentar la subida para el mismo id.
-      .upload(ruta, blob, { contentType: blob.type, upsert: true });
+      .upload(ruta, blob, { contentType: blob.type, upsert: true, cacheControl: '31536000' });
 
     if (errorSubida) {
       throw new Error(`No se pudo subir la foto: ${errorSubida.message}`);
     }
 
+    // Caché de 1 año + ?v=<timestamp>: como el upsert reutiliza el nombre,
+    // la versión en la URL evita que se siga viendo una foto anterior.
     const { data: urlPublica } = client.storage.from(BUCKET_USUARIOS).getPublicUrl(ruta);
-    return urlPublica.publicUrl;
+    return `${urlPublica.publicUrl}?v=${Date.now()}`;
   }
 
   // Punto 6/7/8 del PDF: el dueño o supervisor aprueba o

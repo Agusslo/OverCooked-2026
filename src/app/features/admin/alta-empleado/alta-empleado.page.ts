@@ -24,6 +24,7 @@ import { QrScannerService } from '../../../core/services/qr-scanner';
 import { AdminService } from '../../../core/services/admin.service';
 import { RouterLink } from '@angular/router';
 import { SpinnerOverlayComponent } from '../../../shared/spinner-overlay/spinner-overlay.component';
+import { OPCIONES_TAMANIO_FOTO, frameDeVideoADataUrl } from '../../utils/cameraUtils';
 
 // Validador cross-field: verifica que los dígitos del DNI
 // coincidan con las posiciones 2–9 del CUIL.
@@ -150,7 +151,7 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
       }
 
       const image = await Camera.getPhoto({
-        quality: 85,
+        ...OPCIONES_TAMANIO_FOTO,
         allowEditing: false,
         resultType: 'dataUrl' as any,
         source: CameraSource.Camera,
@@ -196,11 +197,7 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
       return;
     }
 
-    const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    canvas.getContext('2d')?.drawImage(video, 0, 0);
-    this.fotoPersonal = canvas.toDataURL('image/jpeg', 0.85);
+    this.fotoPersonal = frameDeVideoADataUrl(video);
     this.mensajeError = '';
     this.detenerCamara();
   }

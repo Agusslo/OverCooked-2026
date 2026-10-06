@@ -6,7 +6,7 @@
 //   2. El cliente realiza el pago simulado (INSERT en 'pagos')
 //      -> a los mozos, al dueño y a los supervisores.
 //   3. El mozo confirma el pago (pagos.confirmado_por_mozo pasa a true)
-//      -> al dueño y a los supervisores.
+//      -> a los mozos, al dueño y a los supervisores.
 //
 // Esta función NO la llama el front: la dispara un trigger/Database
 // Webhook de Supabase sobre 'pedidos' (UPDATE) y 'pagos' (INSERT/UPDATE),
@@ -83,7 +83,7 @@ serve(async (req) => {
     cuerpoTemplate = (mesa) => `La mesa Nº ${mesa} pidió la cuenta.`;
     tipo = 'cuenta-solicitada';
   } else if (payload.table === 'pagos' && payload.type === 'UPDATE') {
-    // Punto 22: el mozo confirmó el pago -> aviso a dueño y supervisores.
+    // Punto 22: el mozo confirmó el pago -> aviso a mozos, dueño y supervisores.
     const pago = payload.record as (FilaPago & { confirmado_por_mozo: boolean }) | null;
     const anterior = payload.old_record as { confirmado_por_mozo: boolean } | null;
 
@@ -92,7 +92,7 @@ serve(async (req) => {
     }
 
     pedidoId = pago.pedido_id;
-    perfiles = ['dueño', 'supervisor'];
+    perfiles = ['mozo', 'dueño', 'supervisor'];
     titulo = 'Pago confirmado';
     cuerpoTemplate = (mesa) =>
       `El mozo confirmó el pago de la mesa Nº ${mesa} por $${pago.total}. La mesa quedó libre.`;
