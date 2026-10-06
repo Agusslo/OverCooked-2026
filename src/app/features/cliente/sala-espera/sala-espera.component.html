@@ -44,7 +44,7 @@
       <section class="sala-juegos" [class.sala-juegos--bloqueado]="esAnonimo()">
         <button type="button" class="juego-card juego-card--destacado" (click)="irAJuegos('higher-lower')">
           <div class="juego-card__arte">
-            <img src="assets/cartas/cartaj.png" alt="" />
+            <img src="assets/juegos/higher-lower/logo.webp" alt="logo higher-lower" />
           </div>
           <div class="juego-card__pie">
             <strong>Mayor o Menor (20%)</strong>
@@ -54,20 +54,17 @@
 
         <button type="button" class="juego-card" (click)="irAJuegos('simon')">
           <div class="juego-card__arte juego-card__arte--simon">
-            <i></i><i></i><i></i><i></i>
+            <img src="assets/juegos/simon/logo.webp" alt="logo simon" />
           </div>
           <div class="juego-card__pie">
             <strong>Simón (15%)</strong>
-            <span>1 jugador · memoria</span>
+            <span>1 jugador · patrón</span>
           </div>
         </button>
 
         <button type="button" class="juego-card" (click)="irAJuegos()">
-          <div class="juego-card__arte">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect width="18" height="12" x="3" y="6" rx="2" />
-              <path d="M8 12h.01M12 12h.01M16 12h.01M10 9v6M14 9v6" />
-            </svg>
+          <div class="juego-card__arte juego-card__arte--memotest">
+            <img src="assets/juegos/memotest/logo.webp" alt="logo memotest" />
           </div>
           <div class="juego-card__pie">
             <strong>Memotest (10%)</strong>

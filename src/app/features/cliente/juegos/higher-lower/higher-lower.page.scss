@@ -86,10 +86,49 @@
 }
 
 .carta {
+  --color-palo: #2b2b2b;
+
+  position: relative;
   width: 120px;
-  height: auto;
+  aspect-ratio: 5 / 7;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 10px;
+  border: 2px solid #e8d9c8;
+  background: #fffaf4;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  color: var(--color-palo);
+  user-select: none;
+
+  &--tomate  { --color-palo: #c62828; }
+  &--zanahoria { --color-palo: #e67e22; }
+  &--lechuga { --color-palo: #6a9a1f; }
+  &--cebolla { --color-palo: #7b3f8c; }
+}
+
+.carta__palo {
+  position: absolute;
+  font-size: 1.5rem;
+  line-height: 1;
+
+  &--arriba {
+    top: 8px;
+    left: 8px;
+  }
+
+  &--abajo {
+    bottom: 8px;
+    right: 8px;
+    transform: rotate(180deg);
+  }
+}
+
+.carta__valor {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .btn-eleccion {

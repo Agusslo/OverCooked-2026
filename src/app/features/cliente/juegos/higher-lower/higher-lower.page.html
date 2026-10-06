@@ -56,7 +56,12 @@
             <button type="button" class="btn-eleccion" (click)="adivinar('menor')">Menor</button>
 
             @if (cartaActual(); as carta) {
-              <img class="carta" [src]="carta.imagen" [alt]="carta.nombre" />
+              <div class="carta" [class]="carta.palo.clase" role="img"
+                [attr.aria-label]="carta.nombre + ' de ' + carta.palo.nombre">
+                <span class="carta__palo carta__palo--arriba">{{ carta.palo.icono }}</span>
+                <span class="carta__valor">{{ carta.nombre }}</span>
+                <span class="carta__palo carta__palo--abajo">{{ carta.palo.icono }}</span>
+              </div>
             }
 
             <button type="button" class="btn-eleccion" (click)="adivinar('mayor')">Mayor</button>

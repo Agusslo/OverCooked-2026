@@ -25,10 +25,6 @@ import { environment } from '../../../../environments/environment';
 import { BurbujaMozoComponent } from '../../chat/burbuja-mozo/burbuja-mozo.component';
 import { precargarImagenes } from '../../utils/precargarImagenes';
 
-// Punto 12 del PDF: una vez que el cliente confirma el pedido, entra a
-// esta pantalla a "esperar la confirmación por parte del mozo" y seguir
-// el estado. Muestra el detalle del pedido y una foto de los platos que
-// va rotando.
 @Component({
   selector: 'app-estado-pedido',
   standalone: true,

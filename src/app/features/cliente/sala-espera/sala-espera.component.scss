@@ -314,28 +314,16 @@
   color: var(--gold);
 
   img {
-    height: 80%;
-    max-height: 120px;
+    max-height: 125px;
     object-fit: contain;
     transform: rotate(-8deg);
     filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
   }
-
-  svg { width: 44px; height: 44px; }
-
-  &--simon {
-    display: grid;
-    grid-template-columns: 22px 22px;
-    grid-template-rows: 22px 22px;
-    align-content: center;
-    justify-content: center;
-    gap: 5px;
-
-    i { border-radius: 6px; }
-    i:nth-child(1) { background: #4caf50; border-top-left-radius: 22px; }
-    i:nth-child(2) { background: #e53935; border-top-right-radius: 22px; }
-    i:nth-child(3) { background: #fdd835; border-bottom-left-radius: 22px; }
-    i:nth-child(4) { background: #1e88e5; border-bottom-right-radius: 22px; }
+  
+  &--memotest {
+    img {
+      width: 120px;
+    }
   }
 }
 
