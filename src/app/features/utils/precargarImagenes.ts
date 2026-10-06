@@ -16,5 +16,9 @@ export function precargarImagenes(urls: (string | null | undefined)[]): void {
     imagen.decoding = 'async';
     imagen.src = url;
     precargadas.set(url, imagen);
+    // decode() deja la imagen ya decodificada: al ponerla en el <img> no
+    // queda un cuadro vacío mientras se procesa. Si la descarga falla se
+    // saca del mapa para que la próxima precarga la vuelva a intentar.
+    imagen.decode?.().catch(() => precargadas.delete(url));
   }
 }

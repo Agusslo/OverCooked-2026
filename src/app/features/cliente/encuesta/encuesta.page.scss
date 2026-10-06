@@ -48,19 +48,20 @@
 }
 
 .header-titles h2 {
-  font-size: clamp(1.2rem, 4dvh, 1.5rem);
+  font-size: clamp(1.5rem, 4.5dvh, 1.9rem);
   font-weight: 700;
   color: var(--color-cream);
   margin: 0;
 }
 .header-titles p {
-  font-size: 0.78rem;
+  font-size: 1.05rem;
+  font-weight: 700;
   color: var(--color-peach);
-  margin: 0.15rem 0 0.7rem;
+  margin: 0.25rem 0 0.8rem;
 }
 
 .progreso-barra {
-  height: 6px;
+  height: 8px;
   border-radius: 999px;
   background: rgba(0, 0, 0, 0.25);
   overflow: hidden;
@@ -89,7 +90,7 @@
   justify-content: center;
   gap: 0.75rem;
   color: var(--color-peach);
-  font-size: 0.95rem;
+  font-size: 1.2rem;
   text-align: center;
   padding: 2rem;
 }
@@ -97,7 +98,7 @@
 .link-resultados {
   color: var(--color-gold);
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   text-decoration: underline;
 }
 
@@ -106,15 +107,44 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
+}
+
+// Imagen que acompaña cada pregunta: ocupa el espacio libre arriba de la
+// pregunta y se achica (hasta un mínimo) cuando hay muchas opciones.
+.pregunta-imagen {
+  flex: 1 1 0;
+  min-height: 120px;
+  max-height: 30dvh;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-input);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // Ilustraciones con fondo transparente: se muestran enteras y centradas.
+  &--ilustracion img {
+    width: auto;
+    max-width: 85%;
+    height: 85%;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+  }
 }
 
 .pregunta-texto {
   color: var(--color-cream);
-  font-size: clamp(1.15rem, 4.5dvh, 1.5rem);
+  font-size: clamp(1.4rem, 5dvh, 1.85rem);
   font-weight: 700;
   text-align: center;
-  line-height: 1.35;
+  line-height: 1.3;
   margin: 0;
 }
 
@@ -125,13 +155,13 @@
 }
 .btn-si-no {
   flex: 1;
-  height: 76px;
+  height: 80px;
   border-radius: var(--radius-btn);
   border: 2px solid var(--color-gold-dim);
   background: var(--color-input);
   color: var(--color-cream);
   font-family: var(--font-body);
-  font-size: 1.15rem;
+  font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   cursor: pointer;
@@ -155,7 +185,7 @@
   background: var(--color-input);
   color: var(--color-cream);
   font-family: var(--font-body);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: 800;
   cursor: pointer;
 }
@@ -168,7 +198,8 @@
   display: flex;
   justify-content: space-between;
   color: var(--color-peach);
-  font-size: 0.75rem;
+  font-size: 1.05rem;
+  font-weight: 700;
   padding: 0 0.2rem;
 }
 
@@ -179,15 +210,15 @@
   gap: 0.65rem;
 }
 .btn-opcion {
-  min-height: 56px;
+  min-height: 60px;
   border-radius: var(--radius-btn);
   border: 2px solid var(--color-gold-dim);
   background: var(--color-input);
   color: var(--color-cream);
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  padding: 0.75rem 1rem;
+  padding: 0.8rem 1.1rem;
   text-align: left;
   cursor: pointer;
 }
@@ -206,7 +237,7 @@
   background: var(--color-input);
   color: var(--color-cream);
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   padding: 0.9rem;
   resize: none;
 }
@@ -219,7 +250,8 @@
   margin-top: 1rem;
   padding: 0.65rem 0.85rem;
   border-radius: var(--radius-btn);
-  font-size: 0.8rem;
+  font-size: 1rem;
+  font-weight: 700;
   background: rgba(140, 46, 20, 0.7);
   color: var(--color-error);
   border: 1.5px solid rgba(245, 149, 107, 0.3);
@@ -234,26 +266,27 @@
 
 .btn-volver {
   flex: 0 0 auto;
-  height: 56px;
+  height: 62px;
   padding: 0 1.25rem;
   border-radius: var(--radius-btn);
   border: 2px solid var(--color-gold-dim);
   background: none;
   color: var(--color-peach);
   font-family: var(--font-body);
+  font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
 }
 
 .btn-siguiente {
   flex: 1;
-  height: 56px;
+  height: 62px;
   border-radius: var(--radius-btn);
   border: none;
   background: var(--color-gold);
   color: var(--color-deep);
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: 0.03em;
   cursor: pointer;

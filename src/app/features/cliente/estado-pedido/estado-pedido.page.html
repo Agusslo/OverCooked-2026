@@ -90,11 +90,23 @@
         </div>
 
         <div class="ep-resumen">
-          <div>
-            <span>Total</span><strong>${{ p.total | number:'1.0-0' }}</strong>
+          <div class="ep-resumen__tiempo">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="8.4" />
+              <path d="M12 7.8V12l3 1.8" />
+            </svg>
+            <span>Tiempo estimado</span>
+            <strong>{{ tiempoTotal() }} minutos</strong>
           </div>
-          <div>
-            <span>Tiempo estimado</span><span>~{{ tiempoTotal() }} min</span>
+          <div class="ep-resumen__total">
+            <span>Total</span><strong>${{ p.total | number:'1.0-0' }}</strong>
           </div>
         </div>
       </div>

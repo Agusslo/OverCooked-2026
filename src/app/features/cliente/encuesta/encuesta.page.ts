@@ -4,7 +4,19 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { EncuestasService } from '../../../core/services/encuestas.service';
+import { PedidosService } from '../../../core/services/pedidos.service';
 import { Encuesta } from '../../../core/models/encuesta.model';
+import { precargarImagenes } from '../../utils/precargarImagenes';
+
+// Imágenes de respaldo para acompañar cada pregunta si no se pueden
+// traer las fotos de los platos del pedido.
+const ILUSTRACIONES = [
+  'assets/juegos/memotest/pizza.webp',
+  'assets/juegos/memotest/bife.webp',
+  'assets/juegos/memotest/torta.png',
+  'assets/juegos/memotest/palta.webp',
+  'assets/juegos/memotest/tomate.webp',
+];
 
 @Component({
   selector: 'app-encuesta',
@@ -17,8 +29,13 @@ export class EncuestaPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private encuestasService = inject(EncuestasService);
+  private pedidosService = inject(PedidosService);
 
   private pedidoId = this.route.snapshot.paramMap.get('pedidoId')!;
+
+  // Fotos de los platos que pidió el cliente: cada pregunta se acompaña
+  // con una (punto 20), así la encuesta se relaciona con su estadía.
+  fotosPedido = signal<string[]>([]);
 
   cargando = signal(true);
   enviando = signal(false);
@@ -47,6 +64,15 @@ export class EncuestaPage implements OnInit {
     return ((this.indice() + 1) / enc.preguntas.length) * 100;
   });
 
+  // Sin fotos del pedido se usan las ilustraciones (con fondo
+  // transparente, por eso se muestran enteras y no recortadas).
+  esIlustracion = computed(() => this.fotosPedido().length === 0);
+
+  imagenActual = computed(() => {
+    const fotos = this.esIlustracion() ? ILUSTRACIONES : this.fotosPedido();
+    return fotos[this.indice() % fotos.length];
+  });
+
   ngOnInit(): void {
     this.cargarEncuesta();
   }
@@ -61,11 +87,16 @@ export class EncuestaPage implements OnInit {
         return;
       }
 
-      const encuesta = await this.encuestasService.obtenerEncuestaActiva();
+      const [encuesta, fotos] = await Promise.all([
+        this.encuestasService.obtenerEncuestaActiva(),
+        this.obtenerFotosPedido(),
+      ]);
       if (!encuesta || encuesta.preguntas.length === 0) {
         this.mensajeError.set('No hay ninguna encuesta disponible en este momento.');
         return;
       }
+      this.fotosPedido.set(fotos);
+      precargarImagenes(this.esIlustracion() ? ILUSTRACIONES : fotos);
       this.encuesta.set(encuesta);
     } catch (error) {
       await this.dispararError(
@@ -73,6 +104,20 @@ export class EncuestaPage implements OnInit {
       );
     } finally {
       this.cargando.set(false);
+    }
+  }
+
+  // Las fotos sólo decoran la encuesta: si no se pueden traer no se
+  // corta la carga, se muestran las ilustraciones de respaldo.
+  private async obtenerFotosPedido(): Promise<string[]> {
+    try {
+      const pedido = await this.pedidosService.obtenerPedidoConItems(this.pedidoId);
+      const fotos = (pedido.items ?? [])
+        .map((i) => i.foto_url ?? '')
+        .filter((u) => !!u);
+      return [...new Set(fotos)];
+    } catch {
+      return [];
     }
   }
 

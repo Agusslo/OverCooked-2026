@@ -119,13 +119,16 @@ export class MenuPage implements OnInit {
     return `translateY(calc(${base} + ${this.arrastreY()}px))`;
   });
 
-  // Precarga las 3 fotos del plato actual y de los platos vecinos (el
-  // siguiente y el anterior), así al tocar la foto o deslizar ya están
-  // descargadas. No se precarga todo el menú para no gastar datos.
+  // Precarga la primera foto de TODOS los platos (es la que aparece al
+  // deslizar, así aunque se pasen varios platos rápido ya está en caché)
+  // y las 3 fotos del plato actual y de sus vecinos (el siguiente y el
+  // anterior), que son las que se ven al tocar la foto. El resto de las
+  // fotos se piden recién al acercarse a ese plato, para no gastar datos.
   private precargaFotos = effect(() => {
     const lista = this.productos();
     const total = lista.length;
     if (!total) return;
+    precargarImagenes(lista.map((p) => p.foto_url));
     const indice = this.indiceProducto();
     for (const desplazamiento of [0, 1, -1]) {
       const p = lista[(indice + desplazamiento + total) % total];

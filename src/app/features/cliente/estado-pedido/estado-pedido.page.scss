@@ -57,11 +57,12 @@
 
   h1 {
     margin: 0;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 800;
   }
   span {
-    font-size: 12px;
+    font-size: 15px;
+    font-weight: 600;
     color: var(--texto-suave);
   }
 }
@@ -146,10 +147,10 @@
 .ep-badge {
   align-self: flex-start;
   text-transform: uppercase;
-  font-size: 10.5px;
+  font-size: 13px;
   font-weight: 800;
-  letter-spacing: 0.08em;
-  padding: 5px 10px;
+  letter-spacing: 0.06em;
+  padding: 6px 12px;
   border-radius: 999px;
   background: var(--panel);
   color: var(--gold);
@@ -171,14 +172,14 @@
 
 .ep-mensaje {
   margin: 0;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 19px;
+  font-weight: 700;
   line-height: 1.35;
 }
 
 .ep-motivo-rechazo {
   margin: 0;
-  font-size: 13px;
+  font-size: 16px;
   font-style: italic;
   color: var(--texto-suave);
 }
@@ -188,10 +189,10 @@
   background: var(--gold);
   color: var(--panel);
   border: none;
-  border-radius: 12px;
-  padding: 12px 18px;
+  border-radius: 14px;
+  padding: 14px 20px;
   font-weight: 800;
-  font-size: 14px;
+  font-size: 17px;
 }
 
 .ep-items {
@@ -203,21 +204,21 @@
 .ep-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   background: var(--card);
-  border-radius: 12px;
-  padding: 9px 11px;
+  border-radius: 14px;
+  padding: 11px 13px;
 }
 
 .ep-item__cant {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   flex: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--panel);
   color: var(--gold);
   font-weight: 800;
-  font-size: 12px;
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -226,33 +227,73 @@
 .ep-item__nombre {
   flex: 1;
   min-width: 0;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
 }
 
 .ep-item__sector {
-  font-size: 10.5px;
+  font-size: 13px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   color: var(--texto-suave);
 }
 
 .ep-resumen {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 10px;
+}
 
-  div {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    font-size: 13px;
+// Tiempo estimado bien visible: ícono + número grande en dorado.
+.ep-resumen__tiempo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--panel);
+
+  svg {
+    width: 28px;
+    height: 28px;
+    flex: none;
+    color: var(--gold);
+  }
+
+  span {
+    flex: 1;
+    min-width: 0;
+    font-size: 16px;
+    font-weight: 700;
     color: var(--texto-suave);
   }
 
   strong {
-    font-size: 18px;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+}
+
+.ep-resumen__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 4px;
+
+  span {
+    font-size: 20px;
+    font-weight: 800;
     color: var(--texto);
+  }
+
+  strong {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--texto);
+    white-space: nowrap;
   }
 }
 
@@ -275,11 +316,11 @@
   color: var(--panel);
   text-decoration: none;
   font-weight: 800;
-  font-size: 16px;
+  font-size: 18px;
 
   svg {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
   }
 }
 
@@ -292,17 +333,17 @@
   align-items: center;
   gap: 0.6rem;
   width: 100%;
-  padding: 0.85rem 1rem;
+  padding: 1rem 1.1rem;
   border-radius: 14px;
   background: var(--color-gold, #f0c060);
   color: var(--color-deep, #8c2e14);
   text-decoration: none;
-  font-weight: 700;
-  font-size: 0.9rem;
+  font-weight: 800;
+  font-size: 1.1rem;
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     flex-shrink: 0;
   }
 }
