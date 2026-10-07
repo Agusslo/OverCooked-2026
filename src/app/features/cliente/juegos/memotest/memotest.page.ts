@@ -85,9 +85,7 @@ export class MemotestPage implements OnInit, OnDestroy {
       );
       this.yaJugadoAntes.set(yaJugo);
 
-      if (!yaJugo) {
-        this.armarTablero();
-      }
+      this.armarTablero();
     } catch (error) {
       this.mensajeError.set(
         error instanceof Error ? error.message : 'No se pudo cargar el juego.',
@@ -181,25 +179,22 @@ export class MemotestPage implements OnInit, OnDestroy {
     this.juegoTerminado.set(true);
     this.victoria.set(gano);
 
-    // Memotest: dificultad media, da 15% fijo si encontrás todos los
-    // pares antes de quedarte sin vidas, 0% si perdés.
     const descuento = gano ? 15 : 0;
     this.descuentoGanado.set(descuento);
 
-    try {
-      await this.juegosService.registrarResultado(
-        this.clienteId,
-        this.mesaId,
-        'memotest',
-        this.pares(),
-        descuento,
-      );
-    } catch {
-      this.mensajeError.set('El juego terminó, pero no se pudo guardar el resultado.');
+    if (!this.yaJugadoAntes()) {
+      try {
+        await this.juegosService.registrarResultado(
+          this.clienteId,
+          this.mesaId,
+          'memotest',
+          this.pares(),
+          descuento,
+        );
+      } catch {
+        this.mensajeError.set('No se pudo guardar el resultado.');
+      }
     }
   }
-
-  volver(): void {
-    this.router.navigate(['/cliente/juegos', this.numeroMesa]);
-  }
+  
 }

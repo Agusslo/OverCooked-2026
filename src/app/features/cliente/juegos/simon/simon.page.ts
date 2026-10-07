@@ -196,16 +196,18 @@ export class SimonPage implements OnInit, OnDestroy {
     const descuento = gano ? 10 : 0;
     this.descuentoGanado.set(descuento);
 
-    try {
-      await this.juegosService.registrarResultado(
-        this.clienteId,
-        this.mesaId,
-        'simon',
-        this.score(),
-        descuento,
-      );
-    } catch {
-      this.mensajeError.set('El juego terminó, pero no se pudo guardar el resultado.');
+    if (!this.yaJugadoAntes()) {
+      try {
+        await this.juegosService.registrarResultado(
+          this.clienteId,
+          this.mesaId,
+          'simon',
+          this.score(),
+          descuento,
+        );
+      } catch {
+        this.mensajeError.set('El juego terminó, pero no se pudo guardar el resultado.');
+      }
     }
   }
 

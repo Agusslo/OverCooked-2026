@@ -87,9 +87,7 @@ export class HigherLowerPage implements OnInit {
       );
       this.yaJugadoAntes.set(yaJugo);
 
-      if (!yaJugo) {
-        this.cartaAleatoria();
-      }
+      this.cartaAleatoria();
     } catch (error) {
       this.mensajeError.set(
         error instanceof Error ? error.message : 'No se pudo cargar el juego.',
@@ -143,20 +141,21 @@ export class HigherLowerPage implements OnInit {
     const descuento = gano ? 20 : 0;
     this.descuentoGanado.set(descuento);
 
-    try {
-      await this.juegosService.registrarResultado(
-        this.clienteId,
-        this.mesaId,
-        'higher_lower',
-        this.rondasGanadas(),
-        descuento,
-      );
-    } catch (error) {
-      this.mensajeError.set('El juego terminó, pero no se pudo guardar el resultado.');
+    // Solo guardamos el resultado la primera vez que se juega.
+    // Las partidas siguientes no sobreescriben el descuento original.
+    if (!this.yaJugadoAntes()) {
+      try {
+        await this.juegosService.registrarResultado(
+          this.clienteId,
+          this.mesaId,
+          'higher_lower',
+          this.rondasGanadas(),
+          descuento,
+        );
+      } catch (error) {
+        this.mensajeError.set('No se pudo guardar el resultado.');
+      }
     }
   }
 
-  volver(): void {
-    this.router.navigate(['/cliente/juegos', this.numeroMesa]);
-  }
 }

@@ -32,7 +32,7 @@
             class="juego-card"
             [class.juego-card--jugado]="yaJugado(j.juego)"
             [class.juego-card--proximamente]="!j.ruta"
-            [disabled]="!j.ruta || yaJugado(j.juego)"
+            [disabled]="!j.ruta"
             (click)="jugar(j.ruta)"
           >
             <div class="juego-card__descuento">{{ j.descuentoPct }}%</div>
@@ -40,7 +40,7 @@
               <strong class="juego-card__nombre">{{ j.nombre }}</strong>
               <span class="juego-card__subtitulo">
                 @if (yaJugado(j.juego)) {
-                  Ya jugado
+                  Jugado · descuento registrado
                 } @else if (!j.ruta) {
                   Próximamente
                 } @else {
