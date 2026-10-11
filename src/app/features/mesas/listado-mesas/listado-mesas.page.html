@@ -29,7 +29,8 @@
           </div>
         } @else if (mesas().length === 0) {
           <div class="estado-vacio">
-            <span>Todavía no hay mesas registradas.</span>
+            <img src="assets/icon/logo.png" alt="" class="vacio-logo" />
+            <span class="vacio-texto">Todavía no hay mesas registradas.</span>
             <a routerLink="/mesas/alta-mesa" class="link-alta">Agregar la primera mesa</a>
           </div>
         } @else {

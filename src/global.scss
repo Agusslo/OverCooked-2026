@@ -73,3 +73,30 @@ ion-router-outlet .ion-page {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Estado vacío de listas: logo centrado + leyenda grande
+   (usar <img src="assets/icon/logo.png" class="vacio-logo"> + <span class="vacio-texto">) */
+.vacio-logo {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+.vacio-logo--chico {
+  width: 56px;
+  height: 56px;
+}
+.vacio-texto {
+  font-family: "ADLaM Display", system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.35;
+  max-width: 300px;
+  /* compensa la altura del header para que el bloque quede en el centro de la pantalla */
+  margin-bottom: 4.5rem;
+}
+.vacio-logo--chico + .vacio-texto,
+.vacio-texto--sin-header {
+  margin-bottom: 0;
+}

@@ -29,7 +29,8 @@
         <div class="mensajes-scroll" #scrollMensajes>
           @if (mensajes().length === 0) {
             <div class="estado-vacio">
-              <span>Todavía no hay mensajes. Escribí tu consulta abajo.</span>
+              <img src="assets/icon/logo.png" alt="" class="vacio-logo" />
+              <span class="vacio-texto">Todavía no hay mensajes. Escribí tu consulta abajo.</span>
             </div>
           } @else {
             <div class="fecha-divisor"><span>Hoy</span></div>
