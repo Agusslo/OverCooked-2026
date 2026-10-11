@@ -157,6 +157,6 @@ export class HigherLowerPage implements OnInit {
   }
 
   volver(): void {
-    this.router.navigate(['/cliente/juegos', this.numeroMesa]);
+    this.router.navigateByUrl('/inicio');
   }
 }

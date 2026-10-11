@@ -27,13 +27,6 @@ const ESTADOS_CORTOS: Record<string, string> = {
   entregado: 'ENTREGADO',
 };
 
-// Punto 12: el "inicio" del cliente (registrado o invitado) una vez que
-// está anotado en la lista de espera. Se muestra dentro de InicioPage.
-//  - Anotado, sin mesa   -> "ESPERANDO MESA".
-//  - El metre asignó mesa -> "REALIZAR PEDIDO" -> escanea el QR de la mesa.
-//  - Ya confirmó un pedido -> card del pedido + juegos.
-// Si el cliente todavía NO está anotado, esta pantalla lo manda a
-// /cliente/entrada a escanear el QR de la entrada.
 @Component({
   selector: 'app-sala-espera',
   standalone: true,
@@ -209,10 +202,6 @@ export class SalaEsperaComponent implements OnInit, OnDestroy, ViewWillEnter {
   irAJuegos(ruta?: string): void {
     const mesa = this.mesaAsignada();
     if (!mesa) return;
-    // Punto 15: los juegos son sólo para clientes registrados (las rutas
-    // /cliente/juegos tienen perfiles: ['cliente']). Sin este aviso el
-    // guard rebotaba al invitado a /inicio y parecía que no pasaba nada;
-    // ahora las cards se ven atenuadas con un aviso encima.
     if (this.esAnonimo()) {
       void Haptics.notification({ type: NotificationType.Warning }).catch(() => {});
       return;
