@@ -8,12 +8,15 @@
   --texto-suave: #f9bfa0;
 
   display: block;
-  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
   font-family: system-ui, sans-serif;
 }
 
+// Alto fijo (no min-height): así el header queda arriba y .ep-cuerpo es
+// el que scrollea cuando la lista de platos es larga.
 .ep-shell {
-  min-height: 100dvh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   background: var(--hero);
@@ -96,6 +99,11 @@
   gap: 16px;
   padding: 16px 16px calc(110px + env(safe-area-inset-bottom));
   overflow-y: auto;
+
+  // Que la card no se achique (tiene overflow: hidden) y desborde al scroll.
+  > * {
+    flex-shrink: 0;
+  }
 }
 
 .ep-estado {
@@ -129,7 +137,10 @@
   aspect-ratio: 16 / 10;
   background: #26150d;
 
+  // display: block saca el hueco de la línea base del <img> inline, que
+  // dejaba ver el fondo oscuro como una línea negra abajo de la foto.
   img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;

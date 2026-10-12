@@ -104,9 +104,11 @@ export class MenuPage implements OnInit {
     ),
   );
 
+  // Los platos se preparan en paralelo: el pedido tarda lo que tarde el
+  // plato más lento (no la suma).
   tiempoTotal = computed(() =>
     this.lineasCarrito().reduce(
-      (acum, l) => acum + l.producto.tiempo_elaboracion_minutos * l.cantidad,
+      (max, l) => Math.max(max, l.producto.tiempo_elaboracion_minutos),
       0,
     ),
   );

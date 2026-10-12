@@ -94,10 +94,11 @@ export class EstadoPedidoPage implements OnInit, OnDestroy {
     () => this.fuePedidoEntregado() && this.confirmoRecepcion(),
   );
 
-  // "Tiempo total estimado de realización del pedido completo" (punto 12).
+  // "Tiempo total estimado de realización del pedido completo" (punto 12):
+  // el del plato más lento, igual que en el menú.
   tiempoTotal = computed(() =>
     (this.pedido()?.items ?? []).reduce(
-      (acum, i) => acum + (i.tiempo_elaboracion_minutos ?? 0) * i.cantidad,
+      (max, i) => Math.max(max, i.tiempo_elaboracion_minutos ?? 0),
       0,
     ),
   );

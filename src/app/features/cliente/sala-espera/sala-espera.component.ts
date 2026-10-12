@@ -79,9 +79,10 @@ export class SalaEsperaComponent implements OnInit, OnDestroy, ViewWillEnter {
     (this.pedidoActivo()?.items ?? []).map((i) => i.nombre ?? 'Producto').join(' · '),
   );
 
+  // Tiempo del plato más lento, igual que en el menú y en estado-pedido.
   tiempoPedido = computed(() =>
     (this.pedidoActivo()?.items ?? []).reduce(
-      (acum, i) => acum + (i.tiempo_elaboracion_minutos ?? 0) * i.cantidad,
+      (max, i) => Math.max(max, i.tiempo_elaboracion_minutos ?? 0),
       0,
     ),
   );
