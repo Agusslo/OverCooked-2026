@@ -70,15 +70,20 @@ export class MemotestPage implements OnInit, OnDestroy {
   private mesaId = '';
   private clienteId = '';
 
+  // El invitado (anónimo) puede jugar, pero sin descuento: no se
+  // guarda su resultado ni se limita a una partida por mesa.
+  esAnonimo = false;
+
   async ngOnInit(): Promise<void> {
     this.numeroMesa = Number(this.route.snapshot.paramMap.get('numero'));
     this.clienteId = this.authService.usuarioActual?.id ?? '';
+    this.esAnonimo = this.authService.usuarioActual?.perfil === 'anonimo';
 
     try {
       const mesa = await this.mesasService.obtenerPorNumero(this.numeroMesa);
       this.mesaId = mesa.id;
 
-      const yaJugo = await this.juegosService.yaJugo(
+      const yaJugo = !this.esAnonimo && await this.juegosService.yaJugo(
         this.clienteId,
         this.mesaId,
         'memotest',
@@ -183,8 +188,10 @@ export class MemotestPage implements OnInit, OnDestroy {
 
     // Memotest: dificultad media, da 15% fijo si encontrás todos los
     // pares antes de quedarte sin vidas, 0% si perdés.
-    const descuento = gano ? 15 : 0;
+    const descuento = gano && !this.esAnonimo ? 15 : 0;
     this.descuentoGanado.set(descuento);
+
+    if (this.esAnonimo) return;
 
     try {
       await this.juegosService.registrarResultado(
