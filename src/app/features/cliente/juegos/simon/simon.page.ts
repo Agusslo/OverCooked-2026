@@ -226,4 +226,6 @@ export class SimonPage implements OnInit, OnDestroy {
     this.limpiarTimers();
     this.router.navigate(['/cliente/juegos', this.numeroMesa]);
   }
+
+
 }

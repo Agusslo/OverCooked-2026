@@ -196,5 +196,9 @@ export class MemotestPage implements OnInit, OnDestroy {
       }
     }
   }
+
+  volver(): void {
+    this.router.navigate(['/cliente/juegos', this.numeroMesa]);
+  }
   
 }

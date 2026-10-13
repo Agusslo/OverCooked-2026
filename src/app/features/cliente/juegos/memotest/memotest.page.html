@@ -11,6 +11,7 @@
         </button>
         <div class="header-titles">
           <h2>Memotest</h2>
+           <p>{{ yaJugadoAntes() ? 'Ya jugaste por el descuento' : 'Ganá un descuento en tu cuenta' }}</p>
           <p>Encontrá todos los pares</p>
         </div>
       </div>
@@ -19,13 +20,6 @@
         <div class="memo-estado">
           <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
           <span>Cargando…</span>
-        </div>
-      } @else if (yaJugadoAntes()) {
-        <div class="memo-estado">
-          <span>Ya jugaste este juego en esta mesa.</span>
-          <button type="button" class="memo-btn-volver" (click)="volver()">
-            Volver a los juegos
-          </button>
         </div>
       } @else {
 
