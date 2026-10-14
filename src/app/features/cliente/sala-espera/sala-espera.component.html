@@ -56,6 +56,16 @@
           </div>
         </button>
 
+        <button type="button" class="juego-card" (click)="irAJuegos('memotest')">
+          <div class="juego-card__arte juego-card__arte--memotest">
+            <img src="assets/juegos/memotest/logo.webp" alt="logo memotest" />
+          </div>
+          <div class="juego-card__pie">
+            <strong>Memotest (15%)</strong>
+            <span>1 jugador · memoria</span>
+          </div>
+        </button>
+
         <button type="button" class="juego-card" (click)="irAJuegos('simon')">
           <div class="juego-card__arte juego-card__arte--simon">
             <img src="assets/juegos/simon/logo.webp" alt="logo simon" />
@@ -66,15 +76,6 @@
           </div>
         </button>
 
-        <button type="button" class="juego-card" (click)="irAJuegos('memotest')">
-          <div class="juego-card__arte juego-card__arte--memotest">
-            <img src="assets/juegos/memotest/logo.webp" alt="logo memotest" />
-          </div>
-          <div class="juego-card__pie">
-            <strong>Memotest (15%)</strong>
-            <span>1 jugador · memoria</span>
-          </div>
-        </button>
         @if (!pedidoAceptado()) {
           <div class="sala-juegos__candado">
             <svg viewBox="0 0 24 24" fill="none" stroke="#5e2412" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

@@ -17,12 +17,12 @@ interface Ficha {
 // Las 6 imágenes de ingredientes — confirmá que los nombres de archivo
 // coincidan exactamente con lo que tenés en assets/comidas/
 const INGREDIENTES = [
-  { nombre: 'tomate',    imagen: 'assets/comidas-juegos/tomate.png' },
-  { nombre: 'lechuga',   imagen: 'assets/comidas-juegos/lechuga.png' },
-  { nombre: 'zanahoria', imagen: 'assets/comidas-juegos/zanahoria.png' },
-  { nombre: 'bife',      imagen: 'assets/comidas-juegos/bife.png' },
-  { nombre: 'pizza',     imagen: 'assets/comidas-juegos/pizza.png' },
-  { nombre: 'torta',     imagen: 'assets/comidas-juegos/torta.png' },
+  { nombre: 'tomate',    imagen: 'assets/juegos/memotest/tomate.webp' },
+  { nombre: 'lechuga',   imagen: 'assets/juegos/memotest/lechuga.webp' },
+  { nombre: 'zanahoria', imagen: 'assets/juegos/memotest/zanahoria.webp' },
+  { nombre: 'bife',      imagen: 'assets/juegos/memotest/bife.webp' },
+  { nombre: 'pizza',     imagen: 'assets/juegos/memotest/pizza.webp' },
+  { nombre: 'palta',     imagen: 'assets/juegos/memotest/palta.webp' },
 ];
 
 function mezclar<T>(arr: T[]): T[] {
