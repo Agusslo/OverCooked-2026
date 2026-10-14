@@ -106,18 +106,19 @@
   &:active { transform: scale(0.99); }
 }
 
+// Foto cuadrada de tamaño fijo: no se estira con el alto de la info.
 .spc-foto {
   width: 104px;
-  min-height: 104px;
+  height: 150px;
   flex: none;
-  align-self: stretch;
+  align-self: center;
   position: relative;
   border-radius: 14px;
   overflow: hidden;
   background: var(--marron);
 
-  // La imagen va absoluta para que su alto natural no estire la card:
-  // ocupa todo el alto que define la columna de info y recorta con cover.
+  // La imagen va absoluta para que su alto natural no estire la card;
+  // recorta con cover dentro del cuadrado.
   img {
     position: absolute;
     inset: 0;
@@ -176,8 +177,14 @@
 }
 
 .spc-items {
+  // Nombres largos: máximo 2 líneas con "…".
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.25;
   color: var(--texto);
 }
@@ -201,14 +208,14 @@
   gap: 3px;
 
   strong {
-    font-size: 24px;
+    font-size: 1rem;
     font-weight: 800;
     line-height: 1;
     white-space: nowrap;
   }
 
   span {
-    font-size: 12px;
+    font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     color: var(--texto-suave);
@@ -224,7 +231,7 @@
   margin: 0 4px -6px;
 
   span {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.12em;
     color: var(--texto);
@@ -253,9 +260,10 @@
   &--bloqueado .juego-card { opacity: 0.4; }
 }
 
-// Aviso centrado sobre la grilla para el invitado. No intercepta los
-// toques: el clic sigue llegando a la card, que sólo vibra.
-.sala-juegos__aviso {
+// Candado centrado sobre la grilla mientras el mozo no confirmó el
+// pedido. No intercepta los toques: el clic sigue llegando a la card,
+// que sólo vibra.
+.sala-juegos__candado {
   position: absolute;
   inset: 0 0 72px;
   display: flex;
@@ -283,6 +291,28 @@
     font-weight: 800;
     line-height: 1.3;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// Aviso para el invitado: puede jugar, pero no gana descuentos.
+.sala-juegos__aviso {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--cafe);
+  color: var(--texto);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.3;
+
+  svg {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    color: var(--gold);
   }
 }
 
@@ -328,7 +358,7 @@
   
   &--memotest {
     img {
-      width: 120px;
+      width: 110px;
     }
   }
 }
@@ -342,7 +372,7 @@
   gap: 3px;
 
   strong {
-    font-size: 16.5px;
+    font-size: 16px;
     font-weight: 800;
     line-height: 1.15;
   }

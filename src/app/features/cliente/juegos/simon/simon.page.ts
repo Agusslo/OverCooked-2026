@@ -53,15 +53,20 @@ export class SimonPage implements OnInit, OnDestroy {
   private mesaId = '';
   private clienteId = '';
 
+  // El invitado (anónimo) puede jugar, pero sin descuento: no se
+  // guarda su resultado ni se limita a una partida por mesa.
+  esAnonimo = false;
+
   async ngOnInit(): Promise<void> {
     this.numeroMesa = Number(this.route.snapshot.paramMap.get('numero'));
     this.clienteId = this.authService.usuarioActual?.id ?? '';
+    this.esAnonimo = this.authService.usuarioActual?.perfil === 'anonimo';
 
     try {
       const mesa = await this.mesasService.obtenerPorNumero(this.numeroMesa);
       this.mesaId = mesa.id;
 
-      const yaJugo = await this.juegosService.yaJugo(
+      const yaJugo = !this.esAnonimo && await this.juegosService.yaJugo(
         this.clienteId,
         this.mesaId,
         'simon',
@@ -193,10 +198,10 @@ export class SimonPage implements OnInit, OnDestroy {
     this.victoria.set(gano);
     this.turnoJugador.set(false);
 
-    const descuento = gano ? 10 : 0;
+    const descuento = gano && !this.esAnonimo ? 10 : 0;
     this.descuentoGanado.set(descuento);
 
-    if (!this.yaJugadoAntes()) {
+    if (!this.esAnonimo && !this.yaJugadoAntes()) {
       try {
         await this.juegosService.registrarResultado(
           this.clienteId,
@@ -224,7 +229,7 @@ export class SimonPage implements OnInit, OnDestroy {
 
   volver(): void {
     this.limpiarTimers();
-    this.router.navigate(['/cliente/juegos', this.numeroMesa]);
+    this.router.navigateByUrl('/inicio');
   }
 
 

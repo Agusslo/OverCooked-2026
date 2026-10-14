@@ -43,7 +43,9 @@
         <span>GANÁ DESCUENTOS</span>
       </div>
 
-      <section class="sala-juegos" [class.sala-juegos--bloqueado]="esAnonimo()">
+
+
+      <section class="sala-juegos" [class.sala-juegos--bloqueado]="!pedidoAceptado()">
         <button type="button" class="juego-card juego-card--destacado" (click)="irAJuegos('higher-lower')">
           <div class="juego-card__arte">
             <img src="assets/juegos/higher-lower/logo.webp" alt="logo higher-lower" />
@@ -59,27 +61,27 @@
             <img src="assets/juegos/simon/logo.webp" alt="logo simon" />
           </div>
           <div class="juego-card__pie">
-            <strong>Simón (15%)</strong>
+            <strong>Simón (10%)</strong>
             <span>1 jugador · patrón</span>
           </div>
         </button>
 
-        <button type="button" class="juego-card" (click)="irAJuegos()">
+        <button type="button" class="juego-card" (click)="irAJuegos('memotest')">
           <div class="juego-card__arte juego-card__arte--memotest">
             <img src="assets/juegos/memotest/logo.webp" alt="logo memotest" />
           </div>
           <div class="juego-card__pie">
-            <strong>Memotest (10%)</strong>
+            <strong>Memotest (15%)</strong>
             <span>1 jugador · memoria</span>
           </div>
         </button>
-        @if (esAnonimo()) {
-          <div class="sala-juegos__aviso">
+        @if (!pedidoAceptado()) {
+          <div class="sala-juegos__candado">
             <svg viewBox="0 0 24 24" fill="none" stroke="#5e2412" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect width="16" height="11" x="4" y="11" rx="2" />
               <path d="M8 11V7a4 4 0 0 1 8 0v4" />
             </svg>
-            <span>Los juegos son sólo para clientes registrados</span>
+            <span>Los juegos se habilitan cuando el mozo confirme tu pedido</span>
           </div>
         }
       </section>

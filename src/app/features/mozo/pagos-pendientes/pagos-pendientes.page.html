@@ -28,7 +28,8 @@
       </div>
     } @else if (pagos().length === 0) {
       <div class="pg-estado">
-        <span>No hay pagos por confirmar en este momento.</span>
+        <img src="assets/icon/logo.png" alt="" class="vacio-logo" />
+        <span class="vacio-texto">No hay pagos por confirmar en este momento.</span>
       </div>
     } @else {
       @for (pago of pagos(); track pago.id) {

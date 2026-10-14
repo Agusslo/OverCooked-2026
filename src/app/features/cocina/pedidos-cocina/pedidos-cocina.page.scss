@@ -107,28 +107,28 @@
   -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
+  gap: 1rem;
+  padding: 1rem 0.85rem;
 }
 
 .pedido-card {
   background: var(--color-input);
-  border-radius: 18px;
-  padding: 14px;
+  border-radius: 20px;
+  padding: 20px 18px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
 .pedido-card__top {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .pedido-mesa-badge {
-  width: 40px;
-  height: 40px;
+  width: 52px;
+  height: 52px;
   border-radius: 999px;
   background: var(--color-sector-dim);
   color: var(--color-gold);
@@ -136,7 +136,7 @@
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 15px;
+  font-size: 19px;
   flex-shrink: 0;
 }
 
@@ -150,12 +150,12 @@
 .pedido-mesa {
   color: var(--color-cream);
   font-weight: 800;
-  font-size: 15px;
+  font-size: 19px;
 }
 
 .pedido-estado {
   color: var(--color-gold);
-  font-size: 12px;
+  font-size: 14px;
   text-transform: capitalize;
 }
 
@@ -167,31 +167,31 @@
 
 .pedido-hora {
   color: var(--color-peach);
-  font-size: 12px;
+  font-size: 13px;
   flex-shrink: 0;
 }
 
 .pedido-items {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 10px 12px;
+  gap: 10px;
+  padding: 14px 14px;
   background: rgba(0, 0, 0, 0.15);
-  border-radius: 12px;
+  border-radius: 14px;
 }
 
 .pedido-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: 10px;
+  font-size: 16px;
   color: var(--color-cream);
 }
 
 .pedido-item__cant {
   font-weight: 800;
   color: var(--color-gold);
-  min-width: 22px;
+  min-width: 28px;
 }
 
 .pedido-item__nombre {
@@ -201,7 +201,7 @@
 .pedido-item__badge {
   color: var(--color-gold);
   font-weight: 700;
-  font-size: 12px;
+  font-size: 14px;
   flex-shrink: 0;
 }
 
@@ -210,9 +210,9 @@
   background: var(--color-gold);
   color: var(--color-deep);
   border: none;
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-size: 12px;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
   font-weight: 700;
   font-family: var(--font-body);
 

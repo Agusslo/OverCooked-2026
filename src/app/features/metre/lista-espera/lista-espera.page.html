@@ -24,7 +24,8 @@
         </div>
         } @else if (clientes().length === 0) {
         <div class="estado-vacio">
-            <span>No hay nadie esperando en este momento.</span>
+            <img src="assets/icon/logo.png" alt="" class="vacio-logo" />
+            <span class="vacio-texto">No hay nadie esperando en este momento.</span>
         </div>
         } @else {
         @for (cliente of clientes(); track cliente.id) {

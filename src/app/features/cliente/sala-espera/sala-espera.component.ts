@@ -27,13 +27,8 @@ const ESTADOS_CORTOS: Record<string, string> = {
   entregado: 'ENTREGADO',
 };
 
-// Punto 12: el "inicio" del cliente (registrado o invitado) una vez que
-// está anotado en la lista de espera. Se muestra dentro de InicioPage.
-//  - Anotado, sin mesa   -> "ESPERANDO MESA".
-//  - El metre asignó mesa -> "REALIZAR PEDIDO" -> escanea el QR de la mesa.
-//  - Ya confirmó un pedido -> card del pedido + juegos.
-// Si el cliente todavía NO está anotado, esta pantalla lo manda a
-// /cliente/entrada a escanear el QR de la entrada.
+const ESTADOS_SIN_ACEPTAR = ['pendiente_mozo', 'pendiente', 'rechazado'];
+
 @Component({
   selector: 'app-sala-espera',
   standalone: true,
@@ -75,16 +70,28 @@ export class SalaEsperaComponent implements OnInit, OnDestroy, ViewWillEnter {
   // descarga de cada una (las ya pedidas no se vuelven a pedir).
   private precargaFotos = effect(() => precargarImagenes(this.fotosPedido()));
 
-  nombresItems = computed(() =>
-    (this.pedidoActivo()?.items ?? []).map((i) => i.nombre ?? 'Producto').join(' · '),
-  );
+  // Sólo los primeros 2 items, para que la card no crezca con pedidos
+  // grandes; el resto se resume en "+N más".
+  nombresItems = computed(() => {
+    const nombres = (this.pedidoActivo()?.items ?? []).map((i) => i.nombre ?? 'Producto');
+    const texto = nombres.slice(0, 2).join(' · ');
+    return nombres.length > 2 ? `${texto} +${nombres.length - 2} más` : texto;
+  });
 
+  // Tiempo del plato más lento, igual que en el menú y en estado-pedido.
   tiempoPedido = computed(() =>
     (this.pedidoActivo()?.items ?? []).reduce(
-      (acum, i) => acum + (i.tiempo_elaboracion_minutos ?? 0) * i.cantidad,
+      (max, i) => Math.max(max, i.tiempo_elaboracion_minutos ?? 0),
       0,
     ),
   );
+
+  // Los juegos se habilitan recién cuando el mozo aceptó el pedido
+  // (mientras está por confirmar o rechazado no se muestran).
+  pedidoAceptado = computed(() => {
+    const estado = this.pedidoActivo()?.estado;
+    return !!estado && !ESTADOS_SIN_ACEPTAR.includes(estado);
+  });
 
   esAnonimo(): boolean {
     return this.authService.usuarioActual?.perfil === 'anonimo';
@@ -206,19 +213,13 @@ export class SalaEsperaComponent implements OnInit, OnDestroy, ViewWillEnter {
     }
   }
 
-  irAJuegos(ruta?: string): void {
+  irAJuegos(ruta: string): void {
     const mesa = this.mesaAsignada();
     if (!mesa) return;
-    // Punto 15: los juegos son sólo para clientes registrados (las rutas
-    // /cliente/juegos tienen perfiles: ['cliente']). Sin este aviso el
-    // guard rebotaba al invitado a /inicio y parecía que no pasaba nada;
-    // ahora las cards se ven atenuadas con un aviso encima.
-    if (this.esAnonimo()) {
+    if (!this.pedidoAceptado()) {
       void Haptics.notification({ type: NotificationType.Warning }).catch(() => {});
       return;
     }
-    const destino: (string | number)[] = ['/cliente/juegos', mesa.numero];
-    if (ruta) destino.push(ruta);
-    this.router.navigate(destino);
+    this.router.navigate(['/cliente/juegos', mesa.numero, ruta]);
   }
 }

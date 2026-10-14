@@ -72,15 +72,20 @@ export class HigherLowerPage implements OnInit {
   private mesaId = '';
   private clienteId = '';
 
+  // El invitado (anónimo) puede jugar, pero sin descuento: no se
+  // guarda su resultado ni se limita a una partida por mesa.
+  esAnonimo = false;
+
   async ngOnInit(): Promise<void> {
     this.numeroMesa = Number(this.route.snapshot.paramMap.get('numero'));
     this.clienteId = this.authService.usuarioActual?.id ?? '';
+    this.esAnonimo = this.authService.usuarioActual?.perfil === 'anonimo';
 
     try {
       const mesa = await this.mesasService.obtenerPorNumero(this.numeroMesa);
       this.mesaId = mesa.id;
 
-      const yaJugo = await this.juegosService.yaJugo(
+      const yaJugo = !this.esAnonimo && await this.juegosService.yaJugo(
         this.clienteId,
         this.mesaId,
         'higher_lower',
@@ -138,12 +143,10 @@ export class HigherLowerPage implements OnInit {
     this.juegoTerminado.set(true);
     this.victoria.set(gano);
 
-    const descuento = gano ? 20 : 0;
+    const descuento = gano && !this.esAnonimo ? 20 : 0;
     this.descuentoGanado.set(descuento);
 
-    // Solo guardamos el resultado la primera vez que se juega.
-    // Las partidas siguientes no sobreescriben el descuento original.
-    if (!this.yaJugadoAntes()) {
+    if (!this.esAnonimo && !this.yaJugadoAntes()) {
       try {
         await this.juegosService.registrarResultado(
           this.clienteId,
@@ -153,13 +156,13 @@ export class HigherLowerPage implements OnInit {
           descuento,
         );
       } catch (error) {
-        this.mensajeError.set('No se pudo guardar el resultado.');
+        this.mensajeError.set('El juego terminó, pero no se pudo guardar el resultado.');
       }
     }
   }
 
   volver(): void {
-    this.router.navigate(['/cliente/juegos', this.numeroMesa]);
+    this.router.navigateByUrl('/inicio');
   }
 
 }

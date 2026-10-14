@@ -38,7 +38,9 @@
               <p class="derrota">¡Perdiste!</p>
             }
 
-            @if (descuentoGanado() > 0) {
+            @if (esAnonimo) {
+              <p class="descuento">Registrate para ganar descuentos jugando.</p>
+            } @else if (descuentoGanado() > 0) {
               <p class="descuento">Conseguiste {{ descuentoGanado() }}% de descuento</p>
             } @else {
               <p class="descuento">No conseguiste descuento esta vez.</p>
