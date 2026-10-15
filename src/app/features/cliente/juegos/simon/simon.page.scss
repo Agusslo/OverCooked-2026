@@ -26,6 +26,7 @@
   background: #c45030;
   border-radius: 20px;
   padding: 20px;
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -50,7 +51,9 @@
   }
 }
 
-.header-titles { flex: 1; }
+.header-titles {
+  flex: 1;
+}
 
 .btn-back {
   background: none;
@@ -113,8 +116,13 @@
 }
 
 @keyframes pulsar {
-  from { opacity: 1; }
-  to { opacity: 0.4; }
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.4;
+  }
 }
 
 .mensaje-ronda {
@@ -155,10 +163,21 @@
   }
 }
 
-.rojo { background: #e74c3c; }
-.azul { background: #3498db; }
-.verde { background: #2ecc71; }
-.amarillo { background: #f1c40f; }
+.rojo {
+  background: #e74c3c;
+}
+
+.azul {
+  background: #3498db;
+}
+
+.verde {
+  background: #2ecc71;
+}
+
+.amarillo {
+  background: #f1c40f;
+}
 
 .mensaje-turno {
   margin: 0;

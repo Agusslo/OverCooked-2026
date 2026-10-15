@@ -27,6 +27,7 @@
   background: #c45030;
   border-radius: 20px;
   padding: 20px;
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -120,10 +121,21 @@
   user-select: none;
   box-sizing: border-box;
 
-  &--tomate  { --color-palo: #c62828; }
-  &--zanahoria { --color-palo: #e67e22; }
-  &--lechuga { --color-palo: #6a9a1f; }
-  &--cebolla { --color-palo: #7b3f8c; }
+  &--tomate {
+    --color-palo: #c62828;
+  }
+
+  &--zanahoria {
+    --color-palo: #e67e22;
+  }
+
+  &--lechuga {
+    --color-palo: #6a9a1f;
+  }
+
+  &--cebolla {
+    --color-palo: #7b3f8c;
+  }
 }
 
 .carta__palo {
