@@ -35,7 +35,7 @@ import { RouterLink } from '@angular/router';
       text-decoration: none;
       font-weight: 700;
       font-size: 13px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
     }
     .burbuja-mozo__icono {
       width: 40px;
