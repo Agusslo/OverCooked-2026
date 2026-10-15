@@ -8,16 +8,6 @@ import { PedidosService } from '../../../core/services/pedidos.service';
 import { Encuesta } from '../../../core/models/encuesta.model';
 import { precargarImagenes } from '../../utils/precargarImagenes';
 
-// Imágenes de respaldo para acompañar cada pregunta si no se pueden
-// traer las fotos de los platos del pedido.
-const ILUSTRACIONES = [
-  'assets/juegos/memotest/pizza.webp',
-  'assets/juegos/memotest/bife.webp',
-  'assets/juegos/memotest/torta.png',
-  'assets/juegos/memotest/palta.webp',
-  'assets/juegos/memotest/tomate.webp',
-];
-
 @Component({
   selector: 'app-encuesta',
   standalone: true,
@@ -64,13 +54,10 @@ export class EncuestaPage implements OnInit {
     return ((this.indice() + 1) / enc.preguntas.length) * 100;
   });
 
-  // Sin fotos del pedido se usan las ilustraciones (con fondo
-  // transparente, por eso se muestran enteras y no recortadas).
-  esIlustracion = computed(() => this.fotosPedido().length === 0);
-
+  // Sin fotos del pedido la pregunta se muestra sin imagen.
   imagenActual = computed(() => {
-    const fotos = this.esIlustracion() ? ILUSTRACIONES : this.fotosPedido();
-    return fotos[this.indice() % fotos.length];
+    const fotos = this.fotosPedido();
+    return fotos.length ? fotos[this.indice() % fotos.length] : null;
   });
 
   ngOnInit(): void {
@@ -96,7 +83,7 @@ export class EncuestaPage implements OnInit {
         return;
       }
       this.fotosPedido.set(fotos);
-      precargarImagenes(this.esIlustracion() ? ILUSTRACIONES : fotos);
+      precargarImagenes(fotos);
       this.encuesta.set(encuesta);
     } catch (error) {
       await this.dispararError(
@@ -108,7 +95,7 @@ export class EncuestaPage implements OnInit {
   }
 
   // Las fotos sólo decoran la encuesta: si no se pueden traer no se
-  // corta la carga, se muestran las ilustraciones de respaldo.
+  // corta la carga, la encuesta sigue sin imágenes.
   private async obtenerFotosPedido(): Promise<string[]> {
     try {
       const pedido = await this.pedidosService.obtenerPedidoConItems(this.pedidoId);

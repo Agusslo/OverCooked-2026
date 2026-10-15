@@ -37,9 +37,11 @@
           </div>
         } @else if (preguntaActual(); as pregunta) {
           <div class="pregunta-box">
-            <div class="pregunta-imagen" [class.pregunta-imagen--ilustracion]="esIlustracion()">
-              <img [src]="imagenActual()" alt="Imagen que acompaña la pregunta" />
-            </div>
+            @if (imagenActual(); as imagen) {
+              <div class="pregunta-imagen">
+                <img [src]="imagen" alt="Imagen que acompaña la pregunta" />
+              </div>
+            }
 
             <h3 class="pregunta-texto">{{ pregunta.texto }}</h3>
 

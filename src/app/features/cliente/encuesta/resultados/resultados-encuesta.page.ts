@@ -11,14 +11,41 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Chart, registerables } from 'chart.js';
+import {
+  Chart,
+  PieController,
+  ArcElement,
+  LineController,
+  LineElement,
+  PointElement,
+  BarController,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Legend,
+  Tooltip,
+} from 'chart.js';
 import { EncuestasService } from '../../../../core/services/encuestas.service';
 import {
   Encuesta,
   PreguntaEncuesta,
 } from '../../../../core/models/encuesta.model';
 
-Chart.register(...registerables);
+// Sólo se registran los gráficos que se usan (torta, lineal y barras)
+// para que el resto de Chart.js quede fuera del bundle.
+Chart.register(
+  PieController,
+  ArcElement,
+  LineController,
+  LineElement,
+  PointElement,
+  BarController,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Legend,
+  Tooltip,
+);
 
 @Component({
   selector: 'app-resultados-encuesta',

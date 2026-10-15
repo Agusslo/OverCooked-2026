@@ -78,64 +78,64 @@
 
 <details>
 <summary>Vistas de Entrada</summary>
-    <img src="src/assets/capturas/icono.jpg" alt="icono" width="300">
-    <img src="src/assets/capturas/splash.jpg" alt="splash" width="300">
-    <img src="src/assets/capturas/login.jpg" alt="login" width="300">
-    <img src="src/assets/capturas/acceso_rapido.jpg" alt="acceso-rapido" width="300">
+    <img src="./docs/capturas/icono.jpg" alt="icono" width="300">
+    <img src="./docs/capturas/splash.jpg" alt="splash" width="300">
+    <img src="./docs/capturas/login.jpg" alt="login" width="300">
+    <img src="./docs/capturas/acceso_rapido.jpg" alt="acceso-rapido" width="300">
 </details>
 
 <details>
 <summary>Registro: Cliente Registrado y Anonimo</summary>
-    <img src="src/assets/capturas/registro.jpg" alt="registro-1" width="300">
-    <img src="src/assets/capturas/registro2.jpg" alt="registro-1" width="300">
-    <img src="src/assets/capturas/registro_anonimo.jpg" alt="registro-anonimo" width="300">
+    <img src="./docs/capturas/registro.jpg" alt="registro 1" width="300">
+    <img src="./docs/capturas/registro2.jpg" alt="registro 1" width="300">
+    <img src="./docs/capturas/registro_anonimo.jpg" alt="registro anonimo" width="300">
 </details>
 
 <details>
 <summary>Vistas del Dueño</summary>
-    <img src="src/assets/capturas/admin_home.jpg" alt="admin-home" width="300">
-    <img src="src/assets/capturas/admin_alta_mesa.jpg" alt="admin-alta" width="300">
-    <img src="src/assets/capturas/admin_alta_empleado.jpg" alt="admin-pendientes" width="300">
-    <img src="src/assets/capturas/admin_lista_mesas.jpg" alt="admin-lista-mesas" width="300">
+    <img src="./docs/capturas/admin_home.jpg" alt="admin home" width="300">
+    <img src="./docs/capturas/admin_alta_mesa.jpg" alt="admin-alta mesa" width="300">
+    <img src="./docs/capturas/admin_alta_empleado.jpg" alt="admin alta empleado" width="300">
+    <img src="./docs/capturas/admin_lista_mesas.jpg" alt="admin lista mesas" width="300">
 </details>
 
 <details>
 <summary>Vistas del Metre</summary>
-    <img src="src/assets/capturas/metre_home.jpg" alt="metre-home" width="300">
-    <img src="src/assets/capturas/metre_asignar.jpg" alt="metre-asignar" width="300">
-    <img src="src/assets/capturas/metre_lista_espera.jpg" alt="metre-estado-de-mesas" width="300">
+    <img src="./docs/capturas/metre_home.jpg" alt="metre home" width="300">
+    <img src="./docs/capturas/metre_asignar.jpg" alt="metre asignar" width="300">
+    <img src="./docs/capturas/metre_lista_espera.jpg" alt="metre lista espera" width="300">
 </details>
 
 <details>
 <summary>Vistas del Mozo</summary>
-    <img src="src/assets/capturas/mozo_home.jpg" alt="mozo-home" width="300">
-    <img src="src/assets/capturas/mozo_consultas.jpg" alt="mozo-consultas" width="300">
-    <img src="src/assets/capturas/mozo_chat.jpg" alt="mozo-confirmar" width="300">
-    <img src="src/assets/capturas/mozo_confirmar.jpg" alt="mozo-entregar" width="300">
-    <img src="src/assets/capturas/mozo_entrega.jpg" alt="mozo-entregar" width="300">
+    <img src="./docs/capturas/mozo_home.jpg" alt="mozo home" width="300">
+    <img src="./docs/capturas/mozo_consultas.jpg" alt="mozo consultas" width="300">
+    <img src="./docs/capturas/mozo_chat.jpg" alt="mozo chat" width="300">
+    <img src="./docs/capturas/mozo_confirmar.jpg" alt="mozo confirmar" width="300">
+    <img src="./docs/capturas/mozo_entrega.jpg" alt="mozo entregar" width="300">
 >
 </details>
 
 <details>
 <summary>Vistas del Cantinero</summary>
-    <img src="src/assets/capturas/cantinero_home.jpg" alt="cantinero-home" width="300">
-    <img src="src/assets/capturas/cantinero_alta.jpg" alt="cantinero-alta" width="300">
-    <img src="src/assets/capturas/cantinero_pendiente.jpg" alt="cantinero-pendiente" width="300">
+    <img src="./docs/capturas/cantinero_home.jpg" alt="cantinero home" width="300">
+    <img src="./docs/capturas/cantinero_alta.jpg" alt="cantinero alta" width="300">
+    <img src="./docs/capturas/cantinero_pendiente.jpg" alt="cantinero pendiente" width="300">
 </details>
 
 <details>
 <summary>Vistas del Cocinero</summary>
-    <img src="src/assets/capturas/cocinero_home.jpg" alt="cocinero-home" width="300">
-    <img src="src/assets/capturas/cocinero_alta.jpg" alt="cocinero-alta" width="300">
-    <img src="src/assets/capturas/cocinero_pendiente.jpg" alt="cocinero-pendientes" width="300">
+    <img src="./docs/capturas/cocinero_home.jpg" alt="cocinero home" width="300">
+    <img src="./docs/capturas/cocinero_alta.jpg" alt="cocinero alta" width="300">
+    <img src="./docs/capturas/cocinero_pendiente.jpg" alt="cocinero pendientes" width="300">
 </details>
 
 <details>
 <summary>Vistas del Cliente</summary>
-    <img src="src/assets/capturas/cliente_home.jpg" alt="cliente-home-2" width="300">    
-    <img src="src/assets/capturas/cliente_carta.jpg" alt="cliente-juego-tateti" width="300">
-    <img src="src/assets/capturas/cliente_pedido.jpg" alt="cliente-encuesta" width="300">
-    <img src="src/assets/capturas/cliente_home2.jpg" alt="cliente-consulta" width="300">
+    <img src="./docs/capturas/cliente_home.jpg" alt="cliente home" width="300">    
+    <img src="./docs/capturas/cliente_carta.jpg" alt="cliente menu" width="300">
+    <img src="./docs/capturas/cliente_pedido.jpg" alt="cliente pedido" width="300">
+    <img src="./docs/capturas/cliente_home2.jpg" alt="cliente anonimo home" width="300">
 </details>
 
 <br>
@@ -177,8 +177,8 @@ Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios**
 
 <details>
 <summary>MAILS</summary>
-    <img src="src/assets/capturas/mail.png" alt="cliente-consulta" alt="icono" width="1000"><br>
-    <img src="src/assets/capturas/mail2.png" alt="cliente-consulta" alt="splash" width="1000">
+    <img src="./docs/capturas/mail.png" alt="mail aprobación" width="1000"><br>
+    <img src="./docs/capturas/mail2.png" alt="mail rechazo" width="1000">
 </details>
 
 ### Puesta en marcha
@@ -208,46 +208,46 @@ Las notificaciones push se envían desde Edge Functions de Supabase cuando cambi
 
 ## QR
 <div align="center">
-  <img src="src/assets/QR/qr_ingreso_local.png" alt="Ingreso al Local" width="250">
+  <img src="./docs/QR/qr_ingreso_local.png" alt="Ingreso al Local" width="250">
   <p>Ingreso al local</p>
 </div>
 
 ### Propinas
 <div align="center">
-  <img src="src/assets/QR/qr_propina_excelente.png" alt="Propina Excelente" width="250">
+  <img src="./docs/QR/qr_propina_excelente.png" alt="Propina Excelente" width="250">
   <p>Propina Excelente (20%)</p>
 
-  <img src="src/assets/QR/qr_propina_muy_bueno.png" alt="Propina Muy Buena" width="250">
+  <img src="./docs/QR/qr_propina_muy_bueno.png" alt="Propina Muy Buena" width="250">
   <p>Propina Muy Buena (15%)</p>
 
-  <img src="src/assets/QR/qr_propina_bueno.png" alt="Propina Buena" width="250">
+  <img src="./docs/QR/qr_propina_bueno.png" alt="Propina Buena" width="250">
   <p>Propina Buena (10%)</p>
 
-  <img src="src/assets/QR/qr_propina_regular.png" alt="Propina Regular" width="250">
+  <img src="./docs/QR/qr_propina_regular.png" alt="Propina Regular" width="250">
   <p>Propina Regular (5%)</p>
 
-  <img src="src/assets/QR/qr_propina_malo.png" alt="Propina Mala" width="250">
+  <img src="./docs/QR/qr_propina_malo.png" alt="Propina Mala" width="250">
   <p>Propina Mala (0%)</p>
 </div>
 
 ### Mesas
 <div align="center">
-  <img src="src/assets/QR/qr-mesa-8.png" alt="Mesa 8" width="250">
+  <img src="./docs/QR/qr-mesa-8.png" alt="Mesa 8" width="250">
   <p>Mesa 8</p>
 
-  <img src="src/assets/QR/qr-mesa-23.png" alt="Mesa 23" width="250">
+  <img src="./docs/QR/qr-mesa-23.png" alt="Mesa 23" width="250">
   <p>Mesa 23</p>
 
-  <img src="src/assets/QR/qr-mesa-34.png" alt="Mesa 34" width="250">
+  <img src="./docs/QR/qr-mesa-34.png" alt="Mesa 34" width="250">
   <p>Mesa 34</p>
 
-  <img src="src/assets/QR/qr-mesa-55.png" alt="Mesa 55" width="250">
+  <img src="./docs/QR/qr-mesa-55.png" alt="Mesa 55" width="250">
   <p>Mesa 55</p>
   
-  <img src="src/assets/QR/qr-mesa-59.png" alt="Mesa 59" width="250">
+  <img src="./docs/QR/qr-mesa-59.png" alt="Mesa 59" width="250">
   <p>Mesa 59</p>
 
-  <img src="src/assets/QR/qr-mesa-67.png" alt="Mesa 67" width="250">
+  <img src="./docs/QR/qr-mesa-67.png" alt="Mesa 67" width="250">
   <p>Mesa 67</p>
 </div>
 
