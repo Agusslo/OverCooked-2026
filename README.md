@@ -137,7 +137,6 @@
     <img src="./docs/capturas/cliente_pedido.jpg" alt="cliente pedido" width="300">
     <img src="./docs/capturas/cliente_home2.jpg" alt="cliente anonimo home" width="300">
 </details>
-<details>
 
 <details>
 <summary>Juegos del Cliente</summary>
