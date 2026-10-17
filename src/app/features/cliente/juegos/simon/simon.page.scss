@@ -1,0 +1,251 @@
+:host {
+  display: block;
+  min-height: 100%;
+}
+
+.simon-page-wrapper {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  padding: 16px 16px max(16px, env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background: #ee7a4f;
+}
+
+.main-container {
+  width: 100%;
+  max-width: 480px;
+  min-height: calc(100dvh - 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card-box {
+  flex: 1;
+  background: #c45030;
+  border-radius: 20px;
+  padding: 20px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  color: #fef5ee;
+}
+
+.header-box--con-back {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  h2 {
+    color: #fef5ee;
+    margin: 0;
+    font-size: 24px;
+  }
+
+  p {
+    color: #f9bfa0;
+    margin: 2px 0 0;
+    font-size: 14px;
+  }
+}
+
+.header-titles {
+  flex: 1;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: #fef5ee;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.simon-estado {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  color: #f9bfa0;
+  text-align: center;
+  font-size: 1.05rem;
+}
+
+.simon-btn-iniciar {
+  padding: 16px 32px;
+  border: none;
+  border-radius: 14px;
+  background: #f0c060;
+  color: #a83820;
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.simon-btn-volver {
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  background: #a83820;
+  color: #fef5ee;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f0c060;
+}
+
+.tiempo {
+  color: #f0c060;
+
+  &--urgente {
+    color: #f8b4b4;
+    animation: pulsar 0.5s ease infinite alternate;
+  }
+}
+
+@keyframes pulsar {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.4;
+  }
+}
+
+.mensaje-ronda {
+  margin: 0;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f9bfa0;
+}
+
+.tablero {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 168px));
+  justify-content: center;
+  align-content: center;
+  gap: 16px;
+  min-height: 0;
+}
+
+.btn-color {
+  width: 100%;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 20px;
+  opacity: 0.55;
+  transition: opacity 0.1s, transform 0.1s;
+  padding: 0;
+
+  &.activo {
+    opacity: 1;
+    transform: scale(1.06);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.rojo {
+  background: #e74c3c;
+}
+
+.azul {
+  background: #3498db;
+}
+
+.verde {
+  background: #2ecc71;
+}
+
+.amarillo {
+  background: #f1c40f;
+}
+
+.mensaje-turno {
+  margin: 0;
+  text-align: center;
+  font-size: 1rem;
+  color: #f9bfa0;
+}
+
+.resultado {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 10px 0;
+}
+
+.victoria {
+  margin: 0;
+  color: #9ee6a8;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.derrota {
+  margin: 0;
+  color: #f8b4b4;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.titulo-resultado {
+  margin: 0;
+  color: #f9bfa0;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.score-final {
+  margin: 0;
+  color: #f0c060;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.descuento {
+  margin: 0;
+  color: #f0c060;
+  font-weight: 700;
+  text-align: center;
+  font-size: 1.05rem;
+}
+
+.feedback-banner.error {
+  background: #5a1f1f;
+  color: #f8b4b4;
+  padding: 10px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.juego-brand-logo {
+  width: 92px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  flex-shrink: 0;
+  filter: brightness(0) invert(1);
+}

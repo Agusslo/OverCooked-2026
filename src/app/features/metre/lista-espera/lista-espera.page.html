@@ -1,0 +1,71 @@
+<div class="espera-page-wrapper">
+<div class="main-container">
+    <div class="card-box">
+
+    <div class="header-box">
+        <div class="header-row">
+        <button class="btn-back" type="button" routerLink="/inicio">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <div class="header-titles">
+            <h2>Lista de espera</h2>
+            <p>Clientes esperando para ingresar</p>
+        </div>
+        </div>
+    </div>
+
+    <div class="espera-body">
+        @if (cargando()) {
+        <div class="estado-carga">
+            <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
+            <span>Cargando…</span>
+        </div>
+        } @else if (clientes().length === 0) {
+        <div class="estado-vacio">
+            <img src="assets/icon/logo.png" alt="" class="vacio-logo" />
+            <span class="vacio-texto">No hay nadie esperando en este momento.</span>
+        </div>
+        } @else {
+        @for (cliente of clientes(); track cliente.id) {
+            <div class="cliente-card" [class.cliente-card--procesando]="quitando() === cliente.id">
+            <div class="cliente-card__top">
+                <div class="cliente-avatar">
+                <img [src]="cliente.foto_url" [alt]="'Foto de ' + cliente.nombre" loading="lazy" decoding="async" />
+                </div>
+                <div class="cliente-info">
+                <span class="cliente-nombre">{{ cliente.nombre }}</span>
+                <span class="cliente-tipo">{{ cliente.cliente_id ? 'Cliente registrado' : 'Invitado' }}</span>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="btn-sacar"
+                [disabled]="quitando() === cliente.id"
+                (click)="sacarDeLaLista(cliente)"
+            >
+                @if (quitando() === cliente.id) {
+                <span>Sacando…</span>
+                } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+                <span>Sacar de la lista</span>
+                }
+            </button>
+            </div>
+        }
+        }
+
+        @if (mensajeError()) {
+        <div class="feedback-banner">
+            <span>{{ mensajeError() }}</span>
+        </div>
+        }
+    </div>
+    </div>
+</div>
+</div>

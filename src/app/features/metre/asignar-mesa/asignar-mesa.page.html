@@ -1,0 +1,105 @@
+<div class="asignar-page-wrapper">
+  <div class="main-container">
+    <div class="card-box">
+
+      <!-- Header -->
+      <div class="header-box">
+        <div class="header-row">
+          <button class="btn-back" type="button" routerLink="/inicio">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <div class="header-titles">
+            <h2>Asignar mesa</h2>
+            <p>Elegí un cliente y después una mesa libre</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuerpo -->
+      <div class="asignar-body">
+
+        @if (cargando()) {
+          <div class="estado-carga">
+            <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
+            <span>Cargando…</span>
+          </div>
+        } @else {
+
+          <!-- Clientes esperando -->
+          <section class="seccion">
+            <h3 class="seccion-titulo">Esperando mesa</h3>
+
+            @if (clientes().length === 0) {
+              <div class="estado-vacio-chico">
+                <img src="assets/icon/logo.png" alt="" class="vacio-logo vacio-logo--chico" />
+                <span class="vacio-texto">No hay clientes esperando.</span>
+              </div>
+            } @else {
+              <div class="fila-scroll">
+                @for (cliente of clientes(); track cliente.id) {
+                  <button
+                    type="button"
+                    class="cliente-chip"
+                    [class.cliente-chip--activo]="clienteSeleccionado()?.id === cliente.id"
+                    (click)="seleccionarCliente(cliente)"
+                  >
+                    <span class="cliente-chip__avatar">
+                      <img [src]="cliente.foto_url" [alt]="'Foto de ' + cliente.nombre" loading="lazy" decoding="async" />
+                    </span>
+                    <span class="cliente-chip__nombre">{{ cliente.nombre }}</span>
+                  </button>
+                }
+              </div>
+            }
+          </section>
+
+          <!-- Mesas libres -->
+          <section class="seccion seccion--flex">
+            <h3 class="seccion-titulo">
+              Mesas libres
+              @if (clienteSeleccionado()) {
+                <span class="seccion-hint">para {{ clienteSeleccionado()?.nombre }}</span>
+              }
+            </h3>
+
+            @if (mesasLibres().length === 0) {
+              <div class="estado-vacio-chico">
+                <img src="assets/icon/logo.png" alt="" class="vacio-logo vacio-logo--chico" />
+                <span class="vacio-texto">No hay mesas libres en este momento.</span>
+              </div>
+            } @else {
+              <div class="mesas-scroll">
+                @for (mesa of mesasLibres(); track mesa.id) {
+                  <div class="mesa-card">
+                    <div class="mesa-card__info">
+                      <h4>Mesa {{ mesa.numero }}</h4>
+                      <span>{{ mesa.capacidad }} comensales · {{ mesa.tipo === 'vip' ? 'VIP' : mesa.tipo === 'movilidad_reducida' ? 'Movilidad reducida' : 'Estándar' }}</span>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn-asignar"
+                      [disabled]="!clienteSeleccionado() || asignando() === mesa.id"
+                      (click)="asignarMesa(mesa)"
+                    >
+                      {{ asignando() === mesa.id ? 'Asignando…' : 'Asignar' }}
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </section>
+        }
+
+        @if (mensajeError()) {
+          <div class="feedback-banner">
+            <span>{{ mensajeError() }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

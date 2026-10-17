@@ -1,5 +1,13 @@
 {
+<<<<<<< HEAD
+  "recommendations": [
+    "Webnative.webnative"
+  ]
+}
+=======
     "recommendations": [
-       "Webnative.webnative"
+       "Webnative.webnative",
+       "denoland.vscode-deno"
     ]
 }
+>>>>>>> 0f7f9bd031e5b02369e144ca40eb4c2a160cb81b

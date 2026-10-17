@@ -1,0 +1,69 @@
+<div class="pg-shell">
+  <div class="header-box">
+    <div class="header-row">
+      <button class="btn-back" type="button" (click)="volver()" aria-label="Volver">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <div class="header-titles">
+        <h2>Pagos pendientes</h2>
+        <p>Confirmá el pago para liberar la mesa</p>
+      </div>
+    </div>
+  </div>
+
+  <main class="pg-cuerpo">
+    @if (mensajeExito()) {
+      <div class="pg-banner ok">{{ mensajeExito() }}</div>
+    }
+    @if (mensajeError()) {
+      <div class="pg-banner error">{{ mensajeError() }}</div>
+    }
+
+    @if (cargando()) {
+      <div class="pg-estado">
+        <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
+        <span>Cargando pagos…</span>
+      </div>
+    } @else if (pagos().length === 0) {
+      <div class="pg-estado">
+        <img src="assets/icon/logo.png" alt="" class="vacio-logo" />
+        <span class="vacio-texto">No hay pagos por confirmar en este momento.</span>
+      </div>
+    } @else {
+      @for (pago of pagos(); track pago.id) {
+        <article class="pg-card">
+          <div class="pg-card__top">
+            <div class="pg-mesa">{{ pago.numeroMesa }}</div>
+            <div class="pg-card__info">
+              <strong>Mesa {{ pago.numeroMesa }}</strong>
+              <span>{{ pago.nombreCliente }}</span>
+            </div>
+            <span class="pg-hora">{{ pago.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+
+          <div class="pg-detalle">
+            <div><span>Subtotal</span><span>${{ pago.subtotal | number:'1.0-2' }}</span></div>
+            @if (pago.descuento_porcentaje > 0) {
+              <div><span>Descuento</span><span>{{ pago.descuento_porcentaje | number:'1.0-2' }}%</span></div>
+            }
+            <div><span>Propina</span><span>{{ pago.propina_porcentaje | number:'1.0-2' }}%</span></div>
+          </div>
+
+          <div class="pg-card__bottom">
+            <strong class="pg-total">${{ pago.total | number:'1.0-2' }}</strong>
+            <button
+              type="button"
+              class="pg-btn"
+              [disabled]="confirmandoId() !== null"
+              (click)="confirmar(pago)"
+            >
+              {{ confirmandoId() === pago.id ? 'Confirmando…' : 'CONFIRMAR PAGO' }}
+            </button>
+          </div>
+        </article>
+      }
+    }
+  </main>
+</div>

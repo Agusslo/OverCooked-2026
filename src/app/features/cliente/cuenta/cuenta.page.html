@@ -1,0 +1,119 @@
+<div class="cu-shell">
+  <header class="cu-header">
+    <button type="button" class="cu-back" routerLink="/inicio" aria-label="Volver">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+    </button>
+    <div class="cu-header__titulo">
+      <h1>Mi cuenta</h1>
+      @if (numeroMesa(); as n) { <span>Mesa {{ n }}</span> }
+    </div>
+  </header>
+
+  <main class="cu-cuerpo">
+    @if (cargando()) {
+      <div class="cu-estado">
+        <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
+        <span>Cargando tu cuenta…</span>
+      </div>
+    } @else if (!pedido()) {
+      <div class="cu-banner error">{{ mensajeError() }}</div>
+    } @else {
+
+      @switch (fase()) {
+        @case ('sin-solicitar') {
+          <section class="cu-card cu-card--centro">
+            <h2>¿Listo para pagar?</h2>
+            <p>Pedile la cuenta al mozo. Después vas a elegir la propina escaneando su código QR.</p>
+            <button type="button" class="cu-btn" [disabled]="procesando()" (click)="pedirCuenta()">
+              {{ procesando() ? 'Pidiendo…' : 'PEDIR LA CUENTA' }}
+            </button>
+          </section>
+        }
+
+        @case ('propina') {
+          <section class="cu-card cu-card--centro">
+            <h2>Cuenta solicitada</h2>
+            <p>Avisamos a los mozos. Para generar tu cuenta, escaneá el QR de propina que corresponda a tu nivel de satisfacción.</p>
+            <button type="button" class="cu-btn" [disabled]="procesando()" (click)="escanearPropina()">
+              {{ procesando() ? 'Leyendo…' : 'ESCANEAR QR DE PROPINA' }}
+            </button>
+
+            @if (esWeb) {
+              <div class="cu-simular">
+                <span>Simular escaneo (solo navegador)</span>
+                @for (nivel of nivelesSimulacion(); track nivel.id) {
+                  <button type="button" class="cu-btn-dev" (click)="elegirNivelSimulado(nivel)">
+                    {{ etiquetasSatisfaccion[nivel.nivel] }} · {{ nivel.porcentaje | number:'1.0-2' }}%
+                  </button>
+                }
+              </div>
+            }
+          </section>
+        }
+
+        @default {
+          @if (importes(); as imp) {
+            <section class="cu-card">
+              <h2>Detalle de la cuenta</h2>
+
+              <div class="cu-items">
+                @for (item of (pedido()!.items ?? []); track item.id) {
+                  <div class="cu-item">
+                    <span class="cu-item__cant">{{ item.cantidad }}×</span>
+                    <span class="cu-item__nombre">{{ item.nombre }}</span>
+                    <span class="cu-item__unit">${{ item.precio_unitario | number:'1.0-2' }} c/u</span>
+                    <strong class="cu-item__importe">${{ item.precio_unitario * item.cantidad | number:'1.0-2' }}</strong>
+                  </div>
+                }
+              </div>
+
+              <div class="cu-linea">
+                <span>Subtotal</span><span>${{ imp.subtotal | number:'1.0-2' }}</span>
+              </div>
+              @if (imp.descuentoPorcentaje > 0) {
+                <div class="cu-linea cu-linea--descuento">
+                  <span>Descuento por juegos ({{ imp.descuentoPorcentaje | number:'1.0-2' }}%)</span>
+                  <span>−${{ imp.montoDescuento | number:'1.0-2' }}</span>
+                </div>
+              }
+              <div class="cu-linea">
+                <span>Propina ({{ etiquetaPropina() }}{{ imp.propinaPorcentaje | number:'1.0-2' }}%)</span>
+                <span>${{ imp.montoPropina | number:'1.0-2' }}</span>
+              </div>
+
+              <div class="cu-total">
+                <span>TOTAL A ABONAR</span>
+                <strong>${{ imp.total | number:'1.0-2' }}</strong>
+              </div>
+            </section>
+
+            @if (fase() === 'detalle') {
+              <button type="button" class="cu-btn" [disabled]="procesando()" (click)="pagar()">
+                {{ procesando() ? 'Procesando…' : 'PAGAR ($' + (imp.total | number:'1.0-2') + ')' }}
+              </button>
+              <button type="button" class="cu-btn cu-btn--sec" [disabled]="procesando()" (click)="cambiarPropina()">
+                Cambiar propina
+              </button>
+            } @else if (fase() === 'esperando') {
+              <div class="cu-aviso">
+                <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
+                <span>Pago realizado. Esperando que el mozo lo confirme…</span>
+              </div>
+            } @else {
+              <div class="cu-aviso cu-aviso--ok">
+                <span>¡Pago confirmado! La mesa quedó libre. Gracias por tu visita.</span>
+              </div>
+              <button type="button" class="cu-btn" routerLink="/inicio">VOLVER AL INICIO</button>
+            }
+          }
+        }
+      }
+
+      @if (mensajeError()) {
+        <div class="cu-banner error">{{ mensajeError() }}</div>
+      }
+    }
+  </main>
+</div>

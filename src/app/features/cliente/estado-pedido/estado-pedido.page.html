@@ -1,0 +1,158 @@
+<div class="ep-shell">
+  <header class="ep-header">
+    <button
+      type="button"
+      class="ep-back"
+      routerLink="/inicio"
+      aria-label="Volver"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+    </button>
+    <div class="ep-header__titulo">
+      <h1>Mi pedido</h1>
+      @if (numeroMesa(); as n) { <span>Mesa {{ n }}</span> }
+    </div>
+    <div class="ep-avatar">
+      @if (usuario?.foto_url) {
+      <img [src]="usuario!.foto_url" alt="Foto de perfil" />
+      } @else {
+      <span>{{ iniciales }}</span>
+      }
+    </div>
+  </header>
+
+  <main class="ep-cuerpo">
+    @if (cargando()) {
+    <div class="ep-estado">
+      <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
+      <span>Cargando tu pedido…</span>
+    </div>
+    } @else if (mensajeError()) {
+    <div class="ep-banner error">{{ mensajeError() }}</div>
+    } @else if (pedido(); as p) {
+
+    <article class="ep-card">
+      <div class="ep-card__foto">
+        @if (fotoActual()) {
+        <img [src]="fotoActual()" alt="Foto de un plato del pedido" />
+        }
+      </div>
+
+      <div class="ep-card__body">
+        @if (p.estado === "pendiente_mozo") {
+          <span class="ep-badge ep-badge--{{ p.estado }}">pendiente mozo</span>
+        }
+        @else {
+          <span class="ep-badge ep-badge--{{ p.estado }}">{{ p.estado }}</span>
+        }
+        <p class="ep-mensaje">{{ etiquetaEstado() }}</p>
+
+        @if (esRechazado()) { @if (p.motivo_rechazo) {
+        <p class="ep-motivo-rechazo">"{{ p.motivo_rechazo }}"</p>
+        }
+        <button
+          type="button"
+          class="ep-btn-modificar"
+          (click)="modificarPedido()"
+        >
+          Modificar pedido
+        </button>
+        }
+
+        @if (fuePedidoEntregado() && !confirmoRecepcion()) {
+        <button
+          type="button"
+          class="ep-btn-modificar"
+          [disabled]="confirmandoRecepcion()"
+          (click)="confirmarRecepcion()"
+        >
+          {{ confirmandoRecepcion() ? 'Confirmando...' : 'Confirmar recepción del pedido' }}
+        </button>
+        }
+        //
+        //
+        //
+
+        <div class="ep-items">
+          @for (item of (p.items ?? []); track item.id) {
+          <div class="ep-item">
+            <span class="ep-item__cant">{{ item.cantidad }}</span>
+            <span class="ep-item__nombre">{{ item.nombre }}</span>
+            <span class="ep-item__sector">{{ item.sector }}</span>
+          </div>
+          }
+        </div>
+
+        <div class="ep-resumen">
+          <div class="ep-resumen__tiempo">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="8.4" />
+              <path d="M12 7.8V12l3 1.8" />
+            </svg>
+            <span>Tiempo estimado</span>
+            <strong>{{ tiempoTotal() }} minutos</strong>
+          </div>
+          <div class="ep-resumen__total">
+            <span>Total</span><strong>${{ p.total | number:'1.0-0' }}</strong>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    @if (puedeAccederEncuesta()) {
+    <section class="ep-encuesta">
+      <a [routerLink]="['/cliente/encuesta', p.id]" class="ep-encuesta__link">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
+        </svg>
+        <span>Contanos qué te pareció tu estadía</span>
+      </a>
+    </section>
+    } @if (puedeAccederCuenta()) {
+    <section class="ep-cuenta">
+      <a [routerLink]="['/cliente/cuenta', p.id]" class="ep-cuenta__link">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect width="20" height="14" x="2" y="5" rx="2" />
+          <line x1="2" x2="22" y1="10" y2="10" />
+        </svg>
+        <span>{{ p.cuenta_solicitada ? 'Ver mi cuenta' : 'Pedir la cuenta' }}</span>
+      </a>
+    </section>
+    } }
+  </main>
+
+  @if (numeroMesa(); as n) {
+  <app-burbuja-mozo [numeroMesa]="n" />
+  }
+</div>

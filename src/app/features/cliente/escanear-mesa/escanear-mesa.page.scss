@@ -1,0 +1,113 @@
+:host {
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+
+  // Misma paleta que el resto de la app (ver invitado.page.scss / login).
+  --bg-hero: #ee7a4f;
+  --bg-panel: #c45030;
+  --accent-light: #f9bfa0;
+  --gold: #f0c060;
+  --accent-dark: #a83820;
+  --white: #ffffff;
+
+  display: block;
+  min-height: 100dvh;
+}
+
+.escanear-screen {
+  height: 100%;
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: max(40px, calc(env(safe-area-inset-top) + 12px)) 28px max(32px, env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background: linear-gradient(180deg, var(--bg-hero) 0%, var(--bg-panel) 100%);
+}
+
+.escanear-visual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.escanear-visual svg {
+  width: 55vw;
+  max-width: 240px;
+  height: auto;
+  color: var(--white);
+  opacity: 0.95;
+}
+
+.escanear-copy {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.escanear-copy h1 {
+  color: var(--white);
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin: 0 0 10px;
+}
+
+.escanear-copy p {
+  color: var(--accent-light);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0 8px;
+}
+
+.escanear-error {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.escanear-error p {
+  color: #fff0f0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.escanear-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.escanear-btn-principal {
+  --background: var(--gold);
+  --background-activated: #dcab54;
+  --color: var(--accent-dark);
+  --border-radius: 18px;
+  --box-shadow: none;
+  height: 64px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.escanear-btn-dev {
+  background: transparent;
+  border: 1px dashed var(--accent-light);
+  color: var(--accent-light);
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  &:disabled { opacity: 0.5; }
+}
+
+.escanear-btn-secundario {
+  --color: var(--accent-light);
+  font-size: 0.8rem;
+  font-weight: 600;
+}

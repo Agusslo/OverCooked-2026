@@ -1,0 +1,274 @@
+<app-spinner-overlay [visible]="cargando()"></app-spinner-overlay>
+<div class="mesa-page-wrapper">
+  <div class="main-container">
+    <div class="card-box">
+      <!-- Encabezado -->
+      <div class="header-box">
+        <button class="btn-back" type="button" routerLink="/inicio">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <h2>Nueva Mesa</h2>
+        <p>Agregar mesa al salón</p>
+      </div>
+
+      <!-- Formulario Reactivo -->
+      <form [formGroup]="mesaForm" (ngSubmit)="guardarMesa()" class="form-body">
+        <!-- Número -->
+        <div class="input-field-group">
+          <div
+            class="custom-input-box"
+            [class.invalid-field]="mesaForm.get('numero')?.touched && mesaForm.get('numero')?.invalid"
+          >
+            <svg
+              class="field-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="4" x2="20" y1="9" y2="9" />
+              <line x1="4" x2="20" y1="15" y2="15" />
+              <line x1="10" x2="8" y1="3" y2="21" />
+              <line x1="16" x2="14" y1="3" y2="21" />
+            </svg>
+            <input
+              type="number"
+              formControlName="numero"
+              placeholder="Número de mesa"
+              class="native-input"
+              min="1"
+            />
+          </div>
+          @if (mesaForm.get('numero')?.touched &&
+          mesaForm.get('numero')?.invalid) {
+          <span class="error-msg">Ingrese un número de mesa válido</span>
+          }
+        </div>
+
+        <!-- Capacidad -->
+        <div class="input-field-group">
+          <div
+            class="custom-input-box"
+            [class.invalid-field]="mesaForm.get('capacidad')?.touched && mesaForm.get('capacidad')?.invalid"
+          >
+            <svg
+              class="field-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            <input
+              type="number"
+              formControlName="capacidad"
+              placeholder="Cantidad de comensales"
+              class="native-input"
+              min="1"
+              max="20"
+            />
+          </div>
+          @if (mesaForm.get('capacidad')?.touched &&
+          mesaForm.get('capacidad')?.invalid) {
+          <span class="error-msg">Ingrese una capacidad entre 1 y 20</span>
+          }
+        </div>
+
+        <!-- Tipo de mesa (dropdown custom) -->
+        <div class="input-field-group dropdown-wrapper">
+          <div
+            class="custom-input-box"
+            [class.invalid-field]="mesaForm.get('tipo')?.touched && mesaForm.get('tipo')?.invalid"
+            [class.dropdown-open]="dropdownAbierto()"
+            (click)="toggleDropdown()"
+          >
+            <svg
+              class="field-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M6 3h12l4 6-10 12L2 9Z" />
+            </svg>
+            <span
+              class="dropdown-label"
+              [class.placeholder]="!mesaForm.get('tipo')?.value"
+            >
+              {{ tipoSeleccionadoLabel() }}
+            </span>
+            <svg
+              class="dropdown-arrow"
+              [class.rotated]="dropdownAbierto()"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+
+          @if (dropdownAbierto()) {
+          <ul class="dropdown-list">
+            @for (opcion of tiposDisponibles; track opcion.valor) {
+            <li
+              class="dropdown-item"
+              [class.selected]="mesaForm.get('tipo')?.value === opcion.valor"
+              (click)="seleccionarTipo(opcion.valor)"
+            >
+              {{ opcion.etiqueta }}
+            </li>
+            }
+          </ul>
+          } @if (mesaForm.get('tipo')?.touched && mesaForm.get('tipo')?.invalid)
+          {
+          <span class="error-msg">Seleccione un tipo de mesa</span>
+          }
+        </div>
+
+        <!-- Foto de la mesa (1 sola, solo cámara) -->
+        <div class="photos-section">
+          <h3 class="photos-title">Foto de la mesa</h3>
+          <div class="photos-grid photos-grid--single">
+            <div class="photo-slot" [class.photo-slot-active]="camaraActiva()">
+              @if (camaraActiva()) {
+              <div class="photo-slot-camera">
+                <video #videoCamara autoplay playsinline></video>
+              </div>
+              } @else if (foto()) {
+              <div class="photo-slot-preview">
+                <img [src]="foto()" alt="Foto de la mesa" />
+              </div>
+              } @else {
+              <div class="photo-slot-empty">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="12" x2="12" y1="5" y2="19" />
+                  <line x1="5" x2="19" y1="12" y2="12" />
+                </svg>
+              </div>
+              } @if (!camaraActiva()) {
+              <button
+                type="button"
+                class="photo-slot-btn"
+                (click)="tomarFoto()"
+                [disabled]="cargando()"
+                title="Tomar foto con cámara"
+              ></button>
+              }
+            </div>
+          </div>
+          @if (formIntentado() && !foto()) {
+          <span class="error-msg text-center"
+            >La foto de la mesa es obligatoria</span
+          >
+          } @if (camaraActiva()) {
+          <div class="camera-actions">
+            <button
+              type="button"
+              class="camera-button camera-cancel"
+              (click)="cancelarCamara()"
+            >
+              CANCELAR
+            </button>
+            <button
+              type="button"
+              class="camera-button camera-capture"
+              (click)="capturarFoto()"
+            >
+              TOMAR FOTO
+            </button>
+          </div>
+          }
+        </div>
+
+        <!-- Banners de Notificación -->
+        @if (mensajeError()) {
+        <div class="feedback-banner error">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" x2="12" y1="8" y2="12" />
+            <line x1="12" x2="12.01" y1="16" y2="16" />
+          </svg>
+          <span>{{ mensajeError() }}</span>
+        </div>
+        } @if (mensajeExito()) {
+        <div class="feedback-banner success">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+          <span>{{ mensajeExito() }}</span>
+        </div>
+        }
+
+        <!-- Botón Submit -->
+        <button
+          type="submit"
+          class="btn-uiverse btn-submit"
+          [disabled]="cargando()"
+        >
+          @if (cargando()) {
+          <span class="btn-text-content">REGISTRANDO...</span>
+          } @else {
+          <span class="btn-text-content ">REGISTRAR MESA</span>
+          }
+        <svg class="w-[24px] h-[24px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 7 2 2 4-4m-5-9v4h4V3h-4Z"/>
+</svg>
+</button>
+      </form>
+    </div>
+  </div>
+</div>

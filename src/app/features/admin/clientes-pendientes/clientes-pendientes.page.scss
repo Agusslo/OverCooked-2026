@@ -1,0 +1,543 @@
+/* =============================================
+   Clientes Pendientes — Mobile-first
+   Sistema de diseño: paleta terracota #ee7a4f
+   Tipografía: ADLaM Display
+   ============================================= */
+
+/* ---------- Variables ---------- */
+:host {
+  /* Colores */
+  --color-bg: #ee7a4f;
+  --color-card: #c45030;
+  --color-header: #c45030;
+  --color-input: #a83820;
+  --color-deep: #8c2e14;
+  --color-gold: #f0c060;
+  --color-gold-dim: rgba(240, 192, 96, 0.25);
+  --color-rust: #d4603a;
+  --color-cream: #fef5ee;
+  --color-peach: #f9bfa0;
+  --color-error: #f5956b;
+  --color-success: #6bcf7f;
+
+  /* Radios */
+  --radius-card: 24px;
+  --radius-item: 16px;
+  --radius-btn: 12px;
+
+  /* Fuentes */
+  --font-body: "ADLaM Display", system-ui, sans-serif;
+}
+
+/* ---------- Wrapper: viewport completo ---------- */
+
+.pendientes-page-wrapper {
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg);
+  font-family: var(--font-body);
+}
+
+/* ---------- Contenedor central ---------- */
+
+.main-container {
+  width: min(100%, 460px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Card ---------- */
+
+.card-box {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: var(--color-card);
+  overflow: hidden;
+}
+
+/* ---------- Header ---------- */
+
+.header-box {
+  flex-shrink: 0;
+  background: var(--color-header);
+  padding: max(1.35rem, calc(env(safe-area-inset-top) + 12px), 24px) 1.25rem 1.35rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.header-box::before,
+.header-box::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid var(--color-gold);
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.header-box::before {
+  width: 140px;
+  height: 140px;
+  top: -35px;
+  right: -35px;
+}
+
+.header-box::after {
+  width: 84px;
+  height: 84px;
+  top: -14px;
+  right: -14px;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 8px;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: var(--color-gold);
+  cursor: pointer;
+  display: flex;
+  padding: 0.4rem;
+  flex-shrink: 0;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &:hover {
+    transform: translateX(-2px);
+    color: var(--color-cream);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.header-titles {
+  flex: 1;
+  min-width: 0;
+
+  h2 {
+    font-size: clamp(1.35rem, 4.6dvh, 1.8rem);
+    font-weight: 700;
+    color: var(--color-cream);
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  p {
+    font-size: 0.86rem;
+    color: var(--color-peach);
+    margin: 0.15rem 0 0;
+  }
+}
+
+/* ---------- Cuerpo: lista scrolleable ---------- */
+
+.pendientes-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 1rem 0.8rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ---------- Estados: cargando / vacío / error ---------- */
+
+.estado-carga,
+.estado-vacio {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--color-peach);
+  font-size: 0.9rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.feedback-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  margin: 0;
+  border-radius: var(--radius-btn);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.3;
+  background: rgba(140, 46, 20, 0.7);
+  color: var(--color-error);
+  border: 1.5px solid rgba(245, 149, 107, 0.3);
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+/* ---------- Tarjeta de cliente ---------- */
+
+.cliente-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: var(--color-input);
+  border-radius: var(--radius-item);
+  padding: 1rem;
+  min-height: 248px;
+  box-sizing: border-box;
+  border: 1.5px solid transparent;
+  transition:
+    border-color 0.15s ease,
+    transform 0.1s ease;
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
+.cliente-card--procesando {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.cliente-card__top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Antes era un avatarcito de 48px — el PDF pide "buen tamaño" para
+   la foto en el listado (punto 6), así que ahora es un cuadrado
+   grande, bien identificable. */
+.cliente-avatar {
+  width: 132px;
+  height: 132px;
+  border-radius: var(--radius-btn);
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--color-deep);
+  border: 2px solid var(--color-gold-dim);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.cliente-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cliente-nombre {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-cream);
+  line-height: 1.25;
+  overflow-wrap: break-word;
+}
+
+.cliente-email {
+  font-size: 0.9rem;
+  color: var(--color-peach);
+  overflow-wrap: break-word;
+}
+
+/* ---------- Acciones ---------- */
+
+.cliente-acciones {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-accion {
+  flex: 1;
+  height: 48px;
+  border-radius: var(--radius-btn);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    opacity 0.15s ease,
+    transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.btn-aprobar {
+  background: var(--color-gold);
+  color: var(--color-deep);
+
+  &:hover:not(:disabled) {
+    opacity: 0.88;
+  }
+}
+
+.btn-rechazar {
+  background: var(--color-deep);
+  color: var(--color-cream);
+  border: 1.5px solid rgba(240, 192, 96, 0.3);
+
+  &:hover:not(:disabled) {
+    background: #76250f;
+  }
+}
+
+/* ---------- Modal (confirmación / éxito) ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(140, 46, 20, 0.55);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: modalFade 0.15s ease;
+}
+
+@keyframes modalFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-box {
+  width: min(100%, 340px);
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  border: 1.5px solid var(--color-gold-dim);
+  padding: 1.5rem 1.35rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+  box-shadow: 0 24px 60px rgba(140, 46, 20, 0.5);
+  animation: modalPop 0.18s ease;
+}
+
+@keyframes modalPop {
+  from {
+    transform: scale(0.94);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-icono {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-gold);
+  color: var(--color-deep);
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.modal-icono--rechazar {
+  background: var(--color-deep);
+  color: var(--color-error);
+  border: 1.5px solid rgba(245, 149, 107, 0.4);
+}
+
+.modal-icono--exito {
+  background: var(--color-success);
+  color: var(--color-deep);
+}
+
+.modal-box h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-cream);
+}
+
+.modal-box p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--color-peach);
+
+  strong {
+    color: var(--color-cream);
+  }
+}
+
+.modal-acciones {
+  display: flex;
+  gap: 0.6rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.btn-modal {
+  flex: 1;
+  height: 44px;
+  border-radius: var(--radius-btn);
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    opacity 0.15s ease,
+    transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.btn-modal--cancelar {
+  background: #8c2e14;
+  color: #fef5ee;
+  border: 1.5px solid rgba(240, 192, 96, 0.25);
+}
+
+.btn-modal--aprobar {
+  background: var(--color-gold);
+  color: var(--color-deep);
+
+  &:hover {
+    opacity: 0.88;
+  }
+}
+
+.btn-modal--rechazar {
+  background: var(--color-gold);
+  color: var(--color-deep);
+  border: none;
+
+  &:hover {
+    opacity: 0.88;
+  }
+}
+
+/* ---------- BREAKPOINTS ---------- */
+
+/* Móvil (< 480px): card pantalla completa */
+@media (max-width: 479px) {
+  .main-container {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+  }
+
+  .card-box {
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+/* Tablet (768px+): card flota centrada */
+@media (min-width: 768px) {
+  .main-container {
+    height: auto;
+    max-height: 96dvh;
+  }
+
+  .card-box {
+    border-radius: var(--radius-card);
+    max-height: 96dvh;
+    box-shadow:
+      0 32px 80px rgba(140, 46, 20, 0.55),
+      0 0 0 1px rgba(249, 191, 160, 0.1);
+  }
+}
+
+/* Desktop (1024px+): hover elevado */
+@media (min-width: 1024px) {
+  .card-box {
+    transition:
+      box-shadow 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .card-box:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 56px 120px rgba(140, 46, 20, 0.65),
+      0 0 0 1px rgba(249, 191, 160, 0.15);
+  }
+}
+
+/* Accesibilidad: sin animaciones */
+@media (prefers-reduced-motion: reduce) {
+  .btn-accion,
+  .btn-back,
+  .btn-modal,
+  .card-box,
+  .cliente-card {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .modal-overlay,
+  .modal-box {
+    animation: none !important;
+  }
+}

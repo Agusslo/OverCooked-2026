@@ -1,0 +1,364 @@
+:host {
+  --hero: #ee7a4f;
+  --panel: #a83820;
+  --panel-2: #c45030;
+  --card: #4a2e1e;
+  --gold: #f0c060;
+  --texto: #fef5ee;
+  --texto-suave: #f9bfa0;
+
+  display: block;
+  height: 100dvh;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+}
+
+// Alto fijo (no min-height): así el header queda arriba y .ep-cuerpo es
+// el que scrollea cuando la lista de platos es larga.
+.ep-shell {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--hero);
+  color: var(--texto);
+}
+
+.ep-header {
+  flex: none;
+  background: var(--panel);
+  padding: max(44px, calc(env(safe-area-inset-top) + 12px)) 16px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.ep-back {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 999px;
+  border: none;
+  background: var(--gold);
+  color: var(--panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 19px;
+    height: 19px;
+  }
+}
+
+.ep-header__titulo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+  }
+  span {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--texto-suave);
+  }
+}
+
+.ep-avatar {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--gold);
+  color: var(--panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.ep-cuerpo {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 16px calc(110px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+
+  // Que la card no se achique (tiene overflow: hidden) y desborde al scroll.
+  > * {
+    flex-shrink: 0;
+  }
+}
+
+.ep-estado {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--texto-suave);
+}
+
+.ep-banner.error {
+  background: #5a1f1f;
+  color: #ffd9d9;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.ep-card {
+  background: var(--panel-2);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.ep-card__foto {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #26150d;
+
+  // display: block saca el hueco de la línea base del <img> inline, que
+  // dejaba ver el fondo oscuro como una línea negra abajo de la foto.
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+}
+
+.ep-card__body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ep-badge {
+  align-self: flex-start;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--gold);
+
+  &--confirmado,
+  &--en_preparacion,
+  &--listo,
+  &--entregado {
+    background: #2f6d3a;
+    color: #d8f5dd;
+  }
+
+  &--rechazado,
+  &--cancelado {
+    background: #7a2020;
+    color: #ffd9d9;
+  }
+}
+
+.ep-mensaje {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.ep-motivo-rechazo {
+  margin: 0;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--texto-suave);
+}
+
+.ep-btn-modificar {
+  align-self: flex-start;
+  background: var(--gold);
+  color: var(--panel);
+  border: none;
+  border-radius: 14px;
+  padding: 14px 20px;
+  font-weight: 800;
+  font-size: 17px;
+}
+
+.ep-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ep-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border-radius: 14px;
+  padding: 11px 13px;
+}
+
+.ep-item__cant {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--gold);
+  font-weight: 800;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ep-item__nombre {
+  flex: 1;
+  min-width: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.ep-item__sector {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--texto-suave);
+}
+
+.ep-resumen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+// Tiempo estimado bien visible: ícono + número grande en dorado.
+.ep-resumen__tiempo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--panel);
+
+  svg {
+    width: 28px;
+    height: 28px;
+    flex: none;
+    color: var(--gold);
+  }
+
+  span {
+    flex: 1;
+    min-width: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--texto-suave);
+  }
+
+  strong {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+}
+
+.ep-resumen__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 4px;
+
+  span {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--texto);
+  }
+
+  strong {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--texto);
+    white-space: nowrap;
+  }
+}
+
+.ep-cuenta {
+  background: var(--panel-2);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+}
+
+.ep-cuenta__link {
+  flex: 1;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 14px;
+  background: var(--gold);
+  color: var(--panel);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 18px;
+
+  svg {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.ep-encuesta {
+  display: flex;
+}
+
+.ep-encuesta__link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  background: var(--color-gold, #f0c060);
+  color: var(--color-deep, #8c2e14);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.1rem;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+}
+
+:host ::ng-deep .burbuja-mozo {
+  bottom: max(20px, env(safe-area-inset-bottom));
+}

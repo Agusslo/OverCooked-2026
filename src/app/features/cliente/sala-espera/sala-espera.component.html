@@ -1,0 +1,130 @@
+<div class="sala-shell">
+
+  <app-header-inicio rol="Cliente" />
+
+  <main class="sala-cuerpo">
+
+    @if (cargando()) {
+      <div class="sala-estado">
+        <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
+        <span>Cargando…</span>
+      </div>
+    } @else if (estadoBoton() === 'con-pedido') {
+
+      <!-- Punto 12: pedido confirmado -> card del pedido + juegos. -->
+      <button type="button" class="sala-pedido-card" (click)="accionPrincipal()">
+        <div class="spc-foto">
+          @if (fotoActual()) {
+            <img [src]="fotoActual()" alt="Foto de un plato del pedido" />
+          }
+        </div>
+        <div class="spc-info">
+          <div class="spc-cabecera">
+            <span class="spc-mesa">MESA #{{ mesaAsignada()?.numero }}</span>
+            <span class="spc-estado"><i></i>{{ estadoCorto() }}</span>
+          </div>
+          <span class="spc-items">{{ nombresItems() }}</span>
+          <div class="spc-tiempo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="8.4" />
+              <path d="M12 7.8V12l3 1.8" />
+            </svg>
+            <div class="spc-tiempo__texto">
+              <strong>{{ tiempoPedido() }} minutos</strong>
+              <span>PARA QUE LLEGUE</span>
+            </div>
+          </div>
+        </div>
+      </button>
+
+      <div class="sala-separador">
+        <span>MIENTRAS ESPERÁS</span>
+        <i></i>
+        <span>GANÁ DESCUENTOS</span>
+      </div>
+
+
+
+      <section class="sala-juegos" [class.sala-juegos--bloqueado]="!pedidoAceptado()">
+        <button type="button" class="juego-card juego-card--destacado" (click)="irAJuegos('higher-lower')">
+          <div class="juego-card__arte">
+            <img src="assets/juegos/higher-lower/logo.webp" alt="logo higher-lower" />
+          </div>
+          <div class="juego-card__pie">
+            <strong>Mayor o Menor (20%)</strong>
+            <span>1 jugador · suerte</span>
+          </div>
+        </button>
+
+        <button type="button" class="juego-card" (click)="irAJuegos('memotest')">
+          <div class="juego-card__arte juego-card__arte--memotest">
+            <img src="assets/juegos/memotest/logo.webp" alt="logo memotest" />
+          </div>
+          <div class="juego-card__pie">
+            <strong>Memotest (15%)</strong>
+            <span>1 jugador · memoria</span>
+          </div>
+        </button>
+
+        <button type="button" class="juego-card" (click)="irAJuegos('simon')">
+          <div class="juego-card__arte juego-card__arte--simon">
+            <img src="assets/juegos/simon/logo.webp" alt="logo simon" />
+          </div>
+          <div class="juego-card__pie">
+            <strong>Simón (10%)</strong>
+            <span>1 jugador · patrón</span>
+          </div>
+        </button>
+
+        @if (!pedidoAceptado()) {
+          <div class="sala-juegos__candado">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#5e2412" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="16" height="11" x="4" y="11" rx="2" />
+              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+            </svg>
+            <span>Los juegos se habilitan cuando el mozo confirme tu pedido</span>
+          </div>
+        }
+      </section>
+
+      @if (mensajeError()) {
+        <p class="sala-error">{{ mensajeError() }}</p>
+      }
+
+    } @else {
+
+      <div class="sala-accion">
+        @switch (estadoBoton()) {
+          @case ('esperando') {
+            <button type="button" class="sala-boton" disabled>ESPERANDO ASIGNACIÓN DE MESA</button>
+            <p class="sala-aviso">Ya estás en la lista de espera. El metre te va a asignar una mesa en un rato.</p>
+          }
+          @case ('con-mesa') {
+            <button type="button" class="sala-boton sala-boton--activo" (click)="accionPrincipal()">
+              REALIZAR PEDIDO · MESA {{ mesaAsignada()?.numero }}
+            </button>
+            <p class="sala-aviso">¡Tu mesa está lista! Tocá para escanear el QR de tu mesa y ver el menú.</p>
+          }
+        }
+
+        @if (mensajeError()) {
+          <p class="sala-error">{{ mensajeError() }}</p>
+        }
+      </div>
+
+      <section class="sala-resenias">
+        <h2 class="sala-resenias__titulo">Reseñas de otros clientes</h2>
+        <a routerLink="/cliente/encuesta-resultados" class="sala-resenias__link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.8 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" />
+          </svg>
+          <span>Ver los resultados de las encuestas de otros clientes</span>
+        </a>
+      </section>
+    }
+  </main>
+
+  @if (mesaAsignada(); as mesa) {
+    <app-burbuja-mozo [numeroMesa]="mesa.numero" />
+  }
+</div>

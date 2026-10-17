@@ -11,40 +11,245 @@
 
 ## 👥 Integrantes
 
-* **López, Agustín (Alfa)**: rama `feature/dev-alfa`
+* **López, Agustín Nicolás(Alfa)**: rama `feature/dev-alfa`
 * **Filippelli, Adrián (Beta)**: rama `feature/dev-beta`
 * **Fernández Waisberg, Gabriel (Gamma)**: rama `feature/dev-gamma`
 * **Catanese, Demián (Delta)**: rama `feature/dev-delta`
 
 
 
+## 👥 Distribución de tareas por integrante
+
+| Integrante                      | Rama                | Funcionalidades asignadas (TFI) | Fecha inicio | Fecha fin  |
+| :------------------------------ | :------------------ | :------------------------------ | :----------- | :--------- |
+| **Filippelli, Adrián**          | `feature/dev-beta`  | Base de datos                   | 23/08/2026   | 29/08/2026 |
+| **Catanese, Demián**            | `feature/dev-delta` | Estilos                         | 23/08/2026   | 24/08/2026 |
+| **Filippelli, Adrián**          | `feature/dev-beta`  | Login                           | 24/08/2026   | 24/08/2026 |
+| **Filippelli, Adrián**          | `feature/dev-beta`  | Acceso rapido                   | 25/08/2026   | 25/08/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de los empleados           | 26/08/2026   | 26/08/2026 |
+| **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | Registro                        | 26/08/2026   | 26/08/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de los platos              | 29/08/2026   | 29/08/2026 |
+| **Fernández Waisberg, Gabriel** | `feature/dev-gamma` | Registro anonimo                | 29/08/2026   | 29/08/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de las bebidas             | 30/08/2026   | 30/08/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Alta de las mesas               | 31/08/2026   | 31/08/2026 |
+| **Catanese, Demián**            | `feature/dev-delta` | Servicio de Mail                | 01/09/2026   | 01/09/2026 |
+| **Catanese, Demián**            | `feature/dev-delta` | Diseño del Mail                 | 01/09/2026   | 01/09/2026 |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | cliente registrado, QR DNI      | 3/09/2026    | 3/09/2026  |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Cliente Anonimo                 | 5/09/2026    | 6/09/2026  |
+| **López, Agustín Nicolás**      | `feature/dev-alfa`  | Encuesta                        | 16/09/2026    | 16/09/2026  |
+
+
+> Si algún integrante no llega con la funcionalidad comprometida, se reasigna el módulo o se cambia el plazo, y queda registrado acá mismo con la fecha del cambio.
+
 ## 🚀 Roadmap de Entregas
 
-| Funcionalidad | Perfiles | Estado | Fecha - Profe |
-| :--- | :--- | :--- | :--- |
-| 1. Agregar un empleado | dueño o supervisor | Indefinido | |
-| 2. Agregar un nuevo plato | cocinero | Indefinido | |
-| 3. Agregar una nueva bebida | cantinero | Indefinido | |
-| 4. Agregar una nueva mesa | dueño o supervisor | Indefinido | |
-| 5. Crear un cliente registrado | cliente o metre | Indefinido | |
-| 6. Verificar ingreso del cliente registrado | dueño o supervisor | Indefinido | |
-| 7. Rechazar a un cliente registrado | dueño o supervisor | Indefinido | |
-| 8. Aceptar a un cliente registrado | dueño o supervisor | Indefinido | |
-| 9. Ingresar al local | cliente anónimo | Indefinido | |
-| 10. Asignar una mesa a un cliente registrado | metre | Indefinido | |
-| 11. Ver el listado de los productos | cliente registrado o anónimo | Indefinido | |
-| 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Indefinido | |
-| 13. Rechazar el pedido, para que el usuario lo modifique | mozo | Indefinido | |
-| 14. Confirmar el pedido | mozo | Indefinido | |
-| 15. Acceder a los juegos | cliente registrado | Indefinido | |
-| 16. Recepción de los productos correspondientes | cocinero | Indefinido | |
-| 17. Recepción de los productos correspondientes | cantinero | Indefinido | |
-| 18. Realizar las tareas correspondientes | cocinero y cantinero | Indefinido | |
-| 19. Entrega del pedido completo | mozo | Indefinido | |
-| 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo | Indefinido | |
-| 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Indefinido | |
-| 22. Confirmar el pago y liberar mesa | mozo | Indefinido | |
+| Funcionalidad | Perfiles (dentro de la app) | Responsable | Estado | Fecha - Profe |
+| :--- | :--- | :--- | :---: | :--- |
+| 1. Agregar un empleado | dueño o supervisor | López, Agustín Nicolás | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 2. Agregar un nuevo plato | cocinero | López, Agustín Nicolás | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 3. Agregar una nueva bebida | cantinero | López, Agustín Nicolás | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 4. Agregar una nueva mesa | dueño o supervisor | López, Agustín Nicolás | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 5. Crear un cliente registrado | cliente o metre | López, Agustín Nicolás | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 9. Ingresar al local | cliente anónimo | Filippelli, Adrián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 10. Asignar una mesa a un cliente registrado | metre | Fernández Waisberg, Gabriel | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 11. Ver el listado de los productos | cliente registrado o anónimo | Fernández Waisberg, Gabriel | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Fernández Waisberg, Gabriel | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 13. Rechazar el pedido, para que el usuario lo modifique | mozo | Fernández Waisberg, Gabriel | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 14. Confirmar el pedido | mozo | Fernández Waisberg, Gabriel | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 15. Acceder a los juegos | cliente registrado | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 16. Recepción de los productos correspondientes | cocinero | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 17. Recepción de los productos correspondientes | cantinero | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 18. Realizar las tareas correspondientes | cocinero y cantinero | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 19. Entrega del pedido completo | mozo | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
+| 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo |  López, Agustín Nicolás | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 22. Confirmar el pago y liberar mesa | mozo | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
 
+
+
+
+
+<br>
+
+## 🎨 Ver Capturas de Pantalla
+
+<details>
+<summary>Vistas de Entrada</summary>
+    <img src="./docs/capturas/icono.jpg" alt="icono" width="300">
+    <img src="./docs/capturas/splash.jpg" alt="splash" width="300">
+    <img src="./docs/capturas/login.jpg" alt="login" width="300">
+    <img src="./docs/capturas/acceso_rapido.jpg" alt="acceso-rapido" width="300">
+</details>
+
+<details>
+<summary>Registro: Cliente Registrado y Anonimo</summary>
+    <img src="./docs/capturas/registro.jpg" alt="registro 1" width="300">
+    <img src="./docs/capturas/registro2.jpg" alt="registro 1" width="300">
+    <img src="./docs/capturas/registro_anonimo.jpg" alt="registro anonimo" width="300">
+</details>
+
+<details>
+<summary>Vistas del Dueño</summary>
+    <img src="./docs/capturas/admin_home.jpg" alt="admin home" width="300">
+    <img src="./docs/capturas/admin_alta_mesa.jpg" alt="admin-alta mesa" width="300">
+    <img src="./docs/capturas/admin_alta_empleado.jpg" alt="admin alta empleado" width="300">
+    <img src="./docs/capturas/admin_lista_mesas.jpg" alt="admin lista mesas" width="300">
+</details>
+
+<details>
+<summary>Vistas del Metre</summary>
+    <img src="./docs/capturas/metre_home.jpg" alt="metre home" width="300">
+    <img src="./docs/capturas/metre_asignar.jpg" alt="metre asignar" width="300">
+    <img src="./docs/capturas/metre_lista_espera.jpg" alt="metre lista espera" width="300">
+</details>
+
+<details>
+<summary>Vistas del Mozo</summary>
+    <img src="./docs/capturas/mozo_home.jpg" alt="mozo home" width="300">
+    <img src="./docs/capturas/mozo_consultas.jpg" alt="mozo consultas" width="300">
+    <img src="./docs/capturas/mozo_chat.jpg" alt="mozo chat" width="300">
+    <img src="./docs/capturas/mozo_confirmar.jpg" alt="mozo confirmar" width="300">
+    <img src="./docs/capturas/mozo_entrega.jpg" alt="mozo entregar" width="300">
+>
+</details>
+
+<details>
+<summary>Vistas del Cantinero</summary>
+    <img src="./docs/capturas/cantinero_home.jpg" alt="cantinero home" width="300">
+    <img src="./docs/capturas/cantinero_alta.jpg" alt="cantinero alta" width="300">
+    <img src="./docs/capturas/cantinero_pendiente.jpg" alt="cantinero pendiente" width="300">
+</details>
+
+<details>
+<summary>Vistas del Cocinero</summary>
+    <img src="./docs/capturas/cocinero_home.jpg" alt="cocinero home" width="300">
+    <img src="./docs/capturas/cocinero_alta.jpg" alt="cocinero alta" width="300">
+    <img src="./docs/capturas/cocinero_pendiente.jpg" alt="cocinero pendientes" width="300">
+</details>
+
+<details>
+<summary>Vistas del Cliente</summary>
+    <img src="./docs/capturas/cliente_home.jpg" alt="cliente home" width="300">    
+    <img src="./docs/capturas/cliente_carta.jpg" alt="cliente menu" width="300">
+    <img src="./docs/capturas/cliente_pedido.jpg" alt="cliente pedido" width="300">
+    <img src="./docs/capturas/cliente_home2.jpg" alt="cliente anonimo home" width="300">
+</details>
+
+<br>
+
+
+
+✉️ Servicio de correos automáticos
+
+**Responsable:** Catanese, Demián (`feature/dev-delta`)
+
+Envío automático de correos desde una casilla empresarial (requisito excluyente del TFI), sin exponer credenciales en la aplicación.
+
+## Arquitectura
+
+* **Proveedor:** [Resend](https://resend.com) con dominio propio verificado (`overcooked.abrdns.com`, DKIM + SPF).
+* **Backend:** Supabase Edge Function `enviar-mail` (`supabase/functions/enviar-mail/`). Es la única que conoce la `RESEND_API_KEY` (guardada en los *secrets* del proyecto Supabase, nunca en el front). Valida el payload, arma el HTML y llama a la API de Resend.
+* **Frontend:** `MailService` (`src/app/core/services/mail.service.ts`) invoca la función con `supabase.functions.invoke('enviar-mail', ...)`.
+* Un fallo de envío **nunca** aborta la operación de negocio (el estado ya quedó persistido); solo se registra en consola.
+
+## Correos implementados
+
+| Tipo | Se dispara desde | Punto TFI |
+| :--- | :--- | :--- |
+| `registro-pendiente` | `AuthService.registrarUsuario` — al crear un cliente registrado | 5 |
+| `cliente-aprobado` | `AdminService.aprobarCliente` — el dueño/supervisor acepta al cliente | 8 |
+| `cliente-rechazado` | `AdminService.rechazarCliente` — el dueño/supervisor rechaza al cliente | 7 |
+
+## Diseño del Mail
+
+**Responsable:** Catanese, Demián (`feature/dev-delta`)
+
+Cada tipo de correo tiene **paleta de colores, tipografías y tamaños propios** (requisito de los puntos 7 y 8), manteniendo un eje de diseño común: logo de OverCooked, tarjeta redondeada centrada, borde-guía lateral y pie de "correo automático".
+
+| Correo | Paleta | Título | Tipografías |
+| :--- | :--- | :--- | :--- |
+| Pendiente | naranja / dorado cálido | 26px | Verdana + Georgia |
+| Aprobado | verde "éxito" | 32px, festivo | Trebuchet MS + Palatino |
+| Rechazado | bordó sobrio | 21px, formal | Courier + Cambria |
+
+<details>
+<summary>MAILS</summary>
+    <img src="./docs/capturas/mail.png" alt="mail aprobación" width="1000"><br>
+    <img src="./docs/capturas/mail2.png" alt="mail rechazo" width="1000">
+</details>
+
+### Puesta en marcha
+
+```bash
+npx supabase link --project-ref ydpukgjowtmoxbeyhncz
+npx supabase secrets set RESEND_API_KEY=... "MAIL_FROM=OverCooked <hola@overcooked.abrdns.com>" MAIL_LOGO_URL=...
+npx supabase functions deploy enviar-mail
+```
+
+## Notificaciones
+
+**Responsable:** Fernández Waisberg, Gabriel (`feature/dev-gamma`)
+
+Las notificaciones push se envían desde Edge Functions de Supabase cuando cambian ciertas tablas del negocio. El token del dispositivo se registra desde la app con `PushNotificationsService`, y luego el backend dispara el envío vía Firebase Cloud Messaging (FCM).
+
+| Tipo | Se dispara desde | Receptor | Punto TFI |
+| :--- | :--- | :--- | :---: |
+| `cliente-pendiente` | `usuarios` al quedar un cliente en `estado = 'pendiente'` | dueño / supervisor | 6 |
+| `lista-espera` | `lista_espera` al anotarse un cliente en espera | metre | 9 |
+| `mesa-asignada` | `asignaciones_mesa` al asignar una mesa a un cliente registrado | cliente | 10 |
+| `mensaje-mesa` | `mensajes_mesa` al enviar un mensaje en la mesa | mozos o cliente dueño del hilo | 11 |
+| `pedido-nuevo` | `pedidos` al quedar en `estado = 'pendiente_mozo'` | mozo | 12 |
+| `pedido-rechazado` | `pedidos` al cambiar a `estado = 'rechazado'` | cliente | 13 |
+| `pedido-confirmado` | `pedidos` al cambiar a `estado = 'confirmado'` | cocina / bar + cliente | 14 |
+| `pedido-listo` | `pedidos` al cambiar a `estado = 'listo'` | mozo | 18 |
+
+## QR
+<div align="center">
+  <img src="./docs/QR/qr_ingreso_local.png" alt="Ingreso al Local" width="250">
+  <p>Ingreso al local</p>
+</div>
+
+### Propinas
+<div align="center">
+  <img src="./docs/QR/qr_propina_excelente.png" alt="Propina Excelente" width="250">
+  <p>Propina Excelente (20%)</p>
+
+  <img src="./docs/QR/qr_propina_muy_bueno.png" alt="Propina Muy Buena" width="250">
+  <p>Propina Muy Buena (15%)</p>
+
+  <img src="./docs/QR/qr_propina_bueno.png" alt="Propina Buena" width="250">
+  <p>Propina Buena (10%)</p>
+
+  <img src="./docs/QR/qr_propina_regular.png" alt="Propina Regular" width="250">
+  <p>Propina Regular (5%)</p>
+
+  <img src="./docs/QR/qr_propina_malo.png" alt="Propina Mala" width="250">
+  <p>Propina Mala (0%)</p>
+</div>
+
+### Mesas
+<div align="center">
+  <img src="./docs/QR/qr-mesa-8.png" alt="Mesa 8" width="250">
+  <p>Mesa 8</p>
+
+  <img src="./docs/QR/qr-mesa-23.png" alt="Mesa 23" width="250">
+  <p>Mesa 23</p>
+
+  <img src="./docs/QR/qr-mesa-34.png" alt="Mesa 34" width="250">
+  <p>Mesa 34</p>
+
+  <img src="./docs/QR/qr-mesa-55.png" alt="Mesa 55" width="250">
+  <p>Mesa 55</p>
+  
+  <img src="./docs/QR/qr-mesa-59.png" alt="Mesa 59" width="250">
+  <p>Mesa 59</p>
+
+  <img src="./docs/QR/qr-mesa-67.png" alt="Mesa 67" width="250">
+  <p>Mesa 67</p>
+</div>
 
 ## ⚙️ Requisitos Previos y Herramientas a Instalar
 

@@ -1,0 +1,46 @@
+<div class="escanear-screen">
+  <div class="escanear-visual">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
+      <path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+      <path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
+      <path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+      <rect x="7" y="7" width="10" height="10" rx="1"/>
+    </svg>
+  </div>
+
+  <div class="escanear-copy">
+    <h1>Escaneá tu mesa</h1>
+    @if (mesaAsignada(); as m) {
+      <p>El metre te asignó la mesa Nº {{ m.numero }}. Escaneá su código QR para entrar al menú.</p>
+    } @else {
+      <p>Buscá el código QR en la mesa que te asignó el metre y escaneálo para entrar al menú.</p>
+    }
+  </div>
+
+  @if (mensajeError()) {
+    <div class="escanear-error">
+      <p>{{ mensajeError() }}</p>
+    </div>
+  }
+
+  <div class="escanear-actions">
+    <ion-button class="escanear-btn-principal" expand="block" type="button" [disabled]="cargando()" (click)="escanear()">
+      @if (cargando()) {
+        <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--chico" />
+      } @else {
+        <span>ESCANEAR QR</span>
+      }
+    </ion-button>
+
+    @if (esWeb && mesaAsignada()) {
+      <button class="escanear-btn-dev" type="button" [disabled]="cargando()" (click)="simular()">
+        Simular escaneo (solo navegador)
+      </button>
+    }
+
+    <ion-button class="escanear-btn-secundario" expand="block" fill="clear" type="button" (click)="volver()">
+      VOLVER
+    </ion-button>
+  </div>
+</div>

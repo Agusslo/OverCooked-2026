@@ -1,0 +1,52 @@
+<div class="entrada-screen">
+  @if (cargando()) {
+    <div class="entrada-cargando">
+      <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--grande" />
+    </div>
+  } @else {
+    <div class="entrada-visual">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
+        <path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+        <path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
+        <path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+        <rect x="7" y="7" width="10" height="10" rx="1"/>
+      </svg>
+    </div>
+
+    <div class="entrada-copy">
+      <h1>Entrá al local</h1>
+      <p>Escaneá el código QR de la entrada para anotarte en la lista de espera. El metre te va a asignar una mesa.</p>
+    </div>
+
+    @if (mensajeError()) {
+      <div class="entrada-error">
+        <p>{{ mensajeError() }}</p>
+      </div>
+    }
+
+    <div class="entrada-actions">
+      <ion-button class="entrada-btn-principal" expand="block" type="button" [disabled]="procesando()" (click)="escanear()">
+        @if (procesando()) {
+          <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--chico" />
+        } @else {
+          <span>ESCANEAR QR DE ENTRADA</span>
+        }
+      </ion-button>
+
+      @if (esWeb) {
+        <button class="entrada-btn-dev" type="button" [disabled]="procesando()" (click)="simular()">
+          Simular escaneo (solo navegador)
+        </button>
+      }
+
+      <ion-button class="entrada-btn-secundario" expand="block" fill="clear" type="button" (click)="verResultados()">
+        VER RESULTADOS DE ENCUESTAS
+      </ion-button>
+
+      <ion-button class="entrada-btn-secundario" expand="block" fill="clear" type="button" (click)="salir()">
+        CERRAR SESIÓN
+      </ion-button>
+    </div>
+  }
+</div>

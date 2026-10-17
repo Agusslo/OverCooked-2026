@@ -1,0 +1,222 @@
+:host {
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+
+    // Paleta extraída directo de la imagen
+    --bg-hero: #ee7a4f; // franja superior, donde va el logo
+    --bg-panel: #c45030; // panel inferior redondeado
+    --accent-dark: #a83820; // texto sobre fondos claros / fondo Registro-Invitado
+    --accent-light: #f9bfa0; // fondo de los inputs / texto sobre fondos oscuros
+    --gold: #f0c060; // botón Iniciar sesión
+    --white: #ffffff;
+}
+
+ion-content.login-page {
+    --background: var(--bg-hero);
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.login-shell {
+    // min-height (no height fija): si el contenido no entra —por ej.
+    // con el teclado tapando la mitad de la pantalla— el shell crece y
+    // ion-content lo scrollea, en vez de recortarlo con overflow:hidden.
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-hero);
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.brand {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 35dvh;
+    padding: max(56px, calc(env(safe-area-inset-top) + 12px)) 0 32px;
+}
+
+.brand__logo {
+    width: 170px;
+    height: auto;
+    filter: brightness(0) invert(1);
+    display: block;
+}
+
+.login-card {
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--bg-panel);
+    border-radius: 53px 53px 0 0;
+    padding: 30px 24px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+// Agrupa cada input con su propio mensaje de error para que el
+// espacio de ese mensaje quede reservado siempre (ver .campo-error) y
+// no empuje el resto del formulario para abajo cuando aparece o
+// desaparece. El margin-bottom que antes tenía .login-field se movió
+// acá, así la separación entre campos no cambia.
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 9px;
+}
+
+.login-field {
+    --background: var(--accent-light);
+    --border-radius: 24px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --min-height: 54px;
+    --highlight-height: 0;
+    border-radius: 24px;
+    box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
+    border: #D4603A 2px solid;
+    overflow: hidden;
+}
+
+.login-field ion-input {
+    --placeholder-color: var(--accent-dark);
+    --color: var(--accent-dark);
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-align: center;
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.campo-error {
+    min-height: 1.1rem;
+    display: flex;
+    align-items: flex-start;
+}
+
+.form-error {
+    width: 100%;
+    margin: 0;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.form-error p {
+    margin: 0;
+    color: #fff0f0;
+    font-weight: 600;
+}
+
+.login-submit {
+    --background: var(--gold);
+    --background-activated: #dcab54;
+    --background-hover: #e6b661;
+    --color: var(--accent-dark);
+    --border-radius: 12px;
+    --box-shadow: none;
+    height: 54px;
+    margin-top: 6px;
+    font-family: 'ADLaM Display', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.secondary-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 18px;
+    max-width: 600px;
+}
+
+.action-btn {
+  --color: #f9bfa0;
+  --background: #8c2e14;
+  --border-radius: 12px;
+  --border-style: solid;
+  --border-width: 1.5px;
+  --border-color: rgba(240, 192, 96, 0.25);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.accesos-rapidos {
+    width: 100%;
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.quick-btn {
+    --background: transparent;
+    --background-activated: rgba(168, 56, 32, 0.15);
+    --background-hover: rgba(168, 56, 32, 0.1);
+    --color: var(--accent-light);
+    --border-color: rgba(168, 56, 32, 0.75);
+    --border-style: solid;
+    --border-width: 1.5px;
+    --border-radius: 14px;
+    --box-shadow: none;
+    width: auto;
+    height: 40px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+
+// El ícono de mostrar/ocultar va en slot="end" y le resta ancho al
+// ion-input de ese lado; sin compensar, el texto centrado del input
+// queda corrido a la izquierda respecto al campo de Correo. El
+// spacer fantasma (mismo ancho, invisible) en slot="start" balancea
+// los dos lados para que el centrado sea real.
+.toggle-password,
+.toggle-password-spacer {
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.toggle-password {
+  background: none;
+  border: none;
+  color: #c45030;
+  padding: 0 4px;
+}
+
+.toggle-password-spacer {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.quick-chip ion-icon {
+    color: var(--accent-light);
+    font-size: 0.9rem;
+}
+
+@media (min-width: 420px) {
+
+    .brand__logo {
+        width: 270px;
+    }
+
+}

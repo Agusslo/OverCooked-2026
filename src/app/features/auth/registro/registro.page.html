@@ -1,0 +1,329 @@
+<ion-content class="registro-page" [scrollY]="permitirScroll()">
+  <div class="registro-shell" #shell>
+    <div class="brand">
+      @if (paso() === 1) {
+      <div class="foto-picker brand__picker">
+        @if (camaraActiva()) {
+        <div class="camera-box">
+          <video #videoCamara autoplay playsinline></video>
+          <div class="camera-actions">
+            <button
+              type="button"
+              class="camera-button camera-cancel"
+              (click)="cancelarCamara()"
+            >
+              CANCELAR
+            </button>
+            <button
+              type="button"
+              class="camera-button camera-capture"
+              (click)="capturarFoto()"
+            >
+              TOMAR FOTO
+            </button>
+          </div>
+        </div>
+        } @else {
+        <button type="button" class="foto-picker__circle" (click)="tomarFoto()">
+          @if (fotoUrl()) {
+          <img
+            [src]="fotoUrl()"
+            alt="Foto de perfil"
+            class="foto-picker__img"
+          />
+          } @else {
+          <span class="foto-picker__icono">+</span>
+          }
+        </button>
+        <span class="foto-picker__label">
+          {{ fotoUrl() ? 'Volver a sacar la foto' : 'Foto de perfil (cámara)' }}
+        </span>
+        }
+      </div>
+      } @else {
+      <img src="assets/icon/logo.png" alt="OverCooked" class="brand__logo" />
+      }
+    </div>
+
+    <div class="registro-card">
+      <h1 class="registro-title">
+        @if (paso() === 1) { Crear cuenta · Datos personales } @else { Crear
+        cuenta · Credenciales }
+      </h1>
+
+      <div class="registro-pasos" aria-hidden="true">
+        <span class="paso-dot" [class.paso-dot--activo]="paso() === 1"></span>
+        <span class="paso-dot" [class.paso-dot--activo]="paso() === 2"></span>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="registrarse()" class="registro-form">
+        @if (paso() === 1) {
+
+        <div class="campo">
+          <ion-item class="registro-field registro-field--password" lines="none">
+            <ion-input
+              type="text"
+              formControlName="nombre"
+              placeholder="Nombre"
+              autocomplete="given-name"
+            ></ion-input>
+          </ion-item>
+
+          <div class="campo-error">
+            @if (form.controls.nombre.invalid && form.controls.nombre.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Ingresá tu nombre.</p>
+            </ion-text>
+            }
+          </div>
+        </div>
+
+        <div class="campo">
+          <ion-item class="registro-field" lines="none">
+            <ion-input
+              type="text"
+              formControlName="apellido"
+              placeholder="Apellido"
+              autocomplete="family-name"
+            ></ion-input>
+          </ion-item>
+
+          <div class="campo-error">
+            @if (form.controls.apellido.invalid && form.controls.apellido.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Ingresá tu apellido.</p>
+            </ion-text>
+            }
+          </div>
+        </div>
+
+        <div class="campo">
+          <ion-item class="registro-field" lines="none">
+            <ion-input
+              type="tel"
+              formControlName="dni"
+              placeholder="DNI"
+              autocomplete="off"
+              inputmode="numeric"
+              maxlength="8"
+              (ionInput)="sanitizarDni($event)"
+            ></ion-input>
+          </ion-item>
+
+          <div class="campo-error">
+            @if (form.controls.dni.invalid && form.controls.dni.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Ingresá un DNI válido (7 u 8 dígitos numéricos).</p>
+            </ion-text>
+            }
+          </div>
+        </div>
+
+        <div class="campo-error">
+          @if (fotoIntentada() && !fotoUrl()) {
+          <ion-text class="form-error" color="danger">
+            <p>Sacate una foto de perfil con la cámara.</p>
+          </ion-text>
+          }
+        </div>
+
+        @if (errorRegistro()) {
+        <ion-text class="form-error" color="danger">
+          <p>{{ errorRegistro() }}</p>
+        </ion-text>
+        }
+        <ion-button
+          class="scan-btn"
+          type="button"
+          expand="block"
+          fill="clear"
+          (click)="escanearDni()"
+          [disabled]="cargando()"
+        >
+                   <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            style="margin-right: 10px;"
+          >
+            <rect width="5" height="5" x="3" y="3" rx="1" />
+            <rect width="5" height="5" x="16" y="3" rx="1" />
+            <rect width="5" height="5" x="3" y="16" rx="1" />
+            <path d="M21 16h-3a2 2 0 0 0-2 2v3" />
+            <path d="M21 21v.01" />
+            <path d="M12 7v3a2 2 0 0 1-2 2H7" />
+            <path d="M3 12h.01" />
+            <path d="M12 3h.01" />
+            <path d="M12 16v.01" />
+            <path d="M16 12h1" />
+            <path d="M21 12v.01" />
+            <path d="M12 21v-1" />
+          </svg>ESCANEAR DNI
+        </ion-button>
+        <ion-button
+          class="registro-submit"
+          expand="block"
+          type="button"
+          (click)="irACredenciales()"
+        >
+          <span>SIGUIENTE</span>
+        </ion-button>
+        } @else {
+        <div class="campo">
+          <ion-item class="registro-field" lines="none">
+            <ion-input
+              type="email"
+              formControlName="email"
+              placeholder="Correo electrónico"
+              autocomplete="email"
+            ></ion-input>
+          </ion-item>
+
+          <div class="campo-error">
+            @if (form.controls.email.invalid && form.controls.email.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Ingresá un correo electrónico válido.</p>
+            </ion-text>
+            }
+          </div>
+        </div>
+
+        <div class="campo">
+          <ion-item class="registro-field" lines="none">
+            <ion-input
+              [type]="mostrarPassword() ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Contraseña"
+              autocomplete="new-password"
+            ></ion-input>
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="toggleMostrarPassword()"
+              [attr.aria-label]="mostrarPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            >
+              @if (mostrarPassword()) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-10-8-10-8a18.4 18.4 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 10 8 10 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+              } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              }
+            </button>
+          </ion-item>
+
+          <div class="campo-error">
+            @if (form.controls.password.invalid && form.controls.password.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>La contraseña debe tener al menos 6 caracteres.</p>
+            </ion-text>
+            }
+          </div>
+        </div>
+
+        <div class="campo">
+          <ion-item class="registro-field registro-field--password" lines="none">
+            <ion-input
+              [type]="mostrarRepetirPassword() ? 'text' : 'password'"
+              formControlName="repetirPassword"
+              placeholder="Repetir contraseña"
+              autocomplete="new-password"
+            ></ion-input>
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="toggleMostrarRepetirPassword()"
+              [attr.aria-label]="mostrarRepetirPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            >
+              @if (mostrarRepetirPassword()) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-10-8-10-8a18.4 18.4 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 10 8 10 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+              } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              }
+            </button>
+          </ion-item>
+
+          <div class="campo-error">
+            @if (form.controls.repetirPassword.hasError('required') &&
+            form.controls.repetirPassword.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Repetí tu contraseña.</p>
+            </ion-text>
+            } @else if
+            (form.controls.repetirPassword.hasError('passwordsNoCoinciden') &&
+            form.controls.repetirPassword.touched) {
+            <ion-text class="form-error" color="danger">
+              <p>Las contraseñas no coinciden.</p>
+            </ion-text>
+            }
+          </div>
+        </div>
+
+        @if (errorRegistro()) {
+        <ion-text class="form-error" color="danger">
+          @switch (errorRegistro()) { @case ("User already registered") {
+          <p>El usuario ya está registrado</p>
+          } @case ('duplicate key value violates unique constraint
+          "usuarios_dni_key"') {
+          <p>Ya se registró un usuario con ese DNI</p>
+          } @default {
+          <p>Ocurrió un error inesperado. Inténtelo de nuevo.</p>
+          } }
+        </ion-text>
+        }
+
+        <ion-button
+          class="registro-submit"
+          expand="block"
+          type="submit"
+          [disabled]="cargando()"
+        >
+          @if (cargando()) {
+          <img src="assets/icon/logo.png" alt="" class="spinner-logo spinner-logo--chico" />
+          } @else {
+          <span>REGISTRARME</span>
+          }
+        </ion-button>
+
+        <ion-button
+          class="registro-back"
+          expand="block"
+          type="button"
+          fill="clear"
+          (click)="volverADatos()"
+          [disabled]="cargando()"
+        >
+          <span>ATRÁS</span>
+        </ion-button>
+        }
+      </form>
+
+      <div class="secondary-actions">
+        <ion-button
+          class="action-btn"
+          type="button"
+          expand="block"
+          fill="clear"
+          (click)="volverAlLogin()"
+          >VOLVER AL INICIO</ion-button
+        >
+      </div>
+    </div>
+  </div>
+</ion-content>

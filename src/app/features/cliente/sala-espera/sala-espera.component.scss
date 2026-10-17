@@ -1,0 +1,432 @@
+:host {
+  --hero: #ee7a4f;
+  --panel: #a83820;
+  --panel-2: #c45030;
+  --gold: #f0c060;
+  --texto: #fef5ee;
+  --texto-suave: #f9bfa0;
+  --marron: #93341f;
+  --cafe: #5e2412;
+
+  display: block;
+  min-height: 100dvh;
+  font-family: system-ui, sans-serif;
+}
+
+.sala-shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--hero);
+  color: var(--texto);
+}
+
+.sala-cuerpo {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 18px max(18px, env(safe-area-inset-bottom));
+  gap: 18px;
+}
+
+.sala-estado {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--texto-suave);
+}
+
+.sala-accion {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sala-boton {
+  width: 100%;
+  padding: 20px 16px;
+  border: none;
+  border-radius: 18px;
+  background: var(--gold);
+  color: var(--panel);
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-top: 2rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.2;
+
+  &:disabled {
+    background: #d8a24e;
+    color: #7a3517;
+  }
+
+  &--activo:active {
+    transform: scale(0.985);
+  }
+}
+
+.sala-aviso {
+  margin: 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+.sala-error {
+  margin: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffe0e0;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 12px;
+  border-radius: 12px;
+}
+
+/* ---------- Card del pedido en curso (rediseño 4a) ---------- */
+.sala-pedido-card {
+  flex: none;
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+  background: var(--panel-2);
+  border: none;
+  border-radius: 22px;
+  color: var(--texto);
+
+  &:active { transform: scale(0.99); }
+}
+
+// Foto cuadrada de tamaño fijo: no se estira con el alto de la info.
+.spc-foto {
+  width: 104px;
+  height: 150px;
+  flex: none;
+  align-self: center;
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--marron);
+
+  // La imagen va absoluta para que su alto natural no estire la card;
+  // recorta con cover dentro del cuadrado.
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.spc-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+// Si el número de mesa y el estado no entran en una línea, el estado
+// baja a la siguiente en vez de cortarse.
+.spc-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px 8px;
+}
+
+.spc-mesa {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--texto-suave);
+}
+
+.spc-estado {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 99px;
+  background: var(--gold);
+  color: var(--cafe);
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+
+  i {
+    width: 7px;
+    height: 7px;
+    border-radius: 99px;
+    background: currentColor;
+  }
+}
+
+.spc-items {
+  // Nombres largos: máximo 2 líneas con "…".
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--texto);
+}
+
+.spc-tiempo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 14px;
+  background: var(--panel);
+  color: var(--gold);
+
+  svg { width: 26px; height: 26px; flex: none; }
+}
+
+.spc-tiempo__texto {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  strong {
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--texto-suave);
+  }
+}
+
+/* ---------- Juegos "mientras esperás" ---------- */
+.sala-separador {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 4px -6px;
+
+  span {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: var(--texto);
+  }
+
+  i {
+    flex: 1;
+    height: 2px;
+    border-radius: 9px;
+    background: var(--marron);
+  }
+}
+
+.sala-juegos {
+  flex: 1;
+  min-height: 300px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1.15fr 1fr;
+  gap: 10px;
+  // Espacio para que la burbuja del mozo no tape las cards de abajo.
+  padding-bottom: 72px;
+
+  position: relative;
+
+  &--bloqueado .juego-card { opacity: 0.4; }
+}
+
+// Candado centrado sobre la grilla mientras el mozo no confirmó el
+// pedido. No intercepta los toques: el clic sigue llegando a la card,
+// que sólo vibra.
+.sala-juegos__candado {
+  position: absolute;
+  inset: 0 0 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 24px;
+  text-align: center;
+  pointer-events: none;
+
+  svg {
+    width: 36px;
+    height: 36px;
+    color: var(--gold);
+  }
+
+  span {
+    max-width: 240px;
+    padding: 10px 16px;
+    border-radius: 14px;
+    background: var(--cafe);
+    color: var(--texto);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.3;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// Aviso para el invitado: puede jugar, pero no gana descuentos.
+.sala-juegos__aviso {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--cafe);
+  color: var(--texto);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.3;
+
+  svg {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    color: var(--gold);
+  }
+}
+
+.juego-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  text-align: left;
+  background: var(--marron);
+  color: var(--texto);
+
+  &:active { transform: scale(0.985); }
+
+  &--destacado {
+    grid-column: 1 / 3;
+
+    .juego-card__pie {
+      padding: 11px 14px;
+      strong { font-size: 19px; }
+      span { font-size: 14px; }
+    }
+  }
+}
+
+.juego-card__arte {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+
+  img {
+    max-height: 125px;
+    object-fit: contain;
+    transform: rotate(-8deg);
+    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+  }
+  
+  &--memotest {
+    img {
+      width: 110px;
+    }
+  }
+}
+
+.juego-card__pie {
+  flex: none;
+  padding: 10px 12px;
+  background: var(--panel-2);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  strong {
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.15;
+  }
+
+  span {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texto-suave);
+  }
+}
+
+.sala-resenias {
+  flex: 1;
+  min-height: 0;
+  background: var(--panel-2);
+  border-radius: 20px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sala-resenias__titulo {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.sala-resenias__link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  color: var(--texto-suave);
+  padding: 0 12px;
+  text-decoration: none;
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  svg {
+    width: 44px;
+    height: 44px;
+    color: var(--gold);
+  }
+
+  span {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    font-weight: 700;
+    color: var(--texto);
+  }
+}

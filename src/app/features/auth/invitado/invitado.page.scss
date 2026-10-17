@@ -1,0 +1,365 @@
+:host {
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+
+  // Misma paleta que login_page.scss — sistema de diseño único para toda la app
+  --bg-hero: #ee7a4f; // franja superior, donde va el logo
+  --bg-panel: #c45030; // panel inferior redondeado
+  --accent-dark: #a83820; // texto sobre fondos claros / botones secundarios
+  --accent-light: #f9bfa0; // fondo de los inputs / texto sobre fondos oscuros
+  --gold: #f0c060; // botón principal
+  --white: #ffffff;
+
+  // Mismo diámetro de foto que registro.page.scss
+  --foto-size: clamp(170px, 25dvh, 210px);
+}
+
+ion-content.invitado-page {
+  --background: var(--bg-hero);
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.invitado-shell {
+  // min-height (no height fija): si el contenido no entra —por ej.
+  // con el teclado tapando la mitad de la pantalla— el shell crece y
+  // ion-content lo scrollea, en vez de recortarlo con overflow:hidden.
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-hero);
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.brand {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: max(56px, calc(env(safe-area-inset-top) + 12px)) 0 32px;
+}
+
+.brand__picker {
+  margin: 0;
+}
+
+.brand__logo {
+  width: 150px;
+  height: auto;
+  filter: brightness(0) invert(1);
+  display: block;
+}
+
+.invitado-card {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--bg-panel);
+  border-radius: 53px 53px 0 0;
+  padding: 16px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.invitado-title {
+  width: 100%;
+  max-width: 600px;
+  color: var(--white);
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 20px;
+}
+
+.invitado-form {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.foto-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.foto-picker__circle {
+  width: var(--foto-size);
+  height: var(--foto-size);
+  border-radius: 50%;
+  background: var(--accent-light);
+  border: #d4603a 2px dashed;
+  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.foto-picker__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.foto-picker__icono {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+  line-height: 1;
+}
+
+.foto-picker__label {
+  color: var(--white);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ---- Recuadro de cámara en vivo (fallback web) ---- */
+.camera-box {
+  width: var(--foto-size);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--accent-dark);
+  border: 2px solid var(--gold);
+  margin: 0 auto;
+}
+
+.camera-box video {
+  width: 100%;
+  height: var(--foto-size);
+  display: block;
+  object-fit: cover;
+}
+
+.camera-actions {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+}
+
+.camera-button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.camera-cancel {
+  background: #8c2e14;
+  color: #f9bfa0;
+  border: 1.5px solid rgba(240, 192, 96, 0.25);
+}
+
+.camera-capture {
+  background: var(--gold);
+  color: var(--accent-dark);
+}
+
+// Agrupa cada input con su propio mensaje de error para que el
+// espacio de ese mensaje quede reservado siempre (ver .campo-error) y
+// no empuje el resto del formulario para abajo cuando aparece o
+// desaparece. El margin-bottom que antes tenía .invitado-field se
+// movió acá, así la separación entre campos no cambia.
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 9px;
+}
+
+.invitado-field {
+  --background: var(--accent-light);
+  --border-radius: 24px;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --min-height: 50px;
+  --highlight-height: 0;
+  border-radius: 24px;
+  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.23);
+  border: #D4603A 2px solid;
+  overflow: hidden;
+}
+
+.invitado-field ion-input {
+  --placeholder-color: var(--accent-dark);
+  --color: var(--accent-dark);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+}
+
+.campo-error {
+  min-height: 1rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.form-error {
+  width: 100%;
+  margin: 0;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.form-error p {
+  margin: 0;
+  color: #fff0f0;
+  font-weight: 600;
+}
+
+.invitado-submit {
+  --background: var(--gold);
+  --background-activated: #dcab54;
+  --background-hover: #e6b661;
+  --color: var(--accent-dark);
+  --border-radius: 12px;
+  --box-shadow: none;
+  height: 52px;
+  margin-top: 10px;
+  font-family: 'ADLaM Display', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.secondary-actions {
+    width: 100%;
+    max-width: 600px;
+    margin-top: clamp(6px, 1.6dvh, 14px);
+}
+
+.action-btn {
+    --background: var(--accent-dark);
+    --background-activated: #8f2f1a;
+    --background-hover: #9a341d;
+    --color: var(--accent-light);
+    --border-radius: 12px;
+    --box-shadow: none;
+    height: clamp(36px, 5.2dvh, 46px);
+    width: 100%;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+
+
+.paso-espera {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.paso-espera p {
+  color: var(--accent-light);
+  font-size: 0.85rem;
+  text-align: center;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ---- Pantalla de espera (paso 2): full screen, estilo Mercado Pago ---- */
+.espera-screen {
+  height: 100%;
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: max(40px, calc(env(safe-area-inset-top) + 12px)) 28px max(32px, env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background: linear-gradient(180deg, var(--bg-hero) 0%, var(--bg-panel) 100%);
+}
+
+.espera-visual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.espera-visual svg {
+  width: 55vw;
+  max-width: 240px;
+  height: auto;
+  color: var(--white);
+  opacity: 0.95;
+}
+
+.espera-copy {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.espera-copy h1 {
+  color: var(--white);
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin: 0 0 10px;
+}
+
+.espera-copy p {
+  color: var(--accent-light);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0 8px;
+}
+
+.espera-error {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.espera-error p {
+  color: #fff0f0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.espera-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Botón grande, pensado para el pulgar, pegado abajo */
+.espera-btn-principal {
+  --background: var(--gold);
+  --background-activated: #dcab54;
+  --color: var(--accent-dark);
+  --border-radius: 18px;
+  --box-shadow: none;
+  height: 64px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.espera-btn-secundario {
+  --color: var(--accent-light);
+  --box-shadow: none;
+  height: 44px;
+  font-weight: 700;
+}

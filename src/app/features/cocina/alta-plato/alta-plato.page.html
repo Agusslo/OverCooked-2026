@@ -1,0 +1,275 @@
+<app-spinner-overlay [visible]="cargando()"></app-spinner-overlay>
+<div class="plato-page-wrapper">
+  <div class="main-container">
+    <div class="card-box">
+      <!-- Encabezado -->
+      <div class="header-box">
+        <button class="btn-back" type="button" routerLink="/inicio">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <h2>Nuevo Plato</h2>
+        <p>Agregar plato a la carta</p>
+      </div>
+
+      <!-- Formulario Reactivo -->
+      <form
+        [formGroup]="platoForm"
+        (ngSubmit)="guardarPlato()"
+        class="form-body"
+      >
+        <!-- Nombre -->
+        <div class="input-field-group">
+          <div
+            class="custom-input-box"
+            [class.invalid-field]="platoForm.get('nombre')?.touched && platoForm.get('nombre')?.invalid"
+          >
+            <svg
+              class="field-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M3 2h18a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" />
+              <path d="M12 9v10M6 19h12M9 19v-3h6v3" />
+            </svg>
+            <input
+              type="text"
+              formControlName="nombre"
+              placeholder="Nombre del plato"
+              class="native-input"
+            />
+          </div>
+          @if (platoForm.get('nombre')?.touched &&
+          platoForm.get('nombre')?.invalid) {
+          <span class="error-msg">Ingrese un nombre válido (mínimo 2 caracteres)</span>
+          }
+        </div>
+
+        <!-- Descripción -->
+        <div class="input-field-group">
+          <div
+            class="custom-input-box"
+            [class.invalid-field]="platoForm.get('descripcion')?.touched && platoForm.get('descripcion')?.invalid"
+          >
+            <svg
+              class="field-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            <textarea
+              formControlName="descripcion"
+              placeholder="Descripción del plato"
+              class="native-input"
+              rows="4"
+              style="resize: none; font-family: inherit;"
+            ></textarea>
+          </div>
+          @if (platoForm.get('descripcion')?.touched &&
+          platoForm.get('descripcion')?.invalid) {
+          <span class="error-msg">Descripción inválida (mínimo 10 caracteres)</span>
+          }
+        </div>
+
+        <!-- Tiempo de Elaboración -->
+        <div class="input-field-group">
+          <div
+            class="custom-input-box"
+            [class.invalid-field]="platoForm.get('tiempoElaboracion')?.touched && platoForm.get('tiempoElaboracion')?.invalid"
+          >
+            <svg
+              class="field-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="13" r="8" />
+              <path d="M12 9v4l3 2" />
+            </svg>
+            <input
+              type="number"
+              formControlName="tiempoElaboracion"
+              placeholder="Tiempo (minutos)"
+              class="native-input"
+              min="1"
+            />
+          </div>
+          @if (platoForm.get('tiempoElaboracion')?.touched &&
+          platoForm.get('tiempoElaboracion')?.invalid) {
+          <span class="error-msg">Ingrese un tiempo entre 1 y 240 minutos</span>
+          }
+        </div>
+
+        <!-- Precio -->
+        <div class="input-field-group">
+          <div
+            class="custom-input-box"
+            [class.invalid-field]="platoForm.get('precio')?.touched && platoForm.get('precio')?.invalid"
+          >
+            <svg
+              class="field-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v12M9 9h6a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-6" />
+            </svg>
+            <input
+              type="number"
+              formControlName="precio"
+              placeholder="Precio ($)"
+              class="native-input"
+              step="0.01"
+              min="0"
+            />
+          </div>
+          @if (platoForm.get('precio')?.touched &&
+          platoForm.get('precio')?.invalid) {
+          <span class="error-msg">Ingrese un precio válido (mayor a 0)</span>
+          }
+        </div>
+
+        <!-- Fotos del Plato (3 obligatorias) -->
+        <div class="photos-section">
+          <h3 class="photos-title">Fotos del plato (3 obligatorias)</h3>
+          <div class="photos-grid">
+            @for (indice of [0, 1, 2]; track indice) {
+              <div class="photo-slot" [class.photo-slot-active]="camaraActiva() && slotActivo() === indice">
+                @if (camaraActiva() && slotActivo() === indice) {
+                  <div class="photo-slot-camera">
+                    <video #videoCamara autoplay playsinline></video>
+                  </div>
+                } @else if (fotos()[indice]) {
+                  <div class="photo-slot-preview">
+                    <img [src]="fotos()[indice]" [alt]="'Foto ' + (indice + 1)" />
+                  </div>
+                } @else {
+                  <div class="photo-slot-empty">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <line x1="12" x2="12" y1="5" y2="19" />
+                      <line x1="5" x2="19" y1="12" y2="12" />
+                    </svg>
+                  </div>
+                }
+
+                @if (!(camaraActiva() && slotActivo() === indice)) {
+                  <div class="photo-slot-actions">
+                    <button
+                      type="button"
+                      class="photo-slot-action-btn"
+                      (click)="tomarFoto(indice, 'camara')"
+                      [disabled]="cargando() || camaraActiva()"
+                      title="Tomar foto con cámara"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                        <circle cx="12" cy="13" r="3" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      class="photo-slot-action-btn"
+                      (click)="tomarFoto(indice, 'galeria')"
+                      [disabled]="cargando() || camaraActiva()"
+                      title="Elegir de la galería"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                        <circle cx="9" cy="9" r="2" />
+                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                      </svg>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+          @if (formIntentado() && !todasLasFotosCargadas()) {
+            <span class="error-msg text-center">Las 3 fotos son obligatorias</span>
+          } 
+        </div>
+
+        <!-- Banners de Notificación -->
+        @if (mensajeError()) {
+        <div class="feedback-banner error">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" x2="12" y1="8" y2="12" />
+            <line x1="12" x2="12.01" y1="16" y2="16" />
+          </svg>
+          <span>{{ mensajeError() }}</span>
+        </div>
+        } @if (mensajeExito()) {
+        <div class="feedback-banner success">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+          <span>{{ mensajeExito() }}</span>
+        </div>
+        }
+
+        <!-- Botón Submit -->
+        <button
+          type="submit"
+          class="btn-uiverse btn-submit"
+          [disabled]="cargando()"
+        >
+          @if (cargando()) {
+          <span class="btn-text-content">REGISTRANDO...</span>
+          } @else {
+          <span class="btn-text-content">REGISTRAR PLATO</span>
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 7 2 2 4-4m-5-9v4h4V3h-4Z"/>
+          </svg>
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
