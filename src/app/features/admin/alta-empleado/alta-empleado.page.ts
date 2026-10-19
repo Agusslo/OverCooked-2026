@@ -6,7 +6,6 @@ import {
   OnInit,
   ViewChild,
   CUSTOM_ELEMENTS_SCHEMA,
-  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -14,47 +13,18 @@ import {
   FormGroup,
   ReactiveFormsModule,
   Validators,
-  AbstractControl,
-  ValidationErrors,
 } from '@angular/forms';
 import { Camera, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Haptics, NotificationType } from '@capacitor/haptics';
 import { QrScannerService } from '../../../core/services/qr-scanner';
-import { AdminService } from '../../../core/services/admin.service';
-import { RouterLink } from '@angular/router';
-import { SpinnerOverlayComponent } from '../../../shared/spinner-overlay/spinner-overlay.component';
-import { OPCIONES_TAMANIO_FOTO, frameDeVideoADataUrl } from '../../utils/cameraUtils';
-
-// Validador cross-field: verifica que los dígitos del DNI
-// coincidan con las posiciones 2–9 del CUIL.
-// Estructura CUIL: XX + DNI(8 dígitos) + dígito verificador = 11 dígitos.
-function cuilMatchDni(form: AbstractControl): ValidationErrors | null {
-  const dni = (form.get('dni')?.value || '') as string;
-  const cuil = (form.get('cuil')?.value || '') as string;
-
-  // Solo validar cuando ambos campos tienen formato correcto
-  if (!dni || !cuil || cuil.length !== 11 || !/^\d{7,8}$/.test(dni)) {
-    return null;
-  }
-
-  const dniPadded = dni.padStart(8, '0');
-  const dniEnCuil = cuil.substring(2, 10);
-
-  return dniEnCuil === dniPadded ? null : { cuilNoMatchDni: true };
-}
 
 @Component({
   selector: 'app-alta-empleado',
   templateUrl: './alta-empleado.page.html',
   styleUrls: ['./alta-empleado.page.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterLink,
-    SpinnerOverlayComponent,
-  ],
+  imports: [CommonModule, ReactiveFormsModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AltaEmpleadoPage implements OnInit, OnDestroy {
@@ -70,56 +40,40 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
   mensajeError = '';
   mensajeExito = '';
 
-  private fb = inject(FormBuilder);
-  private qrScannerService = inject(QrScannerService);
-  private adminService = inject(AdminService);
-  private changeDetectorRef = inject(ChangeDetectorRef);
+  constructor(
+    private fb: FormBuilder,
+    private qrScannerService: QrScannerService,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {}
 
   ngOnInit() {
-    this.empleadoForm = this.fb.group(
-      {
-        nombre: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'),
-          ],
+    this.empleadoForm = this.fb.group({
+      nombre: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'),
         ],
-        apellido: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'),
-          ],
+      ],
+      apellido: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'),
         ],
-        dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,8}$')]],
-        cuil: ['', [Validators.required, Validators.pattern('^[0-9]{11}$')]],
-        correo: ['', [Validators.required, Validators.email]],
-        clave: ['', [Validators.required, Validators.minLength(6)]],
-        perfil: ['', [Validators.required]],
-      },
-      { validators: cuilMatchDni },
-    );
+      ],
+      dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,8}$')]],
+      cuil: ['', [Validators.required, Validators.pattern('^[0-9]{11}$')]],
+      correo: ['', [Validators.required, Validators.email]],
+      clave: ['', [Validators.required, Validators.minLength(6)]],
+      perfil: ['', [Validators.required]],
+    });
   }
 
   ngOnDestroy() {
     this.detenerCamara();
-  }
-
-  sanitizarCampoNumerico(
-    controlName: 'dni' | 'cuil',
-    event: Event,
-    maxLength: number,
-  ): void {
-    const input = event.target as HTMLInputElement;
-    const valor = input.value.replace(/\D/g, '').slice(0, maxLength);
-
-    if (input.value !== valor) {
-      input.value = valor;
-      this.empleadoForm.get(controlName)?.setValue(valor);
-    }
   }
 
   async escanearDni() {
@@ -151,7 +105,7 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
       }
 
       const image = await Camera.getPhoto({
-        ...OPCIONES_TAMANIO_FOTO,
+        quality: 85,
         allowEditing: false,
         resultType: 'dataUrl' as any,
         source: CameraSource.Camera,
@@ -197,7 +151,11 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
       return;
     }
 
-    this.fotoPersonal = frameDeVideoADataUrl(video);
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d')?.drawImage(video, 0, 0);
+    this.fotoPersonal = canvas.toDataURL('image/jpeg', 0.85);
     this.mensajeError = '';
     this.detenerCamara();
   }
@@ -226,20 +184,15 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
     }
 
     this.cargando = true;
-    const valores = this.empleadoForm.value;
 
-    try {
-      await this.adminService.crearEmpleado({
-        nombre: valores.nombre,
-        apellido: valores.apellido,
-        dni: valores.dni,
-        cuil: valores.cuil,
-        correo: valores.correo,
-        clave: valores.clave,
-        perfil: valores.perfil,
-        fotoDataUrl: this.fotoPersonal,
-      });
+    const datosEmpleado = {
+      ...this.empleadoForm.value,
+      foto: this.fotoPersonal,
+    };
 
+    setTimeout(async () => {
+      this.cargando = false;
+      console.log('Empleado registrado exitosamente:', datosEmpleado);
       this.mensajeExito = '¡Empleado registrado con éxito!';
       await Haptics.notification({ type: NotificationType.Success }).catch(
         () => {},
@@ -248,15 +201,7 @@ export class AltaEmpleadoPage implements OnInit, OnDestroy {
       this.empleadoForm.reset({ perfil: '' });
       this.fotoPersonal = null;
       this.formIntentado = false;
-    } catch (error) {
-      await this.dispararError(
-        error instanceof Error
-          ? error.message
-          : 'No se pudo registrar el empleado.',
-      );
-    } finally {
-      this.cargando = false;
-    }
+    }, 1200);
   }
 
   private async dispararError(texto: string) {

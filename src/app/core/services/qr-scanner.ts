@@ -50,15 +50,6 @@ export class QrScannerService {
         return null;
       }
 
-      // Aseguramos que el módulo ML de Google para barcode scanning
-      // esté instalado antes de escanear. Si ya está, no hace nada.
-      // Si no, lo descarga (necesita conexión a internet la primera vez).
-      const { available } =
-        await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
-      if (!available) {
-        await BarcodeScanner.installGoogleBarcodeScannerModule();
-      }
-
       const { barcodes } = await BarcodeScanner.scan({
         formats: [BarcodeFormat.QrCode, BarcodeFormat.Pdf417],
       });
@@ -78,19 +69,10 @@ export class QrScannerService {
   }
 
   private procesarQr(codigo: string): ResultadoQr {
-    // Sacamos cualquier caracter que no sea letra/número/guión bajo
-    // (espacios, saltos de línea, o caracteres invisibles que a veces
-    // meten los generadores de QR online) antes de comparar.
-    const valorLimpio = codigo.replace(/[^a-zA-Z0-9_]/g, '').toUpperCase();
+    const valorLimpio = codigo.trim().toUpperCase();
 
     if (valorLimpio === 'LOCAL_INGRESO') {
       return { tipo: 'LOCAL', valor: 'LOCAL_INGRESO' };
-    }
-
-    // QR de propina (punto 21): "PROPINA_<NIVEL>". El valor es el código
-    // completo, que se busca en la tabla 'qr_propinas'.
-    if (valorLimpio.startsWith('PROPINA_')) {
-      return { tipo: 'PROPINA', valor: valorLimpio };
     }
 
     if (valorLimpio.startsWith('MESA_')) {

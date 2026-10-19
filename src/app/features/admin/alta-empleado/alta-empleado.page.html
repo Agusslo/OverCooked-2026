@@ -1,29 +1,46 @@
-<app-spinner-overlay [visible]="cargando"></app-spinner-overlay>
 <div class="empleado-page-wrapper">
   <div class="main-container">
     <div class="card-box">
       <!-- Encabezado -->
       <div class="header-box">
-        <button class="btn-back" type="button" routerLink="/inicio">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-        </button>
+        <div class="badge-tag">ADMINISTRACIÓN</div>
         <h2>Alta de Empleado</h2>
         <p>Registro y validación de personal</p>
       </div>
 
       <!-- Botón Escáner DNI -->
+      <button
+        type="button"
+        class="btn-uiverse btn-scan"
+        (click)="escanearDni()"
+        [disabled]="cargando"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect width="5" height="5" x="3" y="3" rx="1" />
+          <rect width="5" height="5" x="16" y="3" rx="1" />
+          <rect width="5" height="5" x="3" y="16" rx="1" />
+          <path d="M21 16h-3a2 2 0 0 0-2 2v3" />
+          <path d="M21 21v.01" />
+          <path d="M12 7v3a2 2 0 0 1-2 2H7" />
+          <path d="M3 12h.01" />
+          <path d="M12 3h.01" />
+          <path d="M12 16v.01" />
+          <path d="M16 12h1" />
+          <path d="M21 12v.01" />
+          <path d="M12 21v-1" />
+        </svg>
+        <span class="btn-text-content">ESCANEAR DNI ARGENTINO</span>
+      </button>
 
       <!-- Formulario Reactivo -->
       <form
@@ -31,7 +48,6 @@
         (ngSubmit)="guardarEmpleado()"
         class="form-body"
       >
-        
         <!-- Nombre -->
         <div class="input-field-group">
           <div
@@ -122,8 +138,6 @@
               formControlName="dni"
               placeholder="Número de DNI"
               maxlength="8"
-              inputmode="numeric"
-              (input)="sanitizarCampoNumerico('dni', $event, 8)"
               class="native-input"
             />
           </div>
@@ -157,8 +171,6 @@
               formControlName="cuil"
               placeholder="Número de CUIL (11 dígitos)"
               maxlength="11"
-              inputmode="numeric"
-              (input)="sanitizarCampoNumerico('cuil', $event, 11)"
               class="native-input"
             />
           </div>
@@ -269,38 +281,7 @@
           <span class="error-msg">Debe seleccionar un perfil</span>
           }
         </div>
-<button
-          type="button"
-          class="btn-uiverse btn-scan"
-          (click)="escanearDni()"
-          [disabled]="cargando"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <rect width="5" height="5" x="3" y="3" rx="1" />
-            <rect width="5" height="5" x="16" y="3" rx="1" />
-            <rect width="5" height="5" x="3" y="16" rx="1" />
-            <path d="M21 16h-3a2 2 0 0 0-2 2v3" />
-            <path d="M21 21v.01" />
-            <path d="M12 7v3a2 2 0 0 1-2 2H7" />
-            <path d="M3 12h.01" />
-            <path d="M12 3h.01" />
-            <path d="M12 16v.01" />
-            <path d="M16 12h1" />
-            <path d="M21 12v.01" />
-            <path d="M12 21v-1" />
-          </svg>
-          <span class="btn-text-content">ESCANEAR DNI ARGENTINO</span>
-        </button>
+
         <!-- Foto Personal -->
         <div class="photo-container">
           @if (camaraActiva) {
@@ -407,9 +388,7 @@
           } @else {
           <span class="btn-text-content">REGISTRAR EMPLEADO</span>
           }
-                <svg class="w-[24px] h-[24px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 7 2 2 4-4m-5-9v4h4V3h-4Z"/>
-</svg></button>
+        </button>
       </form>
     </div>
   </div>
