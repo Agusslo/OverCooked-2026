@@ -53,20 +53,20 @@
 | 6. Verificar ingreso del cliente registrado | dueño o supervisor | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
 | 7. Rechazar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
 | 8. Aceptar a un cliente registrado | dueño o supervisor | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
-| 9. Ingresar al local | cliente anónimo | Filippelli, Adrián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 9. Ingresar al local | cliente anónimo | Filippelli, Adrián | 🟢 | 17/10/2026 - Nicolas Ferrero |
 | 10. Asignar una mesa a un cliente registrado | metre | Fernández Waisberg, Gabriel | 🟢 | 03/10/2026 - Nicolas Ferrero |
 | 11. Ver el listado de los productos | cliente registrado o anónimo | Fernández Waisberg, Gabriel | 🟢 | 03/10/2026 - Nicolas Ferrero |
-| 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Fernández Waisberg, Gabriel | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 12. Realizar el pedido para todos los comensales de la mesa | cliente registrado o anónimo | Fernández Waisberg, Gabriel | 🟢 | 17/10/2026 - Nicolas Ferrero |
 | 13. Rechazar el pedido, para que el usuario lo modifique | mozo | Fernández Waisberg, Gabriel | 🟢 | 03/10/2026 - Nicolas Ferrero |
 | 14. Confirmar el pedido | mozo | Fernández Waisberg, Gabriel | 🟢 | 03/10/2026 - Nicolas Ferrero |
-| 15. Acceder a los juegos | cliente registrado | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
-| 16. Recepción de los productos correspondientes | cocinero | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
-| 17. Recepción de los productos correspondientes | cantinero | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 15. Acceder a los juegos | cliente registrado | Catanese, Demián | 🟢 | 17/10/2026 - Nicolas Ferrero |
+| 16. Recepción de los productos correspondientes | cocinero | Catanese, Demián | 🟢 | 17/10/2026 - Nicolas Ferrero |
+| 17. Recepción de los productos correspondientes | cantinero | Catanese, Demián | 🟢 | 17/10/2026 - Nicolas Ferrero |
 | 18. Realizar las tareas correspondientes | cocinero y cantinero | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
 | 19. Entrega del pedido completo | mozo | Catanese, Demián | 🟢 | 03/10/2026 - Nicolas Ferrero |
-| 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo |  López, Agustín Nicolás | 🟡 | 03/10/2026 - Nicolas Ferrero |
-| 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
-| 22. Confirmar el pago y liberar mesa | mozo | Catanese, Demián | 🟡 | 03/10/2026 - Nicolas Ferrero |
+| 20. Acceder a la encuesta de satisfacción | cliente registrado o anónimo |  López, Agustín Nicolás | 🟢 | 17/10/2026 - Nicolas Ferrero |
+| 21. Solicitar cuenta al mozo | cliente registrado o anónimo | Catanese, Demián | 🟢 | 17/10/2026 - Nicolas Ferrero |
+| 22. Confirmar el pago y liberar mesa | mozo | Catanese, Demián | 🟢 | 17/10/2026 - Nicolas Ferrero |
 
 
 
